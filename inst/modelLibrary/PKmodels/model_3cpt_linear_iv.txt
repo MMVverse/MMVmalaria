@@ -1,0 +1,57 @@
+********** MODEL NAME
+model_3cpt_linear_iv
+
+********** MODEL NOTES
+
+PK model for simulation of drug concentration in central compartment
+with following characteristics:
+Compartments:  3
+Elimination :  linear
+Absorption  :  none (infusion/iv)
+
+Unit convention
+Dose: mg
+Concentration: ug/mL
+Time: hours
+
+The annotation of the parameter units is consistent with the given unit convention.
+Units of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation need to match the unit convention.
+
+********** MODEL STATES
+
+d/dt(Ac) 	=  - Q1/Vc*Ac + Q1/Vp1*Ap1 - Q2/Vc*Ac + Q2/Vp2*Ap2 - CL/Vc*Ac + INPUT1
+d/dt(Ap1) 	=  + Q1/Vc*Ac - Q1/Vp1*Ap1
+d/dt(Ap2) 	=                          + Q2/Vc*Ac - Q2/Vp2*Ap2
+
+Ac(0)    	= 0
+Ap1(0)    	= 0
+Ap2(0)    	= 0
+
+********** MODEL PARAMETERS
+
+CL 			  = 3 	# Clearance (L/hour)
+Vc 			  = 32 	# Central volume (L)
+Q1			  = 1 	# Intercompartmental clearance to first peripheral compartment (L/hour)
+Vp1			  = 10 	# First peripheral volume (L)
+Q2			  = 1 	# Intercompartmental clearance to second peripheral compartment (L/hour)
+Vp2			  = 10 	# Second peripheral volume (L)
+
+********** MODEL VARIABLES
+
+% Calculation of concentration in central compartment
+Cc 			  = Ac/Vc
+
+% Defining an output (only needed when interfacing with NLME
+% parameter estimation tools such as NONMEM and MONOLIX)
+OUTPUT1  	  = Cc  # Compound concentration (ug/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+

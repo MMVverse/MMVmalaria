@@ -1,0 +1,94 @@
+********** MODEL NAME
+model_PKPD_1cptLin_ClearanceModel
+
+
+********** MODEL NOTES
+Library model for malaria PKPD modeling.
+
+PK	No of Compartments:	1 (Vc)
+	Elimination:		Linear (CL)
+	Absorption:			1st order absorption (Fabs1 & ka)
+
+PD	Dynamic:            Once a drug had an effect on the parasite the parasite enter a "zombie" state before dying.
+                        A zombie state is a state where the parasite is in between death and life but is counted as being alive.
+						This zombie stage is introduced to explain why the killing rate in vitro (in vitro PRR) is larger that
+						the Emax estimated from SCID mouse experiments. In this model, the Emax is assumed to be the same than in
+						the in Vitro PRR which allows to estimate the clearance rate of the parasite and have a higer EC50 than in the Emax-Model.
+    Transformation:		ONLY FOR THE OUTPUT - Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
+	Growth:				Linear (GR)
+	Drug Effect:		Hill Function depending on the concentration at the central compartment Cc (EMAX, EC50 & hill)
+	Baseline:			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and PLerr follows
+						a centered gaussian, i.e. N(0,sigma^2) to allow some flexibility
+
+Important assumption: INPUT dose and PK model matched to lead to drug
+                      concentration in µg/mL!
+
+Units of parasitemia assumed in percent or 1/mL (both log-transformed: ln not log10).
+
+
+********** MODEL STATES
+
+# PK model (dosing: INPUT1)
+d/dt(Ad)  = -ka*Ad + factorUnits*Fabs1*INPUT1
+d/dt(Ac)  =  ka*Ad - CL/Vc*Ac
+
+# Parasitemia PD model (log transformed parasitemia)
+d/dt(PLtot) = (GR+CLPara)*exp(PLliv-PLtot) - CLPara
+d/dt(PLliv) = GR - EMAX*Eff
+PLtot(0)    = PLbase + PLerr
+PLliv(0)    = PLbase + PLerr
+
+
+********** MODEL PARAMETERS
+
+# -------- PK parameters --------
+Fabs1 = 1             # Relative bioavailability (.)
+ka    = 0.5           # Absorption rate parameter (1/hour)
+CL    = 0             # Apparent clearance (L/hour)
+Vc    = 10            # Apparent central volume (L)
+Tlag1 = 0             # Absorption lag time (hours)
+
+# -------- PD parameters --------
+
+# --- General ---
+PLbase = 0            # Log-transformed baseline parasitemia (percent or 1/mL)
+PLerr  = 0            # Individual deviation from baseline parasitemia
+
+# --- Drug ---
+GR     = 0.05         # Net parasite growth rate (1/hour)
+EMAX   = 0.10         # Maximum clearance rate (1/hour)
+EC50   = 0.10         # Concentration achieving 50percent of maximum effect (ug/mL)
+hill   = 3            # Hill coefficient (.)
+CLPara = 10           # Parasitemia clearance (1/hour)
+
+# If the user want other unit than ug/mL
+factorUnits = 1
+
+# To avoid numerical crashes when computing PL
+yps = 1e-9
+
+
+********** MODEL VARIABLES
+
+# -------- PK --------
+# Drug concentration (ug/mL)
+Cc = Ac/Vc            # Compound concentration (ug/mL)
+
+# -------- PD --------
+# Drug Effect
+Eff = (Cc+yps)^hill/((Cc+yps)^hill+EC50^hill)
+
+# -------- Output --------
+# Parasitemia Output (log)
+PL      = PLtot
+OUTPUT1 = PL          # Log-transformed parasitemia (percent or 1/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+

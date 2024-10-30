@@ -1,0 +1,56 @@
+********** MODEL NAME
+model_2cpt_linear_abs0
+
+********** MODEL NOTES
+
+PK model for simulation of drug concentration in central compartment
+with following characteristics:
+Compartments:  2
+Elimination :  linear
+Absorption  :  zero order (with lag time)
+
+Unit convention
+Dose: mg
+Concentration: ug/mL
+Time: hours
+
+The annotation of the parameter units is consistent with the given unit convention.
+Units of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation need to match the unit convention.
+
+********** MODEL STATES
+
+d/dt(Ac) 	=  - Q1/Vc*Ac + Q1/Vp1*Ap1 - CL/Vc*Ac + Fabs0*INPUT1
+d/dt(Ap1) =  + Q1/Vc*Ac - Q1/Vp1*Ap1
+
+Ac(0)    	= 0
+Ap1(0)    	= 0
+
+********** MODEL PARAMETERS
+
+Fabs0    	= 1   # Relative bioavailability (-)
+CL 			  = 3 	# Apparent clearance (L/hour)
+Vc 			  = 32 	# Apparent central volume (L)
+Q1			  = 1 	# Apparent intercompartmental clearance (L/hour)
+Vp1			  = 10 	# Apparent peripheral volume (L)
+Tk0       = 1   # Absorption time (hours)
+Tlag1     = 0   # Absorption lag time (hours)
+
+********** MODEL VARIABLES
+
+% Calculation of concentration in central compartment
+Cc 			  = Ac/Vc
+
+% Defining an output (only needed when interfacing with NLME
+% parameter estimation tools such as NONMEM and MONOLIX)
+OUTPUT1  	  = Cc  # Compound concentration (ug/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+

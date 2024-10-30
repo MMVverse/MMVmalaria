@@ -1,0 +1,28 @@
+Compartments,Absorption,Elimination,ModelFile
+1,zero order,linear,model_1cpt_linear_abs0
+2,zero order,linear,model_2cpt_linear_abs0
+3,zero order,linear,model_3cpt_linear_abs0
+1,first order,linear,model_1cpt_linear_abs1
+2,first order,linear,model_2cpt_linear_abs1
+3,first order,linear,model_3cpt_linear_abs1
+1,bolus,linear,model_1cpt_linear_iv
+2,bolus,linear,model_2cpt_linear_iv
+3,bolus,linear,model_3cpt_linear_iv
+1,zero order,saturable,model_1cpt_sat_abs0
+2,zero order,saturable,model_2cpt_sat_abs0
+3,zero order,saturable,model_3cpt_sat_abs0
+1,first order,saturable,model_1cpt_sat_abs1
+2,first order,saturable,model_2cpt_sat_abs1
+3,first order,saturable,model_3cpt_sat_abs1
+1,bolus,saturable,model_1cpt_sat_iv
+2,bolus,saturable,model_2cpt_sat_iv
+3,bolus,saturable,model_3cpt_sat_iv
+1,zero order,linear+saturable,model_1cpt_linsat_abs0
+2,zero order,linear+saturable,model_2cpt_linsat_abs0
+3,zero order,linear+saturable,model_3cpt_linsat_abs0
+1,first order,linear+saturable,model_1cpt_linsat_abs1
+2,first order,linear+saturable,model_2cpt_linsat_abs1
+3,first order,linear+saturable,model_3cpt_linsat_abs1
+1,bolus,linear+saturable,model_1cpt_linsat_iv
+2,bolus,linear+saturable,model_2cpt_linsat_iv
+3,bolus,linear+saturable,model_3cpt_linsat_iv

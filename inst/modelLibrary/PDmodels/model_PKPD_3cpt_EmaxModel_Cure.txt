@@ -1,0 +1,105 @@
+********** MODEL NAME
+model_PKPD_3cpt_EmaxModel_Cure
+
+
+********** MODEL NOTES
+Library model for malaria PKPD modeling.
+
+PK	No of Compartments:	3 (Vc, Vp1, Q1, Vp2 & Q2)
+	Elimination:		Linear (CL) & Non-Linear (VMAX & KM)
+	Absorption:			1st order absorption (Fabs1 & ka)
+
+PD	Transformation:		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
+	Growth:				Linear (GR)
+	Drug Effect:		Hill Function depending on the concentration at the central compartment Cc (EMAX, EC50 & hill)
+	Baseline:			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and PLerr follows
+						a centered gaussian, i.e. N(0,sigma^2) to allow some flexibility
+
+Important assumption: INPUT dose and PK model matched to lead to drug
+                      concentration in µg/mL!
+
+Units of parasitemia assumed in percent or 1/mL (both log-transformed: ln not log10).
+
+
+********** MODEL STATES
+
+# PK model (dosing: INPUT1)
+d/dt(Ad)  = -ka*Ad + factorUnits*Fabs1*INPUT1
+d/dt(Ac)  =  ka*Ad - Q1/Vc*Ac + Q1/Vp1*Ap1 - Q2/Vc*Ac + Q2/Vp2*Ap2 - CL/Vc*Ac - VMAX*Cc/(KM+Cc)
+d/dt(Ap1) =          Q1/Vc*Ac - Q1/Vp1*Ap1
+d/dt(Ap2) =          						 Q2/Vc*Ac - Q2/Vp2*Ap2
+
+# Parasitemia PD model (log transformed parasitemia)
+d/dt(PL) = (GR - EMAX*Eff - Cure)*Fcure
+PL(0)    = PLbase + PLerr
+
+
+********** MODEL PARAMETERS
+
+# -------- PK parameters --------
+Fabs1 = 1             # Relative bioavailability (.)
+ka    = 0.5           # Absorption rate parameter (1/hour)
+CL    = 0             # Apparent clearance (L/hour)
+VMAX  = 0             # Maximum clearance rate (mg/hour)
+KM    = 10            # Michaelis-Menten constant (µg/mL)
+Vc    = 10            # Apparent central volume (L)
+Q1    = 0             # Apparent intercomparmental clearance to first peripheral compartment (L/hour)
+Vp1   = 1             # Apparent first peripheral volume (L)
+Q2    = 0             # Apparent intercomparmental clearance to second peripheral compartment (L/hour)
+Vp2   = 1             # Apparent second peripheral volume (L)
+Tlag1 = 0             # Absorption lag time (hours)
+
+
+# -------- PD parameters --------
+# --- General ---
+PLbase  = 0           # Log-transformed baseline parasitemia (percent or 1/mL)
+PLerr   = 0           # Individual deviation from baseline parasitemia
+PLcure  = -10         # Log-transformed cure threshold (percent or 1/mL)
+Hcure   = 5           # Hill coefficient of cure (.)
+mu      = 0.05        # Relative difference between maximum cure rate and growth (.)
+dPLstop = 5           # log-difference between Pcure and Pstop (.)
+
+# --- Drug ---
+GR   = 0.05           # Net parasite growth rate (1/hour)
+EMAX = 0.10           # Maximum clearance rate (1/hour)
+EC50 = 0.10           # Concentration achieving 50percent of maximum effect (µg/mL)
+hill = 3              # Hill coefficient (.)
+
+# If the user want other unit than µg/mL
+factorUnits = 1
+
+# To avoid numerical crashes when computing PL
+yps = 1e-9
+
+
+********** MODEL VARIABLES
+
+# -------- PK --------
+# Drug concentration (µg/mL)
+Cc = Ac/Vc            # Compound concentration (µg/mL)
+
+
+# -------- PD --------
+# Cure Rate
+#Cure = CureMAX*exp(Hcure*PLcure)/(exp(Hcure*PLcure) + exp(Hcure*PL)*(CureMAX/GR-1))
+#  		with CureMAX=(1+mu)*GR & Hcure=Hcure
+Cure  = (1+mu)*GR*exp(Hcure*PLcure)/(exp(Hcure*PLcure) + exp(Hcure*PL)*mu)
+Fcure = exp(Hcure*PL)/(exp(Hcure*(PLcure-dPLstop)) + exp(Hcure*PL))
+
+# Drug Effect
+Eff = (Cc+yps)^hill/((Cc+yps)^hill+EC50^hill)
+
+
+# -------- Output --------
+# Parasitemia Output (log)
+OUTPUT1 = PL          # Log-transformed parasitemia (percent or 1/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+

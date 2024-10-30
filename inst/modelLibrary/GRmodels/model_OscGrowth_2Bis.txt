@@ -1,0 +1,56 @@
+********** MODEL NAME
+model_OscGrowth_2
+
+********** MODEL NOTES
+Library model for malaria PKPD modeling.
+
+Model to describe the growth a the parasite in blood.
+
+Growth              Exponential growth model with oscillation of the growth rate GR.
+Oscillation 		The  growth rate oscillate around it mean value GR, with an ampliture Amp,
+					a period Plen and a phase 2*PI*Dtime/Plen (when time=Dtime the growth rate is GR).
+					NOTE - Dtime=Phi*Plen (Like that Phi can be between 0 & 1).
+Transformation 		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
+Output 				PL, i.e. the logarithm of the parasitemia.
+Baseline 			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and
+					PLerr follows a centered Gaussian, i.e. N(0,sigma^2) to allow some flexibility.
+Unit                As in the dataset, prior transformation; i.e. p/mL or percent
+
+
+********** MODEL STATES
+
+d/dt(PL) = GR + 2*Pie/Plen*Amp*sin(2*Pie*(time-Dtime)/Plen) + INPUT1
+PL(0)    = PLbase + PLerr
+
+
+********** MODEL PARAMETERS
+
+PLbase = 0           # Observed log-transformed parasitemia at t=0 (or starting time used for the analysis). (p/mL)
+PLerr  = 0   		 # Standard deviation of log-transformed baseline parasitemia
+
+GR     = 0.05        # Parasite growth rate constant (1/hr)
+
+Amp    = 0.5         # Amplitude of oscillation (-)
+Plen   = 48          # Period length of oscillation (hours)
+Phi    = 0           # Phase shift of the oscillations (fully visible at time = Phi*Plen)
+
+
+********** MODEL VARIABLES
+
+# -------- PI --------
+Pie = 3.14159265359
+
+# Time shift of osciallation:
+Dtime = Phi*Plen
+
+# -------- Output --------
+OUTPUT1 = PL              # Log-transformed parasite count (p/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS

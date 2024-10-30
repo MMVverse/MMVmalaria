@@ -1,0 +1,551 @@
+---
+title: "PK/PD Model Simulation Based Dose Prediction"
+author: "Venelin Mitov, IntiQuan"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{PredictHumanDoses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+The package MMVmalaria implements PK/PD model simulation based dose prediction for user specified criteria. A criterion is a numerical monotonous function that is evaluated on a PK/PD model simulation. The following two generic functions are implemented:
+
+* predictDose_Generic: given a PK/PD model, a parameter vector, a criterion evaluation function, a target criterion value, and a dose interval, this function performs a binary search within the interval for the minimal dose satisfying the criterion. 
+* predictDose_GenericTrial: samples N_Trial x N_subjperTrial individual parameter vectors, based on a GPF file and a covariate dataset and calls predictDose_Generic to search for the minimal dose satisfying the criterion for each individual parameter vector. 
+
+The following sections show how to use the predictDose* functions to find doses that satisfy a minimum time above minimal inhibitory concentration (MIC0 criterion and a minimum parasitemia reduction ratio (PRR) criterion.
+
+```{r setup, include=FALSE}
+library(MMVmalaria)
+```
+
+
+# General settings
+
+## PK/PD structural model  
+The examples are based on an antimalarial drug combination PK/PD model with anonymized compounds and dymmy parameter PK/PD parameter values. It is assumed that there is no PK interaction between the two compounds but there is a BLISS type PD interaction (a Gamma parameter). As a  complication, the dose-level of the second compound affects its PK with an effect on the compound's central volume (adult equivalent doses bigger than 400 mg result in smaller Vc). 
+```{r}
+modelFile <- system.file("extdata/test-predictHumanDoses/MODEL01/model_PKPDcombo_Bliss.txt", package = "MMVmalaria")
+model <- IQRmodel(modelFile)
+```
+
+## GPF file
+```{r}
+gpfFile <- system.file("extdata/test-predictHumanDoses/MODEL01/GPF_PKPDcombo.xlsx", package = "MMVmalaria")
+# To speed up the processing we create a GPF object, which we can pass to the functions instead of gpfFile
+gpf <- GPF(gpfFile)
+```
+
+## Covariate data
+```{r}
+covariates <- MMVmalaria::load_AfricanPediatricMalariaPopulation2to5()
+# Set PLbase to the natural logarithm parasitemia
+# Column PLbase is matching the model parameter PLbase
+covariates$PLbase <- log(covariates$PBASE_perml)
+# Set the WT0 column to match the weight covariate name in the GPF file
+covariates$WT0 <- covariates$WEIGHT_kg
+```
+
+## Dose criteria
+For the PRR criterion, we will pass the function `evaluateDoseCriterion_PRRtot` in MMVmalaria and will specify 9 lot-10s as a target. 
+
+### Criterion functions calculating the time above MIC
+
+For the MIC criterion, we need to define a criterion evaluation function, since the function `evaluateDoseCriterion_TimeAboveMIC` in MMVmalaria assumes that the PK/PD model is for monotherapy, i.e. the parameter names and concentration column in the simulation result don't have x1 or x2 suffixes. 
+
+```{r}
+# COMPOUND 1
+evaluate_TimeAboveMICx1 <- function(sim_results, parameters) {
+  parameters["EMAX"] <- parameters["EMAXx1"]
+  parameters["EC50"] <- parameters["EC50x1"]
+  parameters["hill"] <- parameters["hillx1"]
+  dfParam <- as.data.frame(as.list(parameters))
+  MIC     <- MMVmalaria::getKeysEMAX(x = dfParam)[["MIC"]]
+  # Need a Cc column 
+  sim_results$Cc <- sim_results$Ccx1
+  MMVmalaria::getTimeAboveMIC(sim_results, MIC = MIC)[["tMIC"]]
+}
+
+# COMPOUND 2
+evaluate_TimeAboveMICx2 <- function(sim_results, parameters) {
+  parameters["EMAX"] <- parameters["EMAXx2"]
+  parameters["EC50"] <- parameters["EC50x2"]
+  parameters["hill"] <- parameters["hillx2"]
+  dfParam <- as.data.frame(as.list(parameters))
+  MIC     <- MMVmalaria::getKeysEMAX(x = dfParam)[["MIC"]]
+  # Need a Cc column 
+  sim_results$Cc <- sim_results$Ccx2
+  MMVmalaria::getTimeAboveMIC(sim_results, MIC = MIC)[["tMIC"]]
+}
+
+
+```
+See `?evaluateDoseCriterion_TimeAboveMIC` for a description of the arguments `sim_results` and `parameters`.
+
+## Dose interval
+```{r}
+# Adult equivalent doses in mg units
+doseInterval = c(10, 20000)
+```
+
+# Predicting a dose for one parameter vector
+
+To predict a dose for an individual parameter vector, we call the function `predictDose_Generic`. Here, as a parameter vector, we will use the population parameter estimates of the PK/PD model:
+```{r}
+popParameterEstimates <- IQRtools:::getParamEstimates(gpf)
+vecParameters <- unlist(popParameterEstimates[, IQRtools:::getNamesModelParameters(gpf)])
+print(vecParameters)
+```
+
+## Criterion: concentration above MIC for at least 7 days
+For each compound, let's predict the minimal dose guaranteeing that the concentration remains above MIC for at least 7 days.
+
+So for the first compound, we write:
+```{r}
+# COMPOUND 1
+dose_tMIC7_CMP1_pop <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluate_TimeAboveMICx1",
+  targetCriterionValue = 7 * 24,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = vecParameters,
+  simtime = seq(0, 600, by = 1))
+print(dose_tMIC7_CMP1_pop)
+```
+
+### Specifying the `args_IQRdosing` argument
+
+If the structural PK/PD model is for a drug combination and we wish to predict the dose for the second, third or another non-first compound, we need to adjust the args_IQRdosing argument. By default args_IQRdosing is set to `list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses - 1, II = timeInterval)`. This defines administration of a single compound (monotherapy). `ADM = 1` indicates that, during simulation, the dose amount is be added to the model variable `INPUT1` at time = `simtime[1]`. `AMT = NA_real_` indicates that the dose amount will be searched for by the binary search algorithm. `ADDL=0` indicates that this is a single-dose therapy (no additional doses). `II` is relevant only when `ADDL>0` and indicates the dosing interval (in this case irrelevant). For a more detailed description of these and other possible memberes of the `args_IQRdosing` argument, please, refer to the documentation for the `IQRtools::IQRdosing` function. Now, we modify this list to indicate that the dose to be searched for is added to `INPUT2`, by setting `ADM=2`:
+```{r}
+# will be used instead of default args_IQRdosing argument in later monotherapy examples
+args_IQRdosing_x2 <- list(TIME = 0, ADM = 2, AMT = NA_real_, ADDL=0, II = 0)
+```
+
+As another example of specifying a combination dosing, we can fix the dose of compound 1 to 100 mg and predict the needed dose of compound 2, so that the combined dose effect would satisfy the criterion. In order to do that, we need to specify the args_IQRdosing argument as follows:
+```{r}
+# 100 mg COMPOUND 1 + XXX mg COMPOUND 2
+args_IQRdosing_100mgx1_x2 <- list(TIME = c(0, 0), ADM = c(1,2), AMT = c(100, NA_real_), ADDL=0, II = 0)
+```
+Here, `ADM=c(1,2)` indicates that doses are to be added to `INPUT1` and `INPUT1`, `AMT=c(100, NA_real_)` indicates that the dose for `INPUT1` is fixed to 100 dose-units while the dose for `INPUT2` is to be searched for by the binary search algorithm.
+
+### Specifying a dose-covariate
+We remember that the dose of compound 2 is a covariate affecting the central volume (Vcx2). Hence we supply a list instead of a vector for the parameters argument. The function `predictDose_Generic` will recognize this and re-calculate the typical individual parameter values for each simulated dose during the binary search:
+```{r}
+# COMPOUND 2:
+dose_tMIC7_CMP2_pop <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluate_TimeAboveMICx2",
+  targetCriterionValue = 7 * 24,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    # We specify the reference parameter values for the other covariates of the model
+                    # and an ID column
+                    sampledData = data.frame(ID = 1, WT0 = 70),
+                    DOSEcovariate = c(INPUT2 = "DOSE"), 
+                    regressorExtra = character(0), 
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1), 
+  args_IQRdosing = args_IQRdosing_x2
+  )
+
+print(dose_tMIC7_CMP2_pop)
+```
+
+## Criterion: Minimal PRR of 9 log10
+
+For each compound, let's predict the minimal dose guaranteeing that PRR>=9 log10.
+So for the first compound, we write:
+```{r}
+# COMPOUND 1
+dose_PRR9_CMP1_pop <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = vecParameters,
+  simtime = seq(0, 600, by = 1))
+
+print(dose_PRR9_CMP1_pop)
+
+# COMPOUND 2:
+dose_PRR9_CMP2_pop <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    # We specify the reference parameter values for the other covariates of the model
+                    # and an ID column
+                    sampledData = data.frame(ID = 1, WT0 = 70),
+                    DOSEcovariate = c(INPUT2 = "DOSE"), 
+                    regressorExtra = character(0), 
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1), 
+  args_IQRdosing = args_IQRdosing_x2
+  )
+
+print(dose_PRR9_CMP2_pop)
+```
+
+### Fixing the dose for one of the compounds
+All of the dose predictions in the above examples were for monotherapies. Now, let's fix the dose of compound 1 to 100 mg and predict the needed dose of compound 2, so that the combined dose effect results in min PRR of 9 log10:
+
+```{r}
+# 100 mg COMPOUND 1 + XXX mg COMPOUND 2
+args_IQRdosing_100mgx1_x2 <- list(TIME = c(0, 0), ADM = c(1,2), AMT = c(100, NA_real_), ADDL=0, II = 0)
+```
+
+Then, we pass the `args_IQRdosing_100mgx1_x2` as `args_IQRdosing` argument to predictDose_Generic, keeping all other arguments unchanged:
+```{r}
+# 100 mg COMPOUND1 + XXx mg COMPOUND 2:
+dose_PRR9_100mgCMP1_CMP2_pop <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    # We specify the reference parameter values for the other covariates of the model
+                    # and an ID column
+                    sampledData = data.frame(ID = 1, WT0 = 70),
+                    DOSEcovariate = c(INPUT2 = "DOSE"), 
+                    regressorExtra = character(0), 
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1), 
+  args_IQRdosing = args_IQRdosing_100mgx1_x2
+  )
+
+print(dose_PRR9_100mgCMP1_CMP2_pop)
+```
+
+### Specifying DDI 
+By default, the BLISS independence model assumes Gamma=1, meaning no drug-drug interaction (DDI), with respect to the parasitemia kill-rate. The GPF file can overwrite this setting, but we notice that no Gamma estimate is specified in the gpf:
+```{r}
+"Gamma" %in% IQRtools:::getNamesModelParameters(gpf)
+```
+
+If Gamma > 1, there is an antagonistic DDI, meaning that higher doses would be needed for achieving the same parasitemia kill rate as in monotherapy. Let's fix Gamma=1.2 and predict the needed dose for compound 2 in combination with 100 mg compound1 to reach a minimal PRR of 9 log10. It is possible to do that by editing the gpf, adding a Gamma parameter estimate. For this example, though, when Gamma is a fixed value and no parameter sampling is done, it is easier to specify Gamma as a regressor and add a column in the sampledData member of the parameters argument:
+
+```{r}
+# 100 mg COMPOUND1 + XXx mg COMPOUND 2, Gamma=1.2:
+dose_PRR9_100mgCMP1_CMP2_pop_Gamma2 <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    # We specify the reference parameter values for the other covariates of the model
+                    # and an ID column
+                    sampledData = data.frame(ID = 1, WT0 = 70, Gamma=2),
+                    DOSEcovariate = c(INPUT2 = "DOSE"), 
+                    # Add Gamma as a regressor
+                    regressorExtra = "Gamma", 
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1), 
+  args_IQRdosing = args_IQRdosing_100mgx1_x2
+  )
+
+print(dose_PRR9_100mgCMP1_CMP2_pop_Gamma2)
+```
+
+**Note:* Note that the same mechanism (i.e. specifying a value column in `sampledData` and adding this column-name to `regressorExtra`) can be used to overwrite any sampled model parameter.
+
+## Dose scaling according to weight
+
+If the structural model has an `Fpediatric` parameter used to scale the bioavailability parameter (`Fabs`), it is possible to specify this as a regressor and supply the appropriate values as a column in the covariate dataset. 
+
+```{r}
+# Column Fpediatric is matching the model parameter Fpediatric
+covariates$Fpediatric <- sapply(covariates$WT0, function(w) {
+  if(w <= 10) {
+    0.25
+  } else if(w <= 15) {
+    0.375
+  } else if(w <= 24) {
+    0.5
+  } else if(w <= 35) {
+    0.75
+  } else {
+    1
+  }
+})
+
+head(covariates[, c("ID", "WT0", "PLbase", "Fpediatric")])
+```
+
+Using the model population parameter estimates, we can predict the adult-equivalent dose of compound 1 that would attain a min PRR of 9 log10 for the first patient: 
+
+```{r, warning=FALSE}
+# COMPOUND 1: Adult equivalent dose reaching PRR of 9 log10 for the first patient in covariates. 
+# This call generates warnings for the missing DOSE covariate, which are irrelevant and can be ignored
+dose_PRR9_CMP1_pop_Patient1_AdultEquivalent <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    # Patient 1
+                    sampledData = covariates[1, c("ID", "WT0", "Fpediatric")],
+                    regressorExtra = c("Fpediatric"), 
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1))
+
+print(dose_PRR9_CMP1_pop_Patient1_AdultEquivalent)
+```
+
+**IMPORTANT:** The above dose prediction is adult-equivalent, that is, to obtain the dose that must be given to patient 1, the above dose prediction must be scaled by the corresponding Fpediatric value:
+```{r}
+# Scaling predicted dose by Fpediatric to obtain pediatric dose
+dose_PRR9_CMP1_pop_Patient1_Fpediatric <- dose_PRR9_CMP1_pop_Patient1_AdultEquivalent * covariates[1, "Fpediatric"]
+print(dose_PRR9_CMP1_pop_Patient1_Fpediatric)
+```
+
+The pediatric dose can be determined directly by not applying the scaling to the adult dose, i.e., setting `Fpediatric = 1`.
+
+```{r, warning=FALSE}
+dose_PRR9_CMP1_pop_Patient1_ActualWT0 <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    # Patient 1
+                    sampledData = covariates[1, c("ID", "WT0")],
+                    regressorExtra = character(0), 
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1))
+
+# The two doses are relatively close
+print(dose_PRR9_CMP1_pop_Patient1_Fpediatric)
+print(dose_PRR9_CMP1_pop_Patient1_ActualWT0)
+```
+
+Let's predict the analogical dose for compound 2 in monotherapy, and in combination with 100 mg adult equivalent dose for compound 1:
+
+```{r}
+# COMPOUND 2:
+dose_PRR9_CMP2_pop_Patient1_AdultEquivalent <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    sampledData = covariates[1, c("ID", "WT0", "Fpediatric")],
+                    DOSEcovariate = c(INPUT2 = "DOSE"), 
+                    regressorExtra = "Fpediatric", 
+                    Fpediatric =  "Fpediatric", 
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1), 
+  args_IQRdosing = args_IQRdosing_x2
+  )
+
+print(dose_PRR9_CMP2_pop_Patient1_AdultEquivalent)
+
+
+# Adult equivalent 100 mg COMPOUND1 + Adult equivalent XXx mg COMPOUND 2, Gamma=2:
+dose_PRR9_100mgCMP1_CMP2_pop_Gamma2_Patient1_AdultEquivalent <- predictDose_Generic(
+  fun_EvaluateCriterion = "evaluateDoseCriterion_PRRtot",
+  targetCriterionValue = 9,
+  doseInterval = doseInterval,
+  model = model,
+  parameters = list(popParamValues = popParameterEstimates, 
+                    # Patient 1
+                    sampledData = cbind(covariates[1, c("ID", "WT0", "Fpediatric")], data.frame(Gamma=2)),
+                    DOSEcovariate = c(INPUT2 = "DOSE"), 
+                    regressorExtra = c("Gamma", "Fpediatric"),
+                    Fpediatric = "Fpediatric",
+                    gpf = gpf, 
+                    # Use typical individual parameter values (no random effects):
+                    FLAG_SAMPLE = 3),
+  simtime = seq(0, 600, by = 1), 
+  args_IQRdosing = args_IQRdosing_100mgx1_x2
+  )
+
+print(dose_PRR9_100mgCMP1_CMP2_pop_Gamma2_Patient1_AdultEquivalent)
+```
+
+# Predicting doses for virtual clinical trials
+
+To predict dose for a clinical trial, we use the function `predictDose_GenericTrial`. This function accepts a [GPF](https://iqrtools.intiquan.com/doc/book/GPF.html) file, specifying the uncertainty and the inter-individual variability distributions of the PK/PD model parameters. By default the `predictDose_GenericTrial` will sample `N_Trial` vectors of population reference parameter values and for each such vector it will generate `N_SubjperTrial` random individual parameter vectors, taking into account the parameter's transformation types, the covariates dataset and the IIV distributions. As desribed in the help parge for the function (accessible via the R-command `?predictDose_GenericTrial`), this default behavior can be altered by changing the argument `FLAG_SAMPLE`. For each of the `N_Trial x N_SubjperTrial` subjects, the function `predictDose_GenericTrial` is called, passing to it all relevant arguments, including `fun_EvaluateCriterion`, `targetCriterionValue`, `doseInterval`, `modelFile`, `simtime`, `args_IQRdosing`. The result from the function is a data.frame representing a summary table of the `N_Trial x N_SubjperTrial` predicted individual doses. Each percentile in the `percentiles` argument is calculated over the individual doses predicted in each of the `N_Trial` virtual trial populations. Then, the median and a confidence interval specified by the `CIlevel` argument are reported as columns in the result data.frame.  
+
+The following subsections provide coding examples. 
+
+```{r}
+N_Trial <- 20
+N_SubjperTrial <- 10
+```
+
+## tMIC 
+
+### CMP1 
+```{r, warning=FALSE}
+dose_tMIC7_CMP1 <- predictDose_TimeAboveMIC(
+  fun_EvaluateCriterion = "evaluate_TimeAboveMICx1",
+  targetTimeAboveMIC = 7 * 24,
+  
+  doseInterval = doseInterval,
+  
+  modelFile = modelFile,
+
+  # sampling parameters
+  projectPath = gpfFile,
+
+  N_Trial = N_Trial,
+  N_SubjperTrial = N_SubjperTrial,
+
+  covariates = covariates,
+
+  # Specify PLbase and Fpediatric as regressors
+  regressorExtra = c("PLbase", "Fpediatric"),
+
+  simtime = seq(0, 600, by = 1)
+  )
+
+print(dose_tMIC7_CMP1)
+```
+
+Each row of the result table summarizes a percentile (a value from `percentiles` argument)
+### CMP2 
+```{r, warning=FALSE}
+dose_tMIC7_CMP2 <- predictDose_TimeAboveMIC(
+  fun_EvaluateCriterion = "evaluate_TimeAboveMICx2",
+  targetTimeAboveMIC = 7 * 24,
+  doseInterval = doseInterval,
+  modelFile = modelFile,
+
+  # sampling parameters
+  projectPath = gpfFile,
+
+  N_Trial = N_Trial,
+  N_SubjperTrial = N_SubjperTrial,
+
+  covariates = covariates,
+  DOSEcovariate = c(INPUT2 = "DOSE"),
+  Fpediatric = "Fpediatric",
+
+  # Specify PLbase and Fpediatric as regressors
+  regressorExtra = c("PLbase", "Fpediatric"),
+
+  simtime = seq(0, 600, by = 1),
+
+  # Set ADM=2 to make it a dosing for CMP2
+  args_IQRdosing = list(TIME = 0, ADM = 2, AMT = NA_real_, ADDL = 0, II = 24), 
+  FLAG_BROWSER1 = FALSE
+  )
+
+print(dose_tMIC7_CMP2)
+```
+
+## PRRtot
+
+### CMP1
+```{r, warning=FALSE}
+dose_PRRtot9_CMP1 <- predictDose_PRRtot(
+  targetPRRtot = 9,
+  doseInterval = doseInterval,
+  modelFile = modelFile,
+
+  # sampling parameters
+  projectPath = gpfFile,
+
+  N_Trial = N_Trial,
+  N_SubjperTrial = N_SubjperTrial,
+
+  covariates = covariates,
+
+  # Specify PLbase and Fpediatric as regressors
+  regressorExtra = c("PLbase", "Fpediatric"),
+
+  simtime = seq(0, 600, by = 1),
+  Tk0 = NULL,
+  nbrDoses = 1,
+  timeInterval = 24)
+
+print(dose_PRRtot9_CMP1)
+```
+
+
+### CMP2
+```{r, warning=FALSE}
+dose_PRRtot9_CMP2 <- predictDose_PRRtot(
+  targetPRRtot = 9,
+  doseInterval = doseInterval,
+  modelFile = modelFile,
+
+  # sampling parameters
+  projectPath = gpfFile,
+
+  N_Trial = N_Trial,
+  N_SubjperTrial = N_SubjperTrial,
+
+  covariates = covariates,
+  DOSEcovariate = c(INPUT2 = "DOSE"),
+  Fpediatric = "Fpediatric",
+
+  # Specify PLbase and Fpediatric as regressors
+  regressorExtra = c("PLbase", "Fpediatric"),
+
+  simtime = seq(0, 600, by = 1),
+
+  # Set ADM=2 to make it a dose for CMP2
+  args_IQRdosing = list(TIME = 0, ADM = 2, AMT = NA_real_, ADDL = 0, II = 24)
+  )
+
+print(dose_PRRtot9_CMP2)
+```
+
+### CMP2 with 100 mg CMP1
+```{r, warning=FALSE}
+dose_PRRtot9_100CMP1_CMP2 <- predictDose_PRRtot(
+  targetPRRtot = 9,
+  doseInterval = doseInterval,
+  modelFile = modelFile,
+
+  # sampling parameters
+  projectPath = gpfFile,
+
+  N_Trial = N_Trial,
+  N_SubjperTrial = N_SubjperTrial,
+
+  covariates = cbind(covariates, data.frame(Gamma=2)),
+  DOSEcovariate = c(INPUT2 = "DOSE"),
+  Fpediatric = "Fpediatric",
+
+  # Specify PLbase and Fpediatric as regressors
+  regressorExtra = c("PLbase", "Fpediatric", "Gamma"),
+
+  simtime = seq(0, 600, by = 1),
+
+  # Set ADM=2 to make it a dose for CMP2
+  args_IQRdosing = args_IQRdosing_100mgx1_x2
+  )
+
+print(dose_PRRtot9_100CMP1_CMP2)
+```
+
+
+**Note:** It is possible to call one of the functions `predictDose_TimeAboveMIC` and `predictDose_PRRtot` instead of `predictDose_GenericTrial`. The only difference between these functions are that in the basic use-case of monotherapy, we don't need to specify a `fun_EvaluateCriterion` argument for the functions `predictDose_TimeAboveMIC` and `predictDose_PRRtot`. 

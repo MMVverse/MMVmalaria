@@ -1,0 +1,13 @@
+UNIT_IN,UNIT_OUT,FORMULA,COMMENT
+ug/mL,ng/mL,X_out=X_in*1000,.
+ng/mL,ug/mL,X_out=X_in/1000,
+p/mL,log(p/mL),X_out=log(X_in),.
+log(p/mL),log(p/uL),X_out=X_in-3*log(10),.
+log(p/mL),p/mL,X_out=exp(X_in),.
+log(p/mL),p/uL,X_out=exp(X_in)/1000,.
+log(p/mL),log10(p/mL),X_out=X_in/log(10),.
+log10(p/mL),log10(p/uL),X_out=X_in-3,.
+log(p/mL),log10(p/uL),X_out=X_in/log(10)-3,
+Fraction,%,X_out=X_in*100,.
+hrs,days,X_out=X_in/24,.
+ug*hrs/mL,ng*hrs/mL,X_out=X_in*1000,.

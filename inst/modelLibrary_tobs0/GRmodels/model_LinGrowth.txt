@@ -1,0 +1,32 @@
+********** MODEL NAME
+model_LinGrowth
+
+********** MODEL NOTES
+Exponential growth model
+Parasites modeled in log scale and assumed in p/mL or percent.
+
+********** MODEL STATES
+
+d/dt(DD)   = 0 + INPUT1
+d/dt(PL)   = GR
+PL(0) = PLbase + GR*Tobs0
+
+********** MODEL PARAMETERS
+
+PLbase      = 10          # Observed log-transformed parasitemia at t=0 (or starting time used for the analysis). (p/mL or percent)
+PLerr       = 0   	      # Standard deviation of log-transformed baseline parasitemia
+
+GR          = 0.05        # Parasite growth rate constant (1/hr)
+
+
+********** MODEL VARIABLES
+
+OUTPUT1 = PL              # Log-transformed visible parasite count (p/mL or percent)
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS

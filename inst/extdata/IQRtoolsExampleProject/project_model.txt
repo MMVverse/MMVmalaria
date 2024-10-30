@@ -1,0 +1,55 @@
+; =============================================
+DESCRIPTION: model_2cpt_linear_abs1
+  PK model for simulation of drug concentration in central compartment
+  with following characteristics:
+  Compartments:  2
+  Elimination :  linear
+  Absorption  :  first order (with lag t)
+  Unit convention
+  Dose: mg
+  Concentration: ug/mL
+  Time: hours
+  The annotation of the parameter units is consistent with the given unit convention.
+  Units of the inputs (dose) and outputs (concentration) in the dataset for
+  parameter estimation need to match the unit convention.
+; =============================================
+
+  [LONGITUDINAL]
+
+  input = {kabs,CL,Vc,Q1,Vp1}
+; =============================================
+PK:
+; =============================================
+
+  ; Model parameters
+  ; ----------------
+  Fabs1 = 1  ; Relative bioavailability (-)
+  Tlag1 = 0  ; Absorption lag t (hours)
+
+  ; Model compartments
+  ; ------------------
+  compartment(cmt=1, amount=Ad)
+  compartment(cmt=2, amount=Ac)
+  compartment(cmt=3, amount=Ap1)
+
+  ; Model dosing
+  ; ------------
+  iv(cmt=1, type=1, p=+Fabs1, Tlag=Tlag1)
+
+  ; Transfer and elimination definitions
+  ; ------------------------------------
+  transfer(from=1, to=2, kt=kabs)
+  elimination(cmt=2, k=-(-(Q1/Vc + CL/Vc))-(Q1/Vc))
+  transfer(from=3, to=2, kt=Q1/Vp1)
+  transfer(from=2, to=3, kt=Q1/Vc)
+
+  ; Output variables
+  ; ----------------
+  Cc = Ac/Vc
+
+; =============================================
+OUTPUT:
+; =============================================
+
+  output = {Cc}
+

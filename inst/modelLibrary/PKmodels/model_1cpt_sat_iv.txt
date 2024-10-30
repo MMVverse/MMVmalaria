@@ -1,0 +1,49 @@
+********** MODEL NAME
+model_1cpt_sat_iv
+
+********** MODEL NOTES
+
+PK model for simulation of drug concentration in central compartment
+with following characteristics:
+Compartments:  1
+Elimination :  saturable
+Absorption  :  none (infusion/iv)
+
+Unit convention
+Dose: mg
+Concentration: ug/mL
+Time: hours
+
+The annotation of the parameter units is consistent with the given unit convention.
+Units of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation need to match the unit convention.
+
+********** MODEL STATES
+
+d/dt(Ac) 	=  - VMAX*Cc/(KM+Cc) + INPUT1
+
+Ac(0)    	= 0
+
+********** MODEL PARAMETERS
+
+VMAX      = 3 	# Maximum clearance rate (mg/hour)
+KM 			  = 1  	# Michaelis-Menton constant (ug/mL)
+Vc 			  = 32 	# Central volume (L)
+
+********** MODEL VARIABLES
+
+% Calculation of concentration in central compartment
+Cc 			  = Ac/Vc
+
+% Defining an output (only needed when interfacing with NLME
+% parameter estimation tools such as NONMEM and MONOLIX)
+OUTPUT1  	  = Cc  # Compound concentration (ug/mL)
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+

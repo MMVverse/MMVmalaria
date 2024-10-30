@@ -1,0 +1,173 @@
+********** MODEL NAME
+model_PKPDcombo_3cpt_x1abs0_x2abs1_EffectCpt_BlissGPDIsymm2
+
+********** MODEL NOTES
+Library model for SCID mouse combo PKPD modeling.
+
+PK		3 compartmental distribution model
+		non-linear (linear+saturable)
+		0th order absorption for Drug 1
+		1st order absorption for Drug 2
+
+PK DDI	Bliss GPDI inhibition in a competitive manner.
+
+PD		Effect compartment model for drug 1
+      Effect compartment model for drug 2
+
+PD DDI
+    Alpha: For potency                (i.e. effect on EC50x1 and EC50x2)
+		Beta:  For killing/clearance rate (i.e. effect on EMAXx1 and EMAXx2)
+
+		For the DDI, concentrations in central compartment are acting (immediate effect).
+		Bliss independence model for combined effect assumed and larger Emax of the two drugs
+		used for scaling the interaction term.
+		
+		HERE, drug 2 assumed to have the higher Emax
+
+Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug 
+                      concentration in ug/mL!
+                     
+
+********** MODEL STATES
+
+# PK model Drug 1 (dosing: INPUT1)
+d/dt(Acx1)  =  - Q1x1/Vcx1*Acx1 + Q1x1/Vp1x1*Ap1x1 - Q2x1/Vcx1*Acx1 + Q2x1/Vp2x1*Ap2x1 - CLx1*Ccx1/Inh21 - (VMAXx1*Ccx1)/(KMx1*Inh21+Ccx1) + Fabs0x1*factorUnits*INPUT1
+d/dt(Ap1x1) =  + Q1x1/Vcx1*Acx1 - Q1x1/Vp1x1*Ap1x1
+d/dt(Ap2x1) =                                      + Q2x1/Vcx1*Acx1 - Q2x1/Vp2x1*Ap2x1
+
+
+# PK model Drug 2 (dosing: INPUT2)
+d/dt(Adx2)  = -kax2*Adx2 + Fabs1x2*factorUnits*INPUT2
+d/dt(Acx2)  =  kax2*Adx2 - Q1x2/Vcx2*Acx2 + Q1x2/Vp1x2*Ap1x2 - Q2x2/Vcx2*Acx2 + Q2x2/Vp2x2*Ap2x2 - CLx2*Ccx2/Inh12 - (VMAXx2*Ccx2)/(KMx2*Inh12+Ccx2)
+d/dt(Ap1x2) =            + Q1x2/Vcx2*Acx2 - Q1x2/Vp1x2*Ap1x2
+d/dt(Ap2x2) =                                                + Q2x2/Vcx2*Acx2 - Q2x2/Vp2x2*Ap2x2
+
+# Parasitemia PD model (ln transformed parasitemia)
+d/dt(Cex1) = kex1 * (Ccx1-Cex1)
+d/dt(Cex2) = kex2 * (Ccx2-Cex2)
+d/dt(PL)   = GR - Kkill
+
+PL(0)      = PLbase + PLerr
+
+
+********** MODEL PARAMETERS
+
+# -------- PK parameters --------
+
+# --- Drug 1 ---
+Fabs0x1 = 1           # Relative bioavailability Drug1 (-)
+CLx1    = 0           # Apparent clearance Drug1 (L/hour)
+VMAXx1  = 0           # Maximum apparent clearance rate Drug1 (mg/hour)
+KMx1    = 10          # Michaelis-Menton constant Drug1 (ug/mL)
+Vcx1    = 1           # Apparent central volume Drug1 (L)
+Q1x1    = 0           # Apparent intercompartmental clearance Drug1 (L/hour)
+Vp1x1   = 10          # Apparent peripheral volume Drug1 (L)
+Q2x1    = 0           # Apparent intercompartmental clearance to second peripheral compartment Drug1 (L/hour)
+Vp2x1   = 10          # Apparent second peripheral volume Drug1 (L)
+Tk0x1   = 1           # Absorption time (hours)
+Tlag1x1 = 0           # Absorption lag time Drug1 (hours)
+
+# --- Drug 2 ---
+Fabs1x2 = 1           # Relative bioavailability Drug2 (-)
+kax2    = 0.1         # Absorption rate parameter Drug2 (1/hour)
+CLx2    = 0           # Apparent clearance Drug2 (L/hour)
+VMAXx2  = 0           # Maximum apparent clearance rate Drug2 (mg/hour)
+KMx2    = 10          # Michaelis-Menton constant Drug2 (ug/mL)
+Vcx2    = 1           # Apparent central volume Drug2 (L)
+Q1x2    = 0           # Apparent intercompartmental clearance Drug2 (L/hour)
+Vp1x2   = 10          # Apparent peripheral volume Drug2 (L)
+Q2x2    = 0           # Apparent intercompartmental clearance to second peripheral compartment Drug2 (L/hour)
+Vp2x2   = 10          # Apparent second peripheral volume Drug2 (L)
+Tlag1x2 = 0           # Absorption lag time Drug2 (hours)
+
+# --- PK DDI ---
+# Inhibition constant (choose high values to switch off)
+Ki12    = 1e100       # Inhibition constant of Drug2 by Drug1
+Ki21    = 1e100       # Inhibition constant of Drug1 by Drug2
+
+# -------- PD parameters --------
+
+# --- General ---
+PLbase  = 0           # Log-transformed baseline parasitemia (percent or 1/mL)
+PLerr   = 0           # Individual deviation from baseline parasitemia
+GR      = 0.05        # Net parasite growth rate (1/hour)
+
+# --- Drug 1 ---
+EMAXx1  = 0.10        # Maximum clearance rate Drug1 (1/hour)
+EC50x1  = 0.10        # Concentration achieving 50percent of maximum effect Drug1 (ug/mL)
+hillx1  = 1           # Hill coefficient Drug1 (.)
+kex1    = 1           # Effect compartment rate constant Drug1 (1/hour)
+
+# --- Drug 2 ---
+EMAXx2  = 0.10        # Maximum clearance rate Drug2 (1/hour)
+EC50x2  = 0.10        # Concentration achieving 50percent of maximum effect Drug2 (ug/mL)
+hillx2  = 1           # Hill coefficient Drug2 (.)
+kex2    = 1           # Effect compartment rate constant Drug2 (1/hour)
+
+# --- PD DDI ---
+
+# Impact of on EC50
+Alpha   = 0           # Maximum impact of on EC50 (.)
+IC50ax1 = 1           # Half-impacting Conc. of drug 1 on EC50 of  drug 2 (ug/mL)
+IC50ax2 = 1           # Half-impacting Conc. of drug 1 on EC50 of Drug2 (ug/mL)
+
+# -------- Miscellaneous --------
+
+# If the user want other unit than ug/mL
+factorUnits = 1
+
+# To avoid numerical crashes when computing PL
+yps = 1e-9
+
+
+********** MODEL VARIABLES
+
+# -------- PK --------
+# Drug 1 concentration (µg/mL)
+Ccx1    = Acx1/Vcx1   
+
+# Drug 2 concentration (µg/mL)
+Ccx2    = Acx2/Vcx2
+
+# Inhibition of drug 2 metabolism by drug 1
+Inh12 = (1+Ccx1/Ki12)
+
+# Inhibition of drug 1 metabolism by drug 2
+Inh21 = (1+Ccx2/Ki21)
+
+# -------- PD --------
+# Changes in EC50s:
+RIA11     = (Ccx1+yps)^hillx1/(IC50ax1^hillx1+(Ccx1+yps)^hillx1)
+RIA22     = (Ccx2+yps)^hillx2/(IC50ax2^hillx2+(Ccx2+yps)^hillx2)
+EC50Intx1 = EC50x1*(1+(exp(-Alpha)-1)*RIA22)
+EC50Intx2 = EC50x2*(1+(exp(-Alpha)-1)*RIA11)
+
+# Stimulus drug effects:
+RD11  = (Cex1+yps)^hillx1/(EC50Intx1^hillx1+(Cex1+yps)^hillx1)
+RD22  = (Cex2+yps)^hillx2/(EC50Intx2^hillx2+(Cex2+yps)^hillx2)
+
+# Effects size of maximum: (Can be direct or indirect - if direct same as stimulus)
+Effx1 = RD11
+Effx2 = RD22
+
+# Total Killing (1/hr):
+Kkillx1    = EMAXx1*Effx1
+Kkillx2    = EMAXx2*Effx2
+Kkill      = Kkillx1 + Kkillx2 - Effx1*Effx2 * EMAXx1
+
+
+# -------- Output --------
+
+# Parasitemia Output (log)
+OUTPUT1 = PL
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+

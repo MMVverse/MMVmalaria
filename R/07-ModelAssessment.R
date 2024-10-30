@@ -1,0 +1,5365 @@
+#' add_CovariateToModelSpec
+#'
+#' @description
+#' @param modelSpec
+#' @param covariateModelToAdd
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+add_CovariateToModelSpec <- function(modelSpec,
+                                     covariateModelToAdd)
+{
+
+  # Check length of covariateModelToAdd
+  #   Needs to be one
+  if (length(covariateModelToAdd)!=1){
+    stop("'covariateModelToAdd' should be of a list of length 1.")
+  }
+  if (length(covariateModelToAdd[[1]])!=1){
+    stop("'covariateModelToAdd[[1]]' should be a vector of length 1.")
+  }
+
+  # Output:
+  modelSpecOut <- modelSpec
+
+  # Get Parameter Names:
+  parameter <- names(covariateModelToAdd)
+
+  # Adjust covariateModel
+  if (is.null(modelSpecOut$covariateModel)){
+    modelSpecOut$covariateModel <- covariateModelToAdd
+    names(modelSpecOut$covariateModel) <- parameter
+  }else if (is.null(modelSpecOut$covariateModel[[parameter]])){
+    modelSpecOut$covariateModel[[parameter]] <- covariateModelToAdd[[1]]
+  }else{
+    modelSpecOut$covariateModel[[parameter]] <- c(modelSpecOut$covariateModel[[parameter]], covariateModelToAdd[[1]])
+  }
+
+
+  #   2) covariateModelValues
+  vec        <- c(0.01)
+  names(vec) <- parameter
+  if (is.null(modelSpecOut$covariateModelValues)){
+    modelSpecOut$covariateModelValues <- vec
+    names(modelSpecOut$covariateModelValues) <- parameter
+  }else if (is.null(modelSpecOut$covariateModelValues[[parameter]])){
+    modelSpecOut$covariateModelValues[[parameter]] <- vec
+  }else{
+    modelSpecOut$covariateModelValues[[parameter]] <- c(modelSpecOut$covariateModelValues[[parameter]],vec)
+  }
+  #   3) COVestimate
+  vec        <- c(1)
+  names(vec) <- c(covariateModelToAdd)
+  if (is.null(modelSpecOut$COVestimate)){
+    modelSpecOut$COVestimate <- vec
+    names(modelSpecOut$COVestimate) <- parameter
+  }else if (is.null(modelSpecOut$COVestimate[[parameter]])){
+    modelSpecOut$COVestimate[[parameter]] <- vec
+  }else{
+    modelSpecOut$COVestimate[[parameter]] <- c(modelSpecOut$COVestimate[[parameter]],vec)
+  }
+  #   4) COVcentering
+  # TO BE DONE
+}
+#' add_OneCovariateToModelSpec
+#'
+#' @description
+#' @param modelSpec
+#' @param covariateModelToAdd
+#' @param COVcentering Default: \code{NULL}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+add_OneCovariateToModelSpec <- function(modelSpec,
+                                        covariateModelToAdd,
+                                        COVcentering = NULL)
+{
+
+  # Check length of covariateModelToAdd
+  #   Needs to be one
+  if (length(covariateModelToAdd)!=1){
+    stop("'covariateModelToAdd' should be of a list of length 1.")
+  }
+  if (length(covariateModelToAdd[[1]])!=1){
+    stop("'covariateModelToAdd[[1]]' should be a vector of length 1.")
+  }
+
+
+  # Check that COVcentering is not NA:
+  if (!is.null(COVcentering) && is.na(COVcentering)){
+    COVcentering <- NULL
+  }
+
+  # Create output:
+  modelSpecOut <- modelSpec
+
+
+  # Get parameterName Names:
+  parameterName <- names(covariateModelToAdd)
+
+
+  # Adjust covariateModel:
+  if (is.null(modelSpecOut$covariateModel)){
+    modelSpecOut$covariateModel        <- covariateModelToAdd
+    names(modelSpecOut$covariateModel) <- parameterName
+
+  }else if (is.null(modelSpecOut$covariateModel[[parameterName]])){
+    modelSpecOut$covariateModel[[parameterName]] <- covariateModelToAdd[[1]]
+
+  }else{
+    modelSpecOut$covariateModel[[parameterName]] <- c(modelSpecOut$covariateModel[[parameterName]], covariateModelToAdd[[1]])
+  }
+
+
+  # Adjust covariateModelValues:
+  covariateModelValues        <- c(0.01)
+  names(covariateModelValues) <- covariateModelToAdd[[1]]
+  if (is.null(modelSpecOut$covariateModelValues)){
+    modelSpecOut$covariateModelValues        <- list(covariateModelValues)
+    names(modelSpecOut$covariateModelValues) <- parameterName
+
+  }else if (is.null(modelSpecOut$covariateModelValues[[parameterName]])){
+    modelSpecOut$covariateModelValues[[parameterName]] <- covariateModelValues
+
+  }else{
+    modelSpecOut$covariateModelValues[[parameterName]] <- c(modelSpecOut$covariateModelValues[[parameterName]], covariateModelValues)
+  }
+
+
+  # Adjust COVestimate:
+  COVestimate         <- c(1)
+  names(COVestimate)  <- covariateModelToAdd[[1]]
+  if (is.null(modelSpecOut$COVestimate)){
+    modelSpecOut$COVestimate        <- list(COVestimate)
+    names(modelSpecOut$COVestimate) <- parameterName
+
+  }else if (is.null(modelSpecOut$COVestimate[[parameterName]])){
+    modelSpecOut$COVestimate[[parameterName]] <- COVestimate
+
+  }else{
+    modelSpecOut$COVestimate[[parameterName]] <- c(modelSpecOut$COVestimate[[parameterName]], COVestimate)
+  }
+
+  # Adjust COVcentering:
+  if (!is.null(COVcentering)){
+    for (name_k in names(COVcentering)){
+      if (!(name_k %in% names(modelSpecOut$COVcentering))){
+        modelSpecOut$COVcentering <- c(modelSpecOut$COVcentering, COVcentering[name_k])
+
+      } else{
+        warning("'", name_k, "' already presents in 'modelSpec', therefore it was not changed, and its value is: ", name_k, "=", modelSpecOut$COVcentering[[name_k]])
+      }
+    }
+  }
+
+  # Adjust PriorVarCovariateModelValues:
+  PriorVarCovariateModelValues        <- c(0.01)
+  names(PriorVarCovariateModelValues) <- covariateModelToAdd[[1]]
+  if (is.null(modelSpecOut$PriorVarCovariateModelValues)){
+    # DO NOTHING...
+
+    # modelSpecOut$PriorVarCovariateModelValues        <- list(PriorVarCovariateModelValues)
+    # names(modelSpecOut$PriorVarCovariateModelValues) <- parameterName
+
+  }else if (is.null(modelSpecOut$PriorVarCovariateModelValues[[parameterName]])){
+    modelSpecOut$PriorVarCovariateModelValues[[parameterName]] <- PriorVarCovariateModelValues
+
+  }else{
+    modelSpecOut$PriorVarCovariateModelValues[[parameterName]] <- c(modelSpecOut$PriorVarCovariateModelValues[[parameterName]], PriorVarCovariateModelValues)
+  }
+
+  # Output:
+  return(modelSpecOut)
+
+}
+#' assess_PDcomboModel
+#'
+#' @description
+#' @param ModelToAssess
+#' @param fileDataGeneral
+#' @param hiDoseGr
+#' @param LLOQ
+#' @param modelFile Default: \code{NULL}
+#' @param PDname Default: 'Parasitemia Total'
+#' @param abs0inputs Default: \code{NULL}
+#' @param abs0Tk0param Default: \code{NULL}
+#' @return
+#' @export
+#' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+#' @importFrom IQRtools regenerate_IQRmodel
+#' @importFrom plyr rename ddply
+#' @importFrom dplyr left_join inner_join
+assess_PDcomboModel <- function(ModelToAssess,                      # IQRnlmeProject path, IQRnlmeProjectMulti path, IQRsysFit object or IQRsysFitMulti object, in case of IQRnlmeProjectMulti or IQRsysFitMulti best model will be used
+                                fileDataGeneral,                    # path to general dataset for the observations (to make sure that BLQ values are included). Expects PD on linear scale.
+                                hiDoseGr,                           # character vector with TRTNAME of highest dose group(s) for calculation of assessment criteria for these separately
+                                LLOQ,                               # LLOQ value for PD
+                                modelFile    = NULL,                # path to the PKPD combo model file, needs to be provided until IQR version 0.6.5
+                                PDname       = "Parasitemia Total", # NAME for the PD readout to be used in the general dataset,
+                                abs0inputs   = NULL,                # number or vector matching INPUT in the MODEL file
+                                abs0Tk0param = NULL                 # Names of abs0param eg Tk0
+){
+  # Assessment of selection criteria for parasitemia (interaction) model
+  #   - Sum of squares for time to recrudescence
+  #   - BIC
+  #   - Sum of squares for time to recrudescence in highest dose group
+  #   - Sum of squares for parasitemia data in highest dose group
+  #   - Robustness criterion
+  #   - Sum of squares for clearance phase
+
+  #-----------------------------------------------------------------------------#
+  # Load General Dataset ----
+  #-----------------------------------------------------------------------------#
+  dataGeneral <- IQRloadCSVdata(fileDataGeneral)
+
+
+  #-----------------------------------------------------------------------------#
+  # Get model and data ----
+  #-----------------------------------------------------------------------------#
+
+  # First: Convert ModelToAssess to a IQRnlmeProjectMulti if it is a path:
+  if (is.character(ModelToAssess)){
+    if(exists("is_IQRsysProject", mode="function") && is_IQRsysProject(ModelToAssess)){
+      # Do Nothing
+    } else{
+      ModelToAssess <- as_IQRnlmeProjectMulti(ModelToAssess)
+    }
+  }
+
+  # Load Model depending:
+  if(exists("is_IQRsysProject", mode="function") && is_IQRsysProject(ModelToAssess)){
+
+    # Create ModelResult:
+    ModelResult <- list()
+
+    # Loop over ModelToAssess
+    for (modelPath_k in ModelToAssess){
+      # Add Path:
+      ModelResult[[modelPath_k]]$model <- modelPath_k
+
+      # Load SysFit Project
+      proj_k  <- load_IQRsysProject(modelPath_k)
+      table_k <- tablePars_IQRsysModel(proj_k)
+      table_k <- as.data.frame(table_k, stringsAsFactors = FALSE)
+      table_k$Value <- as.numeric(table_k$Value)
+
+      # Add OBJ/AIC/BIC:
+      ModelResult[[modelPath_k]]$OBJ <- table_k$Value[table_k$Parameter=="OBJ"]
+      ModelResult[[modelPath_k]]$AIC <- table_k$Value[table_k$Parameter=="AIC"]
+      ModelResult[[modelPath_k]]$BIC <- table_k$Value[table_k$Parameter=="BIC"]
+    }
+
+    # Robustness criterion:
+    if (length(ModelResult)>1) {
+      OBJvalues <- c()
+      for (i in 1:length(ModelResult)){
+        OBJvalues <- c(OBJvalues, ModelResult[[i]]$OBJ)
+      }
+      minOBJ      <- min(OBJvalues)
+      idxMin      <- which.min(OBJvalues)
+      nOBJ        <- length(OBJvalues)
+      RobustnessC <- sqrt(sum((OBJvalues-minOBJ)^2)/nOBJ)
+    } else {
+      RobustnessC <- NA
+      idxMin      <- 1
+    }
+
+    # Get model:
+    if (is.null(modelFile)) {
+      model <- IQRmodel(file.path(ModelResult[[idxMin]]$model[1],"model.txt"))
+    } else {
+      model <- IQRmodel(modelFile)
+    }
+
+    # Get data:
+    # - data used for modeling
+    dataEval <- getData_IQRnlmeProject(ModelResult[[idxMin]]$model[1])
+
+    # Handle PD parameters: get from estimation results
+    PDparameters <- getPopParameters_MMVmalariaProject(ModelResult[[idxMin]]$model[1], IndCovariates = NULL)
+    PDparameters <- PDparameters[!grepl("omega", names(PDparameters))]
+
+    # Estimate BIC:
+    nobs <- dim(dataEval[dataEval$YTYPE==1 & !is.na(dataEval$YTYPE),])[1]
+    nind <- length(unique(dataEval$USUBJID))
+    npar <- length(which(table_k[,"RSE%"]!=""))
+    BIC <- ModelResult[[modelPath_k]]$BIC
+    # Should be removed for future version of SysFit
+    BIC <- log(nind)*npar + ModelResult[[idxMin]]$OBJ
+    # In non-mixed effect model, it is the number of individual that is used
+    #   NOTE: see "A Note on BIC in mixed-effects models"
+
+
+
+  }else if(is_IQRnlmeProjectMulti(ModelToAssess)){
+
+    # Get Model(s) Results:
+    ModelResult <- getResults_IQRnlmeProjectMulti(ModelToAssess)
+
+    # Robustness criterion:
+    if (length(ModelResult)>1) {
+      OBJvalues <- c()
+      for (i in 1:length(ModelResult)){
+        OBJvalues <- c(OBJvalues, ModelResult[[i]]$OBJ)
+      }
+      minOBJ      <- min(OBJvalues)
+      idxMin      <- which.min(OBJvalues)
+      nOBJ        <- length(OBJvalues)
+      RobustnessC <- sqrt(sum((OBJvalues-minOBJ)^2)/nOBJ)
+    } else {
+      RobustnessC <- NA
+      idxMin      <- 1
+    }
+
+    # Get model:
+    if (is.null(modelFile)) {
+      model <- IQRmodel(file.path(ModelResult[[idxMin]]$model[1],"model.txt"))
+    } else {
+      model <- IQRmodel(modelFile)
+    }
+
+    # Get data:
+    # - data used for modeling
+    dataEval <- getData_IQRnlmeProject(ModelResult[[idxMin]]$model[1])
+
+    # Handle PD parameters: get from estimation results
+    PDparameters <- getPopParameters_MMVmalariaProject(ModelResult[[idxMin]]$model[1], IndCovariates = NULL)
+    PDparameters <- PDparameters[!grepl("omega", names(PDparameters))]
+
+    # Estimate BIC:
+    nobs <- dim(dataEval[dataEval$YTYPE==1 & !is.na(dataEval$YTYPE),])[1]
+    nind <- length(unique(dataEval$USUBJID))
+    npar <- sum(ModelResult[[idxMin]]$rawParameterInfo$fixedEffects$estimated) +
+      sum(ModelResult[[idxMin]]$rawParameterInfo$randomEffects$estimated) +
+      sum(ModelResult[[idxMin]]$rawParameterInfo$correlation$estimated) +
+      sum(ModelResult[[idxMin]]$rawParameterInfo$covariate$estimated) +
+      sum(ModelResult[[idxMin]]$rawParameterInfo$errorParameter$estimated)
+    # In non-mixed effect model, it is the number of individual that is used
+    #   NOTE: see "A Note on BIC in mixed-effects models"
+    BIC <- log(nind)*npar + ModelResult[[idxMin]]$OBJ
+
+
+  } else if((is_IQRsysFitMulti(ModelToAssess)) | (is_IQRsysFit(ModelToAssess))){
+    if (is_IQRsysFitMulti(ModelToAssess)) {
+      ModelFit <- ModelToAssess[[1]]
+    } else if (is_IQRsysFit(ModelToAssess)){
+      ModelFit <- ModelToAssess
+    }
+
+    # Get model:
+    if (is.null(modelFile)) {
+      model <- IQRtools::regenerate_IQRmodel(ModelFit$estObject$model)
+    } else {
+      model <- IQRmodel(modelFile)
+    }
+
+    # Get data:
+    # - data used for modeling (possibly does not contain BLOQ values due to M1 method!!!)
+    dataEval <- ModelFit$estObject$data
+
+    # Handle PD parameters: get from estimation results
+    PDparameters <- ModelFit$xopt[!grepl("sigma", names(ModelFit$xopt))]
+
+    # Estimate BIC:
+    nobs <- dim(dataEval[dataEval$YTYPE==1 & !is.na(dataEval$YTYPE),])[1]
+    nind <- length(unique(dataEval$USUBJID))
+    npar <- sum(ModelFit$estObject$parameters$estimate)
+    BIC  <- log(nobs)*npar + ModelFit$fopt
+
+    # Robustness criterion:
+    if (!is_IQRsysFitMulti(ModelToAssess)) {
+      RobustnessC <- NA
+    } else {
+      # robustness criteria
+      OBJvalues   <- do.call(c, lapply(ModelToAssess, function(x) x$fopt))
+      minOBJ      <- min(OBJvalues)
+      nOBJ        <- length(OBJvalues)
+      RobustnessC <- sqrt(sum((OBJvalues-minOBJ)^2)/nOBJ)
+    }
+
+  } else{
+    stop("'ModelToAssess' is not a valid object: IQRnlmeProject path, IQRnlmeProjectMulti path, IQRsysFit object or IQRsysFitMulti object")
+  }
+
+
+  # Subset general data to individuals used for fitting and log-transform value
+  dataObs <- subset(dataGeneral, NAME==PDname & ID %in% dataEval$ID)
+  dataObs$VALUE <- log(dataObs$VALUE)
+  dataObs$NAME  <- paste0("log(",dataObs$NAME,")")
+  dataObs$UNIT  <- paste0(dataObs$UNIT," (log)")
+
+
+  #-----------------------------------------------------------------------------#
+  # Individual predictions ----
+  #-----------------------------------------------------------------------------#
+  # Individual predictions are simulated as modeling data set may not contain all values due to M1 method
+
+  # Get individual PK parameters for all observations (including BLOQ values)
+  #   Generate eventData
+  eventData <- plyr::ddply(dataEval, ~ID+TRTNAME, function(x) {
+    # dosing and PK for individual
+    eventData <- x[((x$YTYPE==0) | (is.na(x$YTYPE))), c("ID", "TIME", "ADM", "AMT", intersect(names(x), names(model$parameters)))]
+    if (dim(eventData)[1]==0) {
+      eventData <- x[1, c("ID", "TIME", "ADM", "AMT", intersect(names(x), names(model$parameters)))]
+      eventData <- within(eventData, {TIME <- 0; AMT <- 0; ADM = 1})
+    }
+    eventData
+  })
+  #   Generate eventTable
+  eventTable <- IQReventTable(eventData,
+                              regression   = intersect(names(dataEval), names(model$parameters)),
+                              abs0inputs   = abs0inputs,
+                              abs0Tk0param = abs0Tk0param)
+
+  # Run simulation using Individual PK parameters and Pop PD parameters:
+  dataPred <- sim_IQRmodel(model, simtime = unique(dataObs$TIME[dataObs$YTYPE > 0]), eventTable = eventTable, parameters = PDparameters, FLAGoutputsOnly = TRUE)
+  dataPred <- plyr::rename(dataPred, PRED = OUTPUT1)
+  dataPred <- dplyr::left_join(dataPred, unique(dataObs[, c("ID", "TRTNAME")]))
+
+  # Get data with observations and predictions including BLOQ values:
+  dataObsPred <- dplyr::left_join(dataObs, dataPred)
+
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # RMSE of Time to Recrudescence ----
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Get growth rate
+  GR <- PDparameters[["GR"]]
+
+  # Get time to recudescense in the data
+  TRdata <- plyr::ddply(dataObs, ~ID+TRTNAME, getTimeRecrudescence, GR=GR, valCol = "VALUE", LLOQ = log(LLOQ))
+
+  # Get time to recrudescence predictions
+  TRpred <- plyr::ddply(dataPred, ~ ID+TRTNAME, getTimeRecrudescence, GR=GR, valCol = "PRED", LLOQ = log(LLOQ))
+
+  # Merge to calculate sum of squared differences
+  CompTR <- dplyr::inner_join(TRdata, TRpred, by = c("ID", "TRTNAME"))
+  names(CompTR) <- c("ID", "TRTNAME", "Time2Recrud.obs", "flagMin.obs", "Time2Recrud.pred", "flagMin.pred")
+
+  # Exclude cases for which time 2 recrudescence was not observed
+  idxALOQ <- !CompTR$flagMin.obs & !CompTR$flagMin.pred
+
+  # Number of recrudescence cases and sum of squares
+  Ntime2recrud <- sum(idxALOQ)
+  if (Ntime2recrud > 0) {
+    RMSEtime2Rec <- sqrt(sum((CompTR$Time2Recrud.obs[idxALOQ] - CompTR$Time2Recrud.pred[idxALOQ])^2)/Ntime2recrud)
+    #SStimeRecrudescence <- sum((CompTR$Time2Recrud.obs[idxALOQ] - CompTR$Time2Recrud.pred[idxALOQ])^2)/Ntime2recrud
+  } else {
+    RMSEtime2Rec <- NA
+    #SStimeRecrudescence <- NA
+  }
+
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # RMSE of predictions vs. observations and time to recrudescence for highest dose group ----
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Time to Recrudescence:
+  idxHiDose <- (CompTR$TRTNAME %in% hiDoseGr)
+  idxALOQ   <- (!CompTR$flagMin.obs & !CompTR$flagMin.pred)
+  if (sum(idxALOQ & idxHiDose) > 0) {
+    RMSEtime2RecHI <- sqrt(sum((CompTR$Time2Recrud.obs[idxALOQ & idxHiDose] - CompTR$Time2Recrud.pred[idxALOQ & idxHiDose])^2)/sum(idxALOQ & idxHiDose))
+    #SStimeRecrudescenceHI <- sum((CompTR$Time2Recrud.obs[idxALOQ & idxHiDose] - CompTR$Time2Recrud.pred[idxALOQ & idxHiDose])^2)/sum(idxALOQ & idxHiDose)
+  } else {
+    RMSEtime2RecHI <- NA
+    SStimeRecrudescenceHI <- NA
+  }
+
+  # Pred. vs Ob.:
+  idxHiDose <- (dataObsPred$TRTNAME %in% hiDoseGr)
+  idxALOQ   <- (dataObsPred$DV > LLOQ+1e-8)
+  RMSEparasitemiaHI <- sqrt(sum((dataObsPred$DV[idxALOQ&idxHiDose] - dataObsPred$PRED[idxALOQ&idxHiDose])^2)/sum(idxALOQ & idxHiDose))
+  #SSparasitemiaHI <- sum((dataObsPred$DV[idxALOQ&idxHiDose] - dataObsPred$PRED[idxALOQ&idxHiDose])^2)
+
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Sum of least-squares of predictions and observations in clearance phase ----
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  SSparasitemiaCLind <- plyr::ddply(dataObsPred, ~ID+TRTNAME, function(x) {
+    idxBLQ <- which(x$DV < LLOQ+1e-8)
+    if (length(idxBLQ) > 0) {
+      idxCLend <- min(idxBLQ)-1
+      if (idxCLend > 0) {
+        SSi <- sum((x$DV[seq(1,idxCLend)] - x$PRED[seq(1,idxCLend)])^2)
+      } else {
+        SSi <- 0
+      }
+    } else {
+      idxCLend <- which.min(x$DV)
+      SSi <- sum((x$DV[seq(1,idxCLend)] - x$PRED[seq(1,idxCLend)])^2)
+    }
+    data.frame(SSparasitemia=SSi)
+  })
+  SSparasitemiaCL   <- sum(SSparasitemiaCLind$SSparasitemia)
+  RMSEparasitemiaCL <- sqrt(SSparasitemiaCL/length(SSparasitemiaCLind))
+
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Collect results----
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Generate Output:
+  out <- data.frame(RMSEtime2Rec      = RMSEtime2Rec,
+                    BIC               = BIC,
+                    RMSEtime2RecHI    = RMSEtime2RecHI,
+                    RMSEparasitemiaHI = RMSEparasitemiaHI,
+                    RMSEparasitemiaCL = RMSEparasitemiaCL,
+                    Robustness        = RobustnessC,
+                    Ntime2recrud      = Ntime2recrud,
+                    Nind              = nind,
+                    Nobs              = nobs,
+                    Npar              = npar,
+                    stringsAsFactors  = FALSE)
+
+  # Output:
+  return(out)
+
+}
+
+#' backwardElimination
+#'
+#' @description
+#' @param model
+#' @param dosing
+#' @param data
+#' @param modelSpec
+#' @param covariateToTest
+#' @param COVcentering Default: \code{NULL}
+#' @param projectPath Default: 'PKmodels'
+#' @param alpha Default: 0.05
+#' @param tool Default: 'MONOLIX'
+#' @param toolVersion Default: \code{NULL}
+#' @param ncores Default: 1
+#' @param Nparallel Default: 1
+#' @param setting Default: \code{NULL}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+backwardElimination <- function(model, dosing,
+                                data, modelSpec,
+                                covariateToTest,
+                                COVcentering   = NULL,
+                                projectPath    = "PKmodels",
+                                alpha          = 0.05,
+                                tool           = "MONOLIX",
+                                toolVersion    = NULL,
+                                ncores         = 1,
+                                Nparallel      = 1,
+                                setting        = NULL) {
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Detect IQR version ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # IQRversion <- sessionInfo()$otherPkgs$IQRtools$Version
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Handle input parameters ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Check if model is a IQRmodel object:
+  if (!is_IQRmodel(model)){stop("'model' should be a IQRmodel object.")}
+
+  # Check if covariateToTest is not empty:
+  if (length(covariateToTest)==0){stop("'covariateToTest' is empty.")}
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Define default setting (e.g algorithm's option) ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # General setting:
+  if ("multiTestN"        %in% names(setting)){multiTestN        = setting$multiTestN       } else{multiTestN        = 1    }
+  if ("multiTestSD"       %in% names(setting)){multiTestSD       = setting$multiTestSD      } else{multiTestSD       = 0.5  }
+  if ("FLAGanalytic"      %in% names(setting)){FLAGanalytic      = setting$FLAGanalytic     } else{FLAGanalytic      = TRUE }
+  if ("keepProjectFolder" %in% names(setting)){keepProjectFolder = setting$keepProjectFolder} else{keepProjectFolder = FALSE}
+
+  # General algo. options:
+  if ("algOpt.SEED"     %in% names(setting)){algOpt.SEED     = setting$algOpt.SEED    } else{algOpt.SEED     = 123456                    }
+  if ("algOpt.K1"       %in% names(setting)){algOpt.K1       = setting$algOpt.K1      } else{algOpt.K1       = 500                       }
+  if ("algOpt.K2"       %in% names(setting)){algOpt.K2       = setting$algOpt.K2      } else{algOpt.K2       = 200                       }
+  if ("algOpt.NRCHAINS" %in% names(setting)){algOpt.NRCHAINS = setting$algOpt.NRCHAINS} else{algOpt.NRCHAINS = min(ceiling(50/Nsubj),10) }
+
+  # NONMEM algo. options:
+  if ("algOpt.NONMEM.METHOD"             %in% names(setting)){algOpt.NONMEM.METHOD             = setting$algOpt.NONMEM.METHOD            } else{algOpt.NONMEM.METHOD             = "SAEM"}
+  if ("algOpt.NONMEM.MAXEVAL"            %in% names(setting)){algOpt.NONMEM.MAXEVAL            = setting$algOpt.NONMEM.MAXEVAL           } else{algOpt.NONMEM.MAXEVAL            = 9999  }
+  if ("algOpt.NONMEM.SIGDIGITS"          %in% names(setting)){algOpt.NONMEM.SIGDIGITS          = setting$algOpt.NONMEM.SIGDIGITS         } else{algOpt.NONMEM.SIGDIGITS          = 3     }
+  if ("algOpt.NONMEM.PRINT"              %in% names(setting)){algOpt.NONMEM.PRINT              = setting$algOpt.NONMEM.PRINT             } else{algOpt.NONMEM.PRINT              = 1     }
+  if ("algOpt.NONMEM.COVSTEP_MATRIX"     %in% names(setting)){algOpt.NONMEM.COVSTEP_MATRIX     = setting$algOpt.NONMEM.COVSTEP_MATRIX    } else{algOpt.NONMEM.COVSTEP_MATRIX     = "S"   }
+  if ("algOpt.NONMEM.ADVAN7"             %in% names(setting)){algOpt.NONMEM.ADVAN7             = setting$algOpt.NONMEM.ADVAN7            } else{algOpt.NONMEM.ADVAN7             = TRUE  }
+  if ("algOpt.NONMEM.N1"                 %in% names(setting)){algOpt.NONMEM.N1                 = setting$algOpt.NONMEM.N1                } else{algOpt.NONMEM.N1                 = 1000  }
+  if ("algOpt.NONMEM.TOL"                %in% names(setting)){algOpt.NONMEM.TOL                = setting$algOpt.NONMEM.TOL               } else{algOpt.NONMEM.TOL                = 6     }
+  if ("algOpt.NONMEM.SIGL"               %in% names(setting)){algOpt.NONMEM.SIGL               = setting$algOpt.NONMEM.SIGL              } else{algOpt.NONMEM.SIGL               = NULL  }
+  if ("algOpt.NONMEM.M4"                 %in% names(setting)){algOpt.NONMEM.M4                 = setting$algOpt.NONMEM.M4                } else{algOpt.NONMEM.M4                 = FALSE }
+  if ("algOpt.NONMEM.FOCEIOFV"           %in% names(setting)){algOpt.NONMEM.FOCEIOFV           = setting$algOpt.NONMEM.FOCEIOFV          } else{algOpt.NONMEM.FOCEIOFV           = FALSE }
+  if ("algOpt.NONMEM.IMPORTANCESAMPLING" %in% names(setting)){algOpt.NONMEM.IMPORTANCESAMPLING = setting$algOpt.NONMEM.IMPORTANCESAMPLING} else{algOpt.NONMEM.IMPORTANCESAMPLING = TRUE  }
+  if ("algOpt.NONMEM.IMP_ITERATIONS"     %in% names(setting)){algOpt.NONMEM.IMP_ITERATIONS     = setting$algOpt.NONMEM.IMP_ITERATIONS    } else{algOpt.NONMEM.IMP_ITERATIONS     = 10    }
+  if ("algOpt.NONMEM.ITS"                %in% names(setting)){algOpt.NONMEM.ITS                = setting$algOpt.NONMEM.ITS               } else{algOpt.NONMEM.ITS                = TRUE  }
+  if ("algOpt.NONMEM.ITS_ITERATIONS"     %in% names(setting)){algOpt.NONMEM.ITS_ITERATIONS     = setting$algOpt.NONMEM.ITS_ITERATIONS    } else{algOpt.NONMEM.ITS_ITERATIONS     = 10    }
+  if ("algOpt.NONMEM.WRES"               %in% names(setting)){algOpt.NONMEM.WRES               = setting$algOpt.NONMEM.WRES              } else{algOpt.NONMEM.WRES               = NULL  }
+  if ("algOpt.NONMEM.PRED"               %in% names(setting)){algOpt.NONMEM.PRED               = setting$algOpt.NONMEM.PRED              } else{algOpt.NONMEM.PRED               = NULL  }
+  if ("algOpt.NONMEM.RES"                %in% names(setting)){algOpt.NONMEM.RES                = setting$algOpt.NONMEM.RES               } else{algOpt.NONMEM.RES                = NULL  }
+
+  # Monolix algo. options:
+  if ("algOpt.MONOLIX.individualParameters" %in% names(setting)){algOpt.MONOLIX.individualParameters = setting$algOpt.MONOLIX.individualParameters} else{algOpt.MONOLIX.individualParameters = "conditionalMode"}
+  if ("algOpt.MONOLIX.indivMCMClength"      %in% names(setting)){algOpt.MONOLIX.indivMCMClength      = setting$algOpt.MONOLIX.indivMCMClength     } else{algOpt.MONOLIX.indivMCMClength      = 50               }
+  if ("algOpt.MONOLIX.indivNsim"            %in% names(setting)){algOpt.MONOLIX.indivNsim            = setting$algOpt.MONOLIX.indivNsim           } else{algOpt.MONOLIX.indivNsim            = 10               }
+  if ("algOpt.MONOLIX.indivRatio"           %in% names(setting)){algOpt.MONOLIX.indivRatio           = setting$algOpt.MONOLIX.indivRatio          } else{algOpt.MONOLIX.indivRatio           = 0.05             }
+  if ("algOpt.MONOLIX.logLikelihood"        %in% names(setting)){algOpt.MONOLIX.logLikelihood        = setting$algOpt.MONOLIX.logLikelihood       } else{algOpt.MONOLIX.logLikelihood        = "Linearization"  }
+  if ("algOpt.MONOLIX.fim"                  %in% names(setting)){algOpt.MONOLIX.fim                  = setting$algOpt.MONOLIX.fim                 } else{algOpt.MONOLIX.fim                  = "Linearization"  }
+  if ("algOpt.MONOLIX.variability"          %in% names(setting)){algOpt.MONOLIX.variability          = setting$algOpt.MONOLIX.variability         } else{algOpt.MONOLIX.variability          = "FirstStage"     }
+  if ("algOpt.MONOLIX.startTime"            %in% names(setting)){algOpt.MONOLIX.startTime            = setting$algOpt.MONOLIX.startTime           } else{algOpt.MONOLIX.startTime            = NULL             }
+  if ("algOpt.MONOLIX.STIFF"                %in% names(setting)){algOpt.MONOLIX.STIFF                = setting$algOpt.MONOLIX.STIFF               } else{algOpt.MONOLIX.STIFF                = TRUE             }
+
+  # NLMIXR algo. options:
+  if ("algOpt.NLMIXR.method"  %in% names(setting)){algOpt.NLMIXR.method  = setting$algOpt.NLMIXR.method } else{algOpt.NLMIXR.method  = "SAEM"}
+  if ("algOpt.NLMIXR.control" %in% names(setting)){algOpt.NLMIXR.control = setting$algOpt.NLMIXR.control} else{algOpt.NLMIXR.control = NULL  }
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Detect Parameter/Covariate and compare to model ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Get Parameters/Covariate:
+  #   If the element of the list has no name, it is assumed that each element will be composed of c("Parameter","Covariate")
+  if(is.null(names(covariateToTest))){
+    parameter <- character(length(covariateToTest))
+    covariate <- character(length(covariateToTest))
+    for (k in 1:length(covariateToTest)){
+      # Split Parameter to Covariate:
+      covTest   <- strsplit(covariateToTest[[k]],",")
+
+      # Save Parameter and Covariate:
+      parameter[k] <- covTest[[1]][1]
+      covariate[k] <- covTest[[2]][1]
+    }
+
+    #   If the list is named, each element is a vector of covariate associated to the name of the element
+  }else{
+    parameter <- character(0)
+    covariate <- character(0)
+    for (k in 1:length(covariateToTest)){
+      # Split Parameter to Covariate:
+      covTest   <- strsplit(covariateToTest[[k]],",")
+
+      # Save Parameter and Covariate:
+      for (i in 1:length(covTest)){
+        parameter <- c(parameter,
+                       names(covariateToTest[k]))
+        covariate <- c(covariate,
+                       covTest[[i]][1])
+      }
+    }
+  }
+
+  # Check of the parameter/covariate is in the initial model:
+  #   Add if it is not
+  for (k in 1:length(parameter)){
+
+    # Define Parameter/Covariate to remove if needed:
+    covariateModelToRemove_k <- covariate[k]
+    names(covariateModelToRemove_k) <- parameter[k]
+
+    # Check is the parameter exist:
+    if (!(parameter[k] %in% names(model$parameters))){
+      stop("The parameter ", parameter[k], " is not present in the model.")
+    }
+
+    # Check if the Parameter/Covariate couple missing from modelSpec:
+    if (is.null(modelSpec) | is.na(modelSpec)){
+      stop("'modelSpec' can not be NULL or NA: Please adjust 'modelSpec'.")
+
+    }else{
+      # Add parameter/covariate couple if needed; as it is needed for them to be in the reference model
+      if (!(parameter[k] %in% names(modelSpec$covariateModel))){
+        modelSpec <- add_OneCovariateToModelSpec(modelSpec,
+                                                 covariateModelToRemove_k,
+                                                 COVcentering = COVcentering)
+
+        # Print Warning for information:
+        warning("The parameter/covariate ", parameter[k], "/", covariate[k], " was added from the modelSpec as it is going to be tested.")
+
+      }else if((parameter[k] %in% names(modelSpec$covariateModel)) && !(covariate[k] %in% modelSpec$covariateModel[[parameter[k]]])){
+        modelSpec <- add_OneCovariateToModelSpec(modelSpec,
+                                                 covariateModelToRemove_k,
+                                                 COVcentering = COVcentering)
+
+        # Print Warning for information:
+        warning("The parameter/covariate ", parameter[k], "/", covariate[k], " was added from the modelSpec as it is going to be tested.")
+      }
+    }
+  }
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Save reference modelSpec ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  modelSpec0 <- modelSpec
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Backward Elimination ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+  # Save key information at each process:
+  BSinfo <- data.frame(Iteration  = integer(0),
+                       Removed    = character(0),
+                       IVVchange  = character(0),
+                       pValue     = double(0),
+                       OBJ        = double(0),
+                       stringsAsFactors = FALSE)
+
+  # Generate Iteration:
+  p_j_max <- 1
+  i       <- 1
+  parameter_i  <- parameter
+  covariate_i  <- covariate
+  modelSpec_i0 <- modelSpec0
+
+  while ((p_j_max>alpha) & (length(parameter_i)>0)){
+    # ~~~~ Path of Iteration i ~~~~
+    projectPath_i  <- file.path(projectPath, sprintf("%02i-Iteration%02i",i,i))
+
+
+    # ~~~~ Reference Model ~~~~
+    # Construct Model:
+    nlmeEst_i0 <- IQRnlmeEst(model     = model,
+                             dosing    = dosing,
+                             data      = data,
+                             modelSpec = modelSpec_i0)
+
+    # Construct Project:
+    projectPath_i0 <- file.path(projectPath_i,"00-ReferenceModel")
+    if (i==1){
+      proj <- IQRnlmeProject(nlmeEst_i0,
+                             projectPath = projectPath_i0,
+                             tool        = tool,
+                             toolVersion = toolVersion,
+
+                             # General setting :
+                             multiTestN        = multiTestN,
+                             multiTestSD       = multiTestSD,
+                             FLAGanalytic      = FLAGanalytic,
+                             keepProjectFolder = keepProjectFolder,
+
+                             # General algo. options:
+                             algOpt.SEED     = algOpt.SEED,
+                             algOpt.K1       = algOpt.K1,
+                             algOpt.K2       = algOpt.K2,
+                             algOpt.NRCHAINS = algOpt.NRCHAINS,
+
+                             # NONMEM algo. options:
+                             algOpt.NONMEM.METHOD             = algOpt.NONMEM.METHOD,
+                             algOpt.NONMEM.MAXEVAL            = algOpt.NONMEM.MAXEVAL,
+                             algOpt.NONMEM.SIGDIGITS          = algOpt.NONMEM.SIGDIGITS,
+                             algOpt.NONMEM.PRINT              = algOpt.NONMEM.PRINT,
+                             algOpt.NONMEM.COVSTEP_MATRIX     = algOpt.NONMEM.COVSTEP_MATRIX,
+                             algOpt.NONMEM.ADVAN7             = algOpt.NONMEM.ADVAN7,
+                             algOpt.NONMEM.N1                 = algOpt.NONMEM.N1,
+                             algOpt.NONMEM.TOL                = algOpt.NONMEM.TOL,
+                             algOpt.NONMEM.SIGL               = algOpt.NONMEM.SIGL,
+                             algOpt.NONMEM.M4                 = algOpt.NONMEM.M4,
+                             algOpt.NONMEM.FOCEIOFV           = algOpt.NONMEM.FOCEIOFV,
+                             algOpt.NONMEM.IMPORTANCESAMPLING = algOpt.NONMEM.IMPORTANCESAMPLING,
+                             algOpt.NONMEM.IMP_ITERATIONS     = algOpt.NONMEM.IMP_ITERATIONS,
+                             algOpt.NONMEM.ITS                = algOpt.NONMEM.ITS,
+                             algOpt.NONMEM.ITS_ITERATIONS     = algOpt.NONMEM.ITS_ITERATIONS,
+                             algOpt.NONMEM.WRES               = algOpt.NONMEM.WRES,
+                             algOpt.NONMEM.PRED               = algOpt.NONMEM.PRED,
+                             algOpt.NONMEM.RES                = algOpt.NONMEM.RES,
+
+                             # Monolix algo. options:
+                             algOpt.MONOLIX.individualParameters = algOpt.MONOLIX.individualParameters,
+                             algOpt.MONOLIX.indivMCMClength      = algOpt.MONOLIX.indivMCMClength,
+                             algOpt.MONOLIX.indivNsim            = algOpt.MONOLIX.indivNsim,
+                             algOpt.MONOLIX.indivRatio           = algOpt.MONOLIX.indivRatio,
+                             algOpt.MONOLIX.logLikelihood        = algOpt.MONOLIX.logLikelihood,
+                             algOpt.MONOLIX.fim                  = algOpt.MONOLIX.fim,
+                             algOpt.MONOLIX.variability          = algOpt.MONOLIX.variability,
+                             algOpt.MONOLIX.startTime            = algOpt.MONOLIX.startTime,
+                             algOpt.MONOLIX.STIFF                = algOpt.MONOLIX.STIFF,
+
+                             # NLMIXR algo. options:
+                             algOpt.NLMIXR.method                = algOpt.NLMIXR.method,
+                             algOpt.NLMIXR.control               = algOpt.NLMIXR.control)
+
+    } else{
+      duplicate_IQRnlmeProject(projectPath_ij_max, projectPath_i0)
+    }
+
+
+    # ~~~~ Reduced Models ~~~~
+    projectPath_ij <- character(length(parameter_i))
+    for (j in 1:length(parameter_i)){
+      # Adapt modelSpec_i:
+      modelSpec_ij <- modelSpec_i0
+
+      # Adjust Covariate Model:
+      covariateModelToRemove_ij        <- list(covariate_i[j])
+      names(covariateModelToRemove_ij) <- c(parameter_i[j])
+      modelSpec_ij                  <- remove_OneCovariateToModelSpec(modelSpec_ij,
+                                                                      covariateModelToRemove_ij,
+                                                                      COVcentering = COVcentering[covariate_i[j]])
+
+      # Construct Model:
+      nlmeEst_ij <- IQRnlmeEst(model     = model,
+                               dosing    = dosing,
+                               data      = data,
+                               modelSpec = modelSpec_ij)
+
+      # Construct Project:
+      projectPath_ij[j] <- file.path(projectPath_i, sprintf("%02i-ReducedModel%02i",j,j))
+      proj <- IQRnlmeProject(nlmeEst_ij,
+                             projectPath = projectPath_ij[j],
+                             tool        = tool,
+                             toolVersion = toolVersion,
+
+                             # General setting :
+                             multiTestN        = multiTestN,
+                             multiTestSD       = multiTestSD,
+                             FLAGanalytic      = FLAGanalytic,
+                             keepProjectFolder = keepProjectFolder,
+
+                             # General algo. options:
+                             algOpt.SEED     = algOpt.SEED,
+                             algOpt.K1       = algOpt.K1,
+                             algOpt.K2       = algOpt.K2,
+                             algOpt.NRCHAINS = algOpt.NRCHAINS,
+
+                             # NONMEM algo. options:
+                             algOpt.NONMEM.METHOD             = algOpt.NONMEM.METHOD,
+                             algOpt.NONMEM.MAXEVAL            = algOpt.NONMEM.MAXEVAL,
+                             algOpt.NONMEM.SIGDIGITS          = algOpt.NONMEM.SIGDIGITS,
+                             algOpt.NONMEM.PRINT              = algOpt.NONMEM.PRINT,
+                             algOpt.NONMEM.COVSTEP_MATRIX     = algOpt.NONMEM.COVSTEP_MATRIX,
+                             algOpt.NONMEM.ADVAN7             = algOpt.NONMEM.ADVAN7,
+                             algOpt.NONMEM.N1                 = algOpt.NONMEM.N1,
+                             algOpt.NONMEM.TOL                = algOpt.NONMEM.TOL,
+                             algOpt.NONMEM.SIGL               = algOpt.NONMEM.SIGL,
+                             algOpt.NONMEM.M4                 = algOpt.NONMEM.M4,
+                             algOpt.NONMEM.FOCEIOFV           = algOpt.NONMEM.FOCEIOFV,
+                             algOpt.NONMEM.IMPORTANCESAMPLING = algOpt.NONMEM.IMPORTANCESAMPLING,
+                             algOpt.NONMEM.IMP_ITERATIONS     = algOpt.NONMEM.IMP_ITERATIONS,
+                             algOpt.NONMEM.ITS                = algOpt.NONMEM.ITS,
+                             algOpt.NONMEM.ITS_ITERATIONS     = algOpt.NONMEM.ITS_ITERATIONS,
+                             algOpt.NONMEM.WRES               = algOpt.NONMEM.WRES,
+                             algOpt.NONMEM.PRED               = algOpt.NONMEM.PRED,
+                             algOpt.NONMEM.RES                = algOpt.NONMEM.RES,
+
+                             # Monolix algo. options:
+                             algOpt.MONOLIX.individualParameters = algOpt.MONOLIX.individualParameters,
+                             algOpt.MONOLIX.indivMCMClength      = algOpt.MONOLIX.indivMCMClength,
+                             algOpt.MONOLIX.indivNsim            = algOpt.MONOLIX.indivNsim,
+                             algOpt.MONOLIX.indivRatio           = algOpt.MONOLIX.indivRatio,
+                             algOpt.MONOLIX.logLikelihood        = algOpt.MONOLIX.logLikelihood,
+                             algOpt.MONOLIX.fim                  = algOpt.MONOLIX.fim,
+                             algOpt.MONOLIX.variability          = algOpt.MONOLIX.variability,
+                             algOpt.MONOLIX.startTime            = algOpt.MONOLIX.startTime,
+                             algOpt.MONOLIX.STIFF                = algOpt.MONOLIX.STIFF,
+
+                             # NLMIXR algo. options:
+                             algOpt.NLMIXR.method                = algOpt.NLMIXR.method,
+                             algOpt.NLMIXR.control               = algOpt.NLMIXR.control)
+    }
+
+
+    # ~~~~ Run Estimation of all models ~~~~
+
+    # Run estimation of reference model:
+    cat("\n******\n   Running Estimation of Iteration", i, "\n")
+    allproj_i <- as_IQRnlmeProjectMulti(projectPath_i)
+    run_IQRnlmeProjectMulti(allproj_i, ncores=ncores, Nparallel=Nparallel)
+    cat(" ... Iteration", i, " finished!\n")
+
+    # Summary tables of iteration i:
+    summary(allproj_i, pathname=projectPath_i, FLAGreport=TRUE, FLAGremovePath=TRUE, order="BIC")
+
+
+    # ~~~~ Get OBJ/AIC/BIC of all models of iteration i ~~~~
+
+    # Get OBJ/AIC/BIC of reference model:
+    #   Load result of reference model:
+    proj_i0     <- as_IQRnlmeProject(projectPath_i0)
+    resModel_i0 <- getResults_IQRnlmeProject(proj_i0)
+    #   OBJ, AIC, BIC
+    goodnessOfFit_i0 <- c("OBJ" = resModel_i0$objectivefunction$OBJ,
+                          "AIC" = resModel_i0$objectivefunction$AIC,
+                          "BIC" = resModel_i0$objectivefunction$BIC)
+    # Count the number of estimated covariate variable:
+    NbrCov_i0   <- sum(resModel_i0$covariate$estimated)
+
+    # Save some information of Initial Iteration
+    if (i==1){
+      BSinfo_Temp <- data.frame(Iteration  = 0,
+                                Removed    = "-",
+                                IIVchange  = "-",
+                                pValue     = "-",
+                                OBJ        = goodnessOfFit_i0["OBJ"],
+                                stringsAsFactors=FALSE)
+      BSinfo <- rbind(BSinfo,BSinfo_Temp)
+    }
+
+    # Get OBJ/AIC/BIC of extended models & p-value:
+    goodnessOfFit_i           <- matrix(nrow=length(parameter_i),ncol=3)
+    colnames(goodnessOfFit_i) <- c("OBJ","AIC","BIC")
+    p                         <- numeric(length(parameter_i))+1
+    for (j in 1:length(parameter_i)){
+      #   Load result of extended model j:
+      proj_ij     <- as_IQRnlmeProject(projectPath_ij[j])
+      resModel_ij <- getResults_IQRnlmeProject(proj_ij)
+      #   OBJ, AIC, BIC
+      goodnessOfFit_i[j,] <- c(resModel_ij$objectivefunction$OBJ,
+                               resModel_ij$objectivefunction$AIC,
+                               resModel_ij$objectivefunction$BIC)
+
+      # Estimate p-value:
+      #   Count the number of estimated covariate parameters
+      NbrCov_ij  <- sum(resModel_ij$covariate$estimated)
+      #   Degree of Freedom
+      df_ij      <- NbrCov_i0 - NbrCov_ij
+      #   Difference in -2LL
+      DeltaLL_ij <- goodnessOfFit_i[j,"OBJ"] - goodnessOfFit_i0["OBJ"]
+      #   p-Value
+      p[j]       <- pchisq(DeltaLL_ij, df=df_ij, lower.tail = FALSE)
+    }
+
+
+    # Select worst reduced model & its p-value:
+    j_max           <- which.max(p)
+    proj_ij_max     <- as_IQRnlmeProject(projectPath_ij[j_max])
+    resModel_ij_max <- getResults_IQRnlmeProject(proj_ij_max)
+    p_j_max         <- p[j_max]
+
+    # Change in IIV:
+    IIV_i0     <- resModel_i0$randomEffects$values[paste0("omega(",parameter_i[j_max],")")]
+    IIV_ij_max <- resModel_ij_max$randomEffects$values[paste0("omega(",parameter_i[j_max],")")]
+    IIVchange_ij_max      <- (IIV_ij_max-IIV_i0)/IIV_ij_max*100
+    IIVchange_ij_max_Sign <- ifelse(sign(IIVchange_ij_max)==-1,"-","+")
+
+    #   Add information to FS
+    if (p_j_max>alpha){
+      BSinfo_Temp <- data.frame(Iteration = i,
+                                Removed   = paste0(parameter_i[j_max],"/",covariate_i[j_max]),
+                                IIVchange = paste0(IIVchange_ij_max_Sign,round(abs(IIVchange_ij_max),2),"%"),
+                                pValue    = formatC(p_j_max, format = "e", digits = 2),
+                                OBJ       = round(goodnessOfFit_i[j_max,"OBJ"],2),
+                                stringsAsFactors=FALSE)
+      BSinfo <- rbind(BSinfo,BSinfo_Temp)
+    }else{
+      BSinfo_Temp <- data.frame(Iteration = i,
+                                Removed   = paste0(parameter_i[j_max],"/",covariate_i[j_max]," not removed"),
+                                IIVchange = paste0(IIVchange_ij_max_Sign,round(abs(IIVchange_ij_max),2),"%"),
+                                pValue    = formatC(p_j_max, format = "e", digits = 2),
+                                OBJ       = round(goodnessOfFit_i[j_max,"OBJ"],2),
+                                stringsAsFactors=FALSE)
+      BSinfo <- rbind(BSinfo,BSinfo_Temp)
+    }
+
+
+    # ~~~~ Prepare Next Iteration ~~~~
+    # Adjust Covariate Model:
+    covariateModelToRemove_ijmax        <- list(covariate_i[j_max])
+    names(covariateModelToRemove_ijmax) <- c(parameter_i[j_max])
+    modelSpec_i0                        <- remove_OneCovariateToModelSpec(modelSpec_i0,
+                                                                          covariateModelToRemove_ijmax,
+                                                                          COVcentering = COVcentering[covariate_i[j_max]])
+
+    # Remove selected parameter/covariate for
+    parameter_i <- parameter_i[-j_max]
+    covariate_i <- covariate_i[-j_max]
+
+    # Save path of best model to be copied in the next iteration:
+    projectPath_ij_max <- projectPath_ij[j_max]
+
+    # Iteration:
+    i <- i+1
+  }
+
+
+  # Save Results: i.e. BSinfo
+  names(BSinfo) <- c("Iteration", "Removed Parameter/Covariate", "Parameter IIV Change", "p-value", "Ob. Function")
+  IQRoutputTable(BSinfo,
+                 filename = file.path(projectPath,"BackwardElimination.txt"),
+                 xtitle   = "Backward Elimination of covariate models.",
+                 xfooter  = paste0("The elimination was based on the criteria of p>",alpha),
+                 report   = TRUE)
+
+  # Select output:
+  if (p_j_max>alpha){
+    projectPath_final <- projectPath_ij_max
+  }else{
+    projectPath_final <- projectPath_i0
+  }
+
+  # Output:
+  return(projectPath_final)
+}
+#' compare_DataModelMMV
+#'
+#' @description
+#' @param modelFolder
+#' @param dataFile Default: \code{NULL}
+#' @param outputFolder Default: '.'
+#' @param ylabel Default: \code{NULL}
+#' @param stratify Default: 'TRTNAME'
+#' @param catToStratify Default: \code{NULL}
+#' @param fileName Default: 'DataPredComparison'
+#' @param logY Default: \code{FALSE}
+#' @param figLimX Default: \code{NULL}
+#' @param figLimY Default: \code{NULL}
+#' @param predToPlot Default: \code{NULL}
+#' @param doseCOL Default: 'DOSELEVEL'
+#' @param doseMultCOL Default: 'DOSEMULT'
+#' @param ActivityPath Default: \code{NULL}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+compare_DataModelMMV <- function(modelFolder,
+                                 dataFile      = NULL,
+                                 outputFolder  = ".",
+                                 ylabel        = NULL,
+                                 stratify      = "TRTNAME",
+                                 catToStratify = NULL,
+                                 fileName      = "DataPredComparison",
+                                 logY          = FALSE,
+                                 figLimX       = NULL,
+                                 figLimY       = NULL,
+                                 predToPlot    = NULL,
+                                 doseCOL       = "DOSELEVEL",
+                                 doseMultCOL   = "DOSEMULT",
+                                 ActivityPath  = NULL) {
+
+  # check some inputs:
+  if (is.null(ylabel))
+    stop("Please provide y-label")
+  if (!(stratify %in% c("USUBJID", "ID", "TRTNAME", "STUDY")))
+    stop("Stratification only by USUBJID, ID, TRTNAME, or STUDY")
+
+  # Get the model predictions:
+  modelPred <- getObsPred_IQRnlmeProject(modelFolder)
+  if (unique(modelPred$YTYPE) > 1)
+    stop("Handles only one ytype.")
+
+  # Get the dataset:
+  if (is.null(dataFile)) {
+    modelRes <- getResults_IQRnlmeProjectMulti(as_IQRnlmeProjectMulti(modelFolder))
+    dataFile <- file.path(modelFolder,modelRes[[1]]$projectHeader$DATA)
+  }
+  data <- load_IQRdataGENERAL(dataFile)
+
+  # Check if catToStratify is correct & Create new column in dataset:
+  catInfo <- attributes(data)$catInfo
+  if (!is.null(catToStratify)){
+    if (!(catToStratify %in% catInfo$COLNAME)){
+      stop("'catToStratify' is not present is the dataset.")
+    } else{
+      #Extract VALUES and VALUETXT:
+      catVALUES        <- c(strsplit(catInfo$VALUES[catInfo$COLNAME==catToStratify],",",fixed=TRUE)[[1]])
+      catVALUES        <- as.numeric(catVALUES)
+      names(catVALUES) <- strsplit(catInfo$VALUETXT[catInfo$COLNAME==catToStratify],",",fixed=TRUE)[[1]]
+
+      # Create new column combining 'stratify' column to the cat column:
+      stratifyNEW        <- paste0(stratify,catToStratify)
+      data[,stratifyNEW] <- paste0(data[,stratify], " - ", names(catVALUES)[match(data$FORM,catVALUES)])
+      catToStratifyTEXT        <- paste0(catToStratify,"TXT")
+      data[,catToStratifyTEXT] <- names(catVALUES)[match(data$FORM,catVALUES)]
+      labeller <- data[!duplicated(data[,stratifyNEW]),catToStratifyTEXT]
+      names(labeller) <- data[!duplicated(data[,stratifyNEW]),stratifyNEW]
+
+      # Define new TRT column
+      if (stratify=="TRTNAME"){
+        # Order with Dose Level:
+        data <- data[order(data[,doseCOL],data[,catToStratify]),]
+
+        # New TRT column
+        data$TRTNEW <- data$TRT
+
+        # unique stratifyNEW:
+        var <- unique(data[,stratifyNEW])
+
+        # Adjust TRTNEW value:
+        k = 1
+        for (var_k in var){
+          # For DOSELEVEL=0, TRTNEW=0
+          if (data[,doseCOL][data[,stratifyNEW]==var_k][1]<=1e-12){
+            data$TRTNEW[data[,stratifyNEW]==var_k] <- 0
+          } else{
+            data$TRTNEW[data[,stratifyNEW]==var_k] <- k
+            k <- k+1
+          }
+        }
+
+        # New 'stratify' value:
+        stratify <- stratifyNEW
+
+        # Order back:
+        data <- data[order(data$IXGDF),]
+      }
+    }
+  }
+
+  # Remove data with a DOSELEVEL of 0:
+  if ((doseCOL %in% names(data)) & !("Efficacy" %in% unique(data$TYPE)))
+    data <- data[data[,doseCOL]>1e-12,]
+
+  # Get subject information:
+  subjInfo <- unique(data[, unique(c("STUDY","USUBJID", "ID", "TRTNAME", stratify))])
+
+  # Add subject info to predictions:
+  modelPred     <- merge(modelPred, subjInfo)
+  modelPredPlot <- reshape(modelPred, direction = "long",
+                           varying = c("IPRED","XPRED"),
+                           v.names = "Value",
+                           times   = c("Individual", "Population"),
+                           timevar = "Prediction"
+  )
+
+  # Reduce Prediction to Pop. or Indiv. if needed:
+  if (!is.null(predToPlot)){
+    if (predToPlot=="POP" | predToPlot=="XPRED" | predToPlot=="Population"){
+      modelPredPlot <- modelPredPlot[modelPredPlot$Prediction=="Population",]
+    } else if ((predToPlot=="INDIV" | predToPlot=="IPRED"  | predToPlot=="Individual")){
+      modelPredPlot <- modelPredPlot[modelPredPlot$Prediction=="Individual",]
+    }
+  }
+
+  # Define factor level:
+  #   For TRTNAME
+  trtInfo <- unique(data[,c("TRT", "TRTNAME", doseCOL, doseMultCOL)])
+  trtInfo <- trtInfo[order(trtInfo[,doseMultCOL],trtInfo[,doseCOL]),]
+  levelTRTNAME          <- unique(trtInfo$TRTNAME)
+  data$TRTNAME          <- factor(data$TRTNAME,levels=levelTRTNAME)
+  modelPredPlot$TRTNAME <- factor(as.character(modelPredPlot$TRTNAME),levels=levelTRTNAME)
+  #   For TRTNAME+catToStratify
+  if (!is.null(catToStratify)){
+    if (stratify==paste0("TRTNAME", catToStratify)){
+      levelStratify            <- unique(data[,stratify])
+      levelStratify            <- levelStratify[order(unique(data$TRTNEW))]
+      data[,stratify]          <- factor(data[,stratify],levels=levelStratify)
+      modelPredPlot[,stratify] <- factor(as.character(modelPredPlot[,stratify]),levels=levelStratify)
+    }
+  }
+
+  # Plot data and predictions stratified by treatment:
+  gr <- IQRggplot(modelPredPlot, aes(TIME, color = TRTNAME, group = interaction(Prediction,USUBJID, TRTNAME)))
+
+  # Plot LLOQ if given  in data set:
+  LLOQ <- data[data$YTYPE == 1,"LLOQ"][1]
+  if (!is.na(LLOQ)) {
+    gr <- gr + geom_hline(yintercept = LLOQ, linetype = 3, color = "black")
+    if (logY) {
+      gr <- gr + geom_text(x=min(modelPredPlot$TIME), y=log10(LLOQ), label="LLOQ", hjust = 0, vjust = 0, color = "black")
+    } else {
+      gr <- gr + geom_text(x=min(modelPredPlot$TIME), y=LLOQ, label="LLOQ", hjust = 0, vjust = 0, color = "black")
+    }
+  }
+
+  # Proceed with plot:
+  gr <- gr +
+    geom_point(aes(y=DV)) +
+    geom_line(aes(y=Value, linetype = Prediction)) +
+    scale_color_manual("Treatment", values=IQRtoolsColors[2:40]) +
+    labs(x = "Time [hours]",
+         y = ylabel,
+         caption = paste0("Activity: ", get_ActivityPath(ActivityPath),
+                          "\nModel: ", modelFolder)) +
+    theme(plot.caption = element_text(hjust=0))
+
+  # y scale to log ir required:
+  if (logY)
+    gr <- gr + scale_y_log10()
+
+  # Stratify if required:
+  if (!is.null(stratify)){
+    if (is.null(catToStratify)){
+      gr <- gr + facet_wrap(stratify)
+    } else{
+      gr <- gr + facet_wrap(stratify,labeller = as_labeller(labeller))
+    }
+  }
+
+
+  # add limits on x-axis and y axis:
+  if(!is.null(figLimX) & !is.null(figLimY)){
+    gr <- gr + coord_cartesian(xlim=figLimX, ylim=figLimY)
+  } else if(!is.null(figLimX)){
+    gr <- gr + coord_cartesian(xlim=figLimX)
+  } else if(!is.null(figLimY)){
+    gr <- gr + coord_cartesian(ylim=figLimY)
+  } else{
+    # do nothing
+  }
+
+  # Plot to file:
+  IQRoutputPNG(gr, file.path(outputFolder, fileName))
+
+  # Output:
+  return(gr)
+}
+
+#' compare_DataPopPred
+#'
+#' @description
+#' @param PKmodelFolder
+#' @param PDmodelFolder
+#' @param dataFile
+#' @param TRTsubset Default: \code{NULL}
+#' @param GRmodelFolder Default: \code{NULL}
+#' @param exclude Default: \code{NULL}
+#' @param yLim Default: \code{NULL}
+#' @param IndCovariates Default: \code{NULL}
+#' @param ActivityPath Default: \code{NULL}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+#' @importFrom plyr ddply rbind.fill
+#' @importFrom dplyr left_join
+compare_DataPopPred <- function(PKmodelFolder,
+                                PDmodelFolder,
+                                dataFile,
+                                TRTsubset     = NULL,
+                                GRmodelFolder = NULL,
+                                exclude       = NULL,
+                                yLim          = NULL,
+                                IndCovariates = NULL,
+                                ActivityPath  = NULL,
+                                addArgs_sim_IQRmodel = NULL) {
+  # Function to plot population simulations from multiple models and observed data.
+  # Panel per treatment with colors differentiating model.
+  # PDmodelFolder should contain subfolders with models to compare.
+  # Use TRTsubset to select treatment groups which is useful when too many exist and only a representative subset is chosen
+
+  # GENERAL SETTINGS
+  # Get data:
+  if(is.character(dataFile)){
+    dataPD <- IQRloadCSVdata(dataFile)
+  }else if(is.data.frame(dataFile)){
+    dataPD <- dataFile
+  }
+
+  # Simulation time:
+  simtime <- seq(min(dataPD$TIME),max(dataPD$TIME), 1)
+  Tshift  <- min(simtime)
+  simtime <- simtime - Tshift
+
+  # PK parameters:
+  PKparameters <- getPopParameters_IQRnlmeProject(PKmodelFolder, IndCovariates = IndCovariates)
+  if (!is.data.frame(PKparameters)){
+    PKparameters <- as.data.frame(t(PKparameters))
+  }
+  # Growth model parameters if exist:
+  if (!is.null(GRmodelFolder)) {
+    GRparameters <- getPopParameters_IQRnlmeProject(GRmodelFolder, IndCovariates = IndCovariates)
+    GRparameters[["Dtime"]] <- GRparameters[["Dtime"]] - Tshift
+    if (!is.data.frame(GRparameters)){
+      GRparameters <- as.data.frame(t(GRparameters))
+    }
+  }
+
+  # Check whether PLbase exists in dataset:
+  if ("PLbase" %in% names(dataPD)) {
+    dataPLbase <- plyr::ddply(unique(dataPD[,c("USUBJID", "TRTNAME", "PLbase")]), ~TRTNAME, plyr::summarize, PLbase = mean(PLbase))
+  } else {
+    dataPLbase <- NULL
+  }
+  # Dosing:
+  if (is.null(TRTsubset)) {
+    dataDosing <- unique(dataPD[dataPD$EVID == 1, c("TRTNAME", "TIME", "AMT")])
+  } else {
+    dataDosing <- unique(dataPD[dataPD$EVID == 1 & dataPD$TRTNAME %in% TRTsubset, c("TRTNAME", "TIME", "AMT")])
+  }
+  dataDosing$ADM <- 1
+  dataDosing$TIME <- dataDosing$TIME - Tshift
+
+  # Gather simulation info
+  if (is.null(dataPLbase)) {
+    simInfo0 <- dataDosing
+  } else {
+    simInfo0 <- dplyr::left_join(dataDosing, dataPLbase)
+  }
+  simInfo0$ID <- as.numeric(factor(simInfo0$TRTNAME))
+  if (Tshift != 0) {
+    simInfo0add <- simInfo0
+    simInfo0add$TIME <- 0
+    simInfo0add$AMT <- 0
+    simInfo0 <- rbind(simInfo0, simInfo0add)
+    simInfo0 <- simInfo0[with(simInfo0, order(ID,TIME)),]
+  }
+
+  modelFolders <- list.dirs(PDmodelFolder, recursive = FALSE, full.names = FALSE)
+  if (!is.null(exclude))
+    modelFolders <- setdiff(modelFolders, exclude)
+
+  Predictions <- data.frame()
+  for (modelk in modelFolders) {
+
+    # Model
+    model <- IQRmodel(file.path(PDmodelFolder,modelk,"model.txt"))
+
+    # PD model parameters
+    PDparameters <- getPopParameters_IQRnlmeProject(file.path(PDmodelFolder, modelk), IndCovariates = IndCovariates)
+    if (!is.data.frame(PDparameters)){
+      PDparameters <- as.data.frame(t(PDparameters))
+    }
+    if (is.null(GRmodelFolder)) {
+      parameters <- cbind(PKparameters, PDparameters)
+    } else {
+      parameters <- cbind(PKparameters, GRparameters, PDparameters)
+    }
+
+    # Define parameters dataset to merge by adding TRTNAME if covariate defined:
+    #   A new dataset parameter is created to avoid an error when using
+    #   redression in IQReventTable.
+    parametersToMerge <- parameters
+    if (!is.null(IndCovariates)){
+      parametersToMerge$TRTNAME <- IndCovariates$TRTNAME
+    }
+
+    # Add PD parameters to simulation info and create event table
+    simInfo <- simInfo0
+    if ("PLbase" %in% names(parameters) & "PLbase" %in% names(simInfo0)) {
+      cat("PLbase defined in dataset and in model. Take the one from the model.")
+      simInfo$PLbase <- NULL
+    }
+    simInfo <- merge(simInfo, parametersToMerge)
+    eventTable <- IQReventTable(simInfo , regression = unique(c(names(parameters), "PLbase")))
+
+    # Do simulation
+    res <- do.call(sim_IQRmodel, c(list(model = model,
+                                        simtime = simtime, eventTable = eventTable), addArgs_sim_IQRmodel))
+
+    if (!("ID" %in% names(res))) res$ID <- 1
+    res$TIME <- res$TIME + Tshift
+
+    # Merge treatment information
+    res <- dplyr::left_join(res, unique(simInfo0[,c("ID", "TRTNAME")]))
+
+    # Add model annotation
+    res$Model <- modelk
+
+    # Concatenate
+    Predictions <- plyr::rbind.fill(Predictions, res)
+  }
+
+  # Dosing info from data for ordering panels
+  dosInfo <- unique(dataPD[, c("TRTNAME", "DOSELEVEL", "DOSEMULT")])
+  dosInfo <- dosInfo[with(dosInfo,order(DOSEMULT, DOSELEVEL)),]
+  dosInfo <- dosInfo[dosInfo$TRTNAME %in% simInfo0$TRTNAME,]
+
+  Predictions$TRTNAME <- factor(Predictions$TRTNAME, levels = dosInfo$TRTNAME)
+  Observations <- subset(dataPD, EVID == 0 & TRTNAME %in% simInfo0$TRTNAME)
+  Observations$TRTNAME <- factor(Observations$TRTNAME, levels = dosInfo$TRTNAME)
+
+  # Visualize
+  gr <- IQRggplot(Predictions, aes(TIME, exp(OUTPUT1), color = Model)) +
+    geom_point(data=Observations, aes(y=exp(VALUE)), color = "black", shape = 1) +
+    geom_line(data=Observations, aes(y=exp(VALUE), group = USUBJID), color = "grey") +
+    geom_line() +
+    scale_color_IQRtools() +
+    scale_y_log10() +
+    facet_wrap(~TRTNAME, scales = "free_y") +
+    labs(x = "Time [hours]",
+         y = "Parasitemia [%]",
+         caption = paste0("Activity: ", get_ActivityPath(ActivityPath))) +
+    theme(legend.position = "bottom",
+          plot.caption = element_text(hjust=0))
+
+  if (!is.null(yLim))
+    gr <- gr + coord_cartesian(ylim = yLim)
+
+  # Output;
+  return(gr)
+}
+
+#' compare_DataPredTimeRecrudCombo
+#' Isobole - plots for Combo model
+#'
+#' Simulation of combinations with estimates parameter set to obtain
+#'   - predicted concentrations
+#'   - predicted time to recrudescence
+#' Visualization of predicted and observed time to recrudescance in 2D
+#' Calculation of sum of least squares for predicted-versus-observed time profiles and time to recrudescence
+#'
+#'
+#' @param ModelCombo       Path to an IQRsysProject or a sysfit-object (IQRtools <= 0.9)
+#' @param PKparameters     Named vector of PK parameters
+#' @param doses1,doses2    Numeric vectors of dosing values of drug 1 and 2
+#' @param LLOQ             numeric, the LLOQ of the PD readout
+#' @param fileDataGeneral  filepath to dataset to extract time-to-recrudescence from
+#' @param PDname           Default: 'Parasitemia Total'. Entry in NAME-column of fileDataGeneral to denote PD observations
+#' @param CONDcol          Default: 'TRTNAME'. Name of column to extract the CONDITION from
+#' @param filename         Default: \code{NULL}. filename for graphics output.
+#' @param FLAGreturnObject Default: \code{FALSE}. Return the plot objects (TRUE) or don't return anything (FALSE)
+#' @param logScale         Default: \code{FALSE}. Plot on log-scale? If yes, doses with AMT = 0 are set to min(doseX)/10 for plotting.
+#' @param Time2RecDef      Default: 'MMV'. Argument going to getTimeRecrudescence
+#' @param setting          Default: \code{NULL}. List of settings going to simTimeRecrudescenceCombo
+#'
+#' @return Either nothing or a list of plots: list(facetted_plot, list_of_single_plots)
+#'
+#' @export
+#' @author Anne Kümmel (IntiQuan), Mohammed Cherkaoui (MMV)
+#' @family Combo-model assessment functions
+#' @seealso simTimeRecrudescenceCombo
+#'
+#' @importFrom dplyr left_join inner_join
+#' @importFrom plyr rename ddply alply
+#' @importFrom akima interp interp2xyz
+compare_DataModelTimeRecrudCombo <- function(ModelCombo,
+                                             PKparameters,
+                                             doses1, doses2,
+                                             LLOQ,
+                                             fileDataGeneral,
+                                             PDname           = "Parasitemia Total",
+                                             CONDcol          = "TRTNAME",
+                                             filename         = NULL,
+                                             FLAGreturnObject = FALSE,
+                                             logScale         = FALSE,
+                                             Time2RecDef      = "MMV",
+                                             setting          = NULL,
+                                             ActivityPath     = NULL){
+
+  #-----------------------------------------------------------------------------#
+  # Adjust doses1, doses2 if logScale ----
+  #-----------------------------------------------------------------------------#
+  doses1.Plot <- doses1
+  doses2.Plot <- doses2
+  if (logScale){
+    # doses1:
+    if (doses1.Plot[1]<1e-12){
+      doses1.Plot[1] <- doses1.Plot[2]/10
+    }
+
+    # doses2:
+    if (doses2.Plot[1]<1e-12){
+      doses2.Plot[1] <- doses2.Plot[2]/10
+    }
+  }
+
+  #-----------------------------------------------------------------------------#
+  # Load General Dataset ----
+  #-----------------------------------------------------------------------------#
+  dataGeneral <- IQRloadCSVdata(fileDataGeneral)
+  if (logScale){
+    dataGeneral$DOSELEVEL1 <- ifelse(dataGeneral$DOSELEVEL1<1e-12, doses1.Plot[1], dataGeneral$DOSELEVEL1)
+    dataGeneral$DOSELEVEL2 <- ifelse(dataGeneral$DOSELEVEL2<1e-12, doses2.Plot[1], dataGeneral$DOSELEVEL2)
+  }
+
+
+  #-----------------------------------------------------------------------------#
+  # Load model, data, and estimates ----
+  #-----------------------------------------------------------------------------#
+
+  if ((IQRversion<="0.9.99") && (is_IQRsysFit(ModelCombo))){
+    # Get model
+    model <- ModelCombo$estObject$model
+
+    # Get data
+    # - data used for modeling (does not contain BLOQ values M1 method applied!!!)
+    dataEval <- ModelCombo$estObject$data
+
+    # Handle PD parameters: get from estimation results
+    PDparameters <- ModelCombo$xopt[!grepl("sigma", names(ModelCombo$xopt))]
+
+    # Caption:
+    caption <- paste0("Model: ", ModelCombo$estObject$model$name, ".txt",
+                      "\nParameters: ", paste(names(ModelCombo$estObject$parameters$guess)[ModelCombo$estObject$parameters$estimate==1 & !grepl("OUTPUT",names(ModelCombo$estObject$parameters$guess))], collapse=", "))
+
+
+  }else if(exists("is_IQRsysProject", mode="function") && is_IQRsysProject(ModelCombo)){
+    # Get model
+    model <- IQRmodel(file.path(ModelCombo,"model.txt"))
+
+    # Get data
+    # - data used for modeling
+    dataEval <- getData_IQRnlmeProject(ModelCombo)
+
+    # Handle PD parameters: get from estimation results
+    PDparameters <- getPopParameters_MMVmalariaProject(ModelCombo, IndCovariates = NULL)
+    PDparameters <- PDparameters[!grepl("omega", names(PDparameters))]
+    # Caption:
+    caption  <- paste0("Model: ", ModelCombo[1])
+
+
+  }else if (is_IQRnlmeProject(ModelCombo)) {
+    # Get model
+    model <- IQRmodel(file.path(ModelCombo,"model.txt"))
+
+    # Get data
+    # - data used for modeling
+    dataEval <- getData_IQRnlmeProject(ModelCombo)
+
+    # Handle PD parameters: get from estimation results
+    PDparameters <- getPopParameters_IQRnlmeProject(ModelCombo, IndCovariates = NULL)
+    PDparameters <- PDparameters[!grepl("omega", names(PDparameters))]
+
+    # Add Fake COndition Column:
+    dataEval$CONDITION <- ""
+
+    # Caption:
+    caption  <- paste0("Model: ", ModelCombo[1])
+
+  }else{
+    stop("'ModelCombo' is not a valid object. It should be a sysFit object or a path for a IQRnlmeProject.")
+  }
+
+
+  # Get Growth Rate:
+  GR <- PDparameters[["GR"]]
+
+  # Determine PL base from data
+  PLbase <- median(unique(dataEval[,c("ID", "PLbase")])$PLbase)
+
+  # Adjust dataEval if logScale:
+  if (logScale){
+    dataEval$DOSELEVEL1 <- ifelse(dataEval$DOSELEVEL1<1e-12, doses1.Plot[1], dataEval$DOSELEVEL1)
+    dataEval$DOSELEVEL2 <- ifelse(dataEval$DOSELEVEL2<1e-12, doses2.Plot[1], dataEval$DOSELEVEL2)
+  }
+
+
+  #-----------------------------------------------------------------------------#
+  # Handle condition information ----
+  #-----------------------------------------------------------------------------#
+  # Check whether parameters conditioned
+  ParCond <- unique(gsub("[[:alnum:]]*@","",grep("@",names(PDparameters), value = TRUE)))
+  Other   <- setdiff(dataEval$CONDITION, ParCond)
+  # Determine which conditions to simulate
+  if (length(ParCond) == 0) {
+    SimCond <- "Other"
+  } else {
+    if (length(Other) == 0) {
+      SimCond <- ParCond
+    }  else {
+      SimCond <- c(ParCond, "Other")
+    }
+  }
+  # Merge conditions for which no separate parameters exist ("Other")
+  dataEval$CONDITION    <- ifelse(dataEval$CONDITION %in% ParCond, dataEval$CONDITION, "Other")
+  dataGeneral$CONDITION <- dataGeneral[[CONDcol]]
+  dataGeneral$CONDITION <- ifelse(dataGeneral$CONDITION %in% ParCond, dataGeneral$CONDITION, "Other")
+
+  #-----------------------------------------------------------------------------#
+  # Handle treatment information ----
+  #-----------------------------------------------------------------------------#
+
+  # Determine number of doses per treatment and condition
+  NOdoses <- dplyr::rename(unique(as.data.frame(dataEval)[, c("TRTNAME", "CONDITION", "DOSELEVEL1", "DOSEMULT1", "DOSELEVEL2", "DOSEMULT2")]),
+                           n1 = DOSEMULT1, n2 = DOSEMULT2, Dose1 = DOSELEVEL1, Dose2 = DOSELEVEL2)
+  NOdoses$n1 <- ifelse(NOdoses$Dose1 == 0, 0, NOdoses$n1)
+  NOdoses$n2 <- ifelse(NOdoses$Dose2 == 0, 0, NOdoses$n2)
+  NOdoses    <- unique(NOdoses)
+
+  # Determine number of doses per treatment and condition
+  NOdosesData <- dplyr::rename(unique(dataGeneral[, c("TRTNAME", "CONDITION", "DOSELEVEL1", "DOSEMULT1", "DOSELEVEL2", "DOSEMULT2")]),
+                               n1 = DOSEMULT1, n2 = DOSEMULT2, Dose1 = DOSELEVEL1, Dose2 = DOSELEVEL2)
+  NOdosesData$n1 <- ifelse(NOdosesData$Dose1 == 0, 0, NOdosesData$n1)
+  NOdosesData$n2 <- ifelse(NOdosesData$Dose2 == 0, 0, NOdosesData$n2)
+  NOdosesData    <- unique(NOdosesData)
+
+  #-----------------------------------------------------------------------------#
+  # Simulate time to recrudescence for dose combinations ----
+  #-----------------------------------------------------------------------------#
+
+  # Determine combinations of CONDITION and Number of doses to simulate
+  SimulationScenarios <- unique(subset(NOdoses, n1 > 0 & n2 > 0, c("CONDITION","n1","n2")))
+
+  # Get unconditions parameters
+  idxUncond <- !grepl("@",names(PDparameters))
+  PDparametersUnCond <- PDparameters[idxUncond]
+
+  # Loop over conditions for which parameters exist
+  results <- c()
+  for (k in 1:length(SimCond)) {
+
+    # Determine the dose number combinations for current condition
+    nrdosk <- subset(SimulationScenarios, CONDITION == SimCond[k])
+
+    # Establish parameters for current condition
+    PDparametersk <- PDparametersUnCond
+    PDparametersCondk <- PDparameters[grepl(paste0("@",SimCond[k]),names(PDparameters))]
+    names(PDparametersCondk) <- gsub("@[[:graph:]]*","",names(PDparametersCondk))
+    for (kk in seq_along(PDparametersCondk)) {
+      PDparametersk[names(PDparametersCondk)[kk]] <- PDparametersCondk[kk]
+    }
+    parameters <- unlist(c(PKparameters,PDparametersk,c(PLbase = PLbase)))
+
+    # Loop over number of dose combinations
+    for (kk in 1:dim(nrdosk)[1]) {
+      # Print some information:
+      cat("\n -- Assessment for ", SimCond[k], " with ",nrdosk$n1[kk], "x and", nrdosk$n2[kk], "x")
+
+      # Add which time2rec to estimate:
+      setting$Time2RecDef <- Time2RecDef
+
+      # Run simulations:
+      resk <- simTimeRecrudescenceCombo(model, parameters,
+                                        doses1, doses2, nrdosk$n1[kk], nrdosk$n2[kk],
+                                        log(LLOQ), simlength = max(dataGeneral$TIME)+24*7,
+                                        setting = setting)
+      resk$CONDITION <- SimCond[k]
+      results <- rbind(results, resk)
+    }
+  }
+
+  # Adjust if log scale:
+  if (logScale){
+    results$DOSELEVEL1 <- ifelse(results$Dose1<1e-12, doses1.Plot[1], results$Dose1)
+    results$DOSELEVEL2 <- ifelse(results$Dose2<1e-12, doses2.Plot[1], results$Dose2)
+  }
+
+
+  #-----------------------------------------------------------------------------#
+  # Get observed time to recudescence for general data set ----
+  #-----------------------------------------------------------------------------#
+
+  # subset to the doses that are in simulated dose range
+  dataObs <- subset(as.data.frame(dataGeneral), NAME==PDname & DOSELEVEL1<=max(doses1) & DOSELEVEL2<=max(doses2))
+
+  # Get time to recudescense in the data
+  TRdata <- plyr::ddply(dataObs, ~ID+TRTNAME+CONDITION, getTimeRecrudescence, GR=GR, LLOQ=LLOQ, valCol="DV", log = FALSE, Time2RecDef=Time2RecDef)
+  # Summarize over mice with same treatment and conditions
+  TRdataMean <- plyr::ddply(TRdata, ~TRTNAME+CONDITION+flagMin, function(x) data.frame(Time2Recrud=mean(x$Time2Recrud)))
+
+  # Add dose number and level information
+  TRdataMean <- dplyr::left_join(TRdataMean, NOdosesData)
+
+  #-----------------------------------------------------------------------------#
+  # Matching observed time to recrudescence to simulation scenarios ----
+  #-----------------------------------------------------------------------------#
+
+  # Separate combo and mono (mono need to be replicated to all matching scenarios)
+  TRdataMeanCombo <- subset(TRdataMean, n1 > 0 & n2 > 0)
+  TRdataMeanMono  <- subset(TRdataMean, n1 == 0 | n2 == 0)
+
+  # Subset to mono data sets without the other number of doses
+  TRdataMeanMono1 <- subset(TRdataMeanMono, n1 > 0, -n2)
+  TRdataMeanMono2 <- subset(TRdataMeanMono, n2 > 0, -n1)
+
+  # Add number of doses again with as many as there are
+  # (potentially resulting in too many combinations)
+  TRdataMeanMono1 <- data.frame(TRdataMeanMono1, n2 = rep(unique(TRdataMeanMono2$n2), each = dim(TRdataMeanMono1)[1]))
+  TRdataMeanMono2 <- data.frame(TRdataMeanMono2, n1 = rep(unique(TRdataMeanMono1$n1), each = dim(TRdataMeanMono2)[1]))
+
+  # Concatenate all and subset to scenarios that are simulated
+  TRdataMeanFinal <- rbind(TRdataMeanCombo, TRdataMeanMono1, TRdataMeanMono2)
+  TRdataMeanFinal <- dplyr::inner_join(TRdataMeanFinal, SimulationScenarios)
+
+
+  #-----------------------------------------------------------------------------#
+  # Visualization ----
+  #-----------------------------------------------------------------------------#
+
+  # Define breaks for dose axes
+  breaks1  <- pretty(doses1.Plot)
+  breaks2  <- pretty(doses2.Plot)
+
+  # Get compound names
+  compounds <- unique(as.data.frame(dataEval)[(dataEval$YTYPE==0) | (is.na(dataEval$YTYPE)),c("ADM", "NAME")])
+  compounds <- within(dplyr::rename(compounds, Compound = NAME), {Compound <- gsub(" Dose", "", Compound)})
+  if (grepl(":::Dose", compounds$Compound[1])){
+    compounds$Compound <- gsub(":::Dose", "", compounds$Compound)
+  }
+
+  results$Compound1 <- compounds$Compound[compounds$ADM == 1]
+  results$Compound2 <- compounds$Compound[compounds$ADM == 2]
+  TRdataMeanFinal$Compound1 <- compounds$Compound[compounds$ADM == 1]
+  TRdataMeanFinal$Compound2 <- compounds$Compound[compounds$ADM == 2]
+
+  # Annotate scanarios
+  SimulationScenarios <- within(SimulationScenarios, {
+    Scenario <- paste0(n1, "x ", compounds$Compound[compounds$ADM == 1], " + ", n2, "x ", compounds$Compound[compounds$ADM == 2])
+  })
+  results         <- dplyr::left_join(results, SimulationScenarios)
+  TRdataMeanFinal <- dplyr::left_join(TRdataMeanFinal, SimulationScenarios)
+
+  # Midpoint for the color:
+  #midpoint = mean(range(results$Time2Recrud/24, na.rm = TRUE))
+  midpoint = max(results$Time2Recrud/24)/2
+  maxValue = ceiling(max(c(max(subset(TRdataMeanFinal, flagMin==FALSE)$Time2Recrud/24),
+                           max(results$Time2Recrud/24))))
+  # maxValue = ceiling(max(c(max(TRdataMeanFinal$Time2Recrud/24,na.rm=TRUE),
+  #                          max(results$Time2Recrud/24))))
+
+  # Colormap:
+  colfunc <- colorRampPalette(c("royalblue3","springgreen3","yellow3","orange3","red3"))
+
+  # Plot function
+  plot2D <- function(results,TRdataMeanFinal) {
+    # Do some interpolation:
+    results.int <- plyr::ddply(results, ~n1+n2+CONDITION+Compound1+Compound2+Scenario,
+                               function(x){
+                                 x.interp     <- akima::interp(x  = x$Dose1,
+                                                               y  = x$Dose2,
+                                                               z  = x$Time2Recrud,
+                                                               nx = floor(max(x$Dose1)-min(x$Dose1))+1,
+                                                               ny = floor(max(x$Dose2)-min(x$Dose2))+1)
+                                 x.interp.xyz <- as.data.frame(akima::interp2xyz(x.interp))
+                                 names(x.interp.xyz) <- c("Dose1", "Dose2", "Time2Recrud")
+                                 return(x.interp.xyz)
+                               }
+    )
+
+    # Genereate plot:
+    gr_x <- MMVggplot(results.int, aes(Dose1, Dose2),
+                      ActivityPath = ActivityPath,
+                      Caption      = caption) +
+      geom_tile(aes(fill = Time2Recrud/24)) +
+      #geom_tile(aes(fill = Time2Recrud/24), color = "grey") +
+      #scale_fill_gradient2("Time to Recrudescence", midpoint = midpoint, mid = "olivedrab") +
+      scale_fill_gradientn("Time to Recrudescence", colors = colfunc(100), limits=c(0,maxValue)) +
+      geom_point(data = subset(TRdataMeanFinal, flagMin==TRUE & !is.na(Time2Recrud)) , fill="grey", size = 6, shape = 21, color = "grey") +
+      geom_point(data = subset(TRdataMeanFinal, flagMin==FALSE), aes(fill=(Time2Recrud/24)), size = 6, shape = 21, color = "black") +
+      geom_text(data = TRdataMeanFinal, aes(label=round(Time2Recrud/24))) +
+      labs(x = compounds$Compound[compounds$ADM == 1],
+           y = compounds$Compound[compounds$ADM == 2],
+           title   = "Time to Recrudescence [days]") +
+      theme(legend.title = element_text(size = 7))
+
+    if (logScale){
+      gr_x <- gr_x +
+        scale_x_log10(breaks = breaks1) +
+        scale_y_log10(breaks = breaks2)
+    }else{
+      gr_x <- gr_x +
+        scale_x_continuous(breaks = breaks1) +
+        scale_y_continuous(breaks = breaks2)
+    }
+
+    return(gr_x)
+  }
+
+  # Print in one and multiple graphs
+  gr <- plot2D(results,TRdataMeanFinal) +
+    facet_wrap(~Scenario)
+  grList <- plyr::alply(SimulationScenarios$Scenario, 1, function(x) {
+    plot2D(subset(results, Scenario == x), subset(TRdataMeanFinal, Scenario == x)) +
+      ggtitle(paste0("Scenario: ", x))
+  })
+
+  if (!is.null(filename)) {
+    # PNG:
+    IQRoutputPNG(gr, filename)
+
+    #PDF:
+    IQRoutputPDFstart(paste0(filename,".pdf"))
+    for (k in seq(1,length(grList))){
+      print(grList[[k]])
+    }
+    IQRoutputPDFend(paste0(filename,".pdf"))
+  }
+
+  if (FLAGreturnObject) {
+    return(list(gr, grList))
+  }
+
+
+}
+#' compare_IndPredFits
+#'
+#' @description
+#' @param modelFolder
+#' @param outputFolder
+#' @param stratify Default: 'TRTNAME'
+#' @param fileName Default: 'DataPredComparison'
+#' @param logY Default: \code{FALSE}
+#' @param figLimX Default: \code{NULL}
+#' @param figLimY Default: \code{NULL}
+#' @param predToPlot Default: \code{NULL}
+#' @param withVehicle Default: \code{FALSE}
+#' @param ActivityPath Default: \code{NULL}
+#' @return
+#' @export
+#' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+#' @importFrom dplyr filter
+#' @importFrom plyr dlply alply
+compare_IndPredFits <- function(modelFolder,
+                                outputFolder,
+                                stratify     = "TRTNAME",
+                                fileName     = "DataPredComparison",
+                                logY         = FALSE,
+                                figLimX      = NULL,
+                                figLimY      = NULL,
+                                predToPlot   = NULL,
+                                withVehicle  = FALSE,
+                                ActivityPath = NULL) {
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Handle input arguments ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  if (!(stratify %in% c("USUBJID", "ID", "TRTNAME", "STUDY"))){
+    stop("Stratification only by USUBJID, ID, TRTNAME, or STUDY")
+  }
+
+  # Nicer name for the columns:
+  legendName <- ifelse(stratify=="TRTNAME", "Treatment",
+                       ifelse(stratify=="USUBJID", "Subject ID",
+                              ifelse(stratify=="ID", "Subject ID",
+                                     ifelse(stratify=="STUDY", "Study", "NONE"))))
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Get Observations and Predictions ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Get the model predictions:
+  modelPred <- getObsPred_IQRnlmeProject(modelFolder)
+
+  # Get the dataset for subject and compound information:
+  data <- getData_IQRnlmeProject(modelFolder)
+  # modelRes <- getResults_IQRnlmeProjectMulti(as_IQRnlmeProjectMulti(modelFolder))
+  # data     <- load_IQRdataGENERAL(file.path(modelFolder,modelRes[[1]]$projectHeader$DATA))
+
+  # Define Activity Path for caption:
+  ActivityPath <- get_ActivityPath(ActivityPath)
+
+  # Caption:
+  estModel <- readRDS(file.path(modelFolder,"project.est"))
+  caption  <- paste0("Activity: ", ActivityPath, "\nModel: ", estModel$model$name)
+
+  # Remove Vehicle:
+  if (!withVehicle){
+    data <- subset(data, TRTNAME!="Vehicle")
+  }
+
+  # Get TRTNAME in nicer order:
+  if ("DOSELEVEL1" %in% names(data)){
+    trtann  <- unique(data[, c("TRTNAME", "DOSELEVEL1", "DOSEMULT1", "DOSELEVEL2", "DOSEMULT2")])
+    trtann0 <- subset(trtann, DOSELEVEL1<=1e-12 & DOSELEVEL2<=1e-12)
+    trtann1 <- subset(trtann, DOSELEVEL1>1e-12  & DOSELEVEL2<=1e-12)
+    trtann1 <- trtann1[order(trtann1$DOSEMULT1, trtann1$DOSELEVEL1),]
+    trtann2 <- subset(trtann, DOSELEVEL1<=1e-12 & DOSELEVEL2>1e-12)
+    trtann2 <- trtann2[order(trtann2$DOSEMULT2, trtann2$DOSELEVEL2),]
+    trtann3 <- subset(trtann, DOSELEVEL1>1e-12  & DOSELEVEL2>1e-12)
+    trtann3 <- trtann3[order(trtann3$DOSEMULT1, trtann3$DOSEMULT2, trtann3$DOSELEVEL1, trtann3$DOSELEVEL2),]
+    trtann  <- rbind(trtann0, trtann1, trtann2, trtann3)
+  } else{
+    trtann  <- unique(data[, c("TRTNAME", "DOSELEVEL", "DOSEMULT")])
+    trtann0 <- subset(trtann, DOSELEVEL<=1e-12)
+    trtann1 <- subset(trtann, DOSELEVEL>1e-12)
+    trtann1 <- trtann1[order(trtann1$DOSEMULT, trtann1$DOSELEVEL),]
+    trtann  <- rbind(trtann0, trtann1)
+  }
+  data$TRTNAME  <- factor(data$TRTNAME , levels = trtann$TRTNAME[!duplicated(trtann$TRTNAME)])
+
+  # Get some info:
+  subjInfo <- unique(data[,c("STUDY","USUBJID", "ID", "TRTNAME")])
+  obsInfo  <- unique(data[data$EVID==0, c("YTYPE","NAME", "UNIT")])
+
+  # Add subject info to predictions:
+  modelPred     <- merge(modelPred, subjInfo)
+  modelPredPlot <- reshape(modelPred, direction = "long",
+                           varying = c("IPRED","XPRED"),
+                           v.names = "Value",
+                           times   = c("Individual", "Population"),
+                           timevar = "Prediction"
+  )
+
+  # Add observation information:
+  modelPredPlot <- merge(modelPredPlot, obsInfo)
+
+  # Retrieve Compounds Name:
+  COMPOUNDS <- data$COMPOUND[grepl("+", data$COMPOUND, fixed=TRUE)][1]
+  if (is.na(COMPOUNDS)){
+    CompoundName = c("Drug1","Drug2")
+  }else{
+    CompoundName <- strsplit(COMPOUNDS,split="+", fixed=TRUE)[[1]]
+  }
+
+  # Reduce Prediction to Pop. or Indiv. if needed:
+  if (!is.null(predToPlot)){
+    if (predToPlot=="POP" | predToPlot=="XPRED" | predToPlot=="Population"){
+      modelPredPlot <- modelPredPlot[modelPredPlot$Prediction=="Population",]
+    } else if ((predToPlot=="INDIV" | predToPlot=="IPRED"  | predToPlot=="Individual")){
+      modelPredPlot <- modelPredPlot[modelPredPlot$Prediction=="Individual",]
+    }
+  }
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Generate Plots ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Subset on Combo only for clarity on final plot
+  modelPredPlotMono <- dplyr::filter(modelPredPlot,!grepl("\\+",modelPredPlot$TRTNAME))
+
+  # Plot
+  grList <- plyr::dlply(modelPredPlotMono, ~NAME, function(x){
+    # Define y label:
+    ylabel <- paste0(x$NAME[1], " [", x$UNIT[1], "]")
+
+    # Plot data and predictions stratified by treatment:
+    gr <- IQRggplot(x, aes(TIME, color = TRTNAME, group = interaction(Prediction,USUBJID, TRTNAME)))
+
+    # Plot LLOQ if given  in data set:
+    LLOQ <- data[data$NAME == x$NAME[1],"LLOQ"][1]
+    if (!is.na(LLOQ)) {
+      gr <- gr + geom_hline(yintercept = LLOQ, linetype = 4, color = "black")
+      if (logY) {
+        gr <- gr + geom_text(x=min(modelPredPlotMono$TIME), y=log10(LLOQ), label="LLOQ", hjust = 0, vjust = 0, color = "black", size = 2.5)
+      } else {
+        gr <- gr + geom_text(x=min(modelPredPlotMono$TIME), y=LLOQ, label="LLOQ", hjust = 0, vjust = 0, color = "black", size = 2.5)
+      }
+    }
+
+    # Proceed with plot:
+    gr <- gr +
+      geom_point(aes(y=DV)) +
+      geom_line(aes(y=Value, linetype = Prediction)) +
+      scale_color_manual(legendName, values=IQRtoolsColors[2:40], guide=FALSE) +
+      labs(x = "Time [hours]",
+           y = ylabel,
+           caption = caption)
+
+    # y-scale to log if required:
+    if (logY)
+      gr <- gr + scale_y_log10()
+
+    # Stratify if required:
+    if (!is.null(stratify))
+      gr <- gr + facet_wrap(stratify, scales = "free")
+
+    # Add limits on x-axis and y axis:
+    if(!is.null(figLimX) & !is.null(figLimY)){
+      gr <- gr + coord_cartesian(xlim=figLimX, ylim=figLimY)
+    } else if(!is.null(figLimX)){
+      gr <- gr + coord_cartesian(xlim=figLimX)
+    } else if(!is.null(figLimY)){
+      gr <- gr + coord_cartesian(ylim=figLimY)
+    } else{
+      # do nothing
+    }
+
+    # Theme adjustments:
+    gr <- gr +
+      theme(strip.text       = element_text(size=7),
+            legend.position  = "bottom",
+            legend.direction = "vertical",
+            legend.text      = element_text(size=6),
+            legend.title     = element_text(size = 8),
+            plot.caption     = element_text(hjust=0)) #+
+    #guides(color=guide_legend(ncol=3))
+
+  })
+
+
+  # Subset on Combo only for clarity on final plot
+  modelPredPlotCombo <- dplyr::filter(modelPredPlot,grepl("\\+",modelPredPlot$TRTNAME))
+
+  # Plot
+  grList_Combo <- plyr::dlply(modelPredPlotCombo, ~NAME, function(x){
+    # Define y label:
+    ylabel <- paste0(x$NAME[1], " [", x$UNIT[1], "]")
+
+    # Plot data and predictions stratified by treatment:
+    gr <- IQRggplot(x, aes(TIME, color = TRTNAME, group = interaction(Prediction,USUBJID, TRTNAME)))
+
+    # Plot LLOQ if given  in data set:
+    LLOQ <- data[data$NAME == x$NAME[1],"LLOQ"][1]
+    if (!is.na(LLOQ)) {
+      gr <- gr + geom_hline(yintercept = LLOQ, linetype = 4, color = "black")
+      if (logY) {
+        gr <- gr + geom_text(x=min(modelPredPlotCombo$TIME), y=log10(LLOQ), label="LLOQ", hjust = 0, vjust = 0, color = "black", size = 2.5)
+      } else {
+        gr <- gr + geom_text(x=min(modelPredPlotCombo$TIME), y=LLOQ, label="LLOQ", hjust = 0, vjust = 0, color = "black", size = 2.5)
+      }
+    }
+
+    # Proceed with plot:
+    gr <- gr +
+      geom_point(aes(y=DV)) +
+      geom_line(aes(y=Value, linetype = Prediction)) +
+      scale_color_manual(legendName, values=IQRtoolsColors[2:40], guide=FALSE) +
+      labs(x = "Time [hours]",
+           y = ylabel,
+           caption = caption)
+
+    # y-scale to log if required:
+    if (logY)
+      gr <- gr + scale_y_log10()
+
+    # Stratify if required:
+    if (!is.null(stratify))
+      gr <- gr + facet_wrap(stratify, scales = "free")
+
+    # Add limits on x-axis and y axis:
+    if(!is.null(figLimX) & !is.null(figLimY)){
+      gr <- gr + coord_cartesian(xlim=figLimX, ylim=figLimY)
+    } else if(!is.null(figLimX)){
+      gr <- gr + coord_cartesian(xlim=figLimX)
+    } else if(!is.null(figLimY)){
+      gr <- gr + coord_cartesian(ylim=figLimY)
+    } else{
+      # do nothing
+    }
+
+    # Theme adjustments:
+    gr <- gr +
+      theme(strip.text       = element_text(size=7),
+            legend.position  = "bottom",
+            legend.direction = "vertical",
+            legend.text      = element_text(size=6),
+            legend.title     = element_text(size = 8),
+            plot.caption     = element_text(hjust=0))# +
+    #guides(color=guide_legend(ncol=2))
+
+  })
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Generate Plots for PDF ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  grList_PDF <- plyr::dlply(modelPredPlot, ~NAME, function(x){
+    grList_PDFk <- plyr::alply(unique(as.character(x[,stratify])), 1, function(y) {
+      # Define y label:
+      ylabel    <- paste0(subset(x, x[,stratify] == y)$NAME[1], " [", subset(x, x[,stratify] == y)$UNIT[1], "]")
+      plottitle <- as.character(subset(x, x[,stratify] == y)$TRTNAME[1])
+
+      # Plot data and predictions:
+      gr <- IQRggplot(subset(x, x[,stratify] == y), aes(TIME, group = interaction(Prediction,USUBJID)))
+
+      # Plot LLOQ if given  in data set:
+      LLOQ <- data[data$NAME == subset(x, x[,stratify] == y)$NAME[1],"LLOQ"][1]
+      if (!is.na(LLOQ)) {
+        gr <- gr + geom_hline(yintercept = LLOQ, linetype = 4, color = "black")
+        if (logY) {
+          gr <- gr + geom_text(x=min(subset(x, x[,stratify] == y)$TIME), y=log10(LLOQ), label="LLOQ", hjust = 0, vjust = 0, color = "black", size = 2.5)
+        } else {
+          gr <- gr + geom_text(x=min(subset(x, x[,stratify] == y)$TIME), y=LLOQ, label="LLOQ", hjust = 0, vjust = 0, color = "black", size = 2.5)
+        }
+      }
+
+      # Proceed with plot:
+      gr <- gr +
+        geom_point(aes(y=DV), color="dodgerblue") +
+        geom_line(aes(y=Value, linetype = Prediction), color="dodgerblue") +
+        #scale_color_manual(legendName, values=IQRtoolsColors[2:40]) +
+        #labs(x="Time [hours]", y=ylabel)
+        labs(x = "Time [hours]",
+             y = ylabel,
+             title = plottitle,
+             caption = caption)
+
+      # y-scale to log if required:
+      if (logY)
+        gr <- gr + scale_y_log10()
+
+      # # Stratify if required:
+      # if (!is.null(stratify))
+      #   gr <- gr + facet_wrap(stratify, scales = "free")
+
+      # Add limits on x-axis and y axis:
+      if(!is.null(figLimX) & !is.null(figLimY)){
+        gr <- gr + coord_cartesian(xlim=figLimX, ylim=figLimY)
+      } else if(!is.null(figLimX)){
+        gr <- gr + coord_cartesian(xlim=figLimX)
+      } else if(!is.null(figLimY)){
+        gr <- gr + coord_cartesian(ylim=figLimY)
+      } else{
+        # do nothing
+      }
+
+      # Theme adjustments:
+      gr <- gr +
+        theme(legend.position  = "bottom",
+              legend.direction = "vertical",
+              legend.text      = element_text(size=6),
+              legend.title     = element_text(size = 8),
+              plot.caption     = element_text(hjust=0)) +
+        guides(color=guide_legend(ncol=3))
+
+    })
+  })
+
+  # Define names for the plots.
+  #   Mono:
+  TypeNameMono  <- unique(modelPredPlotMono$NAME)
+  NameGraphMono <- c()
+  # grList and TypeNameMono should have the same length:
+  if (length(grList)==length(TypeNameMono)){
+    if (length(TypeNameMono)>0){
+      for (k in 1:length(grList)){
+        if (grepl("Parasitemia", TypeNameMono[k])){
+          NameGraphMono <- c(NameGraphMono, "Parasitemia")
+
+        } else if(grepl("Concentration", TypeNameMono[k])){
+          for (i in 1:length(CompoundName)){
+            if (grepl(CompoundName[i], TypeNameMono[k])){
+              NameGraphMono <- c(NameGraphMono, CompoundName[i])
+            }
+          }
+        } else{
+          stop("Data is neither Parasitemia or Concentration: Please add an extra 'else if' condition in order to properly define 'NameGraph'")
+        }
+      }
+    }
+  }else{
+    stop("Length of the graphic liste 'grList' generated does not correspond to the number of unique 'NAMEs' in 'modelPredPlotCombo'.")
+  }
+
+  #   Combo
+  TypeNameCombo  <- unique(modelPredPlotCombo$NAME)
+  NameGraphCombo <- c()
+  #   grList_Combo and TypeNameCombo should have the same length:
+  if (length(grList_Combo)==length(TypeNameCombo)){
+    if (length(TypeNameCombo)>0){
+      for (k in 1:length(grList_Combo)){
+        if (grepl("Parasitemia", TypeNameCombo[k])){
+          NameGraphCombo <- c(NameGraphCombo, "Parasitemia")
+
+        } else if(grepl("Concentration", TypeNameCombo[k])){
+          for (i in 1:length(CompoundName)){
+            if (grepl(CompoundName[i], TypeNameCombo[k])){
+              NameGraphCombo <- c(NameGraphCombo, CompoundName[i])
+            }
+          }
+        } else{
+          stop("Data is neither Parasitemia or Concentration: Please add an extra 'else if' condition in order to properly define 'NameGraph'")
+        }
+      }
+    }
+  }else{
+    stop("Length of the graphic liste 'grList_Combo' generated does not correspond to the number of unique 'NAMEs' in 'modelPredPlotCombo'.")
+  }
+
+
+  TypeNamePDF  <- unique(modelPredPlot$NAME)
+  NameGraphPDF <- c()
+  #   grList_PDF and TypeNamePDF should have the same length:
+  if (length(grList_PDF)==length(TypeNamePDF)){
+    if (length(TypeNamePDF)>0){
+      for (k in 1:length(grList_PDF)){
+        if (grepl("Parasitemia", TypeNamePDF[k])){
+          NameGraphPDF <- c(NameGraphPDF, "Parasitemia")
+
+        } else if (grepl("Concentration", TypeNamePDF[k])){
+          for (i in 1:length(CompoundName)){
+            if (grepl(CompoundName[i], TypeNamePDF[k])){
+              NameGraphPDF <- c(NameGraphPDF, CompoundName[i])
+            }
+          }
+        } else{
+          stop("Data is neither Parasitemia or Concentration: Please add an extra 'else if' condition in order to properly define 'NameGraph'")
+        }
+      }
+    }
+  }else{
+    stop("Length of the graphic liste 'grList_PDF' generated does not correspond to the number of unique 'NAMEs' in 'modelPredPlot'.")
+  }
+
+
+
+  # Plot to file:
+  #   PNG Mono
+  for (k in seq_along(grList)){
+    IQRoutputPNG(grList[[k]], file.path(outputFolder, paste0(fileName,"_", NameGraphMono[k],"_Mono")))
+  }
+  #   PNG Combo:
+  for (k in seq_along(grList_Combo)){
+    IQRoutputPNG(grList_Combo[[k]], file.path(outputFolder, paste0(fileName,"_", NameGraphCombo[k],"_Combo")))
+  }
+
+  #   PDF:
+  for (k in seq_along(grList_PDF)){
+    IQRoutputPDF(grList_PDF[[k]],
+                 file.path(outputFolder, paste0(fileName,"_", NameGraphPDF[k],".pdf")))
+  }
+}
+
+#' compare_ModelEstimateRobustness
+#'
+#' @description
+#' @param FitList
+#' @param filename
+#' @param ModelAlignment Default: 'Vertical'
+#' @param PDddiPara Default: c("Alpha", "Beta", "Alpha12", "Alpha21", "Beta12", "Beta21",
+#'    "Gamma")
+#' @return
+#' @export
+#' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+#' @importFrom plyr ldply
+#' @importFrom tidyr gather
+#' @importFrom gridExtra arrangeGrob
+compare_ModelEstimateRobustness <- function(FitList,
+                                            filename,
+                                            ModelAlignment = "Vertical",
+                                            PDddiPara      = c("Alpha","Beta","Alpha12","Alpha21","Beta12","Beta21", "Gamma") ) {
+
+  # First: Convert FitList to a IQRnlmeProjectMulti if it is a path:
+  if (is.character(FitList)){
+    modelFolders <- list.dirs(FitList, full.names = FALSE, recursive = FALSE)
+    FitList0     <- FitList
+    FitList      <- file.path(FitList0,modelFolders)
+    if(exists("is_IQRsysProject", mode="function") && is_IQRsysProject(FitList[1])){
+      # Do Nothing
+
+    } else{
+      VarToTest    <- as_IQRnlmeProjectMulti(FitList)
+    }
+  } else if (is.list(FitList)){
+    VarToTest <- FitList[[1]]$BestFit
+  }
+
+  # Get estimates from multiple estimations from all models:
+  if ((IQRversion<="0.9.99") && (is_IQRsysFit(VarToTest))){
+
+    # Check whether se or ci reported
+    FLAGci <- ("xopt_95CI_low" %in% names(FitList[[1]]$SysFit[[1]]))
+    nonestIdentifier <- ifelse(FLAGci, "xopt_95CI_low", "xopt_stderr")
+
+    # Get Estimates:
+    EstimateTable <- plyr::ldply(FitList, function(x) {
+
+      # Get Result for each model:
+      EstMulti <- plyr::ldply(x$SysFit, function(xx) as.data.frame(t(c(xx$xopt[!is.na(xx[[nonestIdentifier]])], OBJ = xx$fopt))))
+
+      # Gather Results:
+      EstMulti <- tidyr::gather(EstMulti, "Parameter", "Value", 1:dim(EstMulti)[2])
+
+    }, .id = "Model")
+
+    # Criteria:
+    Criteria <- "OBJ"
+
+
+
+  }else if(exists("is_IQRsysProject", mode="function") && is_IQRsysProject(FitList[1])){
+
+    # Give names to modelFolders:
+    names(modelFolders) <- modelFolders
+
+    # Get Estimates:
+    EstimateTable <- plyr::ldply(.data = FitList,
+                                 .fun  = function(x){
+                                   # Load SysFit Project
+                                   proj  <- load_IQRsysProject(x)
+                                   table <- tablePars_IQRsysModel(proj)
+                                   table <- as.data.frame(table, stringsAsFactors = FALSE)
+                                   table$Value <- as.numeric(table$Value)
+
+
+                                   # Generate Output:
+                                   #  Reduce table to parameter of interest
+                                   idx_Keep <- (table[,"RSE%"]!="" | table$Parameter=="BIC")
+                                   out    <- table[idx_Keep,]
+                                   #  Keep Only columns of interest
+                                   out <- out[,c("Parameter","Value")]
+                                   #  Add Model Column
+                                   out <- cbind(Model = gsub(paste0(FitList0,"/"), "", x), out)
+
+                                   # Correct BIC:
+                                   #  Get data
+                                   dataEval <- getData_IQRnlmeProject(x)
+                                   #  Estimate BIC
+                                   nobs <- dim(dataEval[dataEval$YTYPE==1 & !is.na(dataEval$YTYPE),])[1]
+                                   nind <- length(unique(dataEval$USUBJID))
+                                   npar <- length(which(table[,"RSE%"]!=""))
+                                   out$Value[out$Parameter=="BIC"] <- log(nind)*npar + table$Value[table$Parameter=="OBJ"]
+
+                                   # Output:
+                                   return(out)
+                                 })
+
+    # Criteria:
+    Criteria <- "BIC"
+
+
+  }else if (is_IQRnlmeProjectMulti(VarToTest)) {
+
+    # Give names to modelFolders:
+    names(modelFolders) <- modelFolders
+
+    # Get Estimates:
+    EstimateTable <- plyr::ldply(modelFolders, function(x){
+      # Get Result for each model:
+      EstMulti <- plyr::ldply(as_IQRnlmeProjectMulti(file.path(FitList0, x)), function(y){
+        # Get Results of sub-Model y:
+        yResult <- getResults_IQRnlmeProject(y)
+
+        # Return Data Frame:
+        as.data.frame(t(c(yResult$fixedEffects$values, yResult$errorParameter$values, BIC = yResult$objectivefunction$BIC)))
+      }
+      )
+
+      # Gather Results:
+      EstMulti <- tidyr::gather(EstMulti, "Parameter", "Value", 1:dim(EstMulti)[2])
+    }, .id = "Model")
+
+    # Criteria:
+    Criteria <- "BIC"
+
+
+  }else{
+    stop("'FitList' is not a valid object: IQRnlmeProjectMulti path or IQRsysFitMulti object")
+  }
+
+  # Keep only dataset with PD-DDI parameter:
+  PDddiParaTable <- subset(EstimateTable, (Parameter %in% PDddiPara))
+  PDddiParaTable$Intercept <- ifelse(PDddiParaTable$Parameter %in% c("Gamma"), 1, 0)
+
+  # Generate Plot:
+  if (ModelAlignment=="Vertical"){
+    # The model will be on the y-axis
+
+    gr1 <- IQRggplot(PDddiParaTable, aes(Value, Model, color=Model)) +
+      geom_point(size=3) +
+      geom_vline(aes(xintercept = Intercept), color="black", linetype="dashed", size=1.25) +
+      facet_wrap(~Parameter) +
+      scale_color_manual(values = IQRtoolsColors[2:20]) +
+      theme(legend.position = "")
+
+    gr2 <- IQRggplot(subset(EstimateTable, (Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))), aes(Value, Model, color = Model)) +
+      geom_jitter(position=position_jitter(height=0.2, width=0), size=3) +
+      facet_wrap(~Parameter, scales="free_x") +
+      scale_color_manual(values = IQRtoolsColors[2:20]) +
+      theme(legend.position = "")
+
+    if (with(EstimateTable, any(!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))  & (Parameter!=".id")))) {
+      gr3 <- IQRggplot(subset(EstimateTable, (!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter)) & (Parameter!=".id"))), aes(Value, Model, color = Model)) +
+        geom_point(size=3) +
+        facet_wrap(~Parameter, scales = "free_x") +
+        scale_color_manual(values = IQRtoolsColors[2:23]) +
+        theme(legend.position = "")
+      gr <- gridExtra::arrangeGrob(gr1, gr2, gr3, heights = c(5,2,3))
+    } else {
+      gr <- gridExtra::arrangeGrob(gr1, gr2, heights = c(5,3))
+    }
+
+
+  } else {
+    # The model will be on the x-axis
+    gr1 <- IQRggplot(PDddiParaTable, aes(Model, Value, color = Model)) +
+      geom_point(size=3) +
+      geom_hline(aes(yintercept = Intercept), color="black", linetype="dashed", size=1.25) +
+      facet_wrap(~Parameter) +
+      scale_color_manual(values = IQRtoolsColors[2:23]) +
+      theme(legend.position = "", axis.text.x = element_text(angle = -20, vjust=0.8, hjust=0.2))
+
+    gr2 <- IQRggplot(subset(EstimateTable, (Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))), aes(Model, Value, color = Model)) +
+      geom_jitter(position=position_jitter(height=0.2, width=0), size=3) +
+      facet_wrap(~Parameter, scales="free_y") +
+      scale_color_manual(values=IQRtoolsColors[2:23]) +
+      theme(legend.position = "",
+            axis.text.x     = element_text(angle=-20, vjust=0.8, hjust=0.2))
+
+    if (with(EstimateTable, any(!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter)) & (Parameter!=".id")))) {
+      gr3 <- IQRggplot(subset(EstimateTable, (!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter)) & (Parameter!=".id"))), aes(Model, Value, color = Model)) +
+        geom_point(size=3) +
+        facet_wrap(~Parameter, scales = "free_y") +
+        scale_color_manual(values = IQRtoolsColors[2:23]) +
+        theme(legend.position = "", axis.text.x = element_text(angle = -20, vjust=0.8, hjust=0.2))
+      gr <- gridExtra::arrangeGrob(gr1, gr2, gr3, heights = c(5,2,3))
+    } else {
+      gr <- gridExtra::arrangeGrob(gr1, gr2, heights = c(5,3))
+    }
+  }
+
+  # Save Plots:
+  IQRoutputPNG(gr,  filename=filename, height=8)
+  IQRoutputPNG(gr1, filename=paste0(filename,"_Interaction"), height=8)
+  if((IQRversion<="0.9.99") && (is_IQRsysFitMulti(VarToTest))){
+    IQRoutputPNG(gr2, filename=paste0(filename,"_OBJ"), height=8)
+  }else{
+    IQRoutputPNG(gr2, filename=paste0(filename,"_BIC"), height=8)
+  }
+  if (with(EstimateTable, any(!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))) ) ) {
+    IQRoutputPNG(gr3, filename=paste0(filename,"_PDparameters"), height = 8)
+  }
+}
+
+#' compare_PredFitsSYS
+#'
+#' @description
+#' @param fit
+#' @param pathname Default: 'ComparePredObs'
+#' @param logY Default: \code{FALSE}
+#' @param stratify Default: 'CONDITION'
+#' @param data Default: \code{NULL}
+#' @param modelFile Default: \code{NULL}
+#' @param FLAGrefit Default: \code{FALSE}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+#' @importFrom dplyr left_join inner_join
+#' @importFrom IQRtools regenerate_IQRmodel
+#' @importFrom plyr ddply dlply
+#' @importFrom tidyr gather
+compare_PredFitsSYS <- function(fit,                             # sysfit model to compare with data, expects object generated by "run_SysFitEstimation"
+                                pathname = "ComparePredObs",     # folder name for output graphs
+                                logY     = FALSE,                # flag whether to plot y on log-transformed scale
+                                stratify = "CONDITION",          # column to stratify panels by
+                                data     = NULL,                 # data to compare simulations with. If NULL modeling data will be used.
+                                # Data can be given as object or filename. Expects general data format.
+                                # Simulation will only be compared for individuals contained in data
+                                modelFile = NULL,                # Model file of PKPD model
+                                FLAGrefit = FALSE                # FLAG whether to use pre-calculated simulations or to regenerate simulations
+                                # (useful to match simulations times for data given)
+) {
+  # Function to compare predictions from sysfit model to
+  # observations. Predictions and observations are contained in "fit"
+
+  #-----------------------------------------------------------------------------#
+  # Observations (modeling and comparison data sets) ----
+  #-----------------------------------------------------------------------------#
+
+  # 1) data used for modeling (possibly does not contain BLOQ values due to M1 method!!!)
+  dataEval <- fit$BestFit$estObject$data
+
+  # 2) Data set to be used for comparison (to have all observations also the ones that are BLOQ)
+  if (is.null(data)) {
+    dataObs <- fit$BestFit$estObject$data
+  } else {
+    if (is.character(data)) data <- IQRloadCSVdata(data)
+    dataObs <- data[, c("ID", "NAME", "TIME", "DV", "CENS", "YTYPE")]
+  }
+
+  # Merge some information and subset to individuals used in modeling
+  dataObs <- dplyr::left_join(dataObs, fit$Info$SubjInfo)
+  dataObs <- dplyr::left_join(dataObs, fit$Info$RecInfo)
+  dataObs <- subset(dataObs, ID %in% dataEval$ID)
+
+  #-----------------------------------------------------------------------------#
+  # Predictions ----
+  #-----------------------------------------------------------------------------#
+
+  if (FLAGrefit) {
+
+    # Get model
+    if (is.null(modelFile)) {
+      model <- IQRtools::regenerate_IQRmodel(fit$BestFit$estObject$model)
+    } else {
+      model <- IQRmodel(modelFile)
+    }
+
+    # Get individual predictions for all observations (including BLOQ values)
+    PDparameters <- fit$BestFit$xopt[!grepl("sigma", names(fit$BestFit$xopt))]
+    eventData <- plyr::ddply(dataEval, ~ID+TRTNAME, function(x) {
+      # dosing and PK for individual
+      eventData <- x[x$YTYPE == 0, c("ID", "TIME", "ADM", "AMT", intersect(names(x), names(model$parameters)))]
+      if (dim(eventData)[1] == 0) {
+        eventData <- x[1, c("ID", "TIME", "ADM", "AMT", intersect(names(x), names(model$parameters)))]
+        eventData <- within(eventData, {TIME <- 0; AMT <- 0; ADM = 1})
+      }
+      eventData
+    })
+    eventTable <- IQReventTable(eventData, regression = intersect(names(dataEval), names(model$parameters)) )
+
+    # Simulations
+    dataPred   <- sim_IQRmodel(model, simtime = unique(dataObs$TIME[dataObs$YTYPE > 0]), eventTable = eventTable, parameters = PDparameters, FLAGoutputsOnly = TRUE)
+
+    # Subset to the data in the obervations
+    dataPred   <- dplyr::inner_join(dataPred, unique(dataObs[dataObs$YTYPE > 0, c("ID", "TIME")]))
+
+  } else {
+    # Get pre-calculated predictions
+    dataPred <- fit$Sim
+  }
+
+  # Reshape to long format wrt outputs
+  idxOUT <- grep("OUTPUT", names(dataPred))
+  dataPred <- tidyr::gather(dataPred, "YTYPE", "VALUE", idxOUT)
+  dataPred$YTYPE <- as.numeric(gsub("OUTPUT", "", dataPred$YTYPE))
+
+  # Merge some information
+  dataPred <- dplyr::left_join(dataPred, fit$Info$SubjInfo)
+  dataPred <- dplyr::left_join(dataPred, fit$Info$RecInfo)
+
+  # Get TRTNAME in nicer order
+  trtann  <- unique(as.data.frame(fit$Info$SubjInfo)[, c("TRTNAME", "DOSELEVEL1", "DOSEMULT1", "DOSELEVEL2", "DOSEMULT2")])
+  trtann0 <- subset(trtann, DOSELEVEL1<=1e-12 & DOSELEVEL2<=1e-12)
+  trtann1 <- subset(trtann, DOSELEVEL1>1e-12  & DOSELEVEL2<=1e-12)
+  trtann1 <- trtann1[order(trtann1$DOSEMULT1, trtann1$DOSELEVEL1),]
+  trtann2 <- subset(trtann, DOSELEVEL1<=1e-12 & DOSELEVEL2>1e-12)
+  trtann2 <- trtann2[order(trtann2$DOSEMULT2, trtann2$DOSELEVEL2),]
+  trtann3 <- subset(trtann, DOSELEVEL1>1e-12  & DOSELEVEL2>1e-12)
+  trtann3 <- trtann3[order(trtann3$DOSEMULT1, trtann3$DOSEMULT2, trtann3$DOSELEVEL1, trtann3$DOSELEVEL2),]
+  trtann  <- rbind(trtann0, trtann1, trtann2, trtann3)
+
+  dataObs$TRTNAME  <- factor(dataObs$TRTNAME , levels = trtann$TRTNAME[!duplicated(trtann$TRTNAME)])
+  dataPred$TRTNAME <- factor(dataPred$TRTNAME, levels = trtann$TRTNAME[!duplicated(trtann$TRTNAME)])
+
+  # Define stratification column
+  dataObs$STRAT  <- dataObs[[stratify]]
+  dataPred$STRAT <- dataPred[[stratify]]
+
+  # plotting function
+  plotObsPred <- function(pred,obs) {
+    # get subject index per stratification group
+    IDcond <- plyr::ddply(pred, ~STRAT, function(xx) {
+      data.frame(ID = unique(xx$ID), IDcond = as.character(seq_along(unique(xx$ID))))
+    })
+    pred <- dplyr::left_join(pred, IDcond)
+    obs  <- dplyr::left_join(obs, IDcond)
+
+    # Start plot with simulation
+    gr <- IQRggplot(pred, aes(TIME, VALUE, color = IDcond)) +
+      geom_line(aes(group = ID))
+
+    # Add observation with indication of censoring if present
+    if ("CENS" %in% names(obs)) {
+      gr <- gr + geom_point(data=obs, aes(TIME, DV, shape = as.character(CENS))) + scale_shape_manual("BLQ", values = c("0"=16,"1"=4))
+    } else {
+      gr <- gr + geom_point(data=obs, aes(TIME, DV))
+    }
+    # Add scales and labeing
+    gr <- gr +facet_wrap(~STRAT) +
+      labs(x = "Time [hours]",
+           y = paste0(obs$NAME[1], " [", dataPred$UNIT[1], "]"),
+           caption = paste0("Color indicates data from one individual (per panel)",
+                            "\nModel: ", fit$BestFit$estObject$model$name, ".txt",
+                            "\nParameters: ", paste(names(fit$BestFit$estObject$parameters$guess)[fit$BestFit$estObject$parameters$estimate==1 & !grepl("OUTPUT",names(fit$BestFit$estObject$parameters$guess))], collapse=", "))) +
+      scale_color_IQRtools(guide=FALSE) +
+      theme(strip.text   = element_text(size=7),
+            plot.caption = element_text(hjust=0))
+
+    # y scale to log if required:
+    if (logY)
+      gr <- gr + scale_y_log10()
+
+    gr
+  }
+
+  # Plot one figure per observation ----
+  grList1 <- plyr::dlply(dataPred, ~NAME, function(x) {
+    # get observation subset
+    obsk <- subset(dataObs, NAME == unique(x$NAME))
+
+    gr <- plotObsPred(x, obsk)
+  })
+
+  # Print to file:
+  for (k in seq_along(grList1)) {
+    # Remove potential special characters from readout name to use as filename suffix
+    fileSuffix <- gsub("[() :]","",names(grList1))
+    IQRoutputPNG(grList1[[k]], file.path(pathname, paste0(sprintf("%02.f", k),"-DataPredComparison_", fileSuffix)))
+  }
+  K <- k
+
+  # Plot one figure per observation and stratification column ----
+  grList2 <- plyr::dlply(dataPred, ~NAME+STRAT, function(x) {
+    # get observation subset
+    obsk <- subset(dataObs, NAME == unique(x$NAME) & STRAT == unique(x$STRAT))
+
+    gr <- plotObsPred(x, obsk)
+
+  })
+  # Print to file:
+  IQRoutputPDFstart(file.path(pathname, paste0(sprintf("%02.f", K+1), "-DataPredComparison_all")))
+  for (k in seq_along(grList2))
+    print(grList2[[k]])
+  IQRoutputPDFend(file.path(pathname, paste0(sprintf("%02.f", K+1), "-DataPredComparison_all")))
+}
+
+
+#' forwardSelection
+#'
+#' @description
+#' @param model
+#' @param dosing
+#' @param data
+#' @param modelSpec
+#' @param covariateToTest
+#' @param COVcentering Default: \code{NULL}
+#' @param projectPath Default: 'PKmodels'
+#' @param alpha Default: 0.01
+#' @param tool Default: 'MONOLIX'
+#' @param toolVersion Default: \code{NULL}
+#' @param ncores Default: 1
+#' @param Nparallel Default: 1
+#' @param setting Default: \code{NULL}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+forwardSelection <- function(model, dosing,
+                             data, modelSpec,
+                             covariateToTest,
+                             COVcentering   = NULL,
+                             projectPath    = "PKmodels",
+                             alpha          = 0.01,
+                             tool           = "MONOLIX",
+                             toolVersion    = NULL,
+                             ncores         = 1,
+                             Nparallel      = 1,
+                             setting        = NULL) {
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Detect IQR versionn ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # IQRversion <- sessionInfo()$otherPkgs$IQRtools$Version
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Handle input parameters ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Check if model is a IQRmodel object:
+  if (!is_IQRmodel(model)){stop("'model' should be a IQRmodel object.")}
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Define default setting (e.g algorithm's option) ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # General setting:
+  if ("multiTestN"        %in% names(setting)){multiTestN        = setting$multiTestN       } else{multiTestN        = 1    }
+  if ("multiTestSD"       %in% names(setting)){multiTestSD       = setting$multiTestSD      } else{multiTestSD       = 0.5  }
+  if ("FLAGanalytic"      %in% names(setting)){FLAGanalytic      = setting$FLAGanalytic     } else{FLAGanalytic      = TRUE }
+  if ("keepProjectFolder" %in% names(setting)){keepProjectFolder = setting$keepProjectFolder} else{keepProjectFolder = FALSE}
+
+  # General algo. options:
+  if ("algOpt.SEED"     %in% names(setting)){algOpt.SEED     = setting$algOpt.SEED    } else{algOpt.SEED     = 123456                    }
+  if ("algOpt.K1"       %in% names(setting)){algOpt.K1       = setting$algOpt.K1      } else{algOpt.K1       = 500                       }
+  if ("algOpt.K2"       %in% names(setting)){algOpt.K2       = setting$algOpt.K2      } else{algOpt.K2       = 200                       }
+  if ("algOpt.NRCHAINS" %in% names(setting)){algOpt.NRCHAINS = setting$algOpt.NRCHAINS} else{algOpt.NRCHAINS = min(ceiling(50/Nsubj),10) }
+
+  # NONMEM algo. options:
+  if ("algOpt.NONMEM.METHOD"             %in% names(setting)){algOpt.NONMEM.METHOD             = setting$algOpt.NONMEM.METHOD            } else{algOpt.NONMEM.METHOD             = "SAEM"}
+  if ("algOpt.NONMEM.MAXEVAL"            %in% names(setting)){algOpt.NONMEM.MAXEVAL            = setting$algOpt.NONMEM.MAXEVAL           } else{algOpt.NONMEM.MAXEVAL            = 9999  }
+  if ("algOpt.NONMEM.SIGDIGITS"          %in% names(setting)){algOpt.NONMEM.SIGDIGITS          = setting$algOpt.NONMEM.SIGDIGITS         } else{algOpt.NONMEM.SIGDIGITS          = 3     }
+  if ("algOpt.NONMEM.PRINT"              %in% names(setting)){algOpt.NONMEM.PRINT              = setting$algOpt.NONMEM.PRINT             } else{algOpt.NONMEM.PRINT              = 1     }
+  if ("algOpt.NONMEM.COVSTEP_MATRIX"     %in% names(setting)){algOpt.NONMEM.COVSTEP_MATRIX     = setting$algOpt.NONMEM.COVSTEP_MATRIX    } else{algOpt.NONMEM.COVSTEP_MATRIX     = "S"   }
+  if ("algOpt.NONMEM.ADVAN7"             %in% names(setting)){algOpt.NONMEM.ADVAN7             = setting$algOpt.NONMEM.ADVAN7            } else{algOpt.NONMEM.ADVAN7             = TRUE  }
+  if ("algOpt.NONMEM.N1"                 %in% names(setting)){algOpt.NONMEM.N1                 = setting$algOpt.NONMEM.N1                } else{algOpt.NONMEM.N1                 = 1000  }
+  if ("algOpt.NONMEM.TOL"                %in% names(setting)){algOpt.NONMEM.TOL                = setting$algOpt.NONMEM.TOL               } else{algOpt.NONMEM.TOL                = 6     }
+  if ("algOpt.NONMEM.SIGL"               %in% names(setting)){algOpt.NONMEM.SIGL               = setting$algOpt.NONMEM.SIGL              } else{algOpt.NONMEM.SIGL               = NULL  }
+  if ("algOpt.NONMEM.M4"                 %in% names(setting)){algOpt.NONMEM.M4                 = setting$algOpt.NONMEM.M4                } else{algOpt.NONMEM.M4                 = FALSE }
+  if ("algOpt.NONMEM.FOCEIOFV"           %in% names(setting)){algOpt.NONMEM.FOCEIOFV           = setting$algOpt.NONMEM.FOCEIOFV          } else{algOpt.NONMEM.FOCEIOFV           = FALSE }
+  if ("algOpt.NONMEM.IMPORTANCESAMPLING" %in% names(setting)){algOpt.NONMEM.IMPORTANCESAMPLING = setting$algOpt.NONMEM.IMPORTANCESAMPLING} else{algOpt.NONMEM.IMPORTANCESAMPLING = TRUE  }
+  if ("algOpt.NONMEM.IMP_ITERATIONS"     %in% names(setting)){algOpt.NONMEM.IMP_ITERATIONS     = setting$algOpt.NONMEM.IMP_ITERATIONS    } else{algOpt.NONMEM.IMP_ITERATIONS     = 10    }
+  if ("algOpt.NONMEM.ITS"                %in% names(setting)){algOpt.NONMEM.ITS                = setting$algOpt.NONMEM.ITS               } else{algOpt.NONMEM.ITS                = TRUE  }
+  if ("algOpt.NONMEM.ITS_ITERATIONS"     %in% names(setting)){algOpt.NONMEM.ITS_ITERATIONS     = setting$algOpt.NONMEM.ITS_ITERATIONS    } else{algOpt.NONMEM.ITS_ITERATIONS     = 10    }
+  if ("algOpt.NONMEM.WRES"               %in% names(setting)){algOpt.NONMEM.WRES               = setting$algOpt.NONMEM.WRES              } else{algOpt.NONMEM.WRES               = NULL  }
+  if ("algOpt.NONMEM.PRED"               %in% names(setting)){algOpt.NONMEM.PRED               = setting$algOpt.NONMEM.PRED              } else{algOpt.NONMEM.PRED               = NULL  }
+  if ("algOpt.NONMEM.RES"                %in% names(setting)){algOpt.NONMEM.RES                = setting$algOpt.NONMEM.RES               } else{algOpt.NONMEM.RES                = NULL  }
+
+  # Monolix algo. options:
+  if ("algOpt.MONOLIX.individualParameters" %in% names(setting)){algOpt.MONOLIX.individualParameters = setting$algOpt.MONOLIX.individualParameters} else{algOpt.MONOLIX.individualParameters = "conditionalMode"}
+  if ("algOpt.MONOLIX.indivMCMClength"      %in% names(setting)){algOpt.MONOLIX.indivMCMClength      = setting$algOpt.MONOLIX.indivMCMClength     } else{algOpt.MONOLIX.indivMCMClength      = 50               }
+  if ("algOpt.MONOLIX.indivNsim"            %in% names(setting)){algOpt.MONOLIX.indivNsim            = setting$algOpt.MONOLIX.indivNsim           } else{algOpt.MONOLIX.indivNsim            = 10               }
+  if ("algOpt.MONOLIX.indivRatio"           %in% names(setting)){algOpt.MONOLIX.indivRatio           = setting$algOpt.MONOLIX.indivRatio          } else{algOpt.MONOLIX.indivRatio           = 0.05             }
+  if ("algOpt.MONOLIX.logLikelihood"        %in% names(setting)){algOpt.MONOLIX.logLikelihood        = setting$algOpt.MONOLIX.logLikelihood       } else{algOpt.MONOLIX.logLikelihood        = "Linearization"  }
+  if ("algOpt.MONOLIX.fim"                  %in% names(setting)){algOpt.MONOLIX.fim                  = setting$algOpt.MONOLIX.fim                 } else{algOpt.MONOLIX.fim                  = "Linearization"  }
+  if ("algOpt.MONOLIX.variability"          %in% names(setting)){algOpt.MONOLIX.variability          = setting$algOpt.MONOLIX.variability         } else{algOpt.MONOLIX.variability          = "FirstStage"     }
+  if ("algOpt.MONOLIX.startTime"            %in% names(setting)){algOpt.MONOLIX.startTime            = setting$algOpt.MONOLIX.startTime           } else{algOpt.MONOLIX.startTime            = NULL             }
+  if ("algOpt.MONOLIX.STIFF"                %in% names(setting)){algOpt.MONOLIX.STIFF                = setting$algOpt.MONOLIX.STIFF               } else{algOpt.MONOLIX.STIFF                = TRUE             }
+
+  # NLMIXR algo. options:
+  if ("algOpt.NLMIXR.method"  %in% names(setting)){algOpt.NLMIXR.method  = setting$algOpt.NLMIXR.method } else{algOpt.NLMIXR.method  = "SAEM"}
+  if ("algOpt.NLMIXR.control" %in% names(setting)){algOpt.NLMIXR.control = setting$algOpt.NLMIXR.control} else{algOpt.NLMIXR.control = NULL  }
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Detect Parameter/Covariate and compare to model ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Get Parameters/Covariate:
+  #   If the element of the list has no name, it is assumed that each element will be composed of c("Parameter","Covariate")
+  if(is.null(names(covariateToTest))){
+    parameter <- character(length(covariateToTest))
+    covariate <- character(length(covariateToTest))
+    for (k in 1:length(covariateToTest)){
+      # Split Parameter to Covariate:
+      covTest   <- strsplit(covariateToTest[[k]],",")
+
+      # Save Parameter and Covariate:
+      parameter[k] <- covTest[[1]][1]
+      covariate[k] <- covTest[[2]][1]
+    }
+
+    #   If the list is named, each element is a vector of covariate associated to the name of the element
+  }else{
+    parameter <- character(0)
+    covariate <- character(0)
+    for (k in 1:length(covariateToTest)){
+      # Split Parameter to Covariate:
+      covTest   <- strsplit(covariateToTest[[k]],",")
+
+      # Save Parameter and Covariate:
+      for (i in 1:length(covTest)){
+        parameter <- c(parameter,
+                       names(covariateToTest[k]))
+        covariate <- c(covariate,
+                       covTest[[i]][1])
+      }
+    }
+  }
+
+  # Check of the parameter/covariate is in the initial model:
+  #   Remove if it is
+  for (k in 1:length(covariateToTest)){
+
+    # Check is the parameter exist:
+    if (!(parameter[k] %in% names(model$parameters))){
+      stop("The parameter ",parameter[k]," is not present in the model.")
+    }
+
+    # Check if the Parameter/Covariate couple already in the modelSpec:
+    if (!is.null(modelSpec)){
+      if (parameter[k] %in% names(modelSpec$covariateModel)){
+        if (covariate[k] %in% modelSpec$covariateModel[[parameter[k]]]){
+          # As they will be tested, they are removed from the initial modelSpec:
+          modelSpec$covariateModel[[parameter[k]]] <- modelSpec$covariateModel[[parameter[k]]][modelSpec$covariateModel[[parameter[k]]]!=covariate[k]]
+
+          # Print Warning for information:
+          warning("The parameter/covariate ", parameter[k], "/", covariate[k], " was removed from the modelSpec as it is going to be tested.")
+        }
+      }
+    }
+  }
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Save reference modelSpec ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  modelSpec0 <- modelSpec
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Forward Selection ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+  # Save key information at each process:
+  FSinfo <- data.frame(Iteration  = integer(0),
+                       Selected   = character(0),
+                       IVVchange  = character(0),
+                       pValue     = double(0),
+                       OBJ        = double(0),
+                       stringsAsFactors = FALSE)
+
+  # Generate Iteration:
+  p_j_min <- 0
+  i       <- 1
+  parameter_i  <- parameter
+  covariate_i  <- covariate
+  modelSpec_i0 <- modelSpec0
+
+  while ((p_j_min<=alpha) & (length(parameter_i)>0)){
+    # ~~~~ Path of Iteration i ~~~~
+    projectPath_i  <- file.path(projectPath, sprintf("%02i-Iteration%02i",i,i))
+
+
+    # ~~~~ Reference Model ~~~~
+    # Construct Model:
+    nlmeEst_i0 <- IQRnlmeEst(model     = model,
+                             dosing    = dosing,
+                             data      = data,
+                             modelSpec = modelSpec_i0)
+
+    # Construct Project:
+    projectPath_i0 <- file.path(projectPath_i,"00-ReferenceModel")
+    if (i==1){
+      proj <- IQRnlmeProject(nlmeEst_i0,
+                             projectPath = projectPath_i0,
+                             tool        = tool,
+                             toolVersion = toolVersion,
+
+                             # General setting :
+                             multiTestN        = multiTestN,
+                             multiTestSD       = multiTestSD,
+                             FLAGanalytic      = FLAGanalytic,
+                             keepProjectFolder = keepProjectFolder,
+
+                             # General algo. options:
+                             algOpt.SEED     = algOpt.SEED,
+                             algOpt.K1       = algOpt.K1,
+                             algOpt.K2       = algOpt.K2,
+                             algOpt.NRCHAINS = algOpt.NRCHAINS,
+
+                             # NONMEM algo. options:
+                             algOpt.NONMEM.METHOD             = algOpt.NONMEM.METHOD,
+                             algOpt.NONMEM.MAXEVAL            = algOpt.NONMEM.MAXEVAL,
+                             algOpt.NONMEM.SIGDIGITS          = algOpt.NONMEM.SIGDIGITS,
+                             algOpt.NONMEM.PRINT              = algOpt.NONMEM.PRINT,
+                             algOpt.NONMEM.COVSTEP_MATRIX     = algOpt.NONMEM.COVSTEP_MATRIX,
+                             algOpt.NONMEM.ADVAN7             = algOpt.NONMEM.ADVAN7,
+                             algOpt.NONMEM.N1                 = algOpt.NONMEM.N1,
+                             algOpt.NONMEM.TOL                = algOpt.NONMEM.TOL,
+                             algOpt.NONMEM.SIGL               = algOpt.NONMEM.SIGL,
+                             algOpt.NONMEM.M4                 = algOpt.NONMEM.M4,
+                             algOpt.NONMEM.FOCEIOFV           = algOpt.NONMEM.FOCEIOFV,
+                             algOpt.NONMEM.IMPORTANCESAMPLING = algOpt.NONMEM.IMPORTANCESAMPLING,
+                             algOpt.NONMEM.IMP_ITERATIONS     = algOpt.NONMEM.IMP_ITERATIONS,
+                             algOpt.NONMEM.ITS                = algOpt.NONMEM.ITS,
+                             algOpt.NONMEM.ITS_ITERATIONS     = algOpt.NONMEM.ITS_ITERATIONS,
+                             algOpt.NONMEM.WRES               = algOpt.NONMEM.WRES,
+                             algOpt.NONMEM.PRED               = algOpt.NONMEM.PRED,
+                             algOpt.NONMEM.RES                = algOpt.NONMEM.RES,
+
+                             # Monolix algo. options:
+                             algOpt.MONOLIX.individualParameters = algOpt.MONOLIX.individualParameters,
+                             algOpt.MONOLIX.indivMCMClength      = algOpt.MONOLIX.indivMCMClength,
+                             algOpt.MONOLIX.indivNsim            = algOpt.MONOLIX.indivNsim,
+                             algOpt.MONOLIX.indivRatio           = algOpt.MONOLIX.indivRatio,
+                             algOpt.MONOLIX.logLikelihood        = algOpt.MONOLIX.logLikelihood,
+                             algOpt.MONOLIX.fim                  = algOpt.MONOLIX.fim,
+                             algOpt.MONOLIX.variability          = algOpt.MONOLIX.variability,
+                             algOpt.MONOLIX.startTime            = algOpt.MONOLIX.startTime,
+                             algOpt.MONOLIX.STIFF                = algOpt.MONOLIX.STIFF,
+
+                             # NLMIXR algo. options:
+                             algOpt.NLMIXR.method                = algOpt.NLMIXR.method,
+                             algOpt.NLMIXR.control               = algOpt.NLMIXR.control)
+
+    } else{
+      duplicate_IQRnlmeProject(projectPath_ij_min, projectPath_i0)
+    }
+
+
+    # ~~~~ Extended Models ~~~~
+    projectPath_ij <- character(length(parameter_i))
+    for (j in 1:length(parameter_i)){
+      # Adapt modelSpec_i:
+      modelSpec_ij <- modelSpec_i0
+
+      # Adjust Covariate Model:
+      covariateModelToAdd_ij        <- list(covariate_i[j])
+      names(covariateModelToAdd_ij) <- c(parameter_i[j])
+      modelSpec_ij                  <- add_OneCovariateToModelSpec(modelSpec_ij,
+                                                                   covariateModelToAdd_ij,
+                                                                   COVcentering = COVcentering[covariate_i[j]])
+
+      # Construct Model:
+      nlmeEst_ij <- IQRnlmeEst(model     = model,
+                               dosing    = dosing,
+                               data      = data,
+                               modelSpec = modelSpec_ij)
+
+      # Construct Project:
+      projectPath_ij[j] <- file.path(projectPath_i, sprintf("%02i-ExtendedModel%02i",j,j))
+      proj <- IQRnlmeProject(nlmeEst_ij,
+                             projectPath = projectPath_ij[j],
+                             tool        = tool,
+                             toolVersion = toolVersion,
+
+                             # General setting :
+                             multiTestN        = multiTestN,
+                             multiTestSD       = multiTestSD,
+                             FLAGanalytic      = FLAGanalytic,
+                             keepProjectFolder = keepProjectFolder,
+
+                             # General algo. options:
+                             algOpt.SEED     = algOpt.SEED,
+                             algOpt.K1       = algOpt.K1,
+                             algOpt.K2       = algOpt.K2,
+                             algOpt.NRCHAINS = algOpt.NRCHAINS,
+
+                             # NONMEM algo. options:
+                             algOpt.NONMEM.METHOD             = algOpt.NONMEM.METHOD,
+                             algOpt.NONMEM.MAXEVAL            = algOpt.NONMEM.MAXEVAL,
+                             algOpt.NONMEM.SIGDIGITS          = algOpt.NONMEM.SIGDIGITS,
+                             algOpt.NONMEM.PRINT              = algOpt.NONMEM.PRINT,
+                             algOpt.NONMEM.COVSTEP_MATRIX     = algOpt.NONMEM.COVSTEP_MATRIX,
+                             algOpt.NONMEM.ADVAN7             = algOpt.NONMEM.ADVAN7,
+                             algOpt.NONMEM.N1                 = algOpt.NONMEM.N1,
+                             algOpt.NONMEM.TOL                = algOpt.NONMEM.TOL,
+                             algOpt.NONMEM.SIGL               = algOpt.NONMEM.SIGL,
+                             algOpt.NONMEM.M4                 = algOpt.NONMEM.M4,
+                             algOpt.NONMEM.FOCEIOFV           = algOpt.NONMEM.FOCEIOFV,
+                             algOpt.NONMEM.IMPORTANCESAMPLING = algOpt.NONMEM.IMPORTANCESAMPLING,
+                             algOpt.NONMEM.IMP_ITERATIONS     = algOpt.NONMEM.IMP_ITERATIONS,
+                             algOpt.NONMEM.ITS                = algOpt.NONMEM.ITS,
+                             algOpt.NONMEM.ITS_ITERATIONS     = algOpt.NONMEM.ITS_ITERATIONS,
+                             algOpt.NONMEM.WRES               = algOpt.NONMEM.WRES,
+                             algOpt.NONMEM.PRED               = algOpt.NONMEM.PRED,
+                             algOpt.NONMEM.RES                = algOpt.NONMEM.RES,
+
+                             # Monolix algo. options:
+                             algOpt.MONOLIX.individualParameters = algOpt.MONOLIX.individualParameters,
+                             algOpt.MONOLIX.indivMCMClength      = algOpt.MONOLIX.indivMCMClength,
+                             algOpt.MONOLIX.indivNsim            = algOpt.MONOLIX.indivNsim,
+                             algOpt.MONOLIX.indivRatio           = algOpt.MONOLIX.indivRatio,
+                             algOpt.MONOLIX.logLikelihood        = algOpt.MONOLIX.logLikelihood,
+                             algOpt.MONOLIX.fim                  = algOpt.MONOLIX.fim,
+                             algOpt.MONOLIX.variability          = algOpt.MONOLIX.variability,
+                             algOpt.MONOLIX.startTime            = algOpt.MONOLIX.startTime,
+                             algOpt.MONOLIX.STIFF                = algOpt.MONOLIX.STIFF,
+
+                             # NLMIXR algo. options:
+                             algOpt.NLMIXR.method                = algOpt.NLMIXR.method,
+                             algOpt.NLMIXR.control               = algOpt.NLMIXR.control)
+    }
+
+
+    # ~~~~ Run Estimation of all models ~~~~
+
+    # Run estimation of reference model:
+    cat("\n******\n   Running Estimation of Iteration", i, "\n")
+    allproj_i <- as_IQRnlmeProjectMulti(projectPath_i)
+    run_IQRnlmeProjectMulti(allproj_i, ncores=ncores, Nparallel=Nparallel)
+    cat(" ... Iteration", i, " finished!\n")
+
+    # Summary tables of iteration i:
+    summary(allproj_i, pathname=projectPath_i, FLAGreport=TRUE, FLAGremovePath=TRUE, order="BIC")
+
+
+    # ~~~~ Get OBJ/AIC/BIC of all models of iteration i ~~~~
+
+    # Get OBJ/AIC/BIC of reference model:
+    #   Load result of reference model:
+    proj_i0     <- as_IQRnlmeProject(projectPath_i0)
+    resModel_i0 <- getResults_IQRnlmeProject(proj_i0)
+    #   OBJ, AIC, BIC
+    goodnessOfFit_i0 <- c("OBJ" = resModel_i0$objectivefunction$OBJ,
+                          "AIC" = resModel_i0$objectivefunction$AIC,
+                          "BIC" = resModel_i0$objectivefunction$BIC)
+    # Count the number of estimated covariate variable:
+    NbrCov_i0   <- sum(resModel_i0$covariate$estimated)
+
+    # Save some information of Initial Iteration
+    if (i==1){
+      FSinfo_Temp <- data.frame(Iteration  = 0,
+                                Selected   = "-",
+                                IIVchange  = "-",
+                                pValue     = "-",
+                                OBJ        = goodnessOfFit_i0["OBJ"],
+                                stringsAsFactors=FALSE)
+      FSinfo <- rbind(FSinfo,FSinfo_Temp)
+    }
+
+    # Get OBJ/AIC/BIC of extended models & p-value:
+    goodnessOfFit_i           <- matrix(nrow=length(parameter_i),ncol=3)
+    colnames(goodnessOfFit_i) <- c("OBJ","AIC","BIC")
+    p                         <- numeric(length(parameter_i))+1
+    for (j in 1:length(parameter_i)){
+      #   Load result of extended model j:
+      proj_ij     <- as_IQRnlmeProject(projectPath_ij[j])
+      resModel_ij <- getResults_IQRnlmeProject(proj_ij)
+      #   OBJ, AIC, BIC
+      goodnessOfFit_i[j,] <- c(resModel_ij$objectivefunction$OBJ,
+                               resModel_ij$objectivefunction$AIC,
+                               resModel_ij$objectivefunction$BIC)
+
+      # Estimate p-value:
+      #   Count the number of estimated covariate parameters
+      NbrCov_ij  <- sum(resModel_ij$covariate$estimated)
+      #   Degree of Freedom
+      df_ij      <- NbrCov_ij - NbrCov_i0
+      #   Difference in -2LL
+      DeltaLL_ij <- goodnessOfFit_i0["OBJ"] - goodnessOfFit_i[j,"OBJ"]
+      #   p-Value
+      p[j]       <- pchisq(DeltaLL_ij, df=df_ij, lower.tail = FALSE)
+    }
+
+
+    # Select best extended model & its p-value:
+    j_min           <- which.min(p)
+    proj_ij_min     <- as_IQRnlmeProject(projectPath_ij[j_min])
+    resModel_ij_min <- getResults_IQRnlmeProject(proj_ij_min)
+    p_j_min         <- p[j_min]
+
+    # Change in IIV:
+    IIV_i0     <- resModel_i0$randomEffects$values[paste0("omega(",parameter_i[j_min],")")]
+    IIV_ij_min <- resModel_ij_min$randomEffects$values[paste0("omega(",parameter_i[j_min],")")]
+    IIVchange_ij_min      <- (IIV_ij_min-IIV_i0)/IIV_ij_min*100
+    IIVchange_ij_min_Sign <- ifelse(sign(IIVchange_ij_min)==-1,"-","+")
+
+    #   Add information to FS
+    if (p_j_min<=alpha){
+      FSinfo_Temp <- data.frame(Iteration = i,
+                                Selected  = paste0(parameter_i[j_min],"/",covariate_i[j_min]),
+                                IIVchange = paste0(IIVchange_ij_min_Sign,round(abs(IIVchange_ij_min),2),"%"),
+                                pValue    = formatC(p_j_min, format = "e", digits = 2),
+                                OBJ       = round(goodnessOfFit_i[j_min,"OBJ"],2),
+                                stringsAsFactors=FALSE)
+      FSinfo <- rbind(FSinfo,FSinfo_Temp)
+    }else{
+      FSinfo_Temp <- data.frame(Iteration = i,
+                                Selected  = paste0(parameter_i[j_min],"/",covariate_i[j_min]," not selected"),
+                                IIVchange = paste0(IIVchange_ij_min_Sign,round(abs(IIVchange_ij_min),2),"%"),
+                                pValue    = formatC(p_j_min, format = "e", digits = 2),
+                                OBJ       = round(goodnessOfFit_i[j_min,"OBJ"],2),
+                                stringsAsFactors=FALSE)
+      FSinfo <- rbind(FSinfo,FSinfo_Temp)
+    }
+
+
+    # ~~~~ Prepare Next Iteration ~~~~
+    # Adjust Covariate Model:
+    covariateModelToAdd_ijmin        <- list(covariate_i[j_min])
+    names(covariateModelToAdd_ijmin) <- c(parameter_i[j_min])
+    modelSpec_i0                     <- add_OneCovariateToModelSpec(modelSpec_i0,
+                                                                    covariateModelToAdd_ijmin,
+                                                                    COVcentering = COVcentering[covariate_i[j_min]])
+
+    # Remove selected parameter/covariate for
+    parameter_i <- parameter_i[-j_min]
+    covariate_i <- covariate_i[-j_min]
+
+    # Save path of best model to be copied in the next iteration:
+    projectPath_ij_min <- projectPath_ij[j_min]
+
+    # Iteration:
+    i <- i+1
+  }
+
+
+  # Save Results: i.e. FSinfo
+  names(FSinfo) <- c("Iteration", "Selected Parameter/Covariate", "Parameter IIV Change", "p-value", "Ob. Function")
+  IQRoutputTable(FSinfo,
+                 filename = file.path(projectPath,"ForwardSelection.txt"),
+                 xtitle   = "Forward selection of covariate models.",
+                 xfooter  = paste0("The selection was based on the criteria of p<=",alpha),
+                 report   = TRUE)
+
+  # Select output:
+  if (p_j_min<=alpha){
+    projectPath_final <- projectPath_ij_min
+  }else{
+    projectPath_final <- projectPath_i0
+  }
+
+  # Output:
+  return(projectPath_final)
+}
+#' likelihoodRatioTestIQR
+#'
+#' @description
+#' @param ModelPaths
+#' @param ModelName Default: \code{NULL}
+#' @param outputFolder Default: '../04-Output/Sxxx-ModelComparison'
+#' @param parameterPNG Default: \code{NULL}
+#' @return
+#' @export
+#' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+likelihoodRatioTestIQR <- function(ModelPaths, ModelName = NULL,
+                                   outputFolder = "../04-Output/Sxxx-ModelComparison",
+                                   parameterPNG = NULL) {
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Number of Models ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  n_Model = length(ModelPaths)
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Load Results ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Create a list of:
+  # - IQRnlmeProjectMulti object
+  # - Parameter Name: Keep only estimated parameters
+  # - Result
+  # - Model Name
+  ProjectObject <- list()
+  ParameterList <- list()
+  Result        <- list()
+  ResultBest    <- list()
+  Model_Name    <- list()
+  for (i in 1:n_Model){
+    # Add IQRnlmeProjectMulti
+    x             <- as_IQRnlmeProjectMulti(ModelPaths[i])
+    ProjectObject <- c(ProjectObject,list(x))
+
+    # Model Name:
+    splitPath <- strsplit(ProjectObject[[i]][[1]][1],"/")
+    if (length(ProjectObject[[i]])==1){
+      Model_Name   <- c(Model_Name, splitPath[[1]][length(splitPath[[1]])])
+    }else{
+      Model_Name   <- c(Model_Name, splitPath[[1]][length(splitPath[[1]])-1])
+    }
+
+    # Load Parameter name of the model i:
+    k <- 1
+    failed <- TRUE
+    Nmod <- length(ProjectObject[[i]])
+    while (k <= Nmod & failed){
+      resModel                <- try(getResults_IQRnlmeProject(ProjectObject[[i]][[k]][1]))
+      k <- k+1
+      if (!"try-error" %in% class(resModel)) failed <- FALSE
+    }
+    if (!failed) {
+
+      # Fixed Effect
+      parameters.FixedEffects.Names     <- resModel$fixedEffects$names
+      parameters.FixedEffects.Estimated <- resModel$fixedEffects$estimated
+      # Ramdom Effect
+      parameters.RandomEffects.Names     <- resModel$randomEffects$names
+      parameters.RandomEffects.Estimated <- resModel$randomEffects$estimated
+      # Correlation
+      parameters.Correlation.Names     <- resModel$correlation$names
+      parameters.Correlation.Estimated <- resModel$correlation$estimated
+      # Covariate
+      parameters.Covariate.Names     <- resModel$covariate$names
+      parameters.Covariate.Estimated <- resModel$covariate$estimated
+      # Error Parameter
+      parameters.ErrorParameter.Names     <- resModel$errorParameter$names
+      parameters.ErrorParameter.Estimated <- resModel$errorParameter$estimated
+
+      # Concatenate the parameters:
+      parameters.All.Names     <- c(parameters.FixedEffects.Names,
+                                    parameters.RandomEffects.Names,
+                                    parameters.Correlation.Names,
+                                    parameters.Covariate.Names,
+                                    parameters.ErrorParameter.Names)
+      parameters.All.Estimated <- c(parameters.FixedEffects.Estimated,
+                                    parameters.RandomEffects.Estimated,
+                                    parameters.Correlation.Estimated,
+                                    parameters.Covariate.Estimated,
+                                    parameters.ErrorParameter.Estimated)
+
+      # Keep only the parameters that were estimated:
+      idx_toKeep               = (parameters.All.Estimated==1)
+      parameters.ToKeep.Names  = list(parameters.All.Names[idx_toKeep])
+      ParameterList = c(ParameterList, parameters.ToKeep.Names)
+
+      # Extract Result:
+      Result_Temp           <- data.frame(matrix(ncol=length(parameters.ToKeep.Names[[1]])+4,nrow=0))
+      colnames(Result_Temp) <- c("MODEL ID","OBJ","AIC","BIC",parameters.ToKeep.Names[[1]])
+      for (j in 1:length(ProjectObject[[i]])){
+        # Model Run #:
+        if (length(ProjectObject[[i]])==1){
+          ModelID   <- c("MODEL ID"="MODEL_01")
+        }else{
+          splitPath <- strsplit(ProjectObject[[i]][[j]][1],"/")
+          ModelID   <- c("MODEL ID" = splitPath[[1]][length(splitPath[[1]])])
+        }
+
+        # Load Parameter name of the model i:
+        resModel_j                <- try(getResults_IQRnlmeProject(ProjectObject[[i]][[j]][1]))
+
+        if (!"try-error" %in% class(resModel_j)) {
+          #OBJ, AIC, BIC
+          goodnessOfFit <- c("OBJ" = resModel_j$objectivefunction$OBJ,
+                             "AIC" = resModel_j$objectivefunction$AIC,
+                             "BIC" = resModel_j$objectivefunction$BIC)
+          # Fixed Effect
+          parameters.FixedEffects.Values <- resModel_j$fixedEffects$values
+          # Ramdom Effect
+          parameters.RandomEffects.Values <- resModel_j$randomEffects$values
+          # Correlation
+          parameters.Correlation.Values <- resModel_j$correlation$values
+          # Covariate
+          parameters.Covariate.Values <- resModel_j$covariate$values
+          # Error Parameter
+          parameters.ErrorParameter.Values  <- resModel_j$errorParameter$values
+
+          # Concatenate the parameters:
+          parameters.All.Values <- c(parameters.FixedEffects.Values,
+                                     parameters.RandomEffects.Values,
+                                     parameters.Correlation.Values,
+                                     parameters.Covariate.Values,
+                                     parameters.ErrorParameter.Values)
+
+          # Keep only the parameters tht were estimated:
+          parameters.ToKeep.Values = list(parameters.All.Values[idx_toKeep])
+
+          # Bind ModelID, OBJ, AIC & BIC:
+          newRow <- c(ModelID,
+                      goodnessOfFit,
+                      parameters.ToKeep.Values[[1]])
+          Result_Temp <- rbind(Result_Temp,t(as.data.frame(newRow)))
+        }
+      }
+
+
+      # Remove Row Name:
+      rownames(Result_Temp) <- c()
+
+      # Adjust the type of each column:
+      Result_Temp[,1] <- as.character(Result_Temp[,1])
+      for (j in 2:length(Result_Temp)){
+        Result_Temp[,j] <- as.numeric(as.character(Result_Temp[,j]))
+      }
+
+      # Add to Result/ResultBest:
+      #   All estimated model
+      Result <- c(Result, list(Result_Temp))
+      #   Only the best estimate
+      idx_best   <- which.min(Result_Temp$OBJ)
+      ResultBest <- c(ResultBest, list(Result_Temp[idx_best,]))
+    }
+  }
+
+  # Rename Result List:
+  if (is.null(ModelName) | length(ModelName)!=n_Model){
+    ModelName = as.character(Model_Name)
+  }
+  names(Result)     <- ModelName
+  names(ResultBest) <- ModelName
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Parameters: Intersection & Union ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Look for the intersection and the union:
+  parameters.Intersect = intersect(ParameterList[[1]],ParameterList[[2]])
+  parameters.Union     = union(ParameterList[[1]], ParameterList[[2]])
+  for (i in 2:n_Model){
+    parameters.Intersect = intersect(parameters.Intersect,ParameterList[[i]])
+    parameters.Union     = union(parameters.Intersect,ParameterList[[i]])
+  }
+
+  # Compare union and intersection:
+  parameters.Extra = setdiff(parameters.Union,parameters.Intersect)
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Define Reference Model ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Check that at least one model has only the interesected parameters and define it as the reference model:
+  # As well for each model define the extra parameters relatively to the reference model
+  n_Ref = 0
+  parametersList.Extra = list()
+  for (i in 1:n_Model){
+    if (setequal(parameters.Intersect,ParameterList[[i]])){
+      n_Ref = i
+    }
+    parametersList.Extra_i = setdiff(ParameterList[[i]],parameters.Intersect)
+    parametersList.Extra = c(parametersList.Extra, list(parametersList.Extra_i))
+  }
+
+  # Check if there is a reference model:
+  if (n_Ref==0){
+    stop("The intercection of the parameters among all models does not correspond to any model -> NO REFERENCE MODEL.")
+  }
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Estimate p-value by Likelihood Ratio ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Result of Reference Model
+  ResultBest_RefModel = ResultBest[[n_Ref]]
+  n_Run_Ref       = nrow(ResultBest_RefModel)
+
+  # p-Value:
+  pValueList = list()
+  OBJlist    = list()
+  BIClist    = list()
+  for (i in 1:n_Model){
+    # Result from Model i:
+    Result_i = ResultBest[[i]]
+
+    if (i==n_Ref){
+      pValue_i = c("Ref")
+    }else{
+
+      #n_Run_i  = nrow(Result_i)
+
+      # Degree of Freedom:
+      df_i     = length(ParameterList[[i]]) - length(ParameterList[[n_Ref]])
+
+      # Difference in -2LL:
+      DeltaLL_i  = ResultBest_RefModel$OBJ[1] - Result_i$OBJ[1]
+
+      # p-Value:
+      pValue_i = pchisq(DeltaLL_i, df=df_i, lower.tail = FALSE)
+    }
+
+    # Add p-value in pValueList
+    pValueList = c(pValueList, list(pValue_i))
+    OBJlist    = c(OBJlist, list(Result_i$OBJ[1]))
+    BIClist    = c(BIClist, list(Result_i$BIC[1]))
+  }
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Generate Table for the p-values ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Define Table to be saved later:
+  pValueTable        = data.frame(matrix(ncol=0,nrow=n_Model))
+  pValueTable$MODEL  = ModelName
+  pValueTable$pValue = pValueList
+  pValueTable$OBJ    = OBJlist
+  pValueTable$BIC    = BIClist
+
+  # Change column Name:
+  names(pValueTable) <- c("Model","p-value","OBJ","BIC")
+
+  # Export Table:
+  IQRoutputTable(pValueTable,
+                 filename=file.path(outputFolder,"01-ModelComparison_p-values.txt"),
+                 xtitle=paste0("Comparison: p-value compare to the reference model ",ModelName[n_Ref]),
+                 xfooter = "The best estimate of each model was used to calculate the p-value\n    i.e. the lowest OBJ value")
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Generate Table to be used for the plots ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ResultData           <- data.frame(matrix(ncol=length(parameters.Union)+5,nrow=0))
+  colnames(ResultData) <- c("Model Name","MODEL ID","OBJ","AIC","BIC",parameters.Union)
+  for (i in 1:n_Model){
+    Result_i              <- Result[[i]]
+    Result_i$"Model Name" <- ModelName[i]
+    Result_i[setdiff(names(ResultData), names(Result_i))] <- NA
+
+    ResultData <- rbind(ResultData,Result_i)
+  }
+  ResultData <- ResultData[,c("Model Name","MODEL ID","OBJ","AIC","BIC",parameters.Union)]
+  colnames(ResultData) <- c("NameModel","ModelID","OBJ","AIC","BIC",parameters.Union)
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Generate plots for OBJ, AIC & BIC ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  #OBJ
+  gr <- IQRggplot(ResultData, aes(NameModel, OBJ, color=ModelID)) +
+    geom_point(aes(group=NameModel, color=ModelID)) +
+    theme(axis.text.x = element_text(angle = -25, hjust = 0)) +
+    xlab("")
+  IQRoutputPNG(gr, filename = file.path(outputFolder, "02a-ModelComparison_OBJ"))
+
+  #AIC
+  gr <- IQRggplot(ResultData, aes(NameModel, AIC, color=ModelID)) +
+    geom_point(aes(group=NameModel, color=ModelID)) +
+    theme(axis.text.x = element_text(angle = -25, hjust = 0)) +
+    xlab("")
+  IQRoutputPNG(gr, filename = file.path(outputFolder, "02b-ModelComparison_AIC"))
+
+  #BIC
+  gr <- IQRggplot(ResultData, aes(NameModel, BIC, color=ModelID)) +
+    geom_point(aes(group=NameModel, color=ModelID)) +
+    theme(axis.text.x = element_text(angle = -25, hjust = 0)) +
+    xlab("")
+  IQRoutputPNG(gr, filename = file.path(outputFolder, "02c-ModelComparison_BIC"))
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Generate plots for the Extra-Parameters ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # NORMAL SCALE:
+  # Start PDF for the outputs
+  IQRoutputPDFstart(file.path(outputFolder, "03-ModelComparison_ExtraParameter.pdf"))
+  # Plot
+  i_PNG = 1
+  for (i in 1:length(parameters.Extra)){
+    # Variable Name
+    var = parameters.Extra[i]
+
+    # Temporary Dataset:
+    ResultData_temp <- data.frame(GROUP = ResultData$ModelID,
+                                  X     = ResultData$NameModel,
+                                  Y     = ResultData[,var])
+
+    # Normal Scale:
+    gr <- IQRggplot(ResultData_temp, aes(X, Y, color=GROUP)) +
+      geom_point(aes(group=X, color=GROUP)) +
+      theme(axis.text.x = element_text(angle = -25, hjust = 0)) +
+      xlab("") +
+      ylab(var)
+
+    # Print for PDF:
+    print(gr)
+
+    # PNG output if wanted:
+    if (var %in% parameterPNG){
+      IQRoutputPNG(gr, filename = file.path(outputFolder, paste0("03",letters[i_PNG],"-ModelComparison_ExtraParameter_",var)))
+      i_PNG = i_PNG+1
+    }
+  }
+  IQRoutputPDFend(file.path(outputFolder, "03-ModelComparison_ExtraParameter.pdf"))
+
+
+  # LOG SCALE:
+  # Start PDF for the outputs
+  IQRoutputPDFstart(file.path(outputFolder, "03-ModelComparison_ExtraParameter_log.pdf"))
+  # Plot
+  i_PNG = 1
+  for (i in 1:length(parameters.Extra)){
+    # Variable Name
+    var = parameters.Extra[i]
+
+    # Temporary Dataset:
+    ResultData_temp <- data.frame(GROUP = ResultData$ModelID,
+                                  X     = ResultData$NameModel,
+                                  Y     = ResultData[,var])
+
+    # Log Scale:
+    gr <- IQRggplot(ResultData_temp, aes(X, Y, color=GROUP)) +
+      geom_point(aes(group=X, color=GROUP)) +
+      theme(axis.text.x = element_text(angle = -25, hjust = 0)) +
+      xlab("") +
+      ylab(var)
+
+    if (min(ResultData_temp$Y, na.rm=TRUE)>0){
+      gr <- gr + scale_y_log10()
+    }
+
+    # Print for PDF:
+    print(gr)
+
+    # PNG output if wanted:
+    if (var %in% parameterPNG){
+      IQRoutputPNG(gr, filename = file.path(outputFolder, paste0("03",letters[i_PNG],"-ModelComparison_ExtraParameter_",var,"_log")))
+      i_PNG = i_PNG+1
+    }
+  }
+  IQRoutputPDFend(file.path(outputFolder, "03-ModelComparison_ExtraParameter_log.pdf"))
+
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Generate plots for the Common Parameters ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # NORMAL SCALE:
+  # Start PDF for the outputs
+  IQRoutputPDFstart(file.path(outputFolder, "04-ModelComparison_CommonParameter.pdf"))
+  # Plot
+  i_PNG = 1
+  for (i in 1:length(parameters.Intersect)){
+    # Variable Name
+    var = parameters.Intersect[i]
+
+    # Temporary Dataset:
+    ResultData_temp <- data.frame(GROUP = ResultData$ModelID,
+                                  X     = ResultData$NameModel,
+                                  Y     = ResultData[,var])
+
+    # Normal Scale:
+    gr <- IQRggplot(ResultData_temp, aes(X, Y, color=GROUP)) +
+      geom_point(aes(group=X, color=GROUP)) +
+      theme(axis.text.x = element_text(angle = -25, hjust = 0)) +
+      xlab("") +
+      ylab(var)
+
+    # Print for PDF:
+    print(gr)
+
+    # PNG output if wanted:
+    if (var %in% parameterPNG){
+      IQRoutputPNG(gr, filename = file.path(outputFolder, paste0("04",letters[i_PNG],"-ModelComparison_CommonParameter_",var)))
+      i_PNG = i_PNG + 1
+    }
+  }
+  IQRoutputPDFend(file.path(outputFolder, "04-ModelComparison_CommonParameter.pdf"))
+
+  # LOG SCALE:
+  # Start PDF for the outputs
+  IQRoutputPDFstart(file.path(outputFolder, "04-ModelComparison_CommonParameter_log.pdf"))
+  # Plot
+  i_PNG = 1
+  for (i in 1:length(parameters.Intersect)){
+    # Variable Name
+    var = parameters.Intersect[i]
+
+    # Temporary Dataset:
+    ResultData_temp <- data.frame(GROUP = ResultData$ModelID,
+                                  X     = ResultData$NameModel,
+                                  Y     = ResultData[,var])
+
+    # Normal Scale:
+    gr <- IQRggplot(ResultData_temp, aes(X, Y, color=GROUP)) +
+      geom_point(aes(group=X, color=GROUP)) +
+      theme(axis.text.x = element_text(angle = -25, hjust = 0)) +
+      xlab("") +
+      ylab(var)
+
+    if (min(ResultData_temp$Y, na.rm=TRUE)>0){
+      gr <- gr + scale_y_log10()
+    }
+
+    # Print for PDF:
+    print(gr)
+
+    # PNG output if wanted:
+    if (var %in% parameterPNG){
+      IQRoutputPNG(gr, filename = file.path(outputFolder, paste0("04",letters[i_PNG],"-ModelComparison_CommonParameter_",var,"_log")))
+      i_PNG = i_PNG + 1
+    }
+  }
+  IQRoutputPDFend(file.path(outputFolder, "04-ModelComparison_CommonParameter_log.pdf"))
+}
+
+#' remove_OneCovariateToModelSpec
+#'
+#' @description
+#' @param modelSpec
+#' @param covariateModelToRemove
+#' @param COVcentering Default: \code{NULL}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+remove_OneCovariateToModelSpec <- function(modelSpec,
+                                           covariateModelToRemove,
+                                           COVcentering = NULL)
+{
+
+  # Check length of covariateModelToRemove
+  #   Needs to be one
+  if (length(covariateModelToRemove)!=1){
+    stop("'covariateModelToRemove' should be of a list of length 1.")
+  }
+  if (length(covariateModelToRemove[[1]])!=1){
+    stop("'covariateModelToRemove[[1]]' should be a vector of length 1.")
+  }
+
+
+  # Check that COVcentering is not NA:
+  if (!is.null(COVcentering) && is.na(COVcentering)){
+    COVcentering <- NULL
+  }
+
+  # Create output:
+  modelSpecOut <- modelSpec
+
+
+  # Get parameterName Names:
+  parameterName <- names(covariateModelToRemove)
+
+
+  # Adjust covariateModel:
+  if(!is.null(modelSpecOut$covariateModel) && !is.null(modelSpecOut$covariateModel[[parameterName]])){
+    modelSpecOut$covariateModel[[parameterName]] <- setdiff(modelSpecOut$covariateModel[[parameterName]], covariateModelToRemove[[1]])
+
+    if (length(modelSpecOut$covariateModel[[parameterName]])==0){
+      modelSpecOut$covariateModel[[parameterName]] <- NULL
+    }
+  }
+
+  # Adjust covariateModelValues:
+  if(!is.null(modelSpecOut$covariateModelValues) && !is.null(modelSpecOut$covariateModelValues[[parameterName]])){
+    idx_Keep <- which(names(modelSpecOut$covariateModelValues[[parameterName]])!=covariateModelToRemove[[1]])
+    modelSpecOut$covariateModelValues[[parameterName]] <- modelSpecOut$covariateModelValues[[parameterName]][idx_Keep]
+
+    if (length(modelSpecOut$covariateModelValues[[parameterName]])==0){
+      modelSpecOut$covariateModelValues[[parameterName]] <- NULL
+    }
+  }
+
+  # Adjust COVestimate:
+  if(!is.null(modelSpecOut$COVestimate) && !is.null(modelSpecOut$COVestimate[[parameterName]])){
+    idx_Keep <- which(names(modelSpecOut$COVestimate[[parameterName]])!=covariateModelToRemove[[1]])
+    modelSpecOut$COVestimate[[parameterName]] <- modelSpecOut$COVestimate[[parameterName]][idx_Keep]
+
+    if (length(modelSpecOut$COVestimate[[parameterName]])==0){
+      modelSpecOut$COVestimate[[parameterName]] <- NULL
+    }
+  }
+
+  # Adjust COVcentering:
+  if (!is.null(modelSpecOut$COVcentering) && (covariateModelToRemove[[1]] %in% names(modelSpecOut$COVcentering)) && !(covariateModelToRemove[[1]] %in% unlist(modelSpecOut$covariateModel))){
+    idx_Keep <- which(names(modelSpecOut$COVcentering)!=covariateModelToRemove[[1]])
+    modelSpecOut$COVcentering <- modelSpecOut$COVcentering[idx_Keep]
+
+    if (length(modelSpecOut$COVcentering)==0){
+      modelSpecOut$COVcentering <- NULL
+    }
+  }
+
+  # Adjust PriorVarCovariateModelValues:
+  if (!is.null(modelSpecOut$PriorVarCovariateModelValues) && (parameterName %in% names(modelSpecOut$PriorVarCovariateModelValues))){
+    idx_Keep <- which(names(modelSpecOut$PriorVarCovariateModelValues[[parameterName]])!=covariateModelToRemove[[1]])
+    modelSpecOut$PriorVarCovariateModelValues[[parameterName]] <- modelSpecOut$PriorVarCovariateModelValues[[parameterName]][idx_Keep]
+
+    if (length(modelSpecOut$PriorVarCovariateModelValues[[parameterName]])==0){
+      modelSpecOut$PriorVarCovariateModelValues[[parameterName]] <- NULL
+    }
+  }
+
+  # Output:
+  return(modelSpecOut)
+
+}
+#' table_EstimatesComboNLME
+#'
+#' @description
+#' @param x
+#' @param filename Default: \code{NULL}
+#' @param FLAGout Default: \code{FALSE}
+#' @param title Default: \code{NULL}
+#' @param footer Default: \code{NULL}
+#' @return
+#' @export
+#' @author Aline Fuchs (MMV)
+#' @family Model Assessment
+table_EstimatesComboNLME <- function(x, filename = NULL, FLAGout = FALSE, title = NULL, footer = NULL) {
+  # Input is a IQRnlmeProjectMulti with estimted combination models
+  # Interaction parameters that are estimated (AlphaXX and Beta XX) are converted to
+  # interpretable values.
+
+  # get estimation resuts
+  results <- getResults_IQRnlmeProjectMulti(x)
+
+  # Collect estimates for estimated parameters
+  resTable <- ldply(results, function(xx) {
+
+    # Get estimated parameters and their RSE
+    estimatedFix  <- xx$rawParameterInfo$fixedEffects$values[xx$rawParameterInfo$fixedEffects$estimated == 1]
+    estimatedRand <- xx$rawParameterInfo$randomEffects$values[xx$rawParameterInfo$randomEffects$estimated == 1]
+    estimatedErr  <- xx$rawParameterInfo$errorParameter$values[xx$rawParameterInfo$errorParameter$estimated == 1]
+    bic           <- xx$BIC
+
+    rseFix  <- xx$rawParameterInfo$fixedEffects$rse[xx$rawParameterInfo$fixedEffects$estimated == 1]
+    rseRand <- xx$rawParameterInfo$randomEffects$rse[xx$rawParameterInfo$randomEffects$estimated == 1]
+    rseErr  <- xx$rawParameterInfo$errorParameter$rse[xx$rawParameterInfo$errorParameter$estimated == 1]
+
+    # Translate interaction parameters
+    # - alpha: convert to maximum fold change of EC50 value
+    idxALPHA <- grep("Alpha", names(estimatedFix))
+    estimatedFix[idxALPHA] <- exp(-estimatedFix[idxALPHA])
+    # - beta: convert to maximum percent change of Emax value
+    idxBETA <- grep("Beta", names(estimatedFix))
+    estimatedFix[idxBETA] <- (exp(estimatedFix[idxBETA]) - 1) *100
+
+    # Create table
+    tblOut <- data.frame(
+      Estimate    = signif(c(bic, estimatedFix, estimatedRand, estimatedErr), digits = 3),
+      RSE         = signif(c(NA, rseFix, rseRand, rseErr), digits = 3),
+      row.names = c("BIC", names(estimatedFix),names(estimatedRand),names(estimatedErr))
+    )
+    tblOut <- within(tblOut, {
+      Estimate <- ifelse(is.na(RSE),Estimate,paste0(Estimate, " (",RSE, "%)"))
+      RSE <- NULL
+    })
+    tblOut <- as.data.frame(t(tblOut))
+
+    return(tblOut)
+
+  }, .id = "Model")
+
+  # Get rid of common root path for better readability
+  resTable$Model <- gsub(paste0(aux_CommonSubPath(as.character(resTable$Model)),"/"), "", resTable$Model)
+
+  # Order by BIC
+  resTable <- resTable[order(resTable$BIC), ]
+
+  # Write to file if filename given
+  if (!is.null(filename))
+    IQRoutputTable(resTable, filename = filename, xtitle = title, xfooter = footer, report = TRUE)
+
+  # return object if required
+  if (FLAGout) resTable
+
+}
+#' tablePopPDmalaria
+#'
+#' @description
+#' @param x
+#' @return
+#' @export
+#' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+#' @importFrom plyr rename
+tablePopPDmalaria <- function(x) {
+  # Function to create a table with population estimates of PD parameters for
+  # standard malaria PD models.
+  # x (IQRnlmeProjectMulti object) should contain models to compare
+
+  shortTable <- summaryParameters_IQRnlmeProjectMulti(x, FLAGremovePath = TRUE, order = "BIC")[[1]]
+  shortTable <- shortTable[grepl("[[:digit:]]+",shortTable$BIC),]
+  shortTable <- shortTable[1:(dim(shortTable)[1]/2),]
+  shortTable <- shortTable[,!grepl("PLerr", names(shortTable))]
+
+  # Convert EC50 from ug/mL to ng/mL
+  tmp <- shortTable$EC50
+  tmp <- matrix(unlist(strsplit(tmp, split = " ")), byrow = TRUE, ncol=2)
+  tmp[,1] <- as.numeric(tmp[,1])*1000
+  shortTable$EC50 <- paste0(tmp[,1], " ", tmp[,2])
+
+  # Nicer model names
+  shortTable$MODEL <- gsub("S[[:digit:]]{3}-","",shortTable$MODEL)
+  shortTable$MODEL[shortTable$MODEL == "EffectCpt"] <- "Effect compartment"
+  shortTable$MODEL[shortTable$MODEL == "Clearance_InVitroEmax"] <- "Clearance in vitro Emax"
+
+  # Column titles with units
+  shortTable <- plyr::rename(shortTable, replace = c(
+    MODEL  = "Model",
+    GR     = "$GR$ (1/h)",
+    EMAX   = "$E_{max}$ (1/h)",
+    EC50   = "$EC_{50}$ (ng/mL)",
+    hill   = "$Hill$ (-)",
+    kin    = "$k_{in}$ (1/h)",
+    ke     = "$k_{e}$ (1/h)",
+    CLPara = "$CL_{para}$ (1/h)",
+    IC50   = "$IC_{50}$ (-)",
+    error_ADD1 = "Residual Error (SD)"
+  ), warn_missing = FALSE)
+
+  # Return Output:
+  return(shortTable)
+}
+
+#' Create data for VPC
+#'
+#' Simulates trial data for producing VPCs
+#'
+#' Model from IQR nlme project is used to simulate trial population defined either in contained dataset
+#' or given dataset as dataVPC.
+#' It will also perform additional simulations to performed prediction correction for the VPCs if required.
+#' For the observations, a typical prediction will also be performed using the population
+#' parameter point estimates.
+#' The VPC can subsequently e plotted using [plotVPC_IQRdataVPC].
+#'
+#' @param project Path to IQRnlmeProject to be used to generate the VPC. The stuctural model
+#'           of this project will be used and parameters will be sampled from this project.
+#' @param dataVPC Dataset for VPC generation. If undefined, the modeling dataset from
+#'           modelSampleSimulate will be used. Mandatory if sampling from GPF.
+#' @param Ntrials Number of trials to simulate for the VPC
+#' @param gpf GPF object or path to GPF as xlsx file.
+#' @param dosingInfo Required for information on lagtimes and zero order absorption when no project is provided.
+#'           A list with one field per input in the model. Fields need to be named according to the input names
+#'           in the model. Each field is a named vector with the required name "type" and the optional names "Tlag" and
+#'           "Tk0". "type" can be "BOLUS", "INFUSION", or "ABSORPTION0". Only difference between INFUSION and
+#'           ABSORPTION0 is that in the first case the infusion RATE is provided in the data and in the second the
+#'           absorption time is sampled. Lag times can be added to each dosing input by defining "Tlag" as vector
+#'           element. The value of this element needs to be the parameter named for this lag time. If type="ABSORPTION0"
+#'           then also "Tk0" needs to be present as element in the vector. The value is a parameter name that also needs
+#'           to appear in the model. For examples see dosing_IQRest
+#' @param regressors Required for information on regressors if no project is given. Input is a vector with the names of
+#'           the regressors taken from the dataset.
+#' @param model Required structural model (IQRmodel) if no project is given
+#' @param modelsSample If sequential model building has been done (e.g. PKPD) model
+#'           parameters might need to be sampled from additional IQRnlmeProjects. modelSample
+#'           can be a vector with paths to these additional IQRnlmeProjects. It is not allowed that
+#'           in these projects and modelSampleSimulate estimated parameter names overlap
+#' @param FLAGpreparePC Flag whether to prepare prediction correction by corresponding additional simulations
+#' @param simtimeOption Select for which times, outputs are simulated: 'obs': respective indivdual observation time,
+#'           'simTFD': Equidistant or user-profided times after first dose, or 'simTAD': equidistant or
+#'           user-provided times after last dose (these will be repeated for each dose)
+#' @param simtimeN Define number of simulation time steps to add between smallest and largest
+#'           event time in the dataset. Equidistant sampling will be used.
+#' @param simtimes Vector of simulation times. If not NULL, this vector of simulation times overrules simtimeN
+#' @param simtimeMax Define maximum simulation time for VPC for all subjects.
+#' @param FLAGindivSimtimeMax If TRUE then the simulation time of a simulated subject will
+#'           be limited to the max event time for this subject in the dataset.
+#'           A subject here basically defines the dosing schedule and the covariates.
+#'           If set to FALSE then the simulation results will not be truncated.
+#' @param FLAGaddResidualNoise logical. If TRUE then residual noise will be added
+#'           to the simulations
+#' @param FLAGsampleUncertainty logical. If set to TRUE then for each new trial
+#'           new population parameters are drawn from the uncertainty distribution
+#' @param FLAGlogOutput Logical. If set to TRUE then the model outputs are assumed to be
+#'           log transformed data and will be back-transformed. The data in dataVPC are assumed to be
+#'           in the normal domain - to simplify dose-normalization. If FALSE then data and model outputs
+#'           are assumed to be in the same domain.
+#' @param factorMult named vector allowing to define multiplicative factors to modulate
+#'           by name selected sampled parameters for simulation
+#' @param ncores Number of cores for parallelization.
+#' @param seed Set seed for reproducible sampling. If the simulations are parallelized, the seed will be
+#'           set for the simulation of each population to seed + population number - 1.
+#' @param FLAGkeepParameters Logical. If set to TRUE, sampled parameters will be added to
+#'           returned simulation results. Defaults to FALSE
+#' @param opt_initstep Double value for initial step-size to be attempted for simulation
+#' @param opt_abstol Double value for absolute tolerance for simulation
+#' @param opt_reltol Double value for relative tolerance for simulation
+#' @param opt_maxstep Double value for maximal integrator step-size for simulation
+#' @param opt_minstep Double value for minimal integrator step-size for simulation
+#' @param par_lower Named vector of lower limits for sampled individual parameters.
+#'           Applies to individual parameters after potential modulation by factorMult argument.
+#' @param par_upper Named vector of upper limits for sampled individual parameters.
+#'           Applies to individual parameters after potential modulation by factorMult argument.
+#' @param FLAGfixDoseOverlap Input argument for IQReventTable. If TRUE (default) then ensure
+#'   non-overlapping dosing intervals if these occur by re-defining the dosing events.
+#'   If FALSE in case of overlapping dose intervals, error is issued. Please inspect correct
+#'   behavior. If correction does not work, par_upper could be an alternative to avoid overlapping
+#'   dosing events.
+#' @param FLAGstopFailedSim Logical. If TRUE execution will be stopped if simulation fails for any
+#'   of the repeated trials. Defaults to FALSE. Execution will stop anyways if all simulations fail.
+#'
+#' @return List with data frames *sim* and *obs*. If not prediction correction preparation
+#'         is required, *sim* contains individual predictions and *obs* the observation data,
+#'         including dosing records. Otherwise *sim* and *obs* contains typical predictions
+#'         in addition.
+#' @export
+#' @family IQRnlmeProject
+#' @family VPC
+createDataVPC_IQRnlmeProject_MMV <- function(
+    project = NULL,
+    dataVPC = NULL,
+    Ntrials,
+    gpf = NULL,
+    dosingInfo = NULL,
+    regressors = NULL,
+    model = NULL,
+    modelsSample = NULL,
+    FLAGpreparePC = FALSE,
+    simtimeOption = c("obs", "simTFD", "simTAD"),
+    simtimeN = 200,
+    simtimes = NULL,
+    simtimeMax = NULL,
+    FLAGindivSimtimeMax = FALSE,
+    FLAGaddResidualNoise = TRUE,
+    FLAGsampleUncertainty = TRUE,
+    FLAGlogOutput = FALSE,
+    factorMult = NULL,
+    ncores = 1,
+    seed = NULL,
+    FLAGkeepParameters = FALSE,
+    opt_initstep = 0,
+    opt_abstol = 1e-6,
+    opt_reltol = 1e-6,
+    opt_maxstep = 0,
+    opt_minstep = 0,
+    par_lower = NULL,
+    par_upper = NULL,
+    FLAGfixDoseOverlap = TRUE,
+    FLAGstopFailedSim = FALSE
+) {
+  # TODO improve efficiency by not re-simulating for individual typical if uncertainty == FALSE (needs to re-structure code as parallel loops cannot use results from first iteration I assume)
+
+
+  # -------------------------------------------------------------------------#
+  # Handle inputs and general settings ----
+  # -------------------------------------------------------------------------#
+
+  # . Check input argument for setting simulation time
+  simtimeOption <- match.arg(simtimeOption)
+
+  # . Set seed for reproducibility
+  if (!is.null(seed)) set.seed(seed)
+
+  # . Get GPF - 3 cases: read from file, generate from project, or take as is
+  if (!is.null(gpf) && is.character(gpf)) {
+    gpf <- GPF(filename = gpf)
+  }
+  if (is.null(gpf)) { # We cover this case to switch to sampling from GPF only in the future.
+    if (is.null(project)) stopIQR("If no NLME project is provided, you need to provide a GPF (next to data).")
+    gpf <- generate_GPFFromIQRnlmeProject(project)
+  }
+  # Last check that gpf is well-formed and parsed
+  gpf <- GPF(filename = gpf$filename, estimates = gpf$estimates, uncertainty_correlation = gpf$uncertainty_correlation)
+
+  # . Handle information on absorption, lag time, regressors, covariates, and the model
+  # depending on whether nlme project is available
+  if (!is.null(project)) {
+
+    # Get the information from the estimation object and the project header
+    estInfo__ <- readRDS(file.path(project, "project.est"))
+    info__ <- getHeader_IQRnlmeProject(project)
+
+    # 1 - zero order absorption
+    dosingTypes__ <- info__$DOSINGTYPES
+    # Get absorption names from estimation information
+    infoTk0__  <- estInfo__[["dosingInfo"]][["TK0times"]]
+    infoTk0__  <- infoTk0__[!sapply(infoTk0__, is.na)]
+
+    # 2 - lag times
+    namesTlag__ <- estInfo__[["dosingInfo"]][["lagTimes"]]
+    names(namesTlag__) <- gsub("INPUT","Tlag",names(namesTlag__))
+
+    # 3 - regressor and parameter names
+    # .. regressors: these come either from the data or another NLME model
+    regNames__ <- info__$REGRESSIONNAMES
+    if (regNames__[1] == "") regNames__ <- NULL
+    # .. parameters: these are sampled from the project
+    parNames__ <- info__$PARAMNAMES
+
+    # 4 - structural model
+    model__ <- IQRmodel(file.path(as.character(project),"model.txt"))
+
+    # Issue some warnings if apply
+    if (!is.null(info__$IOVPARAMETERS)) {
+      if (info__$IOVPARAMETERS[1]!="")
+        warningIQR("Model has IOV estimated. IOV is not considered in the VPC!")
+    }
+    if (!is.null(dosingInfo)) warningIQR("Dosing info that was defined, but will be taken from NLME project.")
+    if (!is.null(regressors)) warningIQR("Regressor names were defined, but will be taken from NLME project.")
+    if (!is.null(model)) warningIQR("Model was defined, but will be taken from NLME project.")
+
+  } else {
+
+    if (is.null(dosingInfo)) stopIQR("If no NLME project is defined, 'dosingInfo' needs to be specified.")
+    if (is.null(model)) stopIQR("If no NLME project is defined, 'model' needs to be specified.")
+    if (is.null(regressors)) warningIQR("If no NLME project is defined, 'regressors' needs to be specified if required.")
+
+    # 1 - zero order absorption
+    dosingTypes__ <- try(sapply(dosingInfo, function(d) d[["type"]]))
+    if ("try-error" %in% class(dosingTypes__)) stopIQR("All dosings need to define type.")
+    infoTk0__     <- sapply(dosingInfo, function(d) if ("Tk0" %in% names(d)) d[["Tk0"]] else NA )
+    infoTk0__  <- infoTk0__[!sapply(infoTk0__, is.na)]
+
+    # 2 - lag times
+    namesTlag__   <- sapply(dosingInfo, function(d) if ("Tlag" %in% names(d)) d[["Tlag"]] else NA )
+    names(namesTlag__) <- gsub("INPUT","Tlag",names(namesTlag__))
+
+    # 3 - parameter and regression names
+    regNames__ <- regressors
+    parNames__ <- names(gpf$p.MODEL)
+
+    # 4 - structural model
+    model__ <- model
+
+  }
+
+
+  # Get data with covariates and regression parameters
+  if (is.null(dataVPC)) {
+    if (is.null(project)) stopIQR("If no NLME project is provided, you need to provide dataVPC (next to GPF).")
+    data__ <- getData_IQRnlmeProject(project)
+  } else {
+    # To make sure that data colums are characters instead of factors (besides the numerical ones)
+    # dataset is reloaded with IQRloadCSVdata function
+    tmpfile__ <- file.path(tempdirIQR(),"tmpdata.csv")
+    IQRsaveCSVdata(dataVPC, tmpfile__)
+    data__ <- IQRloadCSVdata(tmpfile__)
+    unlink(tmpfile__)
+  }
+
+  # Check input data for dose related columns
+  if (!"II" %in% names(data__)) {
+    data__$II <- 0
+  }
+  if (!"ADDL" %in% names(data__)) {
+    data__$ADDL <- 0
+  }
+  if (!"TINF" %in% names(data__)) {
+    data__$TINF <- NA
+  }
+  if (!"RATE" %in% names(data__)) {
+    data__$RATE <- NA
+  }
+
+  # Check for NA in TIME column
+  if (any(is.na(data__[["TIME"]]))) {
+    warningIQR("Data contains TIMEs that are NA. The corresponding records are removed.")
+    data__ <- data__[!is.na(data__[["TIME"]]),]
+  }
+
+  # Check that observations in input data can be uniquely identified
+  if (!"IXGDF" %in% names(data__)) {
+    data__$IXGDF <- 1:nrow(data__)
+  }
+  checkDupTimes__ <- dplyr::summarise(dplyr::group_by(dplyr::filter(data__, EVID == 0), ID, YTYPE), DUP = any(duplicated(TIME)))
+  if (any(checkDupTimes__$DUP)) {
+    data__$YTYPE[data__$EVID == 1] <- 0 # make sure that doses get ytype=0
+    data__ <- dplyr::group_by(data__, ID, YTYPE) # do checking by individual and ytype
+    data__ <- dplyr::mutate(data__,
+                            DUP = duplicated(TIME),
+                            TIME = dplyr::case_when(YTYPE == 0 ~ TIME, # leave time for doses as is
+                                                    DUP ~ TIME + 1e-4, # add a little time step for duplicated times
+                                                    TRUE ~ TIME))      # do nothing in other cases
+    # clean up
+    data__ <- ungroup(data__)
+    data__$DUP <- NULL
+  }
+  # Re-check
+  checkDupTimes__ <- dplyr::summarise(dplyr::group_by(dplyr::filter(data__, EVID == 0), ID, YTYPE), DUP = any(duplicated(TIME)), .groups = "drop")
+  if (any(checkDupTimes__$DUP)) stopIQR("There were duplicated observation time points that could not be removed automatically.
+                                        \nPlease check duplicated observation times for which adding 1e4 leads to another duplication.")
+
+  # Discard observations with MDV == 1 and CENS == 0
+  data__ <- dplyr::filter(data__, !(MDV == 1 & CENS == 0 & EVID == 0))
+
+  # . Handle sources for regressors ----
+
+  # Check the ones coming from models
+  regNamesMod__ <- NULL
+  if (!is.null(modelsSample)) {
+    # Check parameters that are provided by additional NLME models
+    parsAdd__ <- lapply(modelsSample, function(p__) {
+      if ("GPF" %in% class(p__)) {
+        names(p__$p.MODEL)
+      } else {
+        getHeader_IQRnlmeProject(p__)$PARAMNAMES
+      }
+    })
+    # Check whether they overlap with each other
+    if (any(duplicated(unlist(parsAdd__)))) stopIQR("Some parameters occur in multiple additional NLME models to sample from.")
+    # Check whether they overlap with parameters from main NLME project/GPF
+    if (any(unlist(parsAdd__) %in% parNames__)) stopIQR("Some parameters from additional NLME models occur in the project to simulate.")
+    # # Check if all regression parameters are provided
+    # if (!all(regNames__ %in% unlist(parsAdd__))) stopIQR("Not all regression parameters of the project are provided by the additional NLME models.")
+    regNamesMod__ <- parsAdd__
+  }
+
+  # Check the ones coming from the data
+  regNamesDat__ <- setdiff(regNames__, regNamesMod__)
+  if (!all(regNamesDat__ %in% names(data__))) stopIQR(paste0(paste0(regNamesDat__, collapse=", "), "are expected as regressors in the dataset. \nNot all of them exist in the data. Either provide in data or as parameters sampled from additional NLME models."))
+
+  # Get the common part of the event table (individual dosing and potentially regression parameters)
+  if (length(regNamesDat__) > 0) {
+    # if there are regression parameters from data, include them
+    # . regression data
+    rData__ <- dplyr::select(dplyr::filter(data__, !duplicated(dplyr::select(data__, USUBJID, tidyselect::all_of(regNamesDat__)))), USUBJID, ID, TIME, tidyselect::all_of(regNamesDat__))
+    # . dosing records
+    dData__ <- dplyr::select(dplyr::filter(data__, EVID == 1), USUBJID, ID, TIME, tidyselect::any_of("NAME"), ADM, AMT, II, ADDL, RATE, TINF)
+    # Merge and sort by TIME
+    eData0  <- dplyr::full_join(rData__, dData__, by = c("USUBJID", "ID", "TIME"))
+    eData0  <- dplyr::arrange(eData0, USUBJID, TIME)
+    # Make sure to fill up NAs in regression columns
+    if (any(sapply(regNamesDat__, function(.r) any(is.na(eData0[[.r]]))))) {
+      eData0 <- lapply(split(eData0, eData0$USUBJID), function(.d) {
+        .d <- dplyr::mutate_at(.d,
+                               .vars = dplyr::vars(dplyr::one_of(regNamesDat__)),
+                               .funs = function(x) aux_na_locf(x, T = .d$TIME)
+        )
+      })
+      eData0 <- do.call(rbind, eData0)
+    }
+
+  } else {
+    # if not, take only dosing
+    eData0 <- dplyr::select(dplyr::filter(data__, EVID == 1), USUBJID, ID, TIME, tidyselect::any_of("NAME"), ADM, AMT, II, ADDL, RATE, TINF)
+    # add dummy line for subjects without dosing
+    dataNoDose__ <- unique(dplyr::select(dplyr::filter(data__, !USUBJID %in% eData0$USUBJID), USUBJID, ID, ADM, AMT, II, ADDL, RATE, TINF))
+    if (nrow(dataNoDose__) > 0) {
+      dataNoDose__ <- dplyr::mutate(dataNoDose__, TIME = 0)
+      eData0 <- dplyr::bind_rows(eData0, dataNoDose__)
+    }
+  }
+
+  # Set flag for sampling from uncertainty
+  FLAG_SAMPLE__ <- ifelse(FLAGsampleUncertainty, 6, 5)
+
+  # Handle covariates ----
+  # These need to be present in the data
+  covNames__ <- getcovariateInfo_VPC(gpf,modelsSample,data__)
+
+  # Get covariate list
+  covData__ <- unique(dplyr::select(data__, USUBJID, ID, tidyselect::all_of(covNames__)))
+
+
+  # . Handle absorption times -----
+  if ("ABSORPTION0" %in% dosingTypes__) {
+    # Seems somewhat strange check. Can this be simplified? -> remove it and see whether there is any issue
+    # if (is.null(ABSORPTION0names)) {
+    #   # If not entered manually, get absorption names from estimation information
+    #   infoTk0__  <- estInfo__[["dosingInfo"]][["TK0times"]]
+    #   infoTk0__  <- infoTk0__[!sapply(infoTk0__, is.na)]
+
+    if (length(infoTk0__) == 0) {
+      ABS0inputs__ <- NULL
+      namesTk0__   <- NULL
+    } else {
+      ABS0inputs__ <- as.numeric(gsub("INPUT","",names(infoTk0__)))
+      namesTk0__   <- sapply(infoTk0__, `[[`, 1)
+    }
+  } else {
+    # ABS0inputs__ <- which(dosingTypes__=="ABSORPTION0")
+    # if (length(ABSORPTION0names) != length(ABS0inputs__)) {
+    #   stopIQR("The 'modelSampleSimulate' model contains ABSORPTION0 dosing. Please specify the input argument 'ABSORPTION0names' correctly.")
+    # }
+    # namesTk0__ <- ABSORPTION0names
+    # }
+    # } else {
+    ABS0inputs__ <- NULL
+    namesTk0__ <- NULL
+  }
+
+  # . Handle lag time names -----
+  # check for NAs if no lag time name was set manually
+  idxNA <- which(is.na(namesTlag__))
+  for (ina in idxNA) {
+    namesTlag__[ina] <- names(namesTlag__)[ina]
+  }
+
+  # . Handle simulation times -----
+  if (simtimeOption == "obs") {
+
+    ### CASE 1: For each individual use the respective observation times
+    indSimTimes__ <- plyr::dlply(data__, ~ID, function(x__) stats::na.omit(unique(x__$TIME[x__$EVID == 0])))
+
+  }  else {
+
+    ### CASE 2: Use a common grid of times across all individuals
+
+    ### CHOICE of plotting time :
+    # grid of common times based on time after dose or based on overall time
+    data__$gridtime <- {if(simtimeOption == "simTAD") data__$TAD else data__$TIME}
+
+    if (is.null(simtimes)) {
+      ### OPTION I: Generate equidistant time grid from first to maximum time point
+
+      # Define maximum time as maximum obs time in data or maximum time if defined as input argument
+      simtimeMax__ <- ifelse(is.null(simtimeMax), max(data__$gridtime[data__$EVID == 0]), min(max(data__$gridtime), simtimeMax))
+      # Define full time vector
+      simtimes__ <- signif(seq(min(data__$gridtime), simtimeMax__, length.out = simtimeN+1),6)
+
+    } else {
+      ### OPTION II: Time grid provided by input
+
+      simtimes__ <- simtimes
+
+    }
+
+    # Time vector for individuals (potentially truncated to individual max time)
+    allids <- unique(data__$ID); names(allids) <- unique(data__$ID) # id vector with id as names to get named output
+    indSimTimes__ <- plyr::llply(allids, function(x) {
+      if (FLAGindivSimtimeMax)
+        return(simtimes__[simtimes__ <= max(dplyr::filter(data__, ID == x & EVID == 0)$gridtime)])
+      return(simtimes__)
+    })
+
+    if (simtimeOption == "simTAD") {
+      # Add TAD simtimes to each dose
+      indSimTimes__ <- lapply(allids, function(x) {
+
+        # simulation time vector after last dose
+        simtads__     <- indSimTimes__[[as.character(x)]]
+        ntads__ <- length(simtads__)
+
+        # all dosing times of a subject
+        inddostimes__ <- IQRexpandADDLII(dplyr::filter(data__, ID == x & EVID == 1))$TIME
+
+        # Create vector with tad simulation times after each dosing time
+        allsimtimes__ <- rep(inddostimes__, each = length(simtads__)) + rep(simtads__, length(inddostimes__))
+        # Check that times are not overlapping with next dosing interval
+        keep <- rep(TRUE, length(allsimtimes__))
+        for (kk__ in 2:length(inddostimes__)) {
+          idxLast <- (kk__-1)*ntads__ # last of previous dose
+          idxFirst <- idxLast + 1     # first of current dose
+          keep[1:idxLast][allsimtimes__[1:idxLast] >= allsimtimes__[idxFirst]] <- FALSE
+        }
+        allsimtimes__ <- allsimtimes__[keep]
+        # Return
+        allsimtimes__
+      })
+    }
+
+  }
+  # remove temporary column
+  data__$gridtime <- NULL
+
+  # -------------------------------------------------------------------------#
+  # Get simulated data ----
+  # -------------------------------------------------------------------------#
+
+  # -------------------------------------------------------------------------#
+  # . Prepare parallel run ----
+  # -------------------------------------------------------------------------#
+  if (ncores > 1 & .Platform$OS.type=="windows") {
+    message("Number cores reduced to 1 as run on Windows. Use Linux to get the full power!")
+    ncores <- 1
+  }
+
+  # -------------------------------------------------------------------------#
+  # . Simulate in parallel ----
+  # -------------------------------------------------------------------------#
+
+  dataSim__ <- parallel::mclapply(1:Ntrials, mc.cores = ncores, mc.silent = FALSE, FUN = function(kkk__) {
+
+    # Need to set seed for each iteration to make it reproducible also in parallel
+    if (!is.null(seed) & ncores > 1) set.seed(seed+kkk__-1)
+
+    cat(paste0("Simulating Trial ",kkk__,"/",Ntrials," ...\n"))
+
+    # .. Sample parameters -----
+    model_list <- list(gpf, modelsSample)
+    model_list <- model_list[!sapply(model_list,is.null)]
+    parSample <- lapply(model_list, function (obj) {
+      if ("GPF" %in% class(obj)) {
+        x__ <- sample_GPF(
+          obj,
+          FLAG_SAMPLE=FLAG_SAMPLE__,
+          covariates = covData__,
+          FLAGid = TRUE
+        )
+      } else {
+        x__ <- sample_IQRnlmeProject(
+          obj,
+          FLAG_SAMPLE=FLAG_SAMPLE__,
+          covariates = covData__,
+          FLAGid = TRUE
+        )
+      }
+      x__
+    })
+
+    # .. Get indivdual parmeters and typical individual parameters (without IIV) -----
+    if (length(parSample) == 1) {
+      indPars <- parSample[[1]]$indParamValues
+      typPars <- parSample[[1]]$typicalIndParamValues
+    } else {
+      indPars <- Reduce(function(d1,d2) dplyr::left_join(d1$indParamValues,d2$indParamValues,by="ID"), parSample)
+      typPars <- Reduce(function(d1,d2) dplyr::left_join(d1$typicalIndParamValues,d2$typicalIndParamValues,by="ID"), parSample)
+    }
+
+    # Set to IDs from covariates, because sample_GPF always produces a fresh ID=1:nrow(covdata) instead
+    # of using the ID column from covdata, even when the covariates are taken as is.
+    indPars$ID <- covData__$ID
+    typPars$ID <- covData__$ID
+
+    # Merge parameters to dosing and regression parameters
+    eDatak    <- dplyr::left_join(eData0, indPars, by = "ID")
+    eDatakpop <- dplyr::left_join(eData0, typPars, by = "ID")
+
+    # .. Apply the factorMult to parameters if defined -----
+    if (!is.null(factorMult)) {
+      for (k in seq_along(factorMult)) {
+        namek <- names(factorMult[k])
+        if (!namek %in% names(eDatak)) stopIQR("Provided name in factorMult does not exist as sampled or regression parameter")
+        eDatak[[namek]]    <- factorMult[k]*eDatak[[namek]]
+        eDatakpop[[namek]] <- factorMult[k]*eDatakpop[[namek]]
+        if (namek %in% names(indPars)) { # Need to update parameter in individual sample to have correct stats
+          indPars[[namek]] <- factorMult[k]*indPars[[namek]]
+        }
+      }
+    }
+
+    # .. Apply limits to parameters -----
+    parnames <- setdiff(names(typPars), "ID")
+    lower <- rep(-Inf, length(parnames))
+    upper <- rep(Inf, length(parnames))
+    names(lower) <- names(upper) <- parnames
+
+    # .. Set lower parameter limits
+    if (!is.null(par_lower)) {
+      # Check names
+      if (is.null(names(par_lower))) stopIQR("par_lower must be a named vector.")
+      unknown <- setdiff(names(par_lower), parnames)
+      if (length(unknown) > 0) stopIQR(paste("The following parameter names in par_lower are unknown:", paste(unknown, collapse = ", ")))
+      # Set values
+      lower[names(par_lower)] <- par_lower
+    }
+
+    # .. Set upper parameter limits
+    if (!is.null(par_upper)) {
+      # Check names
+      if (is.null(names(par_upper))) stopIQR("par_upper must be a named vector.")
+      unknown <- setdiff(names(par_upper), parnames)
+      if (length(unknown) > 0) stopIQR(paste("The following parameter names in par_upper are unknown:", paste(unknown, collapse = ", ")))
+      # Set values
+      upper[names(par_upper)] <- par_upper
+    }
+
+    # .. modulate event data for individual (not typical) simulation
+    percent_individual <- rep(0, length(parnames))
+    names(percent_individual) <- parnames
+    for (mypar in parnames) {
+      # Do stats based on individual parameter data frame as one single row per subject
+      n_outside <- sum(indPars[[mypar]] > upper[mypar] | indPars[[mypar]] < lower[mypar])
+      n_all <- length(indPars[["ID"]])
+      percent_individual[mypar] <- 100*n_outside/n_all
+      # Modify parameters in event data
+      eDatak[[mypar]] <- pmax(eDatak[[mypar]], lower[mypar])
+      eDatak[[mypar]] <- pmin(eDatak[[mypar]], upper[mypar])
+    }
+
+    # .. Rename lag times to conventional names -----
+    parNamesk__ <- parNames__
+    for (ltn in seq_along(namesTlag__)) {
+      # add column to event data
+      eDatak[[names(namesTlag__)[ltn]]] <- eDatak[[namesTlag__[ltn]]]
+      eDatakpop[[names(namesTlag__)[ltn]]] <- eDatakpop[[namesTlag__[ltn]]]
+      # substitute in parameter names
+      parNamesk__ <- stringr::str_replace(parNamesk__, paste0("^",namesTlag__[ltn],"$"), names(namesTlag__)[ltn])
+    }
+
+    # Create event table
+    eT__    <- IQReventTable(eDatak, regression = c(regNames__, parNamesk__),
+                             abs0inputs=ABS0inputs__, abs0Tk0param=namesTk0__,
+                             FLAGfixDoseOverlap = FLAGfixDoseOverlap)
+    if (FLAGpreparePC)
+      eTpop__ <- IQReventTable(eDatakpop, regression = c(regNames__, parNamesk__),
+                               abs0inputs=ABS0inputs__, abs0Tk0param=namesTk0__,
+                               FLAGfixDoseOverlap = FLAGfixDoseOverlap)
+
+    # .. Simulate -----
+    simres    <- sim_IQRmodel(model = model__, simtime = indSimTimes__, eventTable = eT__, FLAGoutputsOnly = TRUE,
+                              opt_initstep = opt_initstep,
+                              opt_abstol = opt_abstol,
+                              opt_reltol = opt_reltol,
+                              opt_maxstep = opt_maxstep,
+                              opt_minstep = opt_minstep)
+
+    if (FLAGpreparePC) {
+      simrespop <- sim_IQRmodel(model = model__, simtime = indSimTimes__, eventTable = eTpop__, FLAGoutputsOnly = TRUE,
+                                opt_initstep = opt_initstep,
+                                opt_abstol = opt_abstol,
+                                opt_reltol = opt_reltol,
+                                opt_maxstep = opt_maxstep,
+                                opt_minstep = opt_minstep)
+    }
+
+    # .. Add residual variability if required -----
+    if (FLAGaddResidualNoise) {
+
+      # Get residual error model parameters
+      # List with one element per output
+      # Content is a vector with add and prop error parameters
+      # If not applicable then it is set to 0
+      if (is.null(gpf)) {
+        errParam__ <- lapply(getResults_IQRnlmeProject(project,FLAG_SAMPLE = FLAGsampleUncertainty)$additional$residualErrorModel,
+                             function (y) {
+                               z <- y$abcr
+                               z[is.na(z)] <- 0
+                               z
+                             })
+      } else {
+        tmp <- sample_GPF(gpf, Nsamples = 1, FLAG_SAMPLE = 1)
+        err <- tmp$popParamValues[grep("error", names(tmp$popParamValues))]
+        input_idx <- stringr::str_extract(names(err), "[:digit:]+$")
+        errParam__ <- lapply(sort(unique(input_idx)), function(k) {
+          add  <- ifelse(paste0("error_ADD",k) %in% names(err), err[[paste0("error_ADD",k)]], 0)
+          prop <- ifelse(paste0("error_PROP",k) %in% names(err), err[[paste0("error_PROP",k)]], 0)
+          c(add, prop)
+        })
+      }
+
+      # Apply error param to OUTPUT1-N
+      ynoise__ <- lapply(
+        stats::setNames(seq_along(errParam__), paste0("OUTPUT", seq_along(errParam__))),
+        function(kerr__) {
+          errPar__ <- errParam__[[kerr__]]
+          y__ <- simres[[paste0("OUTPUT",kerr__)]]
+          noise__ <- sqrt(errPar__[1]^2 + (errPar__[2]*y__)^2)*stats::rnorm(n = length(y__),mean = 0,sd = 1)
+          ynoise__ <- y__ + noise__
+          ynoise__
+        })
+      simres[names(ynoise__)] <- ynoise__
+    }
+
+    # .. Post-process trial simulations -----
+    # Merge individual and population predictions
+    if (FLAGpreparePC) {
+      if (is.null(simrespop)) {
+        simrespop <- simres
+        rep_na = function(x) {x*NA}
+        simrespop <- dplyr::mutate_at(simrespop, vars(dplyr::contains("OUTPUT")), rep_na)
+      }
+      simres <- dplyr::left_join(simres, simrespop, by =c("ID", "TIME"), suffix = c(".IPRED", ".TPRED"))
+    } else {
+      # only rename outputs to indicate that they are individual predictions
+      outNames__ <- grep("OUTPUT", names(simres), value = TRUE)
+      for(kk in seq_along(outNames__)) {
+        names(simres) <- gsub(outNames__[kk], paste0(outNames__[kk], ".IPRED"), names(simres))
+      }
+    }
+    # "Reshape" (only if there were multiple outputs)
+    names(simres) <- sapply(lapply(strsplit(names(simres), split = ".", fixed = TRUE), rev), function(x) paste(x,collapse = "."))
+    simres <- stats::reshape(simres, direction = "long", varying = setdiff(names(simres), c("ID", "TIME")),
+                             timevar = "YTYPE")
+
+    # Make sure that simres is ordered by ID and TIME
+    simres <- dplyr::arrange(simres, ID, TIME)
+
+    # output for one trial
+    simres <- dplyr::mutate(dplyr::select(simres, matches("\\b(ID|TIME|YTYPE|IPRED|TPRED)\\b")), Trial = kkk__)
+
+    # add the sampled parameters used for simulation
+    if (FLAGkeepParameters) {
+      simres <- dplyr::left_join(simres, indPars, by = "ID")
+      if (FLAGpreparePC) {
+        simres <- dplyr::left_join(simres, typPars, by = "ID", suffix = c("",".typical"))
+      }
+    }
+
+    # Add percentages
+    attr(simres, "percent_individual") <- percent_individual
+
+    # Return data frame with simulation results
+    simres
+
+  })
+
+  # Check for errors in results
+  trial_check <- sapply(dataSim__, class)
+  if (any(trial_check == "try-error")) {
+    if (all(trial_check == "try-error")) {
+      txt <- paste0("Simulations for all trials failed with following error messages (count):\n")
+      idx_failed <- which(trial_check == "try-error")
+      FLAGstopFailedSim <- TRUE
+    } else {
+      idx_failed <- which(trial_check == "try-error")
+      txt <- paste0("Simulations for ",length(idx_failed), " (out of ", Ntrials,") trials failed with following error messages (count):\n")
+    }
+
+    err_msg <- as.data.frame(unlist(dataSim__[idx_failed]), stringsAsFactors = FALSE)
+    names(err_msg) <- "msg"
+    err_msg <- count(err_msg, msg)
+    err_msg$msg <- gsub("\n","", err_msg$msg, fixed = TRUE)
+    nch1 <- max(nchar(err_msg$msg))
+    nch2 <- max(nchar(err_msg$n))
+    for (k in 1:nrow(err_msg)) txt <- paste0(txt, paste0(format(err_msg$msg[k], width = nch1), " (", err_msg$n[k], ")\n"))
+
+    if (FLAGstopFailedSim) {
+      stopIQR(txt)
+    } else {
+      txt <- paste0(txt, "The failed simulations are removed.\n")
+      dataSim__ <- dataSim__[which(trial_check != "try-error")]
+      warningIQR(txt)
+    }
+
+  }
+
+  # Summarize the number of parameters outside range
+  percent_individual_collected <- lapply(dataSim__, function(s__) attr(s__, "percent_individual"))
+  percent_individual_collected <- Reduce("+", percent_individual_collected)/Ntrials
+  if (any(percent_individual_collected > 0)) {
+    warning("Individual parameters outside the admitted limits were set to the boundary:\n")
+    cat("Mean percentage of parameters set to the boundary:\n\n")
+    percent_individual_collected <- as.list(percent_individual_collected)
+    percent_individual_collected <- lapply(percent_individual_collected, function(p) paste0(signif(p, 3), "%"))
+    percent_individual_collected <- as.data.frame(percent_individual_collected)
+    print(IQRoutputTable(percent_individual_collected))
+    cat("\n")
+  }
+
+  # -------------------------------------------------------------------------#
+  # . Postprocess simulations ----
+  # -------------------------------------------------------------------------#
+
+  # Collect results
+  dataSim__ <- dplyr::bind_rows(dataSim__)
+
+  # convert YTYPE to numerical
+  dataSim__$YTYPE <- as.numeric(gsub("OUTPUT","",dataSim__$YTYPE))
+
+  # If observation times used
+  #  - reduce to observation times available for each output
+  #  - keep the original TAD, LLOQ and DOSE columns if present
+  if (simtimeOption == "obs") {
+    obsTmp__ <- dplyr::select(dplyr::filter(data__, EVID == 0 & !is.na(DV)), ID, TIME, TAD, YTYPE, IXGDF, dplyr::matches("^LLOQ$|^DOSE$"))
+    dataSim__ <- dplyr::inner_join(dataSim__, obsTmp__, by = c("ID", "TIME", "YTYPE"))
+  } else {
+
+    # Add time after dose and dose
+    # . Expand doses in dosing data
+    dos__  <- dplyr::mutate(eData0, II = dplyr::case_when(ADDL == 0 ~ 0L, TRUE ~ as.integer(II))) # first check that II is 0 for ADDL = 0
+    if (is.null(dos__$NAME)) dos__$NAME <- paste0("Input", dos__$ADM)
+    dos__ <- IQRexpandADDLII(dos__)
+    # . Concatenate doses and observations
+    dos__ <- dplyr::mutate(dos__, EVID = ifelse(is.na(AMT), 0L, 1L))
+    simData__ <- unique(select(dataSim__, -Trial, -IPRED, -contains("TPRED")))
+    simData__$EVID <- 0
+    simDos__ <- dplyr::bind_rows(dplyr::select(dos__, ID, TIME, ADM, AMT, EVID), simData__)
+    # . Determine time after dose for dosing records
+    simDos__ <- dplyr::arrange(simDos__, ID, TIME, desc(EVID)) # Check first that we have ordered by time
+    simDos__ <- IQRcalcTAD(simDos__)
+    simDos__$TAD <- signif(simDos__$TAD, 6)
+    # . Determine DOSE columns
+    nbrDos__ <- unique(stats::na.omit(simDos__$ADM))
+    if (length(nbrDos__) == 1) {
+      colDOSE__ <- "DOSE"
+    } else {
+      colDOSE__ <- paste0("DOSE_", nbrDos__)
+    }
+    for (kdos__ in seq_along(nbrDos__)) {
+      simDos__[[colDOSE__[kdos__]]] <- ifelse(simDos__$ADM == nbrDos__[kdos__], simDos__$AMT, NA)
+      simDos__[[colDOSE__[kdos__]]] <- aux_na_locf(simDos__[[colDOSE__[kdos__]]])
+    }
+    # . Extract the observations
+    simTAD__ <- simDos__[simDos__$EVID==0,]
+    # . Merge time after dose and dose to simulated data
+    dataSim__ <- dplyr::left_join(dataSim__, simTAD__[,c("ID", "TIME", "YTYPE", "id", "TAD", colDOSE__)], by = c("ID", "TIME", "YTYPE", "id"))
+
+    # Add LLOQ assuming constant LLOQ per individual and YTYPE if available
+    if ("LLOQ" %in% names(data__)) {
+      lloqData__ <- dplyr::select(data__, ID, YTYPE, LLOQ)
+      lloqData__ <- dplyr::summarise(dplyr::group_by(lloqData__, ID, YTYPE), LLOQ = dplyr::first(LLOQ))
+      dataSim__  <- dplyr::left_join(dataSim__, lloqData__, by = c("ID", "YTYPE"))
+    }
+  }
+
+  if (FLAGlogOutput) {
+    # Assuming that simulated data are on log scale, therefore take the exp
+    dataSim__$IPRED <- exp(dataSim__$IPRED)
+    if (!is.null(dataSim__$TPRED)) dataSim__$TPRED <- exp(dataSim__$TPRED)
+  }
+
+
+
+  # Determine output annotation
+  # . If NAME (and UNIT) is in observations. Use this.
+  if ("NAME" %in% names(data__)) {
+    if ("UNIT" %in% names(data__)) {
+      # get name and unit for each ytype and order by ytype
+      ann <- data__[data__$EVID == 0,c("YTYPE","NAME","UNIT")]
+      ann <- dplyr::arrange(unique(ann), YTYPE)
+      outputAnnotation <- paste0(ann$NAME, " (",ann$UNIT,")")
+    } else {
+      # get name for each ytype and order by ytype
+      ann <- data__[data__$EVID == 0, c("YTYPE","NAME","UNIT")]
+      ann <- dplyr::arrange(unique(ann), YTYPE)
+      outputAnnotation <- ann$NAME
+    }
+    # Substitute ::: by space as we probably have a IQR NLME dataset
+    outputAnnotation <- gsub(":::", " ", outputAnnotation)
+    names(outputAnnotation) <- paste0("OUTPUT", ann$YTYPE)
+  } else {
+    # Try getting name from model file
+    # if there is no information from data
+    outputAnnotation <- sapply(model__$outputs, function(x) x$notes)
+    outputAnnotation <- trimws(outputAnnotation)
+    # In case there is nothing in the model, just plot "Value"
+    idxEmpty <- outputAnnotation == ""
+    outputAnnotation[idxEmpty] <- paste0("Value ", names(outputAnnotation)[idxEmpty])
+  }
+
+  # Checks on simulation success
+  # .. check individual simulations
+  checkSim <- dplyr::group_by(dataSim__, ID, Trial)
+  checkSim <- dplyr::summarise(checkSim,
+                               all     = all(is.na(IPRED)))
+  checkSim <- dplyr::ungroup(checkSim)
+  checkSim <- dplyr::right_join(checkSim,
+                                expand.grid(ID = unique(data__$ID), Trial = 1:Ntrials),
+                                by = c("ID", "Trial"))
+  checkSim$all[is.na(checkSim$all)] <- TRUE
+  checkSim <- dplyr::group_by(checkSim, Trial)
+  checkSim <- dplyr::summarise(checkSim, all = sum(all))
+  checkSim <- dplyr::ungroup(checkSim)
+  checkSim <- dplyr::summarise(checkSim, n_all = sum(all>0), avg_all = mean(all), n_total = dplyr::n())
+  if (checkSim$n_all > 0) {
+    msg1 <- paste0("Simulation of individuals failed in ", checkSim$n_all, " of ", checkSim$n_total, " simulated trials (",signif(checkSim$avg_all,2), " individuals failed per trial on average).")
+    warningIQR(msg1)
+  }
+
+  # .. check typical simulations
+  if (FLAGpreparePC) {
+    checkSim <- dplyr::group_by(dataSim__, ID, Trial)
+    checkSim <- dplyr::summarise(checkSim, failed = all(is.na(TPRED)))
+    checkSim <- dplyr::ungroup(checkSim)
+    checkSim <- dplyr::group_by(checkSim, Trial)
+    checkSim <- dplyr::summarise(checkSim, n_failed = sum(failed), all_failed = all(failed))
+    checkSim <- dplyr::ungroup(checkSim)
+    checkSim <- dplyr::mutate(checkSim, partial_failed = !all_failed & n_failed > 0)
+    checkSim <- dplyr::summarise(checkSim, n_all = sum(all_failed), n_partial = sum(partial_failed), n_total = dplyr::n())
+    if (checkSim$n_all > 0) {
+      msg2 <- paste0("Simulation of typical (for pcVPC) failed for all individuals in ", checkSim$n_all, " of ", checkSim$n_total, " simulated trials.")
+      warningIQR(msg2)
+    }
+    if (checkSim$n_partial > 0) {
+      msg3 <- paste0("Simulation of typical (for pcVPC) failed for some individuals in ", checkSim$n_partial, " of ", checkSim$n_total, " simulated trials.")
+      warningIQR(msg3)
+    }
+  }
+
+  # Store input information
+  attr(dataSim__, "model") <- project
+  attr(dataSim__, "Ntrials") <- Ntrials
+  attr(dataSim__, "simtimeOption") <- simtimeOption
+  attr(dataSim__, "outputAnnotation") <- outputAnnotation
+
+  # -------------------------------------------------------------------------#
+  # Get observations and typical predictions if required ----
+  # -------------------------------------------------------------------------#
+  # Typical predictions only if preparation of prediction correction is required
+
+  # Check that time after dose column exists
+  if (is.null(data__$TAD)) {
+    data__ <- dplyr::arrange(data__, ID, TIME, EVID, YTYPE)
+    data__ <- IQRexpandADDLII(data__)
+    data__ <- IQRcalcTAD(data__)
+  }
+
+  if (FLAGpreparePC) {
+    # Typical parameters for subjects (no uncertainty)
+    model_list <- list(gpf, modelsSample)
+    model_list <- model_list[!sapply(model_list,is.null)]
+    popPar0Cov__ <- lapply(model_list, function (obj) {
+      if ("GPF" %in% class(obj)) {
+        x__ <- sample_GPF(
+          obj,
+          FLAG_SAMPLE=3,
+          covariates = covData__,
+          FLAGid = TRUE
+        )
+        # The ID column in x__$popParamValues does not correspond to the ID column in hte covData__,
+        # Hence, we need to recover the correct ID values that are available in the x__$covariatesSampled.
+        covsSampled <- x__$covariatesSampled
+        x__$popParamValues <- dplyr::left_join(x__$popParamValues, covsSampled[, c("ID", "ID0")], by = "ID")
+        x__$popParamValues$ID <- x__$popParamValues$ID0
+        x__$popParamValues$ID0 <- NULL
+        x__
+      } else {
+        x__ <- sample_IQRnlmeProject(
+          obj,
+          FLAG_SAMPLE=3,
+          covariates = covData__,
+          FLAGid = TRUE,
+          verbose = FALSE # To avoid message about not samping as we do not want to sample here
+        )
+      }
+      x__
+    })
+    if (length(popPar0Cov__) == 1) {
+      popPar0Cov__ <- popPar0Cov__[[1]]$popParamValues
+    } else {
+      popPar0Cov__ <- Reduce(function(d1,d2) dplyr::left_join(d1$popParamValues,d2$popParamValues,by="ID"), popPar0Cov__)
+    }
+
+
+    # Merge regression parameters and sampled parameters
+    eDataTyp__ <- dplyr::left_join(eData0, popPar0Cov__, by = "ID")
+
+    # Apply the factorMult to parameters if defined
+    if (!is.null(factorMult)) {
+      for (k in seq_along(factorMult)) {
+        namek <- names(factorMult[k])
+        eDataTyp__[[namek]]    <- factorMult[k]*eDataTyp__[[namek]]
+      }
+    }
+
+    # Rename lag times to conventional names
+    parNamesT__ <- parNames__
+    if (!is.null(namesTlag__)) {
+      for (ltn in seq_along(namesTlag__)) {
+        # add column to event data
+        eDataTyp__[[names(namesTlag__)[ltn]]] <- eDataTyp__[[namesTlag__[ltn]]]
+        # substitute in parameter names
+        parNamesT__ <- stringr::str_replace(parNamesT__, paste0("^",namesTlag__[ltn],"$"), names(namesTlag__)[ltn])
+      }
+    }
+    # Event table for simulations
+    eTtyp__ <- IQReventTable(eDataTyp__, regression = c(regNames__, parNamesT__),
+                             abs0inputs=ABS0inputs__, abs0Tk0param=namesTk0__,
+                             FLAGfixDoseOverlap = FLAGfixDoseOverlap)
+    # Simulate at individual times
+    indObsTimes__ <- plyr::dlply(data__, ~ID, function(x__) unique(x__$TIME[!is.na(x__$DV) & x__$EVID == 0]) )
+    # Simulate typical observations for subjects
+    simrestyp__ <- sim_IQRmodel(model = model__, simtime = indObsTimes__, eventTable = eTtyp__, FLAGoutputsOnly = TRUE,
+                                opt_initstep = opt_initstep,
+                                opt_abstol = opt_abstol,
+                                opt_reltol = opt_reltol,
+                                opt_maxstep = opt_maxstep,
+                                opt_minstep = opt_minstep)
+    # Reformat to have obs records in rows and annotated as numerical values
+    # simrestyp__ <- tidyr::gather(simrestyp__, key = "YTYPE", value = "TPRED", dplyr::starts_with("OUTPUT"))
+    simrestyp__ <- stats::reshape(as.data.frame(simrestyp__),
+                                  direction = "long",
+                                  varying = grep("OUTPUT", names(simrestyp__), value = TRUE),
+                                  v.names = "TPRED",
+                                  timevar = "YTYPE",
+                                  times = grep("OUTPUT", names(simrestyp__), value = TRUE))
+    simrestyp__$YTYPE <- as.numeric(gsub("OUTPUT","",simrestyp__$YTYPE))
+
+    if (FLAGlogOutput) {
+      simrestyp__$TPRED <- exp(simrestyp__$TPRED)
+    }
+
+    # Add typical values to observations
+    # dataObs__ <- subset(data__, EVID == 0 & !is.na(DV))
+    dataObs__  <- dplyr::left_join(data__, simrestyp__, by = c("ID", "TIME", "YTYPE"))
+  } else {
+    dataObs__ <- data__
+    # dataObs__ <- subset(data__, EVID == 0 & !is.na(DV))
+  }
+
+  # Output ----
+
+  # Display some warning messages if simulations issues occured
+  if (exists("msg1")|exists("msg2")|exists("msg3")) {
+    cat(" + + + Simulation issues occurred. Please check before plotting VPC. + + +\n")
+    if (exists("msg1")) cat("  - ", msg1,"\n")
+    if (exists("msg2")) cat("  - ", msg2,"\n")
+    if (exists("msg3")) cat("  - ", msg3,"\n")
+    cat(" + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +\n")
+
+  }
+
+  list(sim = dataSim__, obs = dataObs__)
+
+}
+
+#' Get covariate information from all models and the provided data - function to be called by
+#' `CreateDataVPC_IQRnlmeProject_MMV()`
+#'
+#' @param modelsSample :If sequential model building has been done (e.g. PKPD) model
+#' parameters might need to be sampled from additional IQRnlmeProjects. modelSample
+#' can be a vector with paths to these additional IQRnlmeProjects. It is not allowed that
+#' in these projects and modelSampleSimulate estimated parameter names overlap
+#' @param modelSampleSimulate
+#' @param dataVPC : Dataset for VPC generation, or called from `getData_IQRnlmeProject( )`
+getcovariateInfo_VPC <- function(modelsSample, modelSampleSimulate, dataVPC) {
+
+  model_list <- list(modelsSample,modelSampleSimulate)
+  model_list <- model_list[!sapply(model_list,is.null)]
+
+  allcovs__ <- unlist(unname(sapply(model_list, function (obj) {
+
+    if ("GPF" %in% class(obj)) {
+      x__ <- unique(obj$p.COVRT.COVRTNAME)
+    } else {
+      x__ <- IQRtools:::parseNLMEprojectHeader(obj)$COVARIATESUSED
+    }
+    if (length(x__)==1) {
+      if (nchar(x__) == 0) return(NULL)
+    }
+    x__
+  })))
+  allcovs__ <- paste0(allcovs__,collapse=",")
+  allcovs__ <- aux_explode(allcovs__)
+  # Check if allcovs__ present in the dataset
+  missingCovs__ <- setdiff(allcovs__,names(dataVPC))
+  if (length(missingCovs__) > 0) {
+    stopIQR(paste0("The following covariates are defined in the models but information is not available in the dataset: ",paste0(missingCovs__,collapse=", ")))
+  }
+  if (length(allcovs__)==0) allcovs__ <- NULL
+  return(allcovs__)
+}
+
+
+#' MMV wrapper for plotVPC_IQRdataVPC
+#'
+#' @description
+#' Upgrades the corresponding function in IQRtools. Check its documentation for a description of the arguments.
+#'
+#' @param dataVPC
+#' @param stratifyBy Default: \code{NULL}
+#' @param filename Default: \code{NULL}
+#' @param FLAGlogY Default: \code{FALSE}
+#' @param FLAGuseTAD Default: \code{FALSE}
+#' @param FLAGdataPlotOnly Default: \code{FALSE}
+#' @param FLAGnoDataPoints Default: \code{FALSE}
+#' @param FLAGpc Default: \code{FALSE}
+#' @param FLAGplotBins Default: \code{FALSE}
+#' @param FLAGplotN Default: \code{FALSE}
+#' @param title Default: \code{NULL}
+#' @param subtitle Default: \code{NULL}
+#' @param BIN.column Default: \code{NULL}
+#' @param BIN.breaks Default: \code{NULL}
+#' @param BIN.groupsize Default: \code{NULL}
+#' @param BIN.lambda Default: \code{NULL}
+#' @param BIN.resolution Default: \code{NULL}
+#' @param CIlevel Default: \code{NULL}
+#' @param percentiles Default: \code{NULL}
+#' @param alphaDataPoints Default: \code{NULL}
+#' @param alphaPredInter Default: \code{NULL}
+#' @param ActivityPath Default: \code{NULL}
+#' @param Caption Default: \code{NULL}
+#' @param setting Default: \code{NULL}
+#' @return
+#' @export
+#' @author Mohammed H. Cherkaoui (MMV)
+#' @family Model Assessment
+plotVPC_MMVdataVPC <- function (dataVPC, stratifyBy = NULL, filename = NULL, FLAGlogY = FALSE,
+                                FLAGuseTAD = FALSE, FLAGdataPlotOnly = FALSE, FLAGnoDataPoints = FALSE,
+                                FLAGpc = FALSE, FLAGplotBins = FALSE, FLAGplotN = FALSE,
+                                title = NULL, subtitle = NULL,
+                                BIN.column = NULL,
+                                BIN.breaks = NULL,
+                                BIN.groupsize = NULL,
+                                BIN.lambda = 1,
+                                BIN.resolution = 0.1,
+                                CIlevel = 95, percentiles = c(5, 95),
+                                alphaDataPoints = 0.4, alphaPredInter = 0.4, ActivityPath = NULL,
+                                Caption = NULL, setting = NULL)
+{
+  if ("style" %in% names(setting)) {
+    style = setting$style
+  }
+  else {
+    style = "MMV"
+  }
+  if ("title" %in% names(setting)) {
+    title = setting$title
+  }
+  else {
+    title = NULL
+  }
+  if ("subtitle" %in% names(setting)) {
+    subtitle = setting$subtitle
+  }
+  else {
+    subtitle = NULL
+  }
+  if ("footer" %in% names(setting)) {
+    footer = setting$footer
+  }
+  else {
+    footer = NULL
+  }
+  if ("FLAGreport" %in% names(setting)) {
+    FLAGreport = setting$FLAGreport
+  }
+  else {
+    FLAGreport = FALSE
+  }
+  if ("opt.page" %in% names(setting) && is.list(setting$opt.page)) {
+    opt.page = setting$opt.page
+    if (!("width" %in% names(opt.page))) {
+      opt.page$width = 21/2.54
+    }
+    if (!("height" %in% names(opt.page))) {
+      opt.page$height = 21/2.54 * 9/14
+    }
+    if (!("scale" %in% names(opt.page))) {
+      opt.page$scale = 1
+    }
+    if (!("scaleWidth" %in% names(opt.page))) {
+      opt.page$scaleWidth = 1
+    }
+  }
+  else {
+    opt.page = list(width = 21/2.54, height = 21/2.54 *
+                      9/14, scale = 1, scaleWidth = 1, scaleHeight = 1,
+                    res = 300)
+  }
+  if ("opt.layout" %in% names(setting) && is.list(setting$opt.layout)) {
+    opt.layout = setting$opt.layout
+    if (!("nrow" %in% names(opt.layout))) {
+      opt.layout$nrow = 1
+    }
+    if (!("ncol" %in% names(opt.layout))) {
+      opt.layout$ncol = 1
+    }
+    if (!("npage" %in% names(opt.layout))) {
+      opt.layout$npage = NULL
+    }
+    opt.layout$legend.option = c("as.is")
+    if (!("legend.object" %in% names(opt.layout))) {
+      opt.layout$legend.object = NULL
+    }
+    if (!("legend.position" %in% names(opt.layout))) {
+      opt.layout$legend.position = "right"
+    }
+    if (!("legend.relsize" %in% names(opt.layout))) {
+      opt.layout$legend.relsize = 0.2
+    }
+    if (!("title.relheight" %in% names(opt.layout))) {
+      opt.layout$title.relheight = 0.05
+    }
+    if (!("subtitle.relheight" %in% names(opt.layout))) {
+      opt.layout$subtitle.relheight = 0.05
+    }
+    if (!("footer.relheight" %in% names(opt.layout))) {
+      opt.layout$footer.relheight = 0.05
+    }
+  }
+  else {
+    opt.layout = list(nrow = 1, ncol = 1, npage = NULL,
+                      legend.option = c("as.is"), legend.object = NULL,
+                      legend.position = "right", legend.relsize = 0.2,
+                      title.relheight = 0.05, subtitle.relheight = 0.05,
+                      footer.relheight = 0.05)
+  }
+  if ("colorFill" %in% names(setting)) {
+    colorFill = setting$colorFill
+  }
+  else {
+    colorFill = c("dodgerblue3", "red3", "dodgerblue3")
+  }
+  if ("xlimits" %in% names(setting)) {
+    xlimits = setting$xlimits
+  }
+  else {
+    xlimits = NULL
+  }
+  if ("ylimits" %in% names(setting)) {
+    ylimits = setting$ylimits
+  }
+  else {
+    ylimits = NULL
+  }
+  if ("xlabel" %in% names(setting)) {
+    xlabel = setting$xlabel
+  }
+  else {
+    xlabel = NULL
+  }
+  if ("ylabel" %in% names(setting)) {
+    ylabel = setting$ylabel
+  }
+  else {
+    ylabel = NULL
+  }
+  stratifyName <- stratifyBy
+  if (!is.null(names(stratifyBy))) {
+    stratifyName <- names(stratifyBy)
+    names(stratifyBy) <- NULL
+  }
+  levels <- seq_along(unique(dataVPC$obs[, stratifyBy]))
+  labels <- unique(dataVPC$obs[, stratifyBy])
+  FLAGlabel <- FALSE
+  if ("catInfo" %in% names(attributes(dataVPC$obs))) {
+    catInfo <- attributes(dataVPC$obs)$catInfo
+    if (!is.null(stratifyBy) && stratifyBy %in% catInfo$COLNAME) {
+      levels <- as.numeric(IQRtools::aux_explode(catInfo$VALUES[catInfo$COLNAME ==
+                                                                  stratifyBy]))
+      labels <- IQRtools::aux_explode(catInfo$VALUETXT[catInfo$COLNAME ==
+                                                         stratifyBy])
+      stratifyName <- catInfo$NAME[catInfo$COLNAME ==
+                                     stratifyBy]
+      FLAGlabel <- TRUE
+    }
+  }
+  if (!is.list(xlimits) && !is.null(xlimits)) {
+    xlimits = list(xlimits)
+  }
+  if (!is.list(ylimits) && !is.null(ylimits)) {
+    ylimits = list(ylimits)
+  }
+  if (!is.list(xlabel) && !is.null(xlabel)) {
+    xlabel = list(xlabel)
+  }
+  if (!is.list(ylabel) && !is.null(ylabel)) {
+    ylabel = list(ylabel)
+  }
+  n_Output <- length(unique(dataVPC$sim$YTYPE))
+  if (n_Output > 1 && !is.null(xlimits) && length(xlimits) ==
+      1) {
+    xlimits <- rep(xlimits, n_Output)
+  }
+  else if (n_Output > 1 && !is.null(xlimits) && length(xlimits) !=
+           n_Output) {
+    stop("Number of elements in 'xlimits' (=", length(xlimits),
+         ") is different that the number of output (=", n_Output,
+         "): Please Adjust")
+  }
+  if (n_Output > 1 && !is.null(ylimits) && length(ylimits) ==
+      1) {
+    ylimits <- rep(ylimits, n_Output)
+  }
+  else if (n_Output > 1 && !is.null(ylimits) && length(ylimits) !=
+           n_Output) {
+    stop("Number of elements in 'ylimits' (=", length(ylimits),
+         ") is different that the number of output (=", n_Output,
+         "): Please Adjust")
+  }
+  if (n_Output > 1 && !is.null(xlabel) && length(xlabel) ==
+      1) {
+    xlabel <- rep(xlabel, n_Output)
+  }
+  else if (n_Output > 1 && !is.null(xlabel) && length(xlabel) !=
+           n_Output) {
+    stop("Number of elements in 'xlabel' (=", length(xlabel),
+         ") is different that the number of output (=", n_Output,
+         "): Please Adjust")
+  }
+  if (n_Output > 1 && !is.null(ylabel) && length(ylabel) ==
+      1) {
+    ylabel <- rep(ylabel, n_Output)
+  }
+  else if (n_Output > 1 && !is.null(ylabel) && length(ylabel) !=
+           n_Output) {
+    stop("Number of elements in 'ylabel' (=", length(ylabel),
+         ") is different that the number of output (=", n_Output,
+         "): Please Adjust")
+  }
+  grList <- plotVPC_IQRdataVPC(dataVPC = dataVPC, stratifyBy = stratifyBy,
+                               filename = NULL, FLAGlogY = FLAGlogY, FLAGuseTAD = FLAGuseTAD,
+                               FLAGdataPlotOnly = FLAGdataPlotOnly, FLAGnoDataPoints = FLAGnoDataPoints,
+                               FLAGpc = FLAGpc, FLAGplotBins = FLAGplotBins, FLAGplotN = FLAGplotN,
+                               title = title, subtitle = subtitle,
+                               BIN.column = BIN.column, BIN.breaks = BIN.breaks,
+                               BIN.groupsize = BIN.groupsize,
+                               BIN.lambda = BIN.lambda, BIN.resolution = BIN.resolution,
+                               CIlevel = CIlevel, percentiles = percentiles, alphaDataPoints = alphaDataPoints)
+  if (!(opt.layout$nrow == 1 && opt.layout$ncol == 1)) {
+    for (i in seq_along(grList)) {
+      grList[[i]]$opt.layout$nrow <- opt.layout$nrow
+      grList[[i]]$opt.layout$ncol <- opt.layout$ncol
+    }
+  }
+  if (FLAGlabel) {
+    for (i in seq_along(grList)) {
+      STRAT_value <- sapply(grList[[i]]$content, function(x) {
+        x$data$STRAT[1]
+      })
+      idx_Order <- order(STRAT_value)
+      STRAT_value <- STRAT_value[idx_Order]
+      grList[[i]]$content <- grList[[i]]$content[idx_Order]
+      names(grList[[i]]$content) <- labels[match(STRAT_value,
+                                                 levels)]
+    }
+  }
+  for (i in seq_along(grList)) {
+    for (j in seq_along(grList[[i]]$content)) {
+      grList[[i]]$content[[j]]$layers[[2]]$aes_params$alpha <- alphaPredInter
+      if (!is.null(colorFill)) {
+        names(colorFill) <- c("LOW", "Median", "HIGH")
+        labelNames <- c(paste0(min(percentiles), "th Percentile"),
+                        "Median", paste0(max(percentiles), "th Percentile"))
+        names(labelNames) <- c("LOW", "Median", "HIGH")
+        base::suppressMessages(grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+                                 scale_fill_manual(name = paste0("Simulations ",
+                                                                 "(", CIlevel, "% C.I.)"), values = colorFill,
+                                                   labels = labelNames, breaks = c("LOW", "Median",
+                                                                                   "HIGH")))
+      }
+      base::suppressMessages(grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+                               theme(legend.position = opt.layout$legend.position))
+    }
+  }
+  if (toupper(style) == "IQR") {
+  }
+  else {
+    for (i in seq_along(grList)) {
+      for (j in seq_along(grList[[i]]$content)) {
+        if (is.null(Caption)) {
+          Caption_ij <- grList[[i]]$subtitle
+        }
+        else if (Caption == "") {
+          Caption_ij <- NULL
+        }
+        grList[[i]]$content[[j]] <- transform_IQRggplotToMMVggplot(grList[[i]]$content[[j]],
+                                                                   style = style, ActivityPath = ActivityPath,
+                                                                   Caption = Caption_ij)
+        if (is.null(stratifyBy)) {
+          grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+            labs(title = grList[[i]]$title)
+        }
+        else {
+          stratifyLabel_j <- gsub(paste0(stratifyBy,
+                                         ": "), "", unique(grList[[i]]$content[[j]]$data$STRAT))
+          if (FLAGlabel) {
+            stratifyLabel_j <- labels[match(stratifyLabel_j,
+                                            levels)]
+            grList[[i]]$content[[j]]$data$STRAT <- labels[match(grList[[i]]$content[[j]]$data$STRAT,
+                                                                levels)]
+            for (k in seq_along(grList[[i]]$content[[j]]$layers)) {
+              grList[[i]]$content[[j]]$layers[[k]]$data$STRAT <- labels[match(grList[[i]]$content[[j]]$layers[[k]]$data$STRAT,
+                                                                              levels)]
+            }
+          }
+          if (opt.layout$nrow == 1 && opt.layout$ncol ==
+              1) {
+            grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+              theme(strip.background = element_blank(),
+                    strip.text = element_blank()) + labs(title = paste0(stratifyName,
+                                                                        ": ", stratifyLabel_j), subtitle = grList[[i]]$title)
+          }
+          else {
+            if (is.null(title)) {
+              title <- gsub("Visual Predictive Check",
+                            paste0("Visual Predictive Check by ",
+                                   stratifyName), grList[[i]]$title)
+            }
+            grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+              labs(caption = NULL)
+            if (is.null(ActivityPath) || ActivityPath !=
+                "") {
+              footer <- paste0("Activity: ", get_ActivityPath(ActivityPath))
+            }
+            if (is.character(Caption_ij) & is.character(footer)) {
+              footer <- paste0(footer, "\n", Caption_ij)
+            }
+            else {
+              footer <- Caption_ij
+            }
+          }
+        }
+      }
+      grList[[i]]$subtitle <- NULL
+    }
+  }
+  for (i in seq_along(grList)) {
+    for (j in seq_along(grList[[i]]$content)) {
+      grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+        coord_cartesian(xlim = xlimits[[i]], ylim = ylimits[[i]])
+      if (!is.null(xlabel[[i]])) {
+        grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+          xlab(xlabel[[i]])
+      }
+      if (!is.null(ylabel[[i]])) {
+        grList[[i]]$content[[j]] <- grList[[i]]$content[[j]] +
+          ylab(ylabel[[i]])
+      }
+    }
+  }
+  if (!is.null(filename)) {
+    for (i in seq_along(grList)) {
+      if (toupper(style) == "IQR") {
+        if (length(grList) == 1) {
+          IQRoutputFigure(x = grList[[i]], filename = filename)
+        }
+        else {
+          IQRoutputFigure(x = grList[[i]], filename = paste0(gsub(".pdf",
+                                                                  "", filename), "_", i, ".pdf"))
+        }
+      }
+      else {
+        if (length(grList) == 1) {
+          IQRoutputFigure(x = grList[[i]], filename = filename,
+                          title = title, subtitle = subtitle, footer = footer,
+                          FLAGreport = FLAGreport, opt.page = opt.page,
+                          opt.layout = opt.layout)
+        }
+        else {
+          IQRoutputFigure(x = grList[[i]], filename = paste0(gsub(".pdf",
+                                                                  "", filename), "_", i, ".pdf"), title = title,
+                          subtitle = subtitle, footer = footer, FLAGreport = FLAGreport,
+                          opt.page = opt.page, opt.layout = opt.layout)
+        }
+      }
+    }
+  }
+  return(grList)
+}
+
+#' Plotting Comparison of Summarized Data for Binary Variables
+#'
+#' Generates a list of ggplot objects where summarized simulations and
+#' observations are compared visually. Summarized input is obtained from
+#' applying `summaryByTrial` and `summarAcrossTrials` to data from VPCs for simulation data.
+#' Additionally, summarized input for observations using `summaryByTrial` is augmented with confidence intervals
+#' using the Clopper-Pearson method.
+#' Comparison is done per `TRTNAME` by default. A list of ggplot objects is returned with one plot per unique variable.
+#'
+#' @param plotData Data.frame containing summarized endpoints.
+#' @param CIlevel Numeric value representing the confidence interval used for summarizing simulated percentiles (default is 90).
+#' @param compCategory String specifying the column to be used for comparison (default is "TRTNAME").
+#' @param variableCol String specifying the column name to be used as variables (default is "Variable").
+#' @param sourceCol String specifying the column name to be used as data source for color (default is "Source").
+#'
+#' @return A list of ggplot objects comparing summarized binary variables from simulation and observation.
+#'
+#' @details
+#' This function creates a visual comparison of summarized data for binary variables. It generates a ggplot object for each unique variable in the dataset.
+#' The summarized input for simulations is obtained using the `summaryByTrial` and `summarAcrossTrials` functions, while the summarized input for observations
+#' is augmented with confidence intervals using the Clopper-Pearson method. The comparison is performed per `TRTNAME` by default, but this can be customized
+#' using the `compCategory` parameter.
+#'
+#' @examples
+#' \dontrun{
+#' # Example usage:
+#' # prepare categories for dataSim and dataObs
+#' data <- dataSim <- expand.grid(
+#'   TRTNAME =  c("Treatment A", "Treatment B"), 
+#'   Variable =  c("Var1", "Var2"), 
+#'   Source = c("Sim", "Obs", "CSR")
+#' )
+#' 
+#' # add N and k
+#' data$N <- rep(c(10,20), 6)
+#' data$k <- rep(c(5,8,2,12), 3) + sample.int(3, 12, replace=TRUE)
+#' 
+#' # add CI 
+#' CIs <- binom::binom.confint(data$k, data$N, conf.level = 0.90, methods = "exact" )
+#' data$`CI Median` <- CIs$mean*100
+#' data$`CI Low` <- CIs$lower*100
+#' data$`CI High` <- CIs$upper*100
+#' 
+#' # plot
+#' ggplots <- plotSummaryComparisonBinary(data)
+#' 
+#' # Display the first plot
+#' print(ggplots[[1]])
+#' }
+#' 
+#' @seealso
+#' \code{\link{plotSummaryComparisonContinuous}}
+#'
+#' @author Karsten Kuritz (IntiQuan)
+#' 
+#' @family Model Assessment
+#' 
+#' @export
+plotSummaryComparisonBinary <- function(plotData,
+                                        CIlevel = 90,
+                                        compCategory = "TRTNAME",
+                                        variableCol = "Variable",
+                                        sourceCol = "Source") {
+
+  # Check if plotData is a dataframe
+  if (!is.data.frame(plotData)) {
+    stop("plotData must be a dataframe")
+  }
+  
+  # Check if variableCol exists in plotData
+  if (!variableCol %in% names(plotData)) {
+    stop(paste("Column", variableCol, "does not exist in plotData"))
+  }
+  
+  # Check if sourceCol exists in plotData
+  if (!sourceCol %in% names(plotData)) {
+    stop(paste("Column", sourceCol, "does not exist in plotData"))
+  }
+  
+  # Check if compCategory exists in plotData
+  if (!compCategory %in% names(plotData)) {
+    stop(paste("Column", compCategory, "does not exist in plotData"))
+  }
+  
+  # Get unique variable names from the specified variable column
+  variableNames <- unique(plotData[[variableCol]])
+  
+  # Get unique source names from the specified source column
+  sourceNames <- unique(plotData[[sourceCol]])
+  
+  # Create a named vector of colors for each source
+  color.bySource <- setNames(IQRtoolsColors[2:(1+length(sourceNames))], sourceNames)
+  
+  # Generate a list of ggplot objects, one for each unique variable
+  gglist <- lapply(seq_along(variableNames), function(k) {
+    
+    # Extract the current variable name
+    thisVariable <- variableNames[[k]]
+    
+    # Filter the data for the current variable
+    thisD <- plotData[plotData[[variableCol]] == thisVariable,]
+    
+    # Create the ggplot object for the current variable
+    gg <- MMVggplot(thisD) + 
+      geom_hline(yintercept = 100, size = .2) +  # Add a horizontal line at y = 100
+      geom_point(aes(x=get(compCategory), y = `CI Median`, col = get(sourceCol)), position = position_dodge(width=-0.5)) +  # Add points with dodge position
+      geom_errorbar(aes(x=get(compCategory), ymin = `CI Low`, ymax = `CI High`, col = get(sourceCol)), 
+                    position = position_dodge(width=-0.5), width = 0.2) +  # Add error bars with dodge position
+      scale_y_continuous(limits = c(0, NA), breaks=c(0,25,50,75,100), labels=c(0,25,50,75,100)) +  # Set y-axis limits and breaks
+      scale_color_manual(values = color.bySource) + # Set manual colors for sources
+      geom_text(aes(label = paste0(k,"/",N), x = get(compCategory), 
+                    y = structure(c(105)), 
+                    col = get(sourceCol)), 
+                position = position_dodge(width=-0.5),
+                show.legend = FALSE, size = 3) + # Add text labels for N
+      labs( x = NULL,
+            y = NULL,
+            title = thisVariable) + # Set title to the current variable
+      guides(color = guide_legend(ncol=3,byrow=TRUE, title = sourceCol)) + # Set legend to 3 columns
+      theme(legend.position = "bottom", legend.title = element_blank()) +  # Set legend position and remove legend title
+      coord_flip() # Flip the coordinates to make a horizontal bar plot
+    
+    return(gg)
+  })
+  
+  return(gglist)
+}
+
+#' Plotting Comparison of Summarized Data for Continuous Variables
+#'
+#' Generates a list of ggplot objects where summarized simulations and
+#' observations are compared visually. Summarized input is obtained from
+#' applying `summaryByTrial` and `summarAcrossTrials` to data from VPCs.
+#' Comparison is done per `TRTNAME` by default. A list of ggplot objects is returned with one plot per unique variable.
+#'
+#' @param dataSim Data.frame containing summarized simulation data.
+#' @param dataObs Optional data.frame containing summarized observation data.
+#' @param CIlevel Numeric value representing the confidence interval used for summarizing simulated percentiles (default is 90).
+#' @param compCategory String specifying the column to be used for comparison (default is "TRTNAME").
+#' @param variableCol String specifying the column name to be used as variables (default is "Variable").
+#'
+#' @return A list of ggplot objects comparing summarized continuous variables from simulation and observation.
+#'
+#' @details
+#' This function creates a visual comparison of summarized data for continuous variables. It generates a ggplot object for each unique variable in the dataset.
+#' The summarized input for simulations is obtained using the `summaryByTrial` and `summarAcrossTrials` functions. The comparison is performed per `TRTNAME` by default, but this can be customized
+#' using the `compCategory` parameter.
+#'
+#' @examples
+#' \dontrun{
+#' # Example usage:
+#' # prepare categories for dataSim and dataObs
+#' dataObs <- dataSim <- expand.grid(
+#'   TRTNAME =  c("Treatment A", "Treatment B"), 
+#'   Variable =  c("Var1", "Var2"), 
+#'   Metric = c("Metric1", "Metric2", "Metric3"))
+#' 
+#' # add values for dataSim
+#' dataSim$`CI Median` <- rep(c(10,20,30), each = 4) + rnorm(12)
+#' dataSim$`CI Low` <- dataSim$`CI Median` -3  - runif(12)
+#' dataSim$`CI High` <- dataSim$`CI Median` +  3 + runif(12)
+#' 
+#' # add values for dataObs
+#' dataObs$Value <- rep(c(10,20,30), each = 4) + rnorm(12)
+#' 
+#' # plot
+#' ggplots <- plotSummaryComparisonContinuous(dataSim, dataObs)
+#' 
+#' # Display the first plot
+#' }
+#'
+#' @seealso
+#' \code{\link{plotSummaryComparisonBinary}}
+#'
+#' @author Karsten Kuritz (IntiQuan)
+#' 
+#' @family Model Assessment
+#' 
+#' @export
+plotSummaryComparisonContinuous <- function(dataSim,
+                                            dataObs = NULL,
+                                            CIlevel = 90,
+                                            compCategory = "TRTNAME",
+                                            variableCol = "Variable") {
+  
+  # Input Checks
+  # Check if dataSim is a dataframe
+  if (!is.data.frame(dataSim)) {
+    stop("dataSim must be a dataframe")
+  }
+  
+  # Check if variableCol exists in dataSim
+  if (!variableCol %in% names(dataSim)) {
+    stop(paste("Column", variableCol, "does not exist in dataSim"))
+  }
+  
+  # Check if compCategory exists in dataSim
+  if (!compCategory %in% names(dataSim)) {
+    stop(paste("Column", compCategory, "does not exist in dataSim"))
+  }
+  
+  # Check if dataObs is provided and is a dataframe
+  if (!is.null(dataObs) && !is.data.frame(dataObs)) {
+    stop("dataObs must be a dataframe if provided")
+  }
+  
+  # Check if variableCol exists in dataObs if dataObs is provided
+  if (!is.null(dataObs) && !variableCol %in% names(dataObs)) {
+    stop(paste("Column", variableCol, "does not exist in dataObs"))
+  }
+  
+  # Check if compCategory exists in dataObs if dataObs is provided
+  if (!is.null(dataObs) && !compCategory %in% names(dataObs)) {
+    stop(paste("Column", compCategory, "does not exist in dataObs"))
+  }
+  
+  # Plot Data Preparation
+  # Get unique variable names from the specified variable column
+  variableNames <- unique(dataSim[[variableCol]])
+  
+  # Make metrics a factor for colors and other aesthetics
+  if (!is.null(dataObs)) {
+    dataObs$Metric <- factor(dataObs$Metric, levels = unique(dataObs$Metric))
+  }
+  
+  # Same for dataSim
+  dataSim$Metric <- factor(dataSim$Metric, levels = unique(dataSim$Metric))
+  
+  # Levels names for the aesthetics
+  metrics <- levels(dataSim$Metric)  
+  
+  # Colors and other aesthetics
+  fill.byMetric <- setNames(c("steelblue3", "grey60", "steelblue3"), metrics)
+  color.byMetric <- setNames(c("gray", "black", "gray"), metrics)
+  alpha.byMetric <- setNames(c(0.4, 0.8, 0.4), metrics)
+  shape.byMetric <- setNames(c(4, 21, 4), metrics)
+    
+  # legend titles
+  simLegend <- paste0("Simulations\n(", CIlevel, "% confidence intervals)")
+  obsLegend <- "Observation Summary"
+  
+  # Plotting
+  # Generate a list of ggplot objects, one for each unique variable
+  gglist <- lapply(seq_along(variableNames), function(k) {
+    
+    # Extract the current variable name
+    thisVariable <- variableNames[[k]]
+    
+    # Filter the data for the current variable
+    thisSim <- dataSim[dataSim[[variableCol]] == thisVariable,]
+    
+    # Create the ggplot object for the current variable
+    gg <- IQRggplot(thisSim, aes(x = get(compCategory))) +
+      geom_boxplot(aes(ymin = `CI Low`, lower = `CI Low`, upper = `CI High`, ymax = `CI High`, middle = `CI Median`, fill = Metric, alpha = Metric, color = Metric),
+                   position = position_dodge(width = 0),
+                   stat = "identity"
+      ) +
+      scale_fill_manual(simLegend, values = fill.byMetric) +
+      scale_alpha_manual(values = alpha.byMetric) +
+      scale_color_manual(simLegend, values = color.byMetric) +
+      guides(
+        alpha = "none",
+        color = "none",
+        fill = guide_legend(nrow = 3, title.position = "top")
+      ) +
+      labs(
+        y = thisVariable,
+        x = ""
+      ) +
+      coord_flip()
+    
+    # Add observations if observation data provided
+    if (!is.null(dataObs)) {
+      
+      # Filter the data for the current variable
+      thisObs <- dataObs[dataObs[[variableCol]] == thisVariable,]
+      
+      # Add observations to the plot
+      gg <- gg + geom_point(data = thisObs, aes(y = Value, shape = `Metric`), color = "deeppink3", position = position_dodge(width = 0), size = 1.4, stroke = 1.2) +
+        scale_shape_manual(obsLegend, values = shape.byMetric) +
+        guides(shape = guide_legend(nrow = 3, title.position = "top"))
+    }
+    
+    # Return the ggplot object
+    gg
+  })
+  
+  # Return the list of ggplot objects
+  gglist
+}

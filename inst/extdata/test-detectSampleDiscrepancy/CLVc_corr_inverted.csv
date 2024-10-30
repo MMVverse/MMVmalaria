@@ -1,0 +1,17 @@
+"","Change","nSingleDetected","singleDetected","nPairsDetected","Npop","Ntests"
+"1","CLVc_corr_inverted",1,"corr(CL,Q1)",9,100,3
+"2","CLVc_corr_inverted",2,"corr(CL,Q1),corr(CL,Vc)",1,200,3
+"3","CLVc_corr_inverted",2,"corr(CL,Q1),corr(CL,Vc)",0,500,3
+"4","CLVc_corr_inverted",3,"corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",33,1000,3
+"5","CLVc_corr_inverted",3,"corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",45,100,5
+"6","CLVc_corr_inverted",3,"corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",51,200,5
+"7","CLVc_corr_inverted",4,"omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",53,500,5
+"8","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",52,1000,5
+"9","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",60,100,10
+"10","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",72,200,10
+"11","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",80,500,10
+"12","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",80,1000,10
+"13","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",67,100,15
+"14","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",80,200,15
+"15","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",80,500,15
+"16","CLVc_corr_inverted",5,"omega(Vc),omega(Q1),corr(CL,Q1),corr(CL,Vc),corr(Vc,Q1)",80,1000,15

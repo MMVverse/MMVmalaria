@@ -1,0 +1,92 @@
+********** MODEL NAME
+model_PKcombo_3cpt_noDDI
+
+********** MODEL NOTES
+Library model for SCID mouse combo PK modeling.
+
+PK Drug 1:
+3 compartmental distribution model, non-linear (linea+saturable), 1st order absorption
+
+PK Drug 2:
+3 compartmental distribution model, non-linear (linea+saturable), 1st order absorption
+
+PK DDI:
+None
+
+Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug 
+                      concentration in ug/mL!
+                     
+
+********** MODEL STATES
+
+# PK model Drug 1 (dosing: INPUT1)
+d/dt(Adx1)  = -kax1*Adx1 + Fabs1x1*factorUnits*INPUT1
+d/dt(Acx1)  =  kax1*Adx1 - Q1x1/Vcx1*Acx1 + Q1x1/Vp1x1*Ap1x1 - Q2x1/Vcx1*Acx1 + Q2x1/Vp2x1*Ap2x1 - CLx1*Ccx1 - (VMAXx1*Ccx1)/(KMx1+Ccx1)
+d/dt(Ap1x1) =            + Q1x1/Vcx1*Acx1 - Q1x1/Vp1x1*Ap1x1
+d/dt(Ap2x1) =                                                + Q2x1/Vcx1*Acx1 - Q2x1/Vp2x1*Ap2x1
+
+
+# PK model Drug 2 (dosing: INPUT2)
+d/dt(Acx2)  =  - Q1x2/Vcx2*Acx2 + Q1x2/Vp1x2*Ap1x2 - Q2x2/Vcx2*Acx2 + Q2x2/Vp2x2*Ap2x2 - CLx2*Ccx2 - (VMAXx2*Ccx2)/(KMx2+Ccx2) + Fabs0x2*factorUnits*INPUT2
+d/dt(Ap1x2) =            + Q1x2/Vcx2*Acx2 - Q1x2/Vp1x2*Ap1x2
+d/dt(Ap2x2) =                                                + Q2x2/Vcx2*Acx2 - Q2x2/Vp2x2*Ap2x2
+
+
+********** MODEL PARAMETERS
+
+# -------- PK parameters --------
+
+# --- Drug 1 ---
+Fabs1x1 = 1           # Relative bioavailability Drug1 (-)
+kax1    = 0.1         # Absorption rate parameter Drug1 (1/hour)
+CLx1    = 0           # Apparent clearance Drug1 (L/hour)
+VMAXx1  = 0           # Maximum apparent clearance rate Drug1 (mg/hour)
+KMx1    = 10          # Michaelis-Menton constant Drug1 (ug/mL)
+Vcx1    = 1           # Apparent central volume Drug1 (L)
+Q1x1	= 0           # Apparent intercompartmental clearance Drug1 (L/hour)
+Vp1x1   = 10          # Apparent peripheral volume Drug1 (L)
+Q2x1    = 0           # Apparent intercompartmental clearance to second peripheral compartment Drug1 (L/hour)
+Vp2x1   = 10          # Apparent second peripheral volume Drug1 (L)
+Tlag1x1 = 0           # Absorption lag time Drug1 (hours)
+
+# --- Drug 2 ---
+Fabs0x2 = 1           # Relative bioavailability Drug2 (-)
+CLx2    = 0           # Apparent clearance Drug2 (L/hour)
+VMAXx2  = 0           # Maximum apparent clearance rate Drug2 (mg/hour)
+KMx2    = 10          # Michaelis-Menton constant Drug2 (ug/mL)
+Vcx2    = 1           # Apparent central volume Drug2 (L)
+Q1x2	= 0           # Apparent intercompartmental clearance Drug2 (L/hour)
+Vp1x2   = 10          # Apparent peripheral volume Drug2 (L)
+Q2x2    = 0           # Apparent intercompartmental clearance to second peripheral compartment Drug2 (L/hour)
+Vp2x2   = 10          # Apparent second peripheral volume Drug2 (L)
+Tk0x2   = 1           # Absorption time (hours)
+Tlag1x2 = 0           # Absorption lag time Drug2 (hours)
+
+# If the user want other unit than ug/mL
+factorUnits = 1
+
+********** MODEL VARIABLES
+
+# -------- PK --------
+# Drug 1 concentration (µg/mL)
+Ccx1 = Acx1/Vcx1   
+
+# Drug 2 concentration (µg/mL)
+Ccx2 = Acx2/Vcx2
+
+
+# -------- Output --------
+# Central Cpt Concentration
+OUTPUT1 = Ccx1        # Concentration Drug1 (ug/mL)
+OUTPUT2 = Ccx2        # Concentration Drug2 (ug/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+

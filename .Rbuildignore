@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.sync$
+^workflow$
+^tasks$
+^doc$
+^Meta$

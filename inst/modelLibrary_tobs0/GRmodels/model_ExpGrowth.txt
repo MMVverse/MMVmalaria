@@ -1,0 +1,43 @@
+********** MODEL NAME
+model_ExpGrowth
+
+********** MODEL NOTES
+Library model for malaria PKPD modeling.
+
+Model to describe the growth a the parasite in blood.
+
+Growth              Exponential Growth growth model with a growth rate GR.
+Transformation 		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
+Output 				PL, i.e. the logarithm of the parasitemia.
+Baseline 			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and
+					PLerr follows a centered Gaussian, i.e. N(0,sigma^2) to allow some flexibility.
+Unit                As in the dataset, prior transformation; i.e. p/mL or percent
+
+
+********** MODEL STATES
+
+d/dt(PL) = GR + INPUT1
+PL(0) = PLbase + GR*Tobs0
+
+
+********** MODEL PARAMETERS
+
+PLbase = 0           # Observed log-transformed parasitemia at t=0 (or starting time used for the analysis). (log(percent) or log(p/mL))
+Tobs0 	= 0 			# The time of the first observation relative to the time of the first dose (hours)
+
+GR     = 0.05        # Parasite growth rate constant (1/hr)
+
+
+********** MODEL VARIABLES
+
+# -------- Output --------
+OUTPUT1 = PL              # Log-transformed visible parasite count (log(percent) or log(p/mL))
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS

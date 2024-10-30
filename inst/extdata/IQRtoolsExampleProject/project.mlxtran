@@ -1,0 +1,153 @@
+; MONOLIX project generated with IQRtools
+
+; ==PROJECT HEADER START===================================================
+; COMMENT             = 'Correlatikon CL,Vc,Q1'
+; TOOL                = 'MONOLIX'
+; TOOLVERSION         = 'MLX2019R1'
+; DATA                = '../../../02-Data/02_dataNLME_M1/data.csv'
+; DOSINGTYPES         = 'BOLUS'
+; TK0NAMES            = 'NA'
+; COVNAMES            = 'AGE,WT0,HT0'
+; CATNAMES            = 'SEX'
+; CATCATEGORIES       = '[1 2]'
+; REGRESSIONNAMES     = ''
+; OUTPUTS             = 'Cc'
+; ERRORMODELS         = 'rel'
+; PARAMNAMES          = 'kabs,CL,Vc,Q1,Vp1'
+; PARAMTRANS          = 'exp(phi),exp(phi),exp(phi),exp(phi),exp(phi)'
+; PARAMINVTRANS       = 'log(psi),log(psi),log(psi),log(psi),log(psi)'
+; COVARIATENAMES      = 'AGE,WT0,HT0,SEX'
+; COVARIATESUSED      = 'AGE,SEX,WT0'
+; BETACOVNAMES        = 'beta_kabs(AGE),beta_CL(WT0)'
+; BETACOVTRANS        = 'log(cov/31.5),log(cov/77)'
+; BETACATNAMES        = 'beta_kabs(SEX),beta_CL(SEX),beta_Vc(SEX)'
+; BETACATREFERENCE    = '1,1,1'
+; ==PROJECT HEADER END=====================================================
+
+; =============================================
+<DATAFILE>
+; =============================================
+
+[FILEINFO]
+file = '../../../02-Data/02_dataNLME_M1/data.csv'
+delimiter = comma
+header = {IXGDF, IGNORE, USUBJID, ID, STUDY, STUDYN, TRTNAME, TRT, TIME, TIMEPOS, NT, TAD, TIMEUNIT, YTYPE, NAME, VALUE, DV, UNIT, LLOQ, CENS, MDV, EVID, AMT, ADM, II, ADDL, ROUTE, TINF, RATE, DOSE, INDNAME, IND, COMPOUND, VISIT, VISNAME, DATEDAY, DATETIME, DURATION, TYPENAME, AGE, WT0, HT0, BMI0, SEX}
+
+[CONTENT]
+ID = {use=identifier}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+DV = {use=observation, name={y}, ytype={1}, type={continuous}}
+CENS = {use=censored}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+ADM = {use=administration}
+II = {use=interdoseinterval}
+ADDL = {use=additionaldose}
+TINF = {use=infusiontime}
+AGE = {use=covariate, type=continuous}
+WT0 = {use=covariate, type=continuous}
+HT0 = {use=covariate, type=continuous}
+SEX = {use=covariate, type=categorical}
+
+; =============================================
+<MODEL>
+; =============================================
+
+[COVARIATE]
+input = {AGE,WT0,HT0,SEX}
+
+SEX = {type=categorical, categories={1,2}}
+
+EQUATION:
+tAGE = log(AGE/31.5)
+tWT0 = log(WT0/77)
+tHT0 = log(HT0/177)
+
+DEFINITION:
+tSEX =
+{
+  transform = SEX,
+  categories = {
+    1 = 1,
+    2 = 2
+  },
+  reference = 1
+}
+
+[INDIVIDUAL]
+input = {kabs_pop, CL_pop, Vc_pop, Q1_pop, Vp1_pop, omega_kabs, omega_CL, omega_Vc, omega_Q1, omega_Vp1, beta_kabs_tAGE, beta_kabs_tSEX_2, beta_CL_tSEX_2, beta_CL_tWT0, beta_Vc_tSEX_2, corr_CL_Vc, corr_CL_Q1, corr_Vc_Q1, tAGE, tSEX, tWT0}
+tSEX = {type=categorical, categories={1,2}}
+
+DEFINITION:
+kabs = {distribution=logNormal, typical=kabs_pop, sd=omega_kabs, covariate={tAGE,tSEX}, coefficient={beta_kabs_tAGE, {0, beta_kabs_tSEX_2}}}
+CL = {distribution=logNormal, typical=CL_pop, sd=omega_CL, covariate={tSEX,tWT0}, coefficient={{0, beta_CL_tSEX_2}, beta_CL_tWT0}}
+Vc = {distribution=logNormal, typical=Vc_pop, sd=omega_Vc, covariate={tSEX}, coefficient={{0, beta_Vc_tSEX_2}}}
+Q1 = {distribution=logNormal, typical=Q1_pop, sd=omega_Q1}
+Vp1 = {distribution=logNormal, typical=Vp1_pop, sd=omega_Vp1}
+correlation = {level=id, r(CL,Vc)=corr_CL_Vc, r(CL,Q1)=corr_CL_Q1, r(Vc,Q1)=corr_Vc_Q1}
+
+[LONGITUDINAL]
+input = {b}
+
+file = './project_model.txt'
+
+DEFINITION:
+y = {distribution=normal, prediction=Cc ,errorModel=proportional(b)}
+
+; =============================================
+<FIT>
+; =============================================
+data = {y}
+model = {y}
+
+; =============================================
+<PARAMETER>
+; =============================================
+kabs_pop = {value=0.25, method=MLE}
+CL_pop = {value=30, method=MLE}
+Vc_pop = {value=30, method=MLE}
+Q1_pop = {value=25, method=MLE}
+Vp1_pop = {value=2300, method=MLE}
+omega_kabs = {value=0.5, method=MLE}
+omega_CL = {value=0.5, method=MLE}
+omega_Vc = {value=0.5, method=MLE}
+omega_Q1 = {value=0.5, method=MLE}
+omega_Vp1 = {value=0.5, method=MLE}
+beta_kabs_tAGE = {value=0.1, method=MLE}
+beta_kabs_tSEX_2 = {value=0.1, method=MLE}
+beta_CL_tSEX_2 = {value=0.1, method=MLE}
+beta_CL_tWT0 = {value=0.1, method=MLE}
+beta_Vc_tSEX_2 = {value=0.1, method=MLE}
+corr_CL_Vc = {value=0, method=MLE}
+corr_CL_Q1 = {value=0, method=MLE}
+corr_Vc_Q1 = {value=0, method=MLE}
+b = {value=0.2, method=MLE}
+
+; =============================================
+<MONOLIX>
+; =============================================
+
+[TASKS]
+populationParameters()
+individualParameters(method = conditionalMode)
+fim(method = Linearization)
+logLikelihood(method = Linearization)
+plotResult()
+
+[SETTINGS]
+GLOBAL:
+seed = 123456
+exportpath = 'RESULTSORIG'
+nbchains = 1
+autochains = no
+
+POPULATION:
+exploratoryautostop = no
+smoothingautostop = no
+smoothingiterations = 100
+exploratoryiterations = 300
+variability = FirstStage
+
+

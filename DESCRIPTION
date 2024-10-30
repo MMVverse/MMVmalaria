@@ -1,0 +1,61 @@
+Package: MMVmalaria
+Type: Package
+Title: Collection of Malaria Functions, Models, Data and Workflows
+Version: 1.0.0
+Author: Mohammed H. Cherkaoui [aut,cre],
+		Anne Kuemmel [aut,cre],
+		Daniel Kaschek [aut],
+		Aline Fuchs [aut],
+		Daniel Lill [aut],
+		Venelin Mitov [aut],
+    Karsten Kuritz [aut],
+    Catalina Barcelo [aut],
+    Robin Denhardt-Eriksson [aut],
+    Sam Jones [aut],
+		Henning Schmidt [cre],
+		Nathalie Gobeau [cre]
+Maintainer: Medicines for Malaria Venture <pmxopensource@mmv.org> & IntiQuan GmbH <info@intiquan.com>
+Description: MMVmalaria supports and increases the efficiency, quality, and
+    compliance of modelling activity in malaria by providing functions, models,
+	data and workflows.
+License: file LICENSE
+Encoding: UTF-8
+Depends:
+  R (>= 3.6.0),
+  IQRtools (>= 1.9.0)
+Imports:
+  akima,
+  cobs,
+  cowplot,
+  data.table,
+  devtools,
+  doParallel,
+  dplyr,
+  foreach,
+  fpc,
+  ggplot2,
+  git2r,
+  gridExtra,
+  Hmisc,
+  MASS,
+  methods,
+  mvtnorm,
+  parallel,
+  plyr,
+  pracma,
+  purrr,
+  reader,
+  readxl,
+  reshape2,
+  scales,
+  stringr,
+  tidyr,
+  writexl,
+  MMVbase
+LazyData: true
+RoxygenNote: 7.3.2
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

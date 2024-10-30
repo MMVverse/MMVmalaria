@@ -1,0 +1,58 @@
+********** MODEL NAME
+model_OscGrowth_1
+
+
+********** MODEL NOTES
+Library model for malaria PKPD modeling.
+
+Model to describe the growth a the parasite in blood.
+
+Growth             Exponential growth model with oscillation of visible parasites.
+					Growth Rate: GR, Maximum Fraction of Hidden Parasite: Fmax,
+					Oscillation Period: Plen, Phase: Dtime.
+Oscillation		The visible parasites oscillate with a period Plen, a phase 2*PI*Dtime/Plen
+					(when time=Dtime All parasites are visible).
+Transformation 		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
+Output 				PL, i.e. the logarithm of the parasitemia.
+Baseline 			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and
+					PLerr follows a centered Gaussian, i.e. N(0,sigma^2) to allow some flexibility.
+Unit                As in the dataset, prior transformation; i.e. p/mL or percent
+
+
+********** MODEL STATES
+
+d/dt(PL) = GR + INPUT1
+PL(0) = PLbase + GR*Tobs0
+
+
+********** MODEL PARAMETERS
+
+PLbase = 0           # Observed log-transformed parasitemia at t=0 (or starting time used for the analysis). (p/mL)
+Tobs0 	= 0 			# The time of the first observation relative to the time of the first dose (hours)
+
+GR     = 0.05        # Parasite growth rate constant (1/hr)
+
+Fmax   = 0.5         # Maximum fraction of hidden parasites (-)
+Plen   = 48          # Period length of oscillation (hr)
+Dtime  = 0           # Time shift of oscillations (hr) (Fully Visible at time Dtime)
+
+
+********** MODEL VARIABLES
+
+# -------- PI --------
+Pie = 3.14159265359
+
+# -------- Visible parasites --------
+PLvis = PL + log(1 - 0.5*Fmax*(1 - cos(2*Pie*(time-Dtime)/Plen)))
+
+# -------- Output --------
+OUTPUT1 = PLvis           # Log-transformed visible parasite count (p/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS

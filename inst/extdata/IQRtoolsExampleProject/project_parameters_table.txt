@@ -1,0 +1,39 @@
+<TT>   Population parameter estimates                                                                                                    
+       ==================================================================================================================================
+
+<TH>   PARAMETER                             | VALUE | RSE   | SHRINKAGE | COMMENT                                                       
+       ----------------------------------------------------------------------------------------------------------------------------------
+<TR>   **Typical parameters**                |       |       |           |                                                               
+<TR>   kabs                                  | 0.208 | 3.98% | -         | Absorption rate parameter (1/hour)                            
+<TR>   CL                                    | 22.4  | 4.77% | -         | Apparent clearance (L/hour)                                   
+<TR>   Vc                                    | 23.8  | 3.88% | -         | Apparent central volume (L)                                   
+<TR>   Q1                                    | 24.5  | 3.71% | -         | Apparent intercompartmental clearance (L/hour)                
+<TR>   Vp1                                   | 2560  | 5.49% | -         | Apparent peripheral volume (L)                                
+<TR>                                         |       |       |           |                                                               
+<TR>   **Inter-individual variability**      |       |       |           |                                                               
+<TR>   omega(kabs)                           | 0.272 | 8.17% | 7.6%      | LogNormal                                                     
+<TR>   omega(CL)                             | 0.359 | 8.37% | 6.4%      | LogNormal                                                     
+<TR>   omega(Vc)                             | 0.294 | 8.79% | 10%       | LogNormal                                                     
+<TR>   omega(Q1)                             | 0.314 | 8.83% | 9.4%      | LogNormal                                                     
+<TR>   omega(Vp1)                            | 0.404 | 10.5% | 24%       | LogNormal                                                     
+<TR>                                         |       |       |           |                                                               
+<TR>   **Correlation of random effects**     |       |       |           |                                                               
+<TR>   corr(CL,Q1)                           | 0.337 | 32.4% | -         | Correlation coefficient                                       
+<TR>   corr(CL,Vc)                           | 0.733 | 8.43% | -         | Correlation coefficient                                       
+<TR>   corr(Vc,Q1)                           | 0.571 | 15.5% | -         | Correlation coefficient                                       
+<TR>                                         |       |       |           |                                                               
+<TR>   **Parameter-Covariate relationships** |       |       |           |                                                               
+<TR>   beta_kabs(AGE)                        | 0.547 | 34.9% | -         | Age in Years on kabs                                          
+<TR>   beta_kabs(SEX_2)                      | 0.69  | 15.9% | -         | Gender female on kabs                                         
+<TR>   beta_CL(SEX_2)                        | 1.39  | 7.28% | -         | Gender female on CL                                           
+<TR>   beta_CL(WT0)                          | 0.361 | 72.9% | -         | Bodyweight in kg on CL                                        
+<TR>   beta_Vc(SEX_2)                        | 0.861 | 7.78% | -         | Gender female on Vc                                           
+<TR>                                         |       |       |           |                                                               
+<TR>   **Residual Variability**              |       |       |           |                                                               
+<TR>   error_PROP1                           | 0.161 | 2.35% | -         | Proportional Error (fraction) - Compound concentration (ug/mL)
+<TR>                                         |       |       |           |                                                               
+<TR>   Objective function                    | -9969 | -     | -         | -                                                             
+<TR>   AIC                                   | -9931 | -     | -         | -                                                             
+<TR>   BIC                                   | -9868 | -     | -         | -                                                             
+       ----------------------------------------------------------------------------------------------------------------------------------
+<TF>    Model: ../03-Models/03_COVARIANCEMODEL/MODEL03, Significant digits: 3 (Objective function rounded to closest integer value), omega values reported in standard deviation.

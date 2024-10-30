@@ -1,0 +1,17 @@
+# Attributes file for dataset ../03-Models/03_COVARIANCEMODEL/MODEL03/RESULTS/project_indiv
+
+atrcontents <- list()
+
+atrcontents$paramNames <- c("kabs", "CL", "Vc", "Q1", "Vp1")
+
+atrcontents$covariateNames <- c("AGE", "WT0", "HT0", "SEX")
+
+atrcontents$covNames <- c("AGE", "WT0", "HT0")
+
+atrcontents$catNames <- "SEX"
+
+atrcontents$ALT_NAMES_USED <- c("XPRED", "XWRES", "IPRED", "IWRES")
+
+atrcontents$ALT_NAMES_ORIG <- c("popPred", "pwRes", "indivPred_mode", "indWRes_mode")
+
+

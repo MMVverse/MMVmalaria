@@ -1,0 +1,119 @@
+********** MODEL NAME
+
+model_PKPDcombo_3cpt_Emax_Bliss
+
+********** MODEL NOTES
+
+Library model for SCID mouse combo PKPD modeling.
+PK		PK according to the mono PK models
+PK DDI	Mutual elimination inhibition in a competitive manner.
+PD		Emax model
+PD DDI Empirical Bliss independence model.
+Gamma: interaction parameter with 1 for Bliss independence, >1 Bliss antagonism, <1 Bliss synergy
+Emax of drug 1 assumed to be the larger Emax
+Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug
+concentration in ug/mL!
+
+********** MODEL STATES
+
+###  PK FQ ---------------------------------------------------- #
+#--- Parent
+d/dt(Adx1)  = -kax1*Adx1 + Fpediatric*Fabs1x1*INPUT1
+d/dt(Acx1)  =  kax1*Adx1 - Q1x1/Vcx1*Acx1 + Q1x1/Vp1x1*Ap1x1 - CLx1/Vcx1*Acx1
+d/dt(Ap1x1) =            + Q1x1/Vcx1*Acx1 - Q1x1/Vp1x1*Ap1x1
+
+### PK CMP2 -------------------------------------------------- #
+d/dt(Adx2) = -kax2*Adx2                 + Fpediatric*Fabs1x2*INPUT2
+d/dt(Acx2) =  kax2*Adx2                       - Q1x2/Vcx2*Acx2 + Q1x2/Vp1x2*Ap1x2 - Q2x2/Vcx2*Acx2 + Q2x2/Vp2x2*Ap2x2 - CLx2/Vcx2*Acx2
+d/dt(Ap1x2) =                                                 Q1x2/Vcx2*Acx2 - Q1x2/Vp1x2*Ap1x2
+d/dt(Ap2x2) =          						                                                      Q2x2/Vcx2*Acx2 - Q2x2/Vp2x2*Ap2x2
+
+### PKPD with Bliss interaction -------------------------------- #
+d/dt(PL)    = GR - Kkill
+
+#--- Init
+PL(0)       = PLbase+PLerr
+ 
+********** MODEL PARAMETERS
+
+Fpediatric = 1 # Adult equivalence factor
+
+### PK CMP1 ------------
+Fabs1x1 = 0.85    # Relative bioavailability of CMP1 (-)
+kax1    = 0.72    # Absorption rate parameter of CMP1 (1/hour)
+CLx1    = 22    # Apparent unkown metabolic clearance of CMP1 (L/hour)
+Vcx1    = 2600   # Apparent central volume of CMP1 (L)
+Q1x1    = 140    # Apparent intercompartmental clearance to first peripheral compartment of CMP1 (L/hour)
+Vp1x1   = 3540   # Apparent first peripheral volume of CMP1 (L)
+
+### PK CMP2 --------
+Fabs1x2 = 1             # Relative bioavailability (.)
+kax2    = 0.52           # Absorption rate parameter (1/hour)
+CLx2    = 0             # Apparent clearance (L/hour)
+Vcx2    = 10            # Apparent central volume (L)
+Q1x2    = 0             # Apparent intercomparmental clearance to first peripheral compartment (L/hour)
+Vp1x2   = 1             # Apparent first peripheral volume (L)
+Q2x2    = 0             # Apparent intercomparmental clearance to second peripheral compartment (L/hour)
+Vp2x2   = 1             # Apparent second peripheral volume (L)
+
+### PKPD --------------------------------------------------------
+### PD CMP1 -----------
+EMAXx1   = 0.3      # Maximum clearance rate (1/hour)
+EC50x1   = 0.077    # Concentration achieving 50percent of maximum effect (µg/mL)
+hillx1   = 2         # hill coefficient (.)
+### PD MMV253 --------
+EMAXx2   = 0.22     # Maximum drug parasite clearance rate constant(1/hr)
+EC50x2   = 0.0084   # Drug concentration with half of the maximum parasite clearance (ug/ml)
+hillx2   = 14        # Hill coefficient (.)
+Ktx2     = 100       # Delay or CMP2 PD effect
+
+### Parasite growth -------
+GR       = 0.07      # Net parasite growth rate (1/hour)
+PLbase   = 7         # Observed log-transformed parasitemia at t=0 (or starting time used for the analysis).
+PLerr    = 0         # Individual deviation from baseline parasitemia
+
+### DDI: Bliss independence -------
+Gamma    = 1         # Bliss interaction term
+
+yps      = 1e-6      # To avoid numerical crashes when computing PL
+
+********** MODEL VARIABLES
+
+### PK general
+
+### Concentrations
+Ccx1  = Acx1/Vcx1             # concentration CMP1
+Ccx2  = Acx2/Vcx2             # concentration CMP2
+
+### PKPD
+Ccx1EPS = Ccx1+yps
+Ccx2EPS = Ccx2+yps
+RD11 = Ccx1EPS^hillx1/(EC50x1^hillx1+Ccx1EPS^hillx1)
+RD22 = (1-exp(-Ktx2*time)) * Ccx2EPS^hillx2/(EC50x2^hillx2+Ccx2EPS^hillx2)
+Effx1 = RD11                           # drug effect contribution of CMP1
+Effx2 = RD22                           # drug effect contribution of CMP2
+
+### Bliss PKPD interaction
+
+# Calculate minimum Emax
+frac    = 1/(1+(EMAXx1/EMAXx2)^20)                             # calculate min(EMx1,EMx2)
+EmaxMin = frac*EMAXx1 + (1-frac)*EMAXx2                        # calculate min(EMx1,EMx2)
+
+# Determine kill rate based on empirical Bliss independence
+Kkillx1 = EMAXx1*Effx1
+Kkillx2 = EMAXx2*Effx2
+Kkill   = Kkillx1 + Kkillx2 - Gamma * Effx1*Effx2 * EmaxMin
+
+# output is log-transformed parasites
+OUTPUT1 = PL
+ 
+********** MODEL REACTIONS
+
+ 
+********** MODEL FUNCTIONS
+
+ 
+********** MODEL EVENTS
+
+ 
+

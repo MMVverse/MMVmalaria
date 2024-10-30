@@ -1,0 +1,105 @@
+=====
+TITLE:     Malaria PKPD model library
+TYPE:      Method documentation
+PROJECTID: NA
+CUSTOMER:  Medicines for Malaria Venture
+AUTHOR:    Anne Kuemmel, PhD, IntiQuan GmbH, Spalenring 150, CH-4055 Basel, Phone, Email
+STATUS:    Draft
+DATE:      dd-Apr-2018
+TEMPLATE:  C:\LOCAL\IQReport10\IQReport\templates\IntiQuanStyle.rmdt
+=====
+
+# GR models
+
+## Linear growth
+
+$$ \frac{dPL}{dt} = GR - KILL $$
+
+## Cure threshold
+
+#### Model with sigmoidal term to swith off growth rate at low parasite concentrations
+$$ GR = GR^0 \cdot \frac{P^{10}}{P^{10}+P_{cure}^{10}} $$
+
+#### Model implementing immunity at low parasite concentrations.
+This model was inspired by Martin Bergstrand. A term is added to the parasite level ODE representing the body´s ability to
+clear completely parasites at low parasite concentrations.
+
+$$ \frac{dPL}{dt} = GR - K_{kill} - IM $$
+
+$$ IM = PMAX \cdot P_{cure} / (exp(PL)+P_{cure}) $$
+
+The choice of PMAX is to large extent arbitrary if not leading to numerical issues. However, it needs to be higher than the growth rate.
+One potential choice is to set it to a value 20% higher than the growth rate:
+
+$$ PMAX = 1.2 \cdot GR $$
+
+In its original implementation there is no cure threshold in the enumerator and the rate of elimination by the body´s immune system is approaching $\frac{PMAX}{P_{cure}}$.
+Thus, it is dependent on two parameters that should be adjusted to eachother to avoid inappropriate values.
+
+# PK models
+
+## Monotherapy
+
+## Combination therapy
+
+# PD models
+
+## Monotherapy
+
+## Combination therapy
+
+### Additive drug effect model
+
+#### Parasitemia ODE
+
+$$ \frac{dPL}{dt} = \left( GR - \frac{E_{max,1}^{act} \cdot c_1^{Hill_1}}{c_1^{Hill_1} + \left(EC_{50,1}^{act}\right)^{Hill_1}} - \frac{E_{max,2}^{act} \cdot c_2^{Hill_2}}{c_1^{Hill_2} + \left(EC_{50,2}^{act}\right)^{Hill_2}} \right)$$
+
+#### GPDI model: Interaction terms for mutual impact on PD parameters
+
+$$ E_{max,i}^{act} = E_{max,i} \left( 1 + \left( e^{\beta} -1 \right) \frac{c_j^{Hill_j}}{c_j^{Hill_j} + \left(EC_{50,j}\right)^{Hill_j}}  \right)$$
+
+$$ EC_{50,i}^{act} = EC_{50,i} \left( 1 + \left( e^{-\alpha} -1 \right) \frac{c_j^{Hill_j}}{c_j^{Hill_j} + \left(EC_{50,j}\right)^{Hill_j}}  \right)$$
+
+### Bliss independence model
+
+Bliss independence model describes the combined drug effect of two drugs with different and independent mode of action.
+Combination of drugs fulfilling this criterion have an effect according to $E_{AB} = E_A + E_B - E_A \cdot E_B$.
+The effects of the two drug need to be normalized by the maximum effect of the more effective drug, e.g., $E_{max,A}$ ($E_A$ is normalized to the interval (0,1) and $E_B$ to (0,$\frac{E_{max,B}}{E_{max,A}}$).
+The total effect is then scaled by the larger maximum effect.
+The resulting ODE for logtransformed parasite levels is
+
+$$ \frac{dPL}{dt} = GR - E_{max,1} \cdot Eff_1 - E_{max,2} \cdot Eff_2 + Eff_1 \cdot Eff_2 \cdot E_{max,1} $$
+
+with $E_{max,2}$ > $E_{max,1}$ and 
+
+$$ Eff_i = \frac{c_i^{Hill_i}}{c_i^{Hill_i} + EC_{50,i}^{Hill_i}} $$ .
+
+#### Empirical Bliss independence
+
+$$ \frac{dPL}{dt} = GR - E_{max,1} \cdot Eff_1 - E_{max,2} \cdot Eff_2 + \gamma \cdot Eff_1 \cdot Eff_2 \cdot E_{max,1} $$
+
+with $\gamma = 1$ indicating Bliss independence, $\gamma$<$1$ for synergism and $\gamma$>$1$ for antagonism.
+
+#### GPDI Bliss independence model
+
+ODE is unchanged, but the EC50 values might be changed by other drug
+
+$$ Eff_i = \frac{c_i^{Hill_i}}{c_i^{Hill_i} + \left(EC_{50,i}^{act}\right)^{Hill_i}} $$ .
+
+$$ EC_{50,i}^{act} = EC_{50,i} \left( 1 + \left( e^{-\alpha} -1 \right) \frac{c_j^{Hill_j}}{c_j^{Hill_j} + \left(EC_{50,j}\right)^{Hill_j}}  \right)$$
+
+#### Combination of clearance model with other models
+
+Assume that $E_{max,2}$ is larger than $E_{max,1}$ and that the PD of drug 1 is described by a clearance model and the PD of drug 2 by a Emax model.
+
+According to the Bliss model, the total kill is:
+$$ Kill_{tot} = E_{max,1} \cdot Eff_1 + E_{max,2} \cdot Eff_2 - Eff_1 \cdot Eff_2 \cdot E_{max,1} $$
+
+For combining the clearance model (drug 1) with an Emax model (drug 2), the total kill is distributed
+between "being killed and immediately cleared" (drug 2) and "being killed, but persisting in the circulation as dead parasites until cleared" (drug 2).
+
+$$ Kill_{tot} = Kill_1 + Kill_2 $$
+
+One solution is to attribute the pure monodrug kill terms ($E_{max} \cdot Eff$) to the respective kill and distribute the interaction term ($Eff_1*Eff_2$) based on the fraction of the monodrug kill and the total additive effect.
+
+$$ Kill_1 = E_{max,1} \cdot Eff_1 - \frac{E_{max,1} \cdot Eff_1}{E_{max,1} \cdot Eff_1 + E_{max,2} \cdot Eff_2} Eff_1 \cdot Eff_2 \cdot E_{max,1} $$

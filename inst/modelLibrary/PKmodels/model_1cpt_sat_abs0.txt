@@ -1,0 +1,53 @@
+********** MODEL NAME
+model_1cpt_sat_abs0
+
+********** MODEL NOTES
+
+PK model for simulation of drug concentration in central compartment
+with following characteristics:
+Compartments:  1
+Elimination :  saturable
+Absorption  :  zero order (with lag time)
+
+Unit convention
+Dose: mg
+Concentration: ug/mL
+Time: hours
+
+The annotation of the parameter units is consistent with the given unit convention.
+Units of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation need to match the unit convention.
+
+********** MODEL STATES
+
+d/dt(Ac) 	= - VMAX*Cc/(KM+Cc) + Fabs0*INPUT1
+
+Ac(0)    	= 0
+
+********** MODEL PARAMETERS
+
+Fabs0    	= 1   # Relative bioavailability (-)
+VMAX      = 3 	# Maximum apparent clearance rate (mg/hour)
+KM 			  = 1   # Michaelis-Menton constant (ug/mL)
+Vc 			  = 32 	# Apparent central volume (L)
+Tk0       = 1   # Absorption time (hours)
+Tlag1     = 0   # Absorption lag time (hours)
+
+********** MODEL VARIABLES
+
+% Calculation of concentration in central compartment
+Cc 			  = Ac/Vc
+
+% Defining an output (only needed when interfacing with NLME
+% parameter estimation tools such as NONMEM and MONOLIX)
+OUTPUT1  	  = Cc  # Compound concentration (ug/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+

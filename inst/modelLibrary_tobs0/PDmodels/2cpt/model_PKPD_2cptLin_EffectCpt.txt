@@ -1,0 +1,90 @@
+********** MODEL NAME
+model_PKPD_2cptLin_EffectCpt
+
+
+********** MODEL NOTES
+Library model for malaria PKPD modeling.
+
+PK	No of Compartments:	2 (Vc, Vp1 & Q1)
+	Elimination:		Linear (CL)
+	Absorption:			1st order absorption (Fabs1 & ka)
+
+PD	Transformation:		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
+	Growth:				Linear (GR)
+	Drug Effect:		Hill Function depending on the concentration at the effect compartment Ce (EMAX, EC50 & hill)
+	Baseline:			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and PLerr follows
+						a centered gaussian, i.e. N(0,sigma^2) to allow some flexibility
+
+Important assumption: INPUT dose and PK model matched to lead to drug
+                      concentration in µg/mL!
+
+Units of parasitemia assumed in percent or 1/mL (both log-transformed: ln not log10).
+
+
+********** MODEL STATES
+
+# PK model (dosing: INPUT1)
+d/dt(Ad)  = -ka*Ad + factorUnits*Fabs1*INPUT1
+d/dt(Ac)  =  ka*Ad - Q1/Vc*Ac + Q1/Vp1*Ap1 - CL/Vc*Ac
+d/dt(Ap1) =          Q1/Vc*Ac - Q1/Vp1*Ap1
+
+# Parasitemia PD model (log transformed parasitemia)
+d/dt(Ce) = ke*(Cc-Ce)
+d/dt(PL) = GR - EMAX*Eff
+PL(0) = PLbase + GR*Tobs0
+
+
+********** MODEL PARAMETERS
+
+# -------- PK parameters --------
+Fabs1 = 1             # Relative bioavailability (.)
+ka    = 0.5           # Absorption rate parameter (1/hour)
+CL    = 0             # Apparent clearance (L/hour)
+Vc    = 10            # Apparent central volume (L)
+Q1    = 0             # Apparent intercomparmental clearance to first peripheral compartment (L/hour)
+Vp1   = 1             # Apparent first peripheral volume (L)
+Tlag1 = 0             # Absorption lag time (hours)
+
+# -------- PD parameters --------
+
+# --- General ---
+PLbase = 0            # Log-transformed baseline parasitemia (percent or 1/mL)
+PLerr  = 0            # Individual deviation from baseline parasitemia
+
+# --- Drug ---
+GR   = 0.05           # Net parasite growth rate (1/hour)
+EMAX = 0.10           # Maximum clearance rate (1/hour)
+EC50 = 0.10           # Concentration achieving 50percent of maximum effect (ug/mL)
+hill = 3              # Hill coefficient (.)
+ke   = 1              # Effect compartment rate constant (1/hour)
+
+# If the user want other unit than ug/mL
+factorUnits = 1
+
+# To avoid numerical crashes when computing PL
+yps = 1e-9
+
+
+********** MODEL VARIABLES
+
+# -------- PK --------
+# Drug concentration (ug/mL)
+Cc = Ac/Vc            # Compound concentration (ug/mL)
+
+# -------- PD --------
+# Drug Effect
+Eff = (Ce+yps)^hill/((Ce+yps)^hill+EC50^hill)
+
+# -------- Output --------
+# Parasitemia Output (log)
+OUTPUT1 = PL          # Log-transformed parasitemia (percent or 1/mL)
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+

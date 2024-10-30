@@ -1,0 +1,233 @@
+---
+title: "NLME parameter sampling API"
+author: "Venelin Mitov, Daniel Lill, Anne Kümmel, Henning Schmidt"
+date: "04.05.2020"
+output: 
+  slidy_presentation:
+    font_adjustment: -1
+    footer: Copyright (c) 2020 IntiQuan
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(IQRtools)
+library(microbenchmark)
+
+source("../R/14-IQRnlmeParamSampling.R")
+source("../R/15-MMVnlmeParamSamplingXLS.R")
+
+set.seed(2)
+```
+
+# Introduction
+
+- The sampling of individual parameters has been divided in several functions. 
+
+
+|Function | Meaning |
+|------------------------------|-----------------------------------------------------|
+|IQRnlme _readParamXLS|Read NLME model parameter estimates from an excel file|
+|IQRnlme _specifyParamSampling|Create an IQRnlmeParamSpec object |
+|IQRnlme _sampleParamFromUncertainty| Sample NLME parameters from their uncertainty distribution|
+|IQRnlme _sampleRandomEffects|Sample NLME random effects given population parameter values describing the inter-individual variability distribution|
+|IQRnlme _sampleIDs|Sample or subset records from a matrix or a data.frame|
+|IQRnlme _calcTypicalIndParamValues|Calculate typical individual parameter values by applying covariate formulae to reference population parameter values|
+|IQRnlme _calcIndParamValues|Calculate individual parameter values by applying sampled random effects to typical individual parameter values|
+|IQRnlme _sampleIndParamValues|Sample individual parameter values, based on a NLME parameter  specification|
+
+---
+
+# Input
+
+Arguments:
+
+- a .xlsx file (`sample_MMVmalariaXLS`) 
+  - estimates sheet
+  - uncertainty correlation sheet (optional)
+- a covariates/regressors data.frame
+- Npop
+- Nsamples
+- FLAG_SAMPLE
+
+---
+
+## Example parameter estimates table {.smaller}
+```{r, echo=FALSE, results='asis'}
+estimatesTable       <- suppressMessages(suppressWarnings(
+  readxl::read_excel(path = "PKparametersNewFormat.xlsx", sheet = "estimates",
+                     col_names = TRUE)
+))
+
+print(
+  xtable::xtable(
+    estimatesTable, 
+    caption = "Parameter estimates. The same columns are provided as a .csv file or as a sheet 'estimates' in a .xlsx file."), 
+  type="html", include.rownames = FALSE)
+```
+
+---
+
+## Example uncertainty correlation matrix {.smaller}
+```{r, echo=FALSE, results='asis'}
+corMatrix       <- suppressMessages(suppressWarnings(
+  readxl::read_excel(path = "PKparametersNewFormat.xlsx", sheet = "uncertainty_correlation",
+                     col_names = FALSE)
+))
+
+print(
+  xtable::xtable(
+    corMatrix, 
+    caption = "Uncertainty distribution correlation matrix on a normal scale. This matrix is provided optionaly as a sheet 'uncertainty_correlation' in the .xlsx file (not available in a .csv file)."),
+  type="html", include.rownames = FALSE, include.colnames = FALSE)
+```
+
+---
+
+## Example covariates table {.smaller}
+```{r, results='asis'}
+set.seed(1)
+data <- data.frame(
+  ID = seq_len(4), 
+  WT0 = rlnorm(4, 3, sdlog = 0.2), 
+  SEX = sample(c(0, 1), 4, replace = TRUE))
+  
+print(
+  xtable::xtable(
+    data, 
+    caption = ""), 
+  type="html", include.rownames = FALSE)
+```
+---
+
+# Calling the functions
+
+```{r}
+set.seed(1)
+fileXLS <- "PKparametersNewFormat.xlsx"
+
+listResultsSampling <- sampleIndParamValues_MMVmalariaXLS(
+  fileXLS, 
+  Nsamples = 10,
+  FLAG_SAMPLE = 1, 
+  data = data)
+```
+
+---
+
+# Output
+
+An R list with the following members:
+
+|Element | Meaning |
+|--------|-----------------------------------------------------|
+|`$popParamValues` | a data.frame with a column ID.POP and columns for all [population parameter values](#definitions). For details, see [Step 1](#step-1). |
+|`$sampledData` | a data.frame having `Nsample` rows representing sampled records from the patient data. For details, see [Step 2](#step-2). |
+| `$typicalIndParamValues` | a data.frame of `Nsample * nrow(popParamValues)` rows, columns `ID.POP` and `ID`, and columns corresponding to the model parameters. The parameter values represent [typical individual parameter values](#definitions) taking into account the corresponding covariate values in `$sampledData`. For details, see [Step 3](#step-3).
+| `$randomEffects` | a data.frame of the same dimensionality as `$typicalIndParamValues` containing the [random effects](#definitions) sampled from the IIV distribution (in normal units). For details, see [Step 4](#step-4) |
+| `$indParamValues` | a data.frame of the same dimensionality as `$typicalIndParamValues` containing the (final) [individual parameter values](#definitions) in original units. For details, see [Step 5](#step-5) ||
+| `$FLAG_SAMPLE` | same as the argument |
+| `$Nsamples` | same as the argument |
+
+---
+
+## Example output {.smaller}
+
+```{r, echo=FALSE}
+listResultsSampling
+```
+
+---
+
+# Speed {.smaller}
+
+## No preprocessing of .xls file {.smaller}
+```{r}
+
+microbenchmark(
+  
+    OldN100 = sample_MMVmalariaXLS(
+      filename = fileXLS, 
+      Nsamples = 100,
+      FLAG_SAMPLE = 1, 
+      covariates = data, 
+      FLAGid = TRUE),
+    NewN100 = IQRnlme_sampleIndParamValues(
+      fileXLS, 
+      Nsamples = 100,
+      FLAG_SAMPLE = 1, 
+      data = data),
+    
+    OldN1000 = sample_MMVmalariaXLS(
+      filename = fileXLS, 
+      Nsamples = 1000,
+      FLAG_SAMPLE = 1, 
+      covariates = data, 
+      FLAGid = TRUE),
+    NewN1000 = IQRnlme_sampleIndParamValues(
+      spec = fileXLS, 
+      Nsamples = 1000,
+      FLAG_SAMPLE = 1, 
+      data = data),
+    
+    times = 5
+  
+)
+```
+
+---
+
+## Preprocessing of .xls file {.smaller}
+```{r}
+spec <- IQRnlme_specifyParamSampling(fileXLS)
+
+microbenchmark(
+  
+    OldN100 = sample_MMVmalariaXLS(
+      filename = fileXLS, 
+      Nsamples = 100,
+      FLAG_SAMPLE = 1, 
+      covariates = data, 
+      FLAGid = TRUE),
+    NewN100 = IQRnlme_sampleIndParamValues(
+      spec = spec, 
+      Nsamples = 100,
+      FLAG_SAMPLE = 1, 
+      data = data),
+    
+    OldN1000 = sample_MMVmalariaXLS(
+      filename = fileXLS, 
+      Nsamples = 1000,
+      FLAG_SAMPLE = 1, 
+      covariates = data, 
+      FLAGid = TRUE),
+    NewN1000 = IQRnlme_sampleIndParamValues(
+      spec = spec, 
+      Nsamples = 1000,
+      FLAG_SAMPLE = 1, 
+      data = data),
+    
+    times = 5
+  
+)
+```
+
+
+# Next steps 
+
+- Testing for IQRtools?
+- .Rmd documentation as a chapter in IQRtools book?
+- Discuss abstract for M&S Basel?
+---
+
+# Known issues
+
+- Sampling from uncertainty of pos.def. matrices.
+  
+  - Maybe this is a potential point in our presentation.
+
+---
+
+# Thank you!
+
+Questions?
