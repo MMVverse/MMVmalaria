@@ -1189,3 +1189,239 @@ generate_bite_time_poisson <- function(force_of_infection, Tend) {
   
   return(vec_biteTimes_ijk)
 }
+
+#' Add Bite Events to Trial Files Based on Force of Infection (FOI)
+#'
+#' This function adds simulated mosquito bite events to existing trial files based on specified
+#' force of infection (FOI) values. It copies a pre-defined set of trial files in a provided folder,
+#' generating new folders of trial files per the defined arguments.It then generates 
+#' bite times using a provided bite time generator function and updates the trial files with these bite events. 
+#'
+#' @param FOI Numeric vector. Vector of numeric values that define force of infection values used
+#'        to calibrate trial files. For each element of FOI, a new folder of trial files will be created 
+#'        by copying the contents of `simOutputFolder` and subsequently updated. 
+#'        FOI values Should represent an assumption about the number of infectious bites
+#'        that occur over a given time period. Each element of `FOI` is passed in to the function
+#'        defined in `biteTimeGenerator`, so consider carefully the form of `biteTimeGenerator`
+#' @param simOutputFolder Character string. The directory path where base simulation output files are
+#'        stored and will be updated. I.e., file.path(outputFolder, "00-Baseline")
+#' @param Tend Numeric. The total observation period (in hours) over which bite events are to be
+#'        simulated.
+#' @param TimePreDose Numeric. The time before the first dose (in hours). If greater than zero,
+#'        an initial zero dose event is added at time zero. Including `TimePreDose` permits infectious
+#'        bites to occur before the therapy is given
+#' @param bite_input Integer. The administration (ADM) code representing the bite input in the
+#'        simulation structural model used in the trial files you are updating.
+#' @param bite_AMT Numeric. The amount of malaria parasites introduced per bite event.
+#' @param SimInputs List. Simulation input parameters. Must contain number of subjects
+#'        (`nsubjs`) and number of trials (`ntrials`).In the form (`SimInputs$nsubjs`) and
+#'        (`SimInputs$ntrials`)
+#' @param biteTimeGenerator Function. A function used to generate bite times. The first argument
+#'        should be resolved by `FOI_i` (an element of `FOI`), and the second argument should be
+#'        `Tend`.
+#' @param ... Additional arguments to be passed to the `biteTimeGenerator` function if needed.
+#'        These arguments can be used to customize the bite time generation process.
+add_bites_to_trial_files <- function(FOI, 
+                                     simOutputFolder,
+                                     Tend, 
+                                     TimePreDose, 
+                                     bite_input,
+                                     bite_AMT,
+                                     SimInputs, 
+                                     biteTimeGenerator,
+                                     ...) {
+  # Calculate n_Dig ensuring at least 2 digits
+  n_Dig <- max(nchar(as.character(length(FOI))), 2)
+  
+  #--------------------------------------#
+  # STEP 1: Copy required trial files ----
+  #--------------------------------------#
+  for (i in seq_along(FOI)) {
+    FOI_i <- FOI[i]
+    
+    # Generate the index with leading zeros
+    i_Print <- sprintf("%0*d", n_Dig, i)
+    
+    # Construct the folder name as per your requirement
+    folderFOI_i <- file.path(simOutputFolder, paste0(i_Print, "-FOI-", FOI_i))
+    
+    # Copy baseline files to the new folder
+    file.copyMMV(
+      from = file.path(simOutputFolder),
+      to = folderFOI_i,
+      recursive = TRUE,
+      overwrite = TRUE
+    )
+
+    
+    # List trial files
+    trialFilenames_i <- list.files(folderFOI_i, pattern = "trial.*.rds", full.names = TRUE)
+    
+    #--------------------------------------#
+    # STEP 2: Add bites and adjust trial files ----
+    #--------------------------------------#
+    # Process each trial file
+    for (trialFilename_ij in trialFilenames_i) {
+      trial_ij <- MMVmalaria:::loadTrialFile(trialFilename_ij)
+      
+      # Get parameter names
+      parNames_ij <- setdiff(
+        names(trial_ij$eventTable),
+        c("ScenID", "ExpID", "DoseID", "TrialID", "ID", "TIME", "ADM", "AMT", "TINF")
+      )
+      
+      if (trial_ij$DoseID == 1) {
+        # Dose ID = 1 
+        # Sample Bites across patients
+        biteTimes_ij <- list()
+        ID_ij <- unique(trial_ij$eventTable$ID)
+        
+        for (k in seq_along(ID_ij)) {
+          ID_ijk <- ID_ij[k]
+          
+          # Generate bites with biteTimeGenerator
+          # where force_of_infection is resolved by FOI_i and Tend is resolved
+          # by Tend argument to add_bites_to_trial_files
+          vec_biteTimes_ijk <- biteTimeGenerator(FOI_i, Tend, ...)
+          
+          n_Bites_ijk <- length(vec_biteTimes_ijk)
+          
+          # Biting events
+          biteTimes_ijk <- data.frame(
+            "ScenID"  = rep(trial_ij$ScenID, n_Bites_ijk),
+            "ExpID"   = rep(trial_ij$ExpID, n_Bites_ijk),
+            "DoseID"  = rep(trial_ij$DoseID, n_Bites_ijk),
+            "TrialID" = rep(trial_ij$TrialID, n_Bites_ijk),
+            "ID"      = rep(ID_ijk, n_Bites_ijk),
+            "TIME"    = vec_biteTimes_ijk,
+            "ADM"     = rep(bite_input, n_Bites_ijk),
+            "AMT"     = rep(bite_AMT, n_Bites_ijk),
+            "TINF"    = rep(0.0001, n_Bites_ijk),
+            stringsAsFactors = FALSE
+          )
+          
+          # Get Parameters
+          parPKPD_ijk <- as.data.frame(matrix(NA, nrow = n_Bites_ijk, ncol = length(parNames_ij)))
+          names(parPKPD_ijk) <- parNames_ij
+          
+          # Concatenate
+          biteTimes_ijk <- cbind(biteTimes_ijk, parPKPD_ijk)
+          
+          # Add a dose of 0 at time 0 to have all simulations starting at 0
+          if (TimePreDose > 0) {
+            dose0_ijk <- data.frame(
+              "ScenID"  = trial_ij$ScenID,
+              "ExpID"   = trial_ij$ExpID,
+              "DoseID"  = trial_ij$DoseID,
+              "TrialID" = trial_ij$TrialID,
+              "ID"      = ID_ijk,
+              "TIME"    = 0,
+              "ADM"     = seq(1, bite_input - 1),
+              "AMT"     = 0,
+              "TINF"    = 0.0001,
+              stringsAsFactors = FALSE
+            )
+            
+            # Get PKPD parameters to be added for TIME=0
+            parPKPD0_ijk <- trial_ij$eventTable[
+              trial_ij$eventTable$ID == ID_ijk & trial_ij$eventTable$TIME == TimePreDose,
+              parNames_ij
+            ]
+            
+            # Concatenate
+            dose0_ijk <- cbind(dose0_ijk, parPKPD0_ijk)
+            biteTimes_ijk <- rbind(dose0_ijk, biteTimes_ijk)
+          }
+          
+          # Add to list
+          biteTimes_ij[[k]] <- biteTimes_ijk
+        }
+        
+        # Combine all bite times
+        biteTimes_ij <- rbindlist(biteTimes_ij)
+        
+        # Add bite events to the event table
+        if (TimePreDose > 0) {
+          trial_ij$eventTable[, parNames_ij] <- NA
+        }
+        trial_ij$eventTable <- rbind(trial_ij$eventTable, biteTimes_ij)
+        trial_ij$eventTable <- trial_ij$eventTable[
+          order(trial_ij$eventTable$ID, trial_ij$eventTable$TIME, trial_ij$eventTable$ADM),
+        ]
+        
+        # Save updated event table and bite times
+        MMVmalaria:::saveToTrialFile(
+          folderFOI_i,
+          trial_ij$eventTable,
+          listMemberName = "eventTable",
+          FLAGreuseStoredTrialSummaryFiles = FALSE
+        )
+        MMVmalaria:::saveToTrialFile(
+          folderFOI_i,
+          biteTimes_ij,
+          listMemberName = "biteTimes",
+          FLAGreuseStoredTrialSummaryFiles = FALSE
+        )
+        
+      } else if (trial_ij$DoseID > 1) {
+        # --- Handle DoseID > 1 ---
+        
+        # Open the trial file corresponding to DoseID == 1
+        DoseID1 <- 1
+        ScenID1 <- 1
+        trialFilename_ij1 <- file.path(
+          dirname(trialFilename_ij),
+          paste0("trial_", ScenID1, "_", trial_ij$ExpID, "_", DoseID1, "_", trial_ij$TrialID, ".rds")
+        )
+        
+        if (file.exists(trialFilename_ij1)) {
+          # Load the DoseID == 1 trial file
+          trial_ij1 <- MMVmalaria:::loadTrialFile(trialFilename_ij1)
+          
+          # Get the bite events
+          biteTimes_ij <- subset(trial_ij1$eventTable, ADM == bite_input)
+          biteTimes_ij$ScenID <- trial_ij$ScenID
+          biteTimes_ij$DoseID <- trial_ij$DoseID
+          biteTimes_ij$ID <- biteTimes_ij$ID + (trial_ij$ScenID - 1) * SimInputs$nsubjs * SimInputs$ntrials
+          
+          # Add a dose of 0 at time 0 to have all simulations starting at 0
+          if (TimePreDose > 0) {
+            dose0_ij <- subset(
+              trial_ij1$eventTable,
+              TIME == 0 & ADM %in% seq(1, bite_input - 1) & AMT == 0
+            )
+            dose0_ij$ScenID <- trial_ij$ScenID
+            dose0_ij$DoseID <- trial_ij$DoseID
+            dose0_ij$ID <- dose0_ij$ID + (trial_ij$ScenID - 1) * SimInputs$nsubjs * SimInputs$ntrials
+            
+            # Concatenate
+            biteTimes_ij <- rbind(dose0_ij, biteTimes_ij)
+          }
+          
+          # Add bite events to the event table
+          if (TimePreDose > 0) {
+            trial_ij$eventTable[, parNames_ij] <- NA
+          }
+          trial_ij$eventTable <- rbind(trial_ij$eventTable, biteTimes_ij)
+          trial_ij$eventTable <- trial_ij$eventTable[
+            order(trial_ij$eventTable$ID, trial_ij$eventTable$TIME, trial_ij$eventTable$ADM),
+          ]
+          
+          # Save updated event table
+          MMVmalaria:::saveToTrialFile(
+            folderFOI_i,
+            trial_ij$eventTable,
+            listMemberName = "eventTable",
+            FLAGreuseStoredTrialSummaryFiles = FALSE
+          )
+        } else {
+          # Corresponding DoseID == 1 trial file does not exist
+          warning(paste("DoseID == 1 trial file not found for", trialFilename_ij))
+          next  # Skip to next trial file
+        }
+      }
+      # If DoseID is neither 1 nor >1 (unlikely), you may want to handle it or skip
+    }  # End of loop over trial files
+  }  # End of loop over FOI values
+}  # End of update_trial_files function
+
