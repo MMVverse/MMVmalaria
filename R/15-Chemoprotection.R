@@ -1133,3 +1133,59 @@ evaluate_BreakthroughEvent <- function(dataSim,
   res
 }
 
+
+
+#' Generate Bite Times Using a Poisson Process
+#'
+#' This function generates bite event times over a specified observation period using 
+#' a Poisson process, based on a mean bite rate (events per day).
+#'
+#' @param force_of_infection Numeric. Should represent an assumption about the number of infectious bites
+#' that occur over a given time period. This can derived, for example, from estimated annual entomological
+#' inoculation rates.This number should represent a yearly count : the provided parameter will be 
+#' in the form x / 365 /24 to provide a daily rate 
+#' @param Tend Numeric. The observation period (in hours) during which bite events will be simulated.
+#' If being used as part of a simulation, should likely reflect the simulation's maximum run time 
+#'
+#' @return A numeric vector of bite times (in hours) within the specified observation period.
+#'         Each element represents the cumulative time (in hours) at which a bite event occurs.
+#' @details 
+#' The function calculates a rate parameter for a Poisson process that represents 
+#' the mean number of bite events per hour, derived from a yearly figure of infectious bites (`force_of_infection`). 
+#' Using this rate parameter, it generates a cumulative sum of exponentially-distributed
+#' inter-arrival times for bite events.
+#'
+#' If the generated sequence of bite events does not span the entire observation period (`Tend`), 
+#' additional events are appended to ensure sufficient coverage, stopping when the maximum 
+#' bite event time exceeds the observation period.
+#' 
+#' The function returns only those events that occur within the observation period.
+#'
+#' @examples
+#' # Generate bite times with an average of 10 bites per year over a 24-hour period
+#' generate_bite_time_poisson(force_of_infection = 10, Tend = 24)
+#'
+#' # Generate bite times with an average of 5 bites per year over a 48-hour period
+#' generate_bite_time_poisson(force_of_infection = 5, Tend = 48)
+#'
+#' @export
+#' @author Sam Jones (MMV, \email{joness@@mmv.org})
+#' @family Chemoprotection
+generate_bite_time_poisson <- function(force_of_infection, Tend) {
+  rateParam <- force_of_infection / 365 / 24
+  nObs_i <- qpois(1 - 1e-12, lambda = rateParam * Tend)
+  
+  vec_biteTimes_ijk <- cumsum(rexp(nObs_i, rate = rateParam))
+  
+  while (force_of_infection > 0 && max(vec_biteTimes_ijk) < Tend) {
+    vec_biteTimes_ijk <- c(
+      vec_biteTimes_ijk,
+      cumsum(rexp(nObs_i, rate = rateParam)) + max(vec_biteTimes_ijk)
+    )
+  }
+  
+  # Select only bite events within the observation period Tend
+  vec_biteTimes_ijk <- vec_biteTimes_ijk[vec_biteTimes_ijk <= Tend]
+  
+  return(vec_biteTimes_ijk)
+}
