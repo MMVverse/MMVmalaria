@@ -1155,8 +1155,13 @@ summarizeTrial_ChemoSurvival <- function(
   TrialID <- unique(simPKPD$TrialID)
 
   # Print warning for timePreDose
-  cat("TimePreDose is", TimePreDose, ". Survival time will be calculated by removing individuals with events occuring between timePreDose and time of first dose")
-
+  # cat("TimePreDose is", TimePreDose, ". Survival time will be calculated by removing individuals with events occuring between timePreDose and time of first dose")
+  
+  # Change output names first:
+  if(!is.null(outputNames)){
+    data.table::setnames(simPKPD, old = names(outputNames), new = outputNames)
+  }
+  
   stopifnot(
     "summarizeTrial_ChemoSurvival: function must be called on simPKPD for a single ScenID, ExpID, DoseID, TrialID combination." =
       length(ScenID) == 1 && length(ExpID) == 1 && length(DoseID) == 1 && length(TrialID) == 1)
