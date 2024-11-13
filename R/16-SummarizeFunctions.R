@@ -1110,6 +1110,7 @@ summarizeTrial_ChemoBreakthrough <- function(
 #' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).
 #' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
 #' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: \code{"PBlood"}).
+#' @param outputNames String of output names being passed in, should correspond to available output names in structural model 
 #' @param Plog Indicate if parasitemia is in the log or linear scale (Default: `TRUE` which means it is logged).
 #' @param FLAGinterpolateTime A logical indicating if the PL measurements should be interpolated within the simulation period.
 #' @param IRdenominator Character string corresponding to the parameter to be used as the denominator of calculating
@@ -1143,6 +1144,7 @@ summarizeTrial_ChemoSurvival <- function(
     LLOQ.PD             = log(10000),
     timeCOL     = "TIME",
     PbloodCOL   = "PBlood",
+    outputNames = NULL,
     Plog                = TRUE,
     FLAGinterpolateTime = FALSE,
     IRdenominator       = "n.start",
