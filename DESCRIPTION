@@ -53,7 +53,7 @@ Imports:
   writexl,
   MMVbase
 Remotes:
-MMVverse/MMVbase
+  MMVverse/MMVbase
 LazyData: true
 RoxygenNote: 7.3.2
 Suggests:
