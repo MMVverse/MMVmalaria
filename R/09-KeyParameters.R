@@ -2074,6 +2074,110 @@ getTimeAboveMPC90sim <- function(dataSim,
 }
 
 
+#' @title Get Time When Kill Rate is Above Growth Rate (tKRGR)
+#'
+#' @description
+#' Calculates the total time during which the kill rate exceeds the growth rate in a simulation dataset.
+#'
+#' @param dataSim A data frame or data.table containing the simulation data.
+#' @param timeCOL A string specifying the name of the time column in \code{dataSim}. Default is \code{"TIME"}.
+#' @param killCOL A string specifying the name of the kill rate column in \code{dataSim}. Default is \code{"KillBlood"}.
+#' @param GR A numeric value representing the growth rate threshold. Default is 0.07. Expects a single value, but if growth rate
+#' is a column in \code{dataSim}, arguments such as \code{dataSim$GR[1]} or \code{unique(dataSim$GR)} are suitable.  
+#'
+#' @details
+#' The function computes the total time (\code{tKRGR}) during which the kill rate exceeds the growth rate in the provided simulation data.
+#'
+#' It handles cases where the kill rate crosses the growth rate threshold between time points by applying corrections using linear interpolation. This ensures a more accurate estimation of \code{tKRGR}, especially when time steps are large.
+#'
+#' @return
+#' A data frame with one row and one column:
+#' \describe{
+#'   \item{\code{tKRGR}}{Numeric value representing the total time during which the kill rate exceeds the growth rate.}
+#' }
+#'
+#' @examples
+#' \dontrun{
+#' # Example simulation data
+#' dataSim <- data.frame(
+#'   TIME = seq(0, 24, by = 1),
+#'   KillBlood = runif(25, min = 0, max = 1),
+#'   GR = 0.5
+#' )
+#'
+#' # Calculate tKRGR
+#' resultKRGR <- getTimeKRaboveGR(
+#'   dataSim = dataSim,
+#'   timeCOL = "TIME",
+#'   killCOL = "KillBlood",
+#'   GR = 0.5
+#' )
+#'
+#' print(resultKRGR)
+#' }
+#'
+#' @export
+#' @author Sam Jones (MMV)
+#' @family Key Parameters
+getTimeKRaboveGR<- function(dataSim,
+                            timeCOL = "TIME",
+                            killCOL  = "KillBlood",
+                            GR      = 0.07) {
+  
+  # Get GR from dataset:
+  if (is.null(GR)) {
+    if (is.null(dataSim$GR)) {
+      stop("No GR value given.")
+    } else {
+      GR <- unique(dataSim$GR)
+    }
+  }
+  
+  # Check if Concentration is above Eff.MIC or not:
+  dtKRGR <- ifelse(dataSim[[killCOL]]>GR, 1, 0)
+  # Calculate Time Above MIC:
+  tKRGR <- trapzMMV(dataSim[[timeCOL]],dtKRGR)
+  
+  #------------------------------------------------#
+  # When dtKRGR goes from 0 to 1 (or 1 to 0), the
+  # integration will add 0.5*(t[k+1]-t[k]), which
+  # means that the changes happen in the middle
+  # of the time interval. Which is not necessarly
+  # the case. If the time step is very small, this
+  # numerical estimation is not an issue. But if
+  # the time scale is large, this could change
+  # dramatically the value of tKRGR THEREFORE,
+  # A correction is added.
+  #------------------------------------------------#
+  
+  # Estimate when Effect goes above and below dtKRGR:
+  #   - BtoA stands for Below to Above
+  #   - AtoB stands for Above to Below
+  ddtKRGR  <- c(0,dtKRGR[2:(length(dtKRGR))]-dtKRGR[1:(length(dtKRGR)-1)])
+  idxBtoA <- which(ddtKRGR==1)
+  idxAtoB <- which(ddtKRGR==-1)
+  
+  # Correction when it goes above:
+  for (k in idxBtoA){
+    dt_BtoA  <- dataSim[[timeCOL]][k] - approx(dataSim[[killCOL]][(k-1):k], dataSim[[timeCOL]][(k-1):k], GR)$y
+    dt_trapz <- 0.5*(dataSim[[timeCOL]][k]-dataSim[[timeCOL]][k-1])
+    tKRGR     <- tKRGR + dt_BtoA - dt_trapz
+  }
+  
+  # Correction when it goes below:
+  for (k in idxAtoB){
+    dt_AtoB  <- approx(dataSim[[killCOL]][(k-1):k], dataSim[[timeCOL]][(k-1):k], GR)$y - dataSim[[timeCOL]][k-1]
+    dt_trapz <- 0.5*(dataSim[[timeCOL]][k]-dataSim[[timeCOL]][k-1])
+    tKRGR     <- tKRGR + dt_AtoB - dt_trapz
+  }
+  
+  # Prepare Output:
+  resultKRGR <- data.frame(tKRGR=tKRGR)
+  
+  # Output:
+  return(resultKRGR)
+}
+
 #' getTimeRecrudescence
 #'
 #' @description
