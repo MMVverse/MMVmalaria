@@ -44,7 +44,9 @@ simres1Consistent <- sim_IQRmodelConsistent(simIQRmodelSpec = simIQRmodelSpec1)
 \seealso{
 Other Simulation: 
 \code{\link{createSimIQRmodelSpec}()},
-\code{\link{getDefaultEventTable}()}
+\code{\link{create_GDF_fromDesignSpec}()},
+\code{\link{getDefaultEventTable}()},
+\code{\link{populateGDFWithSimValues_consistent}()}
 }
 \author{
 Daniel Lill (daniel.lill@intiquan.com)

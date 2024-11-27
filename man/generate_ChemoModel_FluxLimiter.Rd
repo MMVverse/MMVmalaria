@@ -133,8 +133,10 @@ Generates a chemoprevention model script using a Flux Limiter scheme to characte
 }
 \seealso{
 Other Chemoprotection: 
+\code{\link{add_bites_to_trial_files}()},
 \code{\link{evaluate_BreakthroughEvent}()},
-\code{\link{generate_ChemoModel_UpwindFirstOrder}()}
+\code{\link{generate_ChemoModel_UpwindFirstOrder}()},
+\code{\link{generate_bite_time_poisson}()}
 }
 \author{
 Catalina Barcelo (MMV, \email{barceloc@mmv.org})

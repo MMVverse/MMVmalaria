@@ -72,7 +72,9 @@ do.call(sim_IQRmodel, simIQRmodelSpec1)
 }
 \seealso{
 Other Simulation: 
+\code{\link{create_GDF_fromDesignSpec}()},
 \code{\link{getDefaultEventTable}()},
+\code{\link{populateGDFWithSimValues_consistent}()},
 \code{\link{sim_IQRmodelConsistent}()}
 }
 \author{

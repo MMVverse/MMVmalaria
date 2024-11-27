@@ -49,6 +49,7 @@ Other Key Parameters:
 \code{\link{getTimeAboveMIC}()},
 \code{\link{getTimeAboveMPC90sim}()},
 \code{\link{getTimeAboveMPC90}()},
+\code{\link{getTimeKRaboveGR}()},
 \code{\link{get_LagTime}()},
 \code{\link{get_NumberOfPKcpt}()},
 \code{\link{get_PRRtot}()},

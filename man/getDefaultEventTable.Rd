@@ -49,6 +49,8 @@ simres2 <- sim_IQRmodel(m, eventTable = eT)
 \seealso{
 Other Simulation: 
 \code{\link{createSimIQRmodelSpec}()},
+\code{\link{create_GDF_fromDesignSpec}()},
+\code{\link{populateGDFWithSimValues_consistent}()},
 \code{\link{sim_IQRmodelConsistent}()}
 }
 \author{

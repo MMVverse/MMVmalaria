@@ -54,8 +54,10 @@ time of last measurement.
 }
 \seealso{
 Other Chemoprotection: 
+\code{\link{add_bites_to_trial_files}()},
 \code{\link{generate_ChemoModel_FluxLimiter}()},
-\code{\link{generate_ChemoModel_UpwindFirstOrder}()}
+\code{\link{generate_ChemoModel_UpwindFirstOrder}()},
+\code{\link{generate_bite_time_poisson}()}
 }
 \author{
 Catalina Barcelo (MMV, \email{barceloc@mmv.org})

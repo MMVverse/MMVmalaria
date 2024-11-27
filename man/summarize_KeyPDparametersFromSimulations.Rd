@@ -50,6 +50,8 @@ interval as given by `CIlevel`.
 \seealso{
 Other Summarize Functions: 
 \code{\link{summarizeTrial_ChemoBreakthrough}()},
+\code{\link{summarizeTrial_ChemoSurvival_ComboPD}()},
+\code{\link{summarizeTrial_ChemoSurvival_MonoPD}()},
 \code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarize_KeyPKparametersFromSimulations}()},
 \code{\link{summarize_PIandCIgeneric}()},
