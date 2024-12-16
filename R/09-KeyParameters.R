@@ -2382,7 +2382,7 @@ plot_keyPDparametersMMV <- function(object,
     geom_linerange(aes(ymin=Value-SE,ymax=Value+SE), position=dodge) +
     facet_wrap(~Parameter, scales="free_y") +
     scale_x_continuous(breaks = unique(estimates$Hill)) +
-    # scale_color_manual(values=IQRtoolsColors) +
+    # scale_color_manual(values=MMVcolors) +
     scale_shape_manual("SE Available", breaks=c(TRUE,FALSE), values=c(17,16))
 
   # Save Plot:

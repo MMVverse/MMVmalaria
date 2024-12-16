@@ -18,25 +18,33 @@ all version numbers are locally available.
 }
 \details{
 The function requires that the user has created MMVmalaria
-options via\preformatted{options(MMVmalaria = list(
+options via
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{options(MMVmalaria = list(
   user.name = "Daniel Kaschek, IntiQuan",
   user.email = "daniel.kaschek@intiquan.com",
   local.repo = "C:/PROJTOOLS/MMVmalaria"
 ))
-}
+}\if{html}{\out{</div>}}
 
 The general procedure to create new versions of the MMVmalaria package is:
 \enumerate{
 \item Modify the DESCRIPTION file and set the new version number
-\item Commit all changes\preformatted{git add .
+\item Commit all changes
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{git add .
 git commit -m "commit message"
-}
-\item Add tag to your commit with the new version number, e.g.\preformatted{git tag v0.1.2
-}
-\item Synchronize with github repository\preformatted{git pull
+}\if{html}{\out{</div>}}
+\item Add tag to your commit with the new version number, e.g.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{git tag v0.1.2
+}\if{html}{\out{</div>}}
+\item Synchronize with github repository
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{git pull
 git push
 git push origin --tags
-}
+}\if{html}{\out{</div>}}
 }
 }
 \concept{Package Administration}

@@ -32,9 +32,6 @@ summarize_PKPDprofilesFromSimulations(
 
 \item{scenCOL}{Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
 }
-\value{
-
-}
 \description{
 Summarize PK and PD profiles entered in `outputCOL`, where the predictive interval
 (defined in with the variable 'percentiles') is returned with the confidence
@@ -43,9 +40,9 @@ interval as given by `CIlevel`.
 \seealso{
 Other Summarize Functions: 
 \code{\link{summarizeTrial_ChemoBreakthrough}()},
+\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarizeTrial_ChemoSurvival_ComboPD}()},
 \code{\link{summarizeTrial_ChemoSurvival_MonoPD}()},
-\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarize_KeyPDparametersFromSimulations}()},
 \code{\link{summarize_KeyPKparametersFromSimulations}()},
 \code{\link{summarize_PIandCIgeneric}()},

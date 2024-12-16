@@ -30,9 +30,6 @@ compare_DataPopPred(
 
 \item{ActivityPath}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 compare_DataPopPred
 }

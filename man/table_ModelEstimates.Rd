@@ -24,9 +24,6 @@ table_ModelEstimates(
 
 \item{FLAGreport}{Default: TRUE}
 }
-\value{
-
-}
 \description{
 table_ModelEstimates
 }

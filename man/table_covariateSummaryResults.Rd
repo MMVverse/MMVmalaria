@@ -8,7 +8,9 @@ table_covariateSummaryResults(
   tableInputPath,
   tableOutputPath = NULL,
   report = TRUE,
-  FUNnameModel = function(x) {     gsub("MODEL_", "", x) }
+  FUNnameModel = function(x) {
+     gsub("MODEL_", "", x)
+ }
 )
 }
 \arguments{
@@ -19,9 +21,6 @@ table_covariateSummaryResults(
 \item{FUNnameModel}{Default: function(x) {
    gsub("MODEL_", "", x)
 }}
-}
-\value{
-
 }
 \description{
 table_covariateSummaryResults

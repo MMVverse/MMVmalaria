@@ -24,9 +24,6 @@ plot_PKPDdataMMVhuCh_Ratio_Gam(
 
 \item{rescuename}{: Name of observations in the NAME column that correspond to Rescue medication doses.}
 }
-\value{
-
-}
 \description{
 Plot PKPD data available from a Human Challenge study in "standard" MMV format, suitable for exploration and reporting.
 plots ratio of Individual parasite data over gametocyte counts, stratified by treatment.
@@ -36,8 +33,8 @@ Other DataExploration:
 \code{\link{barplotACPR}()},
 \code{\link{display_ComboTreatments}()},
 \code{\link{plot_2DconcVsACPR}()},
-\code{\link{plot_PKPDdataMMVhuCh}()},
 \code{\link{plot_PKPDdataMMV}()},
+\code{\link{plot_PKPDdataMMVhuCh}()},
 \code{\link{plot_PKPDhuChCombo}()},
 \code{\link{plot_PKPDscidCombo}()},
 \code{\link{plot_PKdataMMV}()},

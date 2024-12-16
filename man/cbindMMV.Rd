@@ -13,9 +13,6 @@ cbindMMV(x, y, stringsAsFactors = default.stringsAsFactors())
 
 \item{stringsAsFactors}{logical, passed to as.data.frame}
 }
-\value{
-
-}
 \description{
 Combine R Objects by Columns
 }
@@ -43,7 +40,6 @@ Other General Functions:
 \code{\link{find_MinMMV}()},
 \code{\link{getDoselevel}()},
 \code{\link{getMKLthreadsMMV}()},
-\code{\link{get_ActivityPath}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_IXGDFtoRemove}()},
 \code{\link{get_MMVmalariaPath}()},

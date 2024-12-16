@@ -9,7 +9,9 @@ estimate_AUC(
   Conc,
   AUCtype = "last",
   intMethod = logLinTrapzMMV,
-  LambdaZ = function(x, y) {     estimate_LambdaZ(x, y)$LambdaZ },
+  LambdaZ = function(x, y) {
+     estimate_LambdaZ(x, y)$LambdaZ
+ },
   atol = 1e-09
 )
 }
@@ -22,9 +24,6 @@ estimate_AUC(
    estimate_LambdaZ(x, y)$LambdaZ
 }}
 }
-\value{
-
-}
 \description{
 estimate_AUC
 }
@@ -33,8 +32,8 @@ Other Key Parameters:
 \code{\link{assess_MICMPC90PRR48}()},
 \code{\link{convert_SCIDconcentration}()},
 \code{\link{estimate_LambdaZ}()},
-\code{\link{evaluate_APR28}()},
 \code{\link{evaluate_APR}()},
+\code{\link{evaluate_APR28}()},
 \code{\link{formulaPKpar_MacroToMicro}()},
 \code{\link{formulaPKpar_MacroToPrimary}()},
 \code{\link{formulaPKpar_MicroToMacro}()},
@@ -46,10 +45,10 @@ Other Key Parameters:
 \code{\link{getApparentKeys}()},
 \code{\link{getCure}()},
 \code{\link{getKeysEMAX}()},
-\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMIC}()},
-\code{\link{getTimeAboveMPC90sim}()},
+\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMPC90}()},
+\code{\link{getTimeAboveMPC90sim}()},
 \code{\link{getTimeKRaboveGR}()},
 \code{\link{getTimeRecrudescence}()},
 \code{\link{get_LagTime}()},

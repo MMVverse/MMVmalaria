@@ -18,9 +18,6 @@ likelihoodRatioTestIQR(
 
 \item{parameterPNG}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 likelihoodRatioTestIQR
 }

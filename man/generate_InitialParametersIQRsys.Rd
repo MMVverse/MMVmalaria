@@ -11,9 +11,6 @@ generate_InitialParametersIQRsys(projectPath, IIVvalues0 = NULL)
 
 \item{IIVvalues0}{Default: NULL}
 }
-\value{
-
-}
 \description{
 generate_InitialParametersIQRsys
 }

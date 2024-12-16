@@ -17,9 +17,6 @@ get_IXGDFtoRemove(
 
 \item{removeType}{Default: 'ToLastOb'}
 }
-\value{
-
-}
 \description{
 Get Row ID to be removed
 }
@@ -46,7 +43,6 @@ Other General Functions:
 \code{\link{find_MinMMV}()},
 \code{\link{getDoselevel}()},
 \code{\link{getMKLthreadsMMV}()},
-\code{\link{get_ActivityPath}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_MMVmalariaPath}()},
 \code{\link{libraryMMV}()},

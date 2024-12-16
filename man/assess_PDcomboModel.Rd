@@ -24,9 +24,6 @@ assess_PDcomboModel(
 
 \item{abs0Tk0param}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 assess_PDcomboModel
 }

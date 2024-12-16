@@ -28,9 +28,6 @@ plot_PKPDhuChCombo(
 
 \item{ActivityPath}{Path of the current activity (Default: NULL)}
 }
-\value{
-
-}
 \description{
 plot_PKPDhuChCombo
 }
@@ -39,9 +36,9 @@ Other DataExploration:
 \code{\link{barplotACPR}()},
 \code{\link{display_ComboTreatments}()},
 \code{\link{plot_2DconcVsACPR}()},
-\code{\link{plot_PKPDdataMMVhuCh_Ratio_Gam}()},
-\code{\link{plot_PKPDdataMMVhuCh}()},
 \code{\link{plot_PKPDdataMMV}()},
+\code{\link{plot_PKPDdataMMVhuCh}()},
+\code{\link{plot_PKPDdataMMVhuCh_Ratio_Gam}()},
 \code{\link{plot_PKPDscidCombo}()},
 \code{\link{plot_PKdataMMV}()},
 \code{\link{scatterConcACPR}()},

@@ -681,6 +681,7 @@ plot_LinSegments <- function(x) {
 #'
 #' @family Model-free PD assessment by linear segments
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
+#' @importFrom MMVbase get_ActivityPath
 plot_tMICextrapolation <- function(EXTRA, FIT, data,
                                    xlabel = "x",
                                    ylabel = "y",

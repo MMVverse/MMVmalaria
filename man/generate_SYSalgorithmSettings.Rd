@@ -65,9 +65,6 @@ generate_SYSalgorithmSettings(
 
 \item{FLAGkeepFits}{Default: FALSE}
 }
-\value{
-
-}
 \description{
 generate_SYSalgorithmSettings
 }

@@ -22,8 +22,8 @@ Automatic check that the information provided by the modeler are valid for the a
 }
 \seealso{
 Other Activity Monitoring: 
-\code{\link{check_ActivityInfo_Sdrive}()},
 \code{\link{check_ActivityInfo}()},
+\code{\link{check_ActivityInfo_Sdrive}()},
 \code{\link{check_ActivityResults}()},
 \code{\link{create_RprofileMMV}()},
 \code{\link{generate_ActivityContent}()},

@@ -25,17 +25,14 @@ generate_ActivityContent(
 
 \item{filename}{Default: NULL}
 }
-\value{
-
-}
 \description{
 generate_ActivityContent
 }
 \seealso{
 Other Activity Monitoring: 
+\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityInfo_PiNK}()},
 \code{\link{check_ActivityInfo_Sdrive}()},
-\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityResults}()},
 \code{\link{create_RprofileMMV}()},
 \code{\link{generate_ActivityResults}()},

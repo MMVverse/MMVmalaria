@@ -107,9 +107,6 @@ generate_NLMEalgorithmSettings(
 
 \item{algOpt.NLMIXR.control}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 generate_NLMEalgorithmSettings
 }

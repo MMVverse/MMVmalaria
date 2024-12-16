@@ -10,8 +10,8 @@ get_MICsimPK(
   model,
   tMICindiv,
   dataPK,
- 
-    plottitle = "MIC determined by linear extrapolation of parasitemia data and PK simulation"
+  plottitle =
+    "MIC determined by linear extrapolation of parasitemia data and PK simulation"
 )
 }
 \arguments{
@@ -54,8 +54,8 @@ Other Model-free PD assessment by linear segments:
 \code{\link{get_MICextrapolPK}()},
 \code{\link{get_linepar}()},
 \code{\link{plot_LinSegments}()},
-\code{\link{plot_tMICextrapolationRange}()},
 \code{\link{plot_tMICextrapolation}()},
+\code{\link{plot_tMICextrapolationRange}()},
 \code{\link{simulate_indivPK}()}
 }
 \author{

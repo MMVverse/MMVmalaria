@@ -86,8 +86,8 @@ parameters of time above MIC and time above MPC90 are calculated by individual a
 \seealso{
 Other Summarize Functions: 
 \code{\link{summarizeTrial_ChemoBreakthrough}()},
-\code{\link{summarizeTrial_ChemoSurvival_ComboPD}()},
 \code{\link{summarizeTrial_ChemoSurvival}()},
+\code{\link{summarizeTrial_ChemoSurvival_ComboPD}()},
 \code{\link{summarize_KeyPDparametersFromSimulations}()},
 \code{\link{summarize_KeyPKparametersFromSimulations}()},
 \code{\link{summarize_PIandCIgeneric}()},

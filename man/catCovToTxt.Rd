@@ -9,9 +9,6 @@ catCovToTxt(data, cat0ColNames = NULL)
 \arguments{
 \item{cat0ColNames}{Default: NULL}
 }
-\value{
-
-}
 \description{
 catCovToTxt
 }

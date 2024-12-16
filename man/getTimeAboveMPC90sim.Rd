@@ -16,9 +16,6 @@ getTimeAboveMPC90sim(
 
 \item{returnLag}{Default: `FALSE`}
 }
-\value{
-
-}
 \description{
 getTimeAboveMPC90sim
 }
@@ -28,8 +25,8 @@ Other Key Parameters:
 \code{\link{convert_SCIDconcentration}()},
 \code{\link{estimate_AUC}()},
 \code{\link{estimate_LambdaZ}()},
-\code{\link{evaluate_APR28}()},
 \code{\link{evaluate_APR}()},
+\code{\link{evaluate_APR28}()},
 \code{\link{formulaPKpar_MacroToMicro}()},
 \code{\link{formulaPKpar_MacroToPrimary}()},
 \code{\link{formulaPKpar_MicroToMacro}()},
@@ -41,8 +38,8 @@ Other Key Parameters:
 \code{\link{getApparentKeys}()},
 \code{\link{getCure}()},
 \code{\link{getKeysEMAX}()},
-\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMIC}()},
+\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMPC90}()},
 \code{\link{getTimeKRaboveGR}()},
 \code{\link{getTimeRecrudescence}()},

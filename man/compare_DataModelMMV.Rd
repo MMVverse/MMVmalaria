@@ -48,9 +48,6 @@ compare_DataModelMMV(
 
 \item{ActivityPath}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 compare_DataModelMMV
 }

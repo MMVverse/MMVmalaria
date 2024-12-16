@@ -19,9 +19,6 @@ sample_MMVmalariaCSV_NEW(
 
 \item{FLAGid}{Default: FALSE}
 }
-\value{
-
-}
 \description{
 sample_MMVmalariaCSV_NEW
 }

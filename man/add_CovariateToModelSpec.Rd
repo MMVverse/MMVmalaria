@@ -6,9 +6,6 @@
 \usage{
 add_CovariateToModelSpec(modelSpec, covariateModelToAdd)
 }
-\value{
-
-}
 \description{
 add_CovariateToModelSpec
 }

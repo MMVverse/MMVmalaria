@@ -17,9 +17,6 @@ compare_ModelEstimateRobustness(
 \item{PDddiPara}{Default: c("Alpha", "Beta", "Alpha12", "Alpha21", "Beta12", "Beta21",
 "Gamma")}
 }
-\value{
-
-}
 \description{
 compare_ModelEstimateRobustness
 }

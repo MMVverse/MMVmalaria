@@ -13,9 +13,6 @@ remove_OneCovariateToModelSpec(
 \arguments{
 \item{COVcentering}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 remove_OneCovariateToModelSpec
 }

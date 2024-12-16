@@ -13,8 +13,8 @@ predictDose_TimeAboveMIC(
   Tk0 = NULL,
   nbrDoses = 1,
   timeInterval = 24,
-  args_IQRdosing = list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses -
-    1, II = timeInterval),
+  args_IQRdosing = list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses - 1,
+    II = timeInterval),
   N_Trial,
   N_SubjperTrial,
   covariates = NULL,

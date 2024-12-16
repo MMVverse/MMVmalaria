@@ -6,9 +6,6 @@
 \usage{
 getEstimateTable(modelFolder)
 }
-\value{
-
-}
 \description{
 getEstimateTable
 }

@@ -27,9 +27,6 @@ compare_PredFitsSYS(
 
 \item{FLAGrefit}{Default: \code{FALSE}}
 }
-\value{
-
-}
 \description{
 compare_PredFitsSYS
 }

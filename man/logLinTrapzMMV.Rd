@@ -13,9 +13,6 @@ logLinTrapzMMV(x, y, logCrieria = 0.99)
 
 \item{logCrieria}{Criteria to use the log-lin rule (Default: 0.99)}
 }
-\value{
-
-}
 \description{
 log-Linear Trapez Integration Method
 }
@@ -39,7 +36,6 @@ Other General Functions:
 \code{\link{find_MinMMV}()},
 \code{\link{getDoselevel}()},
 \code{\link{getMKLthreadsMMV}()},
-\code{\link{get_ActivityPath}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_IXGDFtoRemove}()},
 \code{\link{get_MMVmalariaPath}()},

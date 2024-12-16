@@ -40,9 +40,6 @@ testPKmodelsIQR(
 
 \item{setting}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 testPKmodelsIQR
 }

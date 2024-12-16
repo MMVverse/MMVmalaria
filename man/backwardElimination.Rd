@@ -37,9 +37,6 @@ backwardElimination(
 
 \item{setting}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 backwardElimination
 }

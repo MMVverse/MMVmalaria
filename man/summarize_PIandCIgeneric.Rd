@@ -29,9 +29,6 @@ summarize_PIandCIgeneric(
 
 \item{usubJIDCOL}{Name(s) of column(s) of `dataInput` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).}
 }
-\value{
-
-}
 \description{
 Generic function to estimate the confidence interval of a metric (mean, percentiles, and/or geoman)
 of various given variables, when multiple trials have been simulated. It calls `summaryByTrial`
@@ -41,9 +38,9 @@ for numeric variable, while mean is used for logical variable.
 \seealso{
 Other Summarize Functions: 
 \code{\link{summarizeTrial_ChemoBreakthrough}()},
+\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarizeTrial_ChemoSurvival_ComboPD}()},
 \code{\link{summarizeTrial_ChemoSurvival_MonoPD}()},
-\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarize_KeyPDparametersFromSimulations}()},
 \code{\link{summarize_KeyPKparametersFromSimulations}()},
 \code{\link{summarize_PKPDprofilesFromSimulations}()},

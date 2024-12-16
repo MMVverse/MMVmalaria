@@ -9,9 +9,6 @@ simpsonMMV(x, y, tolInt = 1e-09)
 \arguments{
 \item{tolInt}{Default: 1e-09}
 }
-\value{
-
-}
 \description{
 simpsonMMV
 }
@@ -35,7 +32,6 @@ Other General Functions:
 \code{\link{find_MinMMV}()},
 \code{\link{getDoselevel}()},
 \code{\link{getMKLthreadsMMV}()},
-\code{\link{get_ActivityPath}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_IXGDFtoRemove}()},
 \code{\link{get_MMVmalariaPath}()},

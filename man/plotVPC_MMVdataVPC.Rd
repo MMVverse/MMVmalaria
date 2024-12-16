@@ -78,9 +78,6 @@ plotVPC_MMVdataVPC(
 
 \item{setting}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 Upgrades the corresponding function in IQRtools. Check its documentation for a description of the arguments.
 }

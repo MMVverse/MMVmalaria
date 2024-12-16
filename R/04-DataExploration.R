@@ -11,6 +11,7 @@
 #' @export
 #' @author Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
+#' @importFrom MMVbase MMVcolors
 display_ComboTreatments <- function(data,
                                     stratify     = "STUDY",
                                     fileplot     = NULL,
@@ -127,9 +128,9 @@ display_ComboTreatments <- function(data,
           axis.ticks      = element_blank()) +
     coord_cartesian(xlim=c(0.5,nLevels1+0.5), ylim=c(0.5,nLevels2+0.5), expand = FALSE)
   if (is.null(stratify)) {
-    gr <- gr + scale_color_manual(values=IQRtoolsColors, guide=FALSE)
+    gr <- gr + scale_color_manual(values=MMVcolors, guide=FALSE)
   } else {
-    gr <- gr + scale_color_manual(stratify, values=IQRtoolsColors) +
+    gr <- gr + scale_color_manual(stratify, values=MMVcolors) +
       guides(color=guide_legend(override.aes = list(size = 5, label = "\u25FB")))
   }
 
@@ -913,7 +914,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr_k <- gr_k +
-                             scale_color_manual("Compound", values = IQRtoolsColors[2:length(IQRtoolsColors)]))
+                             scale_color_manual("Compound", values = MMVcolors[2:length(MMVcolors)]))
 
     # By Subject:
     if(ByUSUBJID){
@@ -980,7 +981,7 @@ plot_PKPDhuChCombo <- function(dataGen,
         geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
         geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
         #geom_point(aes(color = NAME)) +
-        geom_point(color = IQRtoolsColors[2]) +
+        geom_point(color = MMVcolors[2]) +
         geom_point(data=xPKc, shape = 4) +
         scale_y_log10() +
         scale_x_continuous(breaks = x_break) +
@@ -990,7 +991,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
       # Adjust Colors:
       base::suppressMessages(gr_i <- gr_i +
-                               scale_color_manual("Compound", values = IQRtoolsColors[2:length(IQRtoolsColors)]))
+                               scale_color_manual("Compound", values = MMVcolors[2:length(MMVcolors)]))
 
       # By Subject:
       if(ByUSUBJID){
@@ -1061,7 +1062,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr_k <- gr_k +
-                             scale_color_manual("Parasite Type", values = IQRtoolsColors[2:length(IQRtoolsColors)]))
+                             scale_color_manual("Parasite Type", values = MMVcolors[2:length(MMVcolors)]))
 
     # By Subject:
     if(ByUSUBJID){
@@ -1119,7 +1120,7 @@ plot_PKPDhuChCombo <- function(dataGen,
         geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
         geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
         #geom_point(aes(color = NAME)) +
-        geom_point(color = IQRtoolsColors[2]) +
+        geom_point(color = MMVcolors[2]) +
         geom_point(data=xPDc, shape = 4) +
         scale_y_log10() +
         scale_x_continuous(breaks = x_break) +
@@ -1129,7 +1130,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
       # Adjust Colors:
       base::suppressMessages(gr_i <- gr_i +
-                               scale_color_manual("Parasite Type", values = IQRtoolsColors[2:length(IQRtoolsColors)]))
+                               scale_color_manual("Parasite Type", values = MMVcolors[2:length(MMVcolors)]))
 
       # By Subject:
       if(ByUSUBJID){
@@ -1333,7 +1334,7 @@ plot_PKPDscidCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr <- gr +
-                             scale_color_manual("", values = IQRtoolsColors[2:length(IQRtoolsColors)]))
+                             scale_color_manual("", values = MMVcolors[2:length(MMVcolors)]))
 
     # Save Plot:
     IQRoutputPNG(gr,
@@ -1370,7 +1371,7 @@ plot_PKPDscidCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr <- gr +
-                             scale_color_manual("", values = IQRtoolsColors[2:length(IQRtoolsColors)]))
+                             scale_color_manual("", values = MMVcolors[2:length(MMVcolors)]))
 
     # Save Plot:
     IQRoutputPNG(gr,
@@ -1548,7 +1549,7 @@ plot_PKPDscidCombo <- function(dataGen,
     # Adjust Colors:
     base::suppressMessages(gr <- gr +
                              scale_color_manual(limits = as.character(TRTann$Treatment),
-                                                values = IQRtoolsColors[2:length(IQRtoolsColors)]))
+                                                values = MMVcolors[2:length(MMVcolors)]))
 
     # Adjust Shapes:
     if (length(unique(dataPlotHuEry$Treatment)) > 6)
@@ -2960,7 +2961,7 @@ plot_2DconcVsACPR <- function(data,
     geom_text(x = log10(LLOQ1*1000), y = log10(max(dataPlot$VALUE2)*1000), label=paste0("LLOQ=",LLOQ1*1000,"ng/mL"), color="black", hjust=0, vjust=1.2, size=3, angle = -90) +
     #   Data
     geom_point(shape = 16, size=2.5) +
-    scale_color_manual("ACPR", values = IQRtoolsColors[3:2]) +
+    scale_color_manual("ACPR", values = MMVcolors[3:2]) +
     labs(title = title,
          x=paste0(conc1, " ", concDayName, " [ng/mL]"),
          y=paste0(conc2, " ", concDayName, " [ng/mL]")) +
@@ -3084,7 +3085,7 @@ plot_PKPDdataMMVhuCh <- function(dataGen,
       geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
       geom_point(aes(color = NAME)) +
       geom_point(data=xPc, shape = 4) +
-      scale_color_manual("Parasite type",values=IQRtoolsColors[2:10]) +
+      scale_color_manual("Parasite type",values=MMVcolors[2:10]) +
       scale_y_log10() +
       scale_x_continuous(breaks = seq(-120,1000,48)) +
       facet_wrap(~SUBJECT) +
@@ -3201,7 +3202,7 @@ plot_PKPDdataMMVhuCh_Ratio_Gam <- function(dataGen,
       geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
       geom_point(aes(color = NAME)) +
       geom_point(data=xPc, shape = 4) +
-      scale_color_manual("Parasite type",values=IQRtoolsColors[2:10]) +
+      scale_color_manual("Parasite type",values=MMVcolors[2:10]) +
       scale_y_log10() +
       scale_x_continuous(breaks = seq(-120,1000,48)) +
       facet_wrap(~SUBJECT) +

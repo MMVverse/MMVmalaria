@@ -27,9 +27,9 @@ i.e. that the expected results for a given Activity Type are furnished.
 }
 \seealso{
 Other Activity Monitoring: 
+\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityInfo_PiNK}()},
 \code{\link{check_ActivityInfo_Sdrive}()},
-\code{\link{check_ActivityInfo}()},
 \code{\link{create_RprofileMMV}()},
 \code{\link{generate_ActivityContent}()},
 \code{\link{generate_ActivityResults}()},

@@ -1020,6 +1020,7 @@ backwardElimination <- function(model, dosing,
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Model Assessment
+#' @importFrom MMVbase get_ActivityPath
 compare_DataModelMMV <- function(modelFolder,
                                  dataFile      = NULL,
                                  outputFolder  = ".",
@@ -1164,7 +1165,7 @@ compare_DataModelMMV <- function(modelFolder,
   gr <- gr +
     geom_point(aes(y=DV)) +
     geom_line(aes(y=Value, linetype = Prediction)) +
-    scale_color_manual("Treatment", values=IQRtoolsColors[2:40]) +
+    scale_color_manual("Treatment", values=MMVcolors[2:40]) +
     labs(x = "Time [hours]",
          y = ylabel,
          caption = paste0("Activity: ", get_ActivityPath(ActivityPath),
@@ -1221,6 +1222,7 @@ compare_DataModelMMV <- function(modelFolder,
 #' @family Model Assessment
 #' @importFrom plyr ddply rbind.fill
 #' @importFrom dplyr left_join
+#' @importFrom MMVbase get_ActivityPath
 compare_DataPopPred <- function(PKmodelFolder,
                                 PDmodelFolder,
                                 dataFile,
@@ -1912,7 +1914,7 @@ compare_IndPredFits <- function(modelFolder,
     gr <- gr +
       geom_point(aes(y=DV)) +
       geom_line(aes(y=Value, linetype = Prediction)) +
-      scale_color_manual(legendName, values=IQRtoolsColors[2:40], guide=FALSE) +
+      scale_color_manual(legendName, values=MMVcolors[2:40], guide=FALSE) +
       labs(x = "Time [hours]",
            y = ylabel,
            caption = caption)
@@ -1975,7 +1977,7 @@ compare_IndPredFits <- function(modelFolder,
     gr <- gr +
       geom_point(aes(y=DV)) +
       geom_line(aes(y=Value, linetype = Prediction)) +
-      scale_color_manual(legendName, values=IQRtoolsColors[2:40], guide=FALSE) +
+      scale_color_manual(legendName, values=MMVcolors[2:40], guide=FALSE) +
       labs(x = "Time [hours]",
            y = ylabel,
            caption = caption)
@@ -2039,7 +2041,7 @@ compare_IndPredFits <- function(modelFolder,
       gr <- gr +
         geom_point(aes(y=DV), color="dodgerblue") +
         geom_line(aes(y=Value, linetype = Prediction), color="dodgerblue") +
-        #scale_color_manual(legendName, values=IQRtoolsColors[2:40]) +
+        #scale_color_manual(legendName, values=MMVcolors[2:40]) +
         #labs(x="Time [hours]", y=ylabel)
         labs(x = "Time [hours]",
              y = ylabel,
@@ -2312,20 +2314,20 @@ compare_ModelEstimateRobustness <- function(FitList,
       geom_point(size=3) +
       geom_vline(aes(xintercept = Intercept), color="black", linetype="dashed", size=1.25) +
       facet_wrap(~Parameter) +
-      scale_color_manual(values = IQRtoolsColors[2:20]) +
+      scale_color_manual(values = MMVcolors[2:20]) +
       theme(legend.position = "")
 
     gr2 <- IQRggplot(subset(EstimateTable, (Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))), aes(Value, Model, color = Model)) +
       geom_jitter(position=position_jitter(height=0.2, width=0), size=3) +
       facet_wrap(~Parameter, scales="free_x") +
-      scale_color_manual(values = IQRtoolsColors[2:20]) +
+      scale_color_manual(values = MMVcolors[2:20]) +
       theme(legend.position = "")
 
     if (with(EstimateTable, any(!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))  & (Parameter!=".id")))) {
       gr3 <- IQRggplot(subset(EstimateTable, (!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter)) & (Parameter!=".id"))), aes(Value, Model, color = Model)) +
         geom_point(size=3) +
         facet_wrap(~Parameter, scales = "free_x") +
-        scale_color_manual(values = IQRtoolsColors[2:23]) +
+        scale_color_manual(values = MMVcolors[2:23]) +
         theme(legend.position = "")
       gr <- gridExtra::arrangeGrob(gr1, gr2, gr3, heights = c(5,2,3))
     } else {
@@ -2339,13 +2341,13 @@ compare_ModelEstimateRobustness <- function(FitList,
       geom_point(size=3) +
       geom_hline(aes(yintercept = Intercept), color="black", linetype="dashed", size=1.25) +
       facet_wrap(~Parameter) +
-      scale_color_manual(values = IQRtoolsColors[2:23]) +
+      scale_color_manual(values = MMVcolors[2:23]) +
       theme(legend.position = "", axis.text.x = element_text(angle = -20, vjust=0.8, hjust=0.2))
 
     gr2 <- IQRggplot(subset(EstimateTable, (Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))), aes(Model, Value, color = Model)) +
       geom_jitter(position=position_jitter(height=0.2, width=0), size=3) +
       facet_wrap(~Parameter, scales="free_y") +
-      scale_color_manual(values=IQRtoolsColors[2:23]) +
+      scale_color_manual(values=MMVcolors[2:23]) +
       theme(legend.position = "",
             axis.text.x     = element_text(angle=-20, vjust=0.8, hjust=0.2))
 
@@ -2353,7 +2355,7 @@ compare_ModelEstimateRobustness <- function(FitList,
       gr3 <- IQRggplot(subset(EstimateTable, (!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter)) & (Parameter!=".id"))), aes(Model, Value, color = Model)) +
         geom_point(size=3) +
         facet_wrap(~Parameter, scales = "free_y") +
-        scale_color_manual(values = IQRtoolsColors[2:23]) +
+        scale_color_manual(values = MMVcolors[2:23]) +
         theme(legend.position = "", axis.text.x = element_text(angle = -20, vjust=0.8, hjust=0.2))
       gr <- gridExtra::arrangeGrob(gr1, gr2, gr3, heights = c(5,2,3))
     } else {
@@ -5164,7 +5166,7 @@ plotSummaryComparisonBinary <- function(plotData,
   sourceNames <- unique(plotData[[sourceCol]])
   
   # Create a named vector of colors for each source
-  color.bySource <- setNames(IQRtoolsColors[2:(1+length(sourceNames))], sourceNames)
+  color.bySource <- setNames(MMVcolors[2:(1+length(sourceNames))], sourceNames)
   
   # Generate a list of ggplot objects, one for each unique variable
   gglist <- lapply(seq_along(variableNames), function(k) {

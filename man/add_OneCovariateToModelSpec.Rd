@@ -13,9 +13,6 @@ add_OneCovariateToModelSpec(
 \arguments{
 \item{COVcentering}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 add_OneCovariateToModelSpec
 }

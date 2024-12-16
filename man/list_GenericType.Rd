@@ -6,17 +6,14 @@
 \usage{
 list_GenericType(GenericType)
 }
-\value{
-
-}
 \description{
 list_GenericType
 }
 \seealso{
 Other Activity Monitoring: 
+\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityInfo_PiNK}()},
 \code{\link{check_ActivityInfo_Sdrive}()},
-\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityResults}()},
 \code{\link{create_RprofileMMV}()},
 \code{\link{generate_ActivityContent}()},

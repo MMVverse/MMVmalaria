@@ -9,17 +9,14 @@ get_ActivityList(folder_List = "../00-ActivityList")
 \arguments{
 \item{folder_List}{Default: '../00-ActivityList'}
 }
-\value{
-
-}
 \description{
 get_ActivityList
 }
 \seealso{
 Other Activity Monitoring: 
+\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityInfo_PiNK}()},
 \code{\link{check_ActivityInfo_Sdrive}()},
-\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityResults}()},
 \code{\link{create_RprofileMMV}()},
 \code{\link{generate_ActivityContent}()},

@@ -49,9 +49,6 @@ A breakthrough event is observed if PL exceeds LLOQ. We report time as the first
 Trivially, a breakthrough event IS NOT observed if PL did not exceed LLOQ. We report time as the
 time of last measurement.
 }
-\examples{
-
-}
 \seealso{
 Other Chemoprotection: 
 \code{\link{add_bites_to_trial_files}()},

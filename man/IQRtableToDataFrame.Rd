@@ -9,9 +9,6 @@ IQRtableToDataFrame(inputFileName)
 \arguments{
 \item{inputFileName}{Path to text file saved with `IQRtools::IQRoutputTable` to convert back to data.frame}
 }
-\value{
-
-}
 \description{
 Convert saved IQR table back to data.frame
 }
@@ -34,7 +31,6 @@ Other General Functions:
 \code{\link{find_MinMMV}()},
 \code{\link{getDoselevel}()},
 \code{\link{getMKLthreadsMMV}()},
-\code{\link{get_ActivityPath}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_IXGDFtoRemove}()},
 \code{\link{get_MMVmalariaPath}()},

@@ -31,9 +31,6 @@ table_PKsummaryCompare(
 
 \item{report}{Default: TRUE}
 }
-\value{
-
-}
 \description{
 table_PKsummaryCompare
 }

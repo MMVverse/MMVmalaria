@@ -9,9 +9,6 @@ generate_InitialParametersIQRnlme(projectPath, IIVvalues0 = NULL)
 \arguments{
 \item{IIVvalues0}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 generate_InitialParametersIQRnlme
 }

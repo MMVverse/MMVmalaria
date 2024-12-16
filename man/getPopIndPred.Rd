@@ -18,9 +18,6 @@ getPopIndPred(
 
 \item{abs0Tk0param}{Default: NULL}
 }
-\value{
-
-}
 \description{
 getPopIndPred
 }

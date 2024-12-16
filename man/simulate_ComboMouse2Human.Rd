@@ -10,10 +10,14 @@ simulate_ComboMouse2Human(
   PDmodelFolders,
   InteractionModelFolder,
   ComboModel,
-  PbaseSample = function(x) {     sample_Distribution(Mean = 10^6.72, SD = 0.1, Dist =
-    "L", nSample = x) },
-  GRsample = function(x) {     sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L",
-    nSample = x) },
+  PbaseSample = function(x) {
+     sample_Distribution(Mean = 10^6.72, SD = 0.1, Dist =
+    "L", nSample = x)
+ },
+  GRsample = function(x) {
+     sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L",
+    nSample = x)
+ },
   doseCovariate = list(drug1 = NULL, drug2 = NULL),
   covariates = NULL,
   evalDay = 28,
@@ -52,9 +56,6 @@ simulate_ComboMouse2Human(
 
 \item{setting}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 simulate_ComboMouse2Human
 }
@@ -72,8 +73,8 @@ Other Simulations:
 \code{\link{getPopParameters_MMVmalariaXLS}()},
 \code{\link{predict_HumanChallenge}()},
 \code{\link{sample_CustomParameters}()},
-\code{\link{sample_MMVmalariaCSV_NEW}()},
 \code{\link{sample_MMVmalariaCSV}()},
+\code{\link{sample_MMVmalariaCSV_NEW}()},
 \code{\link{sample_MMVmalariaProject}()},
 \code{\link{sample_MMVmalariaXLS}()},
 \code{\link{simTimeRecrudescenceCombo}()},

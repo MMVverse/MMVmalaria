@@ -15,9 +15,6 @@ summary_PKPDdataMMV(
 \arguments{
 \item{positiveQC}{}
 }
-\value{
-
-}
 \description{
 Summarizes pharmacokinetic data in 3 different tables: (1) number of subjects per study and treatment group, (2) nominal sampling times per observation type and (3) dosing/inoculation nominal time per treatment group and dosing/inoculation type.
 }

@@ -20,13 +20,17 @@ getDefaultEventTable(model, dosingTable = NULL, parameters = NULL)
 Get a default IQReventTable
 }
 \details{
-The two results are equivalent: \cr\preformatted{sim_IQRmodel(m)
-sim_IQRmodel(m, eventTable = getDefaultEventTable(m))
-}
+The two results are equivalent: \cr
 
-Same with dosing: \cr\preformatted{sim_IQRmodel(m, dosingTable = IQRdosing(c(0,1), 1, 1))
+\if{html}{\out{<div class="sourceCode">}}\preformatted{sim_IQRmodel(m)
+sim_IQRmodel(m, eventTable = getDefaultEventTable(m))
+}\if{html}{\out{</div>}}
+
+Same with dosing: \cr
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{sim_IQRmodel(m, dosingTable = IQRdosing(c(0,1), 1, 1))
 sim_IQRmodel(m, eventTable = getDefaultEventTable(m, IQRdosing(c(0,1), 1, 1)))
-}
+}\if{html}{\out{</div>}}
 }
 \examples{
 library(IQRtools)

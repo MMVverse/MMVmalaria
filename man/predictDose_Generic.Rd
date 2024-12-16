@@ -14,8 +14,8 @@ predictDose_Generic(
   Tk0 = NULL,
   nbrDoses = 1,
   timeInterval = 24,
-  args_IQRdosing = list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses -
-    1, II = timeInterval),
+  args_IQRdosing = list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses - 1,
+    II = timeInterval),
   addArgs_sim_IQRmodel = NULL,
   addArgs_uniroot = list(tol = 0.1),
   FLAG_BROWSER = FALSE,

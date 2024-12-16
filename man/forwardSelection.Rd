@@ -37,9 +37,6 @@ forwardSelection(
 
 \item{setting}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 forwardSelection
 }

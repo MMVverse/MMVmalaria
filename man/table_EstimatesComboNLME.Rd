@@ -21,9 +21,6 @@ table_EstimatesComboNLME(
 
 \item{footer}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 table_EstimatesComboNLME
 }

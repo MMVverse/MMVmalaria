@@ -20,9 +20,6 @@ predict_HumanChallenge(
 
 \item{CureThreshold}{Default: log(1/5000)}
 }
-\value{
-
-}
 \description{
 predict_HumanChallenge
 }
@@ -39,8 +36,8 @@ Other Simulations:
 \code{\link{getPopParameters_MMVmalariaProject}()},
 \code{\link{getPopParameters_MMVmalariaXLS}()},
 \code{\link{sample_CustomParameters}()},
-\code{\link{sample_MMVmalariaCSV_NEW}()},
 \code{\link{sample_MMVmalariaCSV}()},
+\code{\link{sample_MMVmalariaCSV_NEW}()},
 \code{\link{sample_MMVmalariaProject}()},
 \code{\link{sample_MMVmalariaXLS}()},
 \code{\link{simTimeRecrudescenceCombo}()},

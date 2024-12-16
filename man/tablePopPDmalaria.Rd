@@ -6,9 +6,6 @@
 \usage{
 tablePopPDmalaria(x)
 }
-\value{
-
-}
 \description{
 tablePopPDmalaria
 }

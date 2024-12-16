@@ -6,9 +6,6 @@
 \usage{
 parameter_strToLaTeX()
 }
-\value{
-
-}
 \description{
 parameter_strToLatex
 }

@@ -35,18 +35,15 @@ summarize_PRRtotFromSimulations(
 
 \item{scenCOL}{Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
 }
-\value{
-
-}
 \description{
 Summarizes the total parasite reduction ratio
 }
 \seealso{
 Other Summarize Functions: 
 \code{\link{summarizeTrial_ChemoBreakthrough}()},
+\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarizeTrial_ChemoSurvival_ComboPD}()},
 \code{\link{summarizeTrial_ChemoSurvival_MonoPD}()},
-\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarize_KeyPDparametersFromSimulations}()},
 \code{\link{summarize_KeyPKparametersFromSimulations}()},
 \code{\link{summarize_PIandCIgeneric}()},

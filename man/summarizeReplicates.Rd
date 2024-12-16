@@ -6,9 +6,6 @@
 \usage{
 summarizeReplicates(data, name)
 }
-\value{
-
-}
 \description{
 summarizeReplicates
 }
@@ -16,19 +13,19 @@ summarizeReplicates
 Other Data Preparation: 
 \code{\link{Check_MissingDatabyNAME}()},
 \code{\link{censorGametocyte}()},
-\code{\link{check_dataGeneralMMV_Center}()},
 \code{\link{check_dataGeneralMMV}()},
+\code{\link{check_dataGeneralMMV_Center}()},
 \code{\link{convertGametocytes}()},
 \code{\link{convert_Gametocytes}()},
 \code{\link{convert_catCovToTxt}()},
+\code{\link{import_SCIDpkpdData}()},
+\code{\link{import_SCIDpkpdDataCombo}()},
 \code{\link{import_SCIDpkpdDataCombo_GSK}()},
 \code{\link{import_SCIDpkpdDataCombo_TAD}()},
 \code{\link{import_SCIDpkpdDataCombo_oldTAD}()},
-\code{\link{import_SCIDpkpdDataCombo}()},
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},
-\code{\link{import_SCIDpkpdData}()},
 \code{\link{list_Center}()},
 \code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},

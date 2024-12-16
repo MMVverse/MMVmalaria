@@ -34,9 +34,6 @@ compare_IndPredFits(
 
 \item{ActivityPath}{Default: \code{NULL}}
 }
-\value{
-
-}
 \description{
 compare_IndPredFits
 }

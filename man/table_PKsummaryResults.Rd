@@ -29,9 +29,6 @@ table_PKsummaryResults(
 
 \item{report}{Default: TRUE}
 }
-\value{
-
-}
 \description{
 table_PKsummaryResults
 }

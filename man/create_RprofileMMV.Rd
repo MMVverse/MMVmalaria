@@ -9,17 +9,14 @@ create_RprofileMMV(IQRversion = NULL)
 \arguments{
 \item{IQRversion}{Default: NULL}
 }
-\value{
-
-}
 \description{
 create_RprofileMMV
 }
 \seealso{
 Other Activity Monitoring: 
+\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityInfo_PiNK}()},
 \code{\link{check_ActivityInfo_Sdrive}()},
-\code{\link{check_ActivityInfo}()},
 \code{\link{check_ActivityResults}()},
 \code{\link{generate_ActivityContent}()},
 \code{\link{generate_ActivityResults}()},

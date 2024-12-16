@@ -86,9 +86,6 @@ import_SCIDpkpdData(
 
 \item{importVersion}{Default: centerName}
 }
-\value{
-
-}
 \description{
 import_SCIDpkpdData
 }
@@ -96,15 +93,15 @@ import_SCIDpkpdData
 Other Data Preparation: 
 \code{\link{Check_MissingDatabyNAME}()},
 \code{\link{censorGametocyte}()},
-\code{\link{check_dataGeneralMMV_Center}()},
 \code{\link{check_dataGeneralMMV}()},
+\code{\link{check_dataGeneralMMV_Center}()},
 \code{\link{convertGametocytes}()},
 \code{\link{convert_Gametocytes}()},
 \code{\link{convert_catCovToTxt}()},
+\code{\link{import_SCIDpkpdDataCombo}()},
 \code{\link{import_SCIDpkpdDataCombo_GSK}()},
 \code{\link{import_SCIDpkpdDataCombo_TAD}()},
 \code{\link{import_SCIDpkpdDataCombo_oldTAD}()},
-\code{\link{import_SCIDpkpdDataCombo}()},
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},

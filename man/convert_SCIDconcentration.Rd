@@ -14,8 +14,7 @@ convert_SCIDconcentration(
   MouseH = 0.45,
   huRBCinSCID = 0.6,
   scidH = 0.8,
-  ConvertTo = c("Human Blood", "Human Plasma", "Mouse Blood", "Mouse Plasma",
-    "Free")[1]
+  ConvertTo = c("Human Blood", "Human Plasma", "Mouse Blood", "Mouse Plasma", "Free")[1]
 )
 }
 \arguments{
@@ -29,9 +28,6 @@ convert_SCIDconcentration(
 
 \item{ConvertTo}{Default: 'Human'}
 }
-\value{
-
-}
 \description{
 convert_SCIDconcentration
 }
@@ -40,8 +36,8 @@ Other Key Parameters:
 \code{\link{assess_MICMPC90PRR48}()},
 \code{\link{estimate_AUC}()},
 \code{\link{estimate_LambdaZ}()},
-\code{\link{evaluate_APR28}()},
 \code{\link{evaluate_APR}()},
+\code{\link{evaluate_APR28}()},
 \code{\link{formulaPKpar_MacroToMicro}()},
 \code{\link{formulaPKpar_MacroToPrimary}()},
 \code{\link{formulaPKpar_MicroToMacro}()},
@@ -53,10 +49,10 @@ Other Key Parameters:
 \code{\link{getApparentKeys}()},
 \code{\link{getCure}()},
 \code{\link{getKeysEMAX}()},
-\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMIC}()},
-\code{\link{getTimeAboveMPC90sim}()},
+\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMPC90}()},
+\code{\link{getTimeAboveMPC90sim}()},
 \code{\link{getTimeKRaboveGR}()},
 \code{\link{getTimeRecrudescence}()},
 \code{\link{get_LagTime}()},

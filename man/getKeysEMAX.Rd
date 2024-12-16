@@ -11,9 +11,6 @@ getKeysEMAX(x, convConc = 1)
 
 \item{convConc}{Default: 1}
 }
-\value{
-
-}
 \description{
 getKeysEMAX
 }
@@ -23,8 +20,8 @@ Other Key Parameters:
 \code{\link{convert_SCIDconcentration}()},
 \code{\link{estimate_AUC}()},
 \code{\link{estimate_LambdaZ}()},
-\code{\link{evaluate_APR28}()},
 \code{\link{evaluate_APR}()},
+\code{\link{evaluate_APR28}()},
 \code{\link{formulaPKpar_MacroToMicro}()},
 \code{\link{formulaPKpar_MacroToPrimary}()},
 \code{\link{formulaPKpar_MicroToMacro}()},
@@ -35,10 +32,10 @@ Other Key Parameters:
 \code{\link{formula_SCIDrbp}()},
 \code{\link{getApparentKeys}()},
 \code{\link{getCure}()},
-\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMIC}()},
-\code{\link{getTimeAboveMPC90sim}()},
+\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMPC90}()},
+\code{\link{getTimeAboveMPC90sim}()},
 \code{\link{getTimeKRaboveGR}()},
 \code{\link{getTimeRecrudescence}()},
 \code{\link{get_LagTime}()},

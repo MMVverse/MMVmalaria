@@ -35,9 +35,9 @@ Summarize confidence intervals for provided metrics across trials.
 \seealso{
 Other Summarize Functions: 
 \code{\link{summarizeTrial_ChemoBreakthrough}()},
+\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarizeTrial_ChemoSurvival_ComboPD}()},
 \code{\link{summarizeTrial_ChemoSurvival_MonoPD}()},
-\code{\link{summarizeTrial_ChemoSurvival}()},
 \code{\link{summarize_KeyPDparametersFromSimulations}()},
 \code{\link{summarize_KeyPKparametersFromSimulations}()},
 \code{\link{summarize_PIandCIgeneric}()},

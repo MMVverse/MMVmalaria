@@ -28,9 +28,6 @@ newtonRaphson.Vector(
 
 \item{iterMax}{Default: 1000}
 }
-\value{
-
-}
 \description{
 newtonRaphson.Vector
 }
@@ -54,7 +51,6 @@ Other General Functions:
 \code{\link{find_MinMMV}()},
 \code{\link{getDoselevel}()},
 \code{\link{getMKLthreadsMMV}()},
-\code{\link{get_ActivityPath}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_IXGDFtoRemove}()},
 \code{\link{get_MMVmalariaPath}()},

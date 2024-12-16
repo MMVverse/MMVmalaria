@@ -8,8 +8,7 @@ formulaPKpar_MicroToPrimary(
   PKparameters_Micro,
   PKmicroName = c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 =
     "Tlag1", K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2", K2c = "K2c"),
-  PKprimaryName = c(CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2", Vp2 =
-    "Vp2")
+  PKprimaryName = c(CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2", Vp2 = "Vp2")
 )
 }
 \arguments{
@@ -18,9 +17,6 @@ K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 K2c = "K2c")}
 
 \item{PKprimaryName}{Default: c(CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2", Vp2 = "Vp2")}
-}
-\value{
-
 }
 \description{
 formulaPKpar_MicroToPrimary
@@ -31,8 +27,8 @@ Other Key Parameters:
 \code{\link{convert_SCIDconcentration}()},
 \code{\link{estimate_AUC}()},
 \code{\link{estimate_LambdaZ}()},
-\code{\link{evaluate_APR28}()},
 \code{\link{evaluate_APR}()},
+\code{\link{evaluate_APR28}()},
 \code{\link{formulaPKpar_MacroToMicro}()},
 \code{\link{formulaPKpar_MacroToPrimary}()},
 \code{\link{formulaPKpar_MicroToMacro}()},
@@ -43,10 +39,10 @@ Other Key Parameters:
 \code{\link{getApparentKeys}()},
 \code{\link{getCure}()},
 \code{\link{getKeysEMAX}()},
-\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMIC}()},
-\code{\link{getTimeAboveMPC90sim}()},
+\code{\link{getTimeAboveMICsim}()},
 \code{\link{getTimeAboveMPC90}()},
+\code{\link{getTimeAboveMPC90sim}()},
 \code{\link{getTimeKRaboveGR}()},
 \code{\link{getTimeRecrudescence}()},
 \code{\link{get_LagTime}()},

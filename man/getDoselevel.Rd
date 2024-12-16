@@ -9,9 +9,6 @@ getDoselevel(chr, N = 1)
 \arguments{
 \item{N}{Default: 1}
 }
-\value{
-
-}
 \description{
 getDoselevel
 }
@@ -34,7 +31,6 @@ Other General Functions:
 \code{\link{file.copyMMV}()},
 \code{\link{find_MinMMV}()},
 \code{\link{getMKLthreadsMMV}()},
-\code{\link{get_ActivityPath}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_IXGDFtoRemove}()},
 \code{\link{get_MMVmalariaPath}()},

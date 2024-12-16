@@ -15,9 +15,6 @@ sample_CustomParameters(
 \arguments{
 \item{Nsamples}{}
 }
-\value{
-
-}
 \description{
 sample_CustomParameters
 }
@@ -34,8 +31,8 @@ Other Simulations:
 \code{\link{getPopParameters_MMVmalariaProject}()},
 \code{\link{getPopParameters_MMVmalariaXLS}()},
 \code{\link{predict_HumanChallenge}()},
-\code{\link{sample_MMVmalariaCSV_NEW}()},
 \code{\link{sample_MMVmalariaCSV}()},
+\code{\link{sample_MMVmalariaCSV_NEW}()},
 \code{\link{sample_MMVmalariaProject}()},
 \code{\link{sample_MMVmalariaXLS}()},
 \code{\link{simTimeRecrudescenceCombo}()},

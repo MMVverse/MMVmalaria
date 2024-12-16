@@ -21,9 +21,6 @@ table_BestFitEstimation(
 
 \item{footer}{Default: NULL}
 }
-\value{
-
-}
 \description{
 table_BestFitEstimation
 }

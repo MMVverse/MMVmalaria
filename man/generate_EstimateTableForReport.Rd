@@ -24,9 +24,6 @@ List containing the table as data.frame, title and footer
 \description{
 Generate a table of estimate from IQR or GPF output in a summarized format
 }
-\examples{
-
-}
 \seealso{
 Other Reporting: 
 \code{\link{parameter_strToLaTeX}()},

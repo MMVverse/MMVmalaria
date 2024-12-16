@@ -26,9 +26,6 @@ plot_2DconcVsACPR(
 
 \item{acprDay}{ACPR assessment day, can only be 28, 42, or 63}
 }
-\value{
-
-}
 \description{
 plot_2DconcVsACPR
 }
@@ -36,9 +33,9 @@ plot_2DconcVsACPR
 Other DataExploration: 
 \code{\link{barplotACPR}()},
 \code{\link{display_ComboTreatments}()},
-\code{\link{plot_PKPDdataMMVhuCh_Ratio_Gam}()},
-\code{\link{plot_PKPDdataMMVhuCh}()},
 \code{\link{plot_PKPDdataMMV}()},
+\code{\link{plot_PKPDdataMMVhuCh}()},
+\code{\link{plot_PKPDdataMMVhuCh_Ratio_Gam}()},
 \code{\link{plot_PKPDhuChCombo}()},
 \code{\link{plot_PKPDscidCombo}()},
 \code{\link{plot_PKdataMMV}()},

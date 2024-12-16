@@ -42,8 +42,8 @@ Other Model-free PD assessment by linear segments:
 \code{\link{get_MICsimPK}()},
 \code{\link{get_linepar}()},
 \code{\link{plot_LinSegments}()},
-\code{\link{plot_tMICextrapolationRange}()},
 \code{\link{plot_tMICextrapolation}()},
+\code{\link{plot_tMICextrapolationRange}()},
 \code{\link{simulate_indivPK}()}
 }
 \author{
