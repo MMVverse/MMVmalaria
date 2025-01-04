@@ -450,6 +450,7 @@ check_ActivityResults <- function(ActivityInfoFile = "../01-Data/S001-ActivityIn
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV, \email{cherkaouim@@mmv.org})
+#' @importFrom MMVbase thisFile
 #' @family Activity Monitoring
 create_RprofileMMV <- function(IQRversion = NULL) {
 
@@ -1426,7 +1427,8 @@ list_GenericType <- function(GenericType) {
 #' @md
 #'
 #' @export
-#' @seealso [base::save], [saveMMV]
+#' @seealso [base::save], [MMVbase::saveMMV]
+#' @importFrom MMVbase saveMMV
 #' @family General Functions
 #' @author Mohammed H. Cherkaoui (MMV, \email{cherkaouim@@mmv.org})
 saveActivityInfo <- function(list,

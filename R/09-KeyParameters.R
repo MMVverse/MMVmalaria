@@ -424,6 +424,7 @@ formula_SCIDrbp <- function(HuRbp,
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
+#' @importFrom MMVbaser logLinTrapzMMV 
 #' @family Key Parameters
 estimate_AUC <- function(Time,
                          Conc,
@@ -1824,6 +1825,7 @@ getTimeAboveMIC <- function(dataSim,
 #' @param returnLag Default: `FALSE`
 #' @return
 #' @export
+#' @importFrom MMVbase trapzMMV
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
 getTimeAboveMICsim <- function(dataSim,
@@ -1924,6 +1926,7 @@ getTimeAboveMICsim <- function(dataSim,
 #' @param convConc Default: 1
 #' @return
 #' @export
+#' @importFrom MMVbase rectintMMV
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
 getTimeAboveMPC90 <- function(dataSim,

@@ -14,7 +14,6 @@ Convert saved IQR table back to data.frame
 }
 \seealso{
 Other General Functions: 
-\code{\link{add_FuncToEnv}()},
 \code{\link{adjust_Dose}()},
 \code{\link{aux_CommonSubPath}()},
 \code{\link{aux_addNamesToPercentiles}()},
@@ -22,32 +21,18 @@ Other General Functions:
 \code{\link{aux_createUSUBJID}()},
 \code{\link{aux_formatErrorName}()},
 \code{\link{aux_removeEscapeChar}()},
-\code{\link{cbindMMV}()},
 \code{\link{clopperPearsonMMV}()},
-\code{\link{combMMV}()},
 \code{\link{convert_Unit}()},
 \code{\link{create_PKPDsimtime}()},
 \code{\link{file.copyMMV}()},
 \code{\link{find_MinMMV}()},
 \code{\link{getDoselevel}()},
-\code{\link{getMKLthreadsMMV}()},
 \code{\link{get_IQRdistribution}()},
 \code{\link{get_IXGDFtoRemove}()},
 \code{\link{get_MMVmalariaPath}()},
-\code{\link{libraryMMV}()},
-\code{\link{load_RData}()},
-\code{\link{logLinTrapzMMV}()},
 \code{\link{newtonRaphson.Function}()},
 \code{\link{newtonRaphson.Vector}()},
-\code{\link{rbindMMV}()},
-\code{\link{rectintMMV}()},
-\code{\link{reverse_List}()},
-\code{\link{saveActivityInfo}()},
-\code{\link{saveMMV}()},
-\code{\link{setMKLthreadsMMV}()},
-\code{\link{simpsonMMV}()},
-\code{\link{thisFile}()},
-\code{\link{trapzMMV}()}
+\code{\link{saveActivityInfo}()}
 }
 \author{
 Mohammed H. Cherkaoui (MMV, \email{cherkaouim@mmv.org})
