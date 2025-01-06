@@ -251,6 +251,7 @@ table_strToLaTeX <- function(tableInputPath,
 #' @examples
 #'
 #' @export
+#' @importFrom MMVbase get_fileNameExtension
 #' @author Mohammed H. Cherkaoui (MMV, \email{cherkaouim@@mmv.org})
 #' @family Reporting
 generate_EstimateTableForReport <- function(projectPath,

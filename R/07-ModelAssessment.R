@@ -3577,6 +3577,8 @@ remove_OneCovariateToModelSpec <- function(modelSpec,
 #' @param footer Default: \code{NULL}
 #' @return
 #' @export
+#' @importFrom MMVbase aux_CommonSubPath
+#' 
 #' @author Aline Fuchs (MMV)
 #' @family Model Assessment
 table_EstimatesComboNLME <- function(x, filename = NULL, FLAGout = FALSE, title = NULL, footer = NULL) {

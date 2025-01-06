@@ -299,6 +299,7 @@ predictDose_PRRtot <- function(
 #' @author Venelin Mitov, IntiQuan
 #'
 #' @export
+#' @importFrom MMVbase summaryAcrossTrials
 #' @md
 predictDose_GenericTrial <- function(
   fun_EvaluateCriterion,

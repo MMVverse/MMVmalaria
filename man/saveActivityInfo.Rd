@@ -20,25 +20,7 @@ to the specified file 'ActivityInfoFile'.
 \link[base:save]{base::save}, \link[MMVbase:saveMMV]{MMVbase::saveMMV}
 
 Other General Functions: 
-\code{\link{IQRtableToDataFrame}()},
-\code{\link{adjust_Dose}()},
-\code{\link{aux_CommonSubPath}()},
-\code{\link{aux_addNamesToPercentiles}()},
-\code{\link{aux_constructCIpercentiles}()},
-\code{\link{aux_createUSUBJID}()},
-\code{\link{aux_formatErrorName}()},
-\code{\link{aux_removeEscapeChar}()},
-\code{\link{clopperPearsonMMV}()},
-\code{\link{convert_Unit}()},
-\code{\link{create_PKPDsimtime}()},
-\code{\link{file.copyMMV}()},
-\code{\link{find_MinMMV}()},
-\code{\link{getDoselevel}()},
-\code{\link{get_IQRdistribution}()},
-\code{\link{get_IXGDFtoRemove}()},
-\code{\link{get_MMVmalariaPath}()},
-\code{\link{newtonRaphson.Function}()},
-\code{\link{newtonRaphson.Vector}()}
+\code{\link{get_MMVmalariaPath}()}
 }
 \author{
 Mohammed H. Cherkaoui (MMV, \email{cherkaouim@mmv.org})

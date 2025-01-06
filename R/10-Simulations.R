@@ -44,6 +44,7 @@ applyCureThreshold <- function(x, threshold, PDname = "Parasitemia") {
 #' @return A GPF object
 #'
 #' @export
+#' @importFrom MMVbase IQRtableToDataFrame
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
 generate_GPFfromOldIQRproject <- function(projectPath,
@@ -1004,7 +1005,7 @@ getModelParameters_MMVmalariaXLS <- function(filename){
 #' @return A list with the population, IIV, Betas and residual parameters, each formatted into a data.frame.
 #'
 #' @export
-#'
+#' @importFrom MMVbase get_fileNameExtension is.fileMMV
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
 getModelParameters_MMVmalariaProject <- function(projectPath){
@@ -1892,6 +1893,7 @@ simTimeRecrudescenceCombo <- function(model, parameters,
 #' @importFrom plyr ddply
 #' @importFrom tidyr gather
 #' @importFrom dplyr left_join
+#' @importFrom MMVbase create_PKPDsimtime
 simulate_ComboMouse2Human <- function(TreatmentGroups,
                                       PKmodelFolders,
                                       PDmodelFolders,

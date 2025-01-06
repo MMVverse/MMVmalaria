@@ -1243,6 +1243,7 @@ generate_bite_time_poisson <- function(force_of_infection, Tend) {
 #' simulations start at time zero and to allow bites to occur before dosing.
 #' 
 #' @export
+#' @importFrom MMVbase file.copyMMV
 #' @author Sam Jones (MMV, \email{joness@@mmv.org})
 #' @family Chemoprotection
 add_bites_to_trial_files <- function(baselineFolder,

@@ -1,52 +1,3 @@
-#' convert_catCovToTxt
-#'
-#' @description
-#' @param dataGeneral
-#' @param catColNames Default: NULL
-#' @return
-#'
-#' @export
-#' @author Mohammed H. Cherkaoui (MMV)
-#' @family Data Preparation
-convert_catCovToTxt <- function(dataGeneral,
-                                catColNames = NULL  # Vector of categorical COV column names for which TXT value is expected
-){
-  # Load attributes:
-  a <- attributes(dataGeneral)
-
-  # Convert all categorical convariate if catColNames is null:
-  if(is.null(catColNames)){
-    catColNames <- a$catInfo$COLNAME
-  }
-
-  # Loop over catColNames:
-  for(cov_k in catColNames){
-    # Check if covariate exist and / or is categorical:
-    if(cov_k %in% a$catInfo$COLNAME){
-
-      # Find position of the covariate in catInfo
-      idx_COL <- which(a$catInfo$COLNAME==cov_k)
-
-      # Identify text matching covariate number:
-      base::suppressWarnings({
-        Vec_Value    <- as.numeric(strsplit(a$catInfo$VALUES[idx_COL], ",")[[1]])
-        Vec_ValueTxt <- strsplit(a$catInfo$VALUETXT[idx_COL], ",")[[1]]
-      })
-
-      # Convert into text:
-      dataGeneral[,cov_k] <- Vec_ValueTxt[match(dataGeneral[,cov_k],Vec_Value)]
-
-    }else if(cov_k %in% a$covInfo$COLNAME){
-      message("'", cov_k, "' is a continuous covariate, no need to define a text value.")
-
-    }else{
-      message("'", cov_k, "' is not a covariate defined in the dataset, therefor, it has been skipped.")
-    }
-  }
-
-  # Output:
-  return(dataGeneral)
-}
 
 #' censorGametocyte
 #'
@@ -116,200 +67,6 @@ censorGametocyte <- function(
     }
     return((IXGDFcens))
   }
-}
-
-#' Check_MissingDatabyNAME
-#'
-#' Check for for each variable defined in `NAME`, if it is missing for
-#' any subject defined in the column USUBJID  of the dataset `dataMaster`.
-#'
-#' @md
-#'
-#' @param dataMaster Master dataset in MMV format
-#' @param NAME list of variable to test
-#' @param colNAME Column name to use to identify subject (default: "USUBJID")
-#'
-#' @return dataSummaryMissing, which is a data.frame with the list of missing subject for each variable in `NAME`
-#' @export
-#' @family Data Preparation
-#' @author Mohammed H. Cherkaoui (MMV), \email{cherkaouim@@mmv.org}
-Check_MissingDatabyNAME <- function(dataMaster,
-                                    NAME,
-                                    colNAME = c("USUBJID")){
-  # Create environment:
-  LocalEnv <- environment()
-
-  # List of USUBJID:
-  dataUSUBJID <- unique(dataMaster[,colNAME, drop = FALSE])
-  plyr::a_ply(NAME,
-              .margins = 1,
-              .fun = function(NAME_k){
-                dataName_k <- unique(subset(dataMaster, NAME==NAME_k)[,c(colNAME, "VALUE", "VALUETXT")])
-                FLAGnum <- !all(is.na(as.numeric(dataName_k$VALUE)))
-
-                if (FLAGnum){
-                  dataName_k <- dataName_k[,c(colNAME, "VALUE")]
-                  LocalEnv$dataUSUBJID <- left_join(LocalEnv$dataUSUBJID, dataName_k, by=colNAME)
-                  data.table::setnames(LocalEnv$dataUSUBJID, "VALUE", NAME_k)
-
-                }else{
-                  dataName_k <- dataName_k[,c(colNAME, "VALUETXT")]
-                  LocalEnv$dataUSUBJID <- left_join(LocalEnv$dataUSUBJID, dataName_k, by=colNAME)
-                  data.table::setnames(LocalEnv$dataUSUBJID, "VALUETXT", NAME_k)
-                }
-              })
-
-
-  # Missing data:
-  dataMissingSummary <- data.frame()
-  plyr::a_ply(NAME,
-              .margins = 1,
-              .fun = function(NAME_k){
-
-                dataMissing_k <- dataUSUBJID[is.na(dataUSUBJID[NAME_k]),]
-                rownames(dataMissing_k) <- NULL
-
-                if (nrow(dataMissing_k)>0){
-                  dataMissingSummary_k <- data.frame(NAME    = NAME_k,
-                                                     USUBJID = collapseMMV(x = dataMissing_k$USUBJID),
-                                                     N       = length(dataMissing_k$USUBJID),
-                                                     stringsAsFactors = FALSE)
-                }else{
-                  dataMissingSummary_k <- data.frame(NAME    = NAME_k,
-                                                     USUBJID = "",
-                                                     N       = 0,
-                                                     stringsAsFactors = FALSE)
-                }
-
-                LocalEnv$dataMissingSummary <- plyr::rbind.fill(LocalEnv$dataMissingSummary,dataMissingSummary_k)
-              })
-
-  # Output:
-  return(dataMissingSummary)
-}
-
-#' check_dataGeneralMMV
-#' Checks if CENTER and CENTERNAME is well defined within `dataGeneral`
-#'
-#' Checks if CENTER and CENTERNAME (number and name of the center conducting the study) is defined within `dataGeneral`, according to MMV's standards.
-#'
-#' The name and number of the center conducting the study will be checked according to the up-to-date center list, see [list_Center].
-#' The [check_dataGenetalMMV_Center] function is used internally.
-#'
-#' @md
-#'
-#' @param dataGeneral IQRdataGENERAL object
-#'
-#' @return IQRdataGENERAL object
-#' @export
-#' @seealso [list_Center], [check_dataGenetalMMV_Center]
-#' @family Data Preparation
-#' @author Mohammed H. Cherkaoui (MMV), \email{cherkaouim@@mmv.org}
-check_dataGeneralMMV <- function(dataGeneral) {
-
-  # Check Centers:
-  dataGeneral <- check_dataGeneralMMV_Center(dataGeneral)
-
-  # Return Dataset:
-  return(dataGeneral)
-}
-
-#' check_dataGeneralMMV_Center
-#' Checks if CENTER and CENTERNAME is well defined within `dataGeneral`
-#'
-#' Checks if CENTER and CENTERNAME (number and name of the center conducting the study) is defined within `dataGeneral`, according to MMV's standards.
-#'
-#' The name and number of the center conducting the study will be checked according to the up-to-date center list, see [list_Center].
-#' If both CENTERNAME and CENTER columns exist in `dataGeneral`, CENTERNAME column is taken as the reference to correct CENTER column.
-#' If only CENTERNAME column exists in `dataGeneral`, the function will create CENTER column.
-#' If only CENTER column exists in `dataGeneral`, the function will create CENTERNAME column.
-#'
-#' @md
-#'
-#' @param dataGeneral IQRdataGENERAL object
-#'
-#' @return IQRdataGENERAL object
-#' @export
-#' @seealso [list_Center]
-#' @family Data Preparation
-#' @author Mohammed H. Cherkaoui (MMV), \email{cherkaouim@@mmv.org}
-check_dataGeneralMMV_Center <- function(dataGeneral) {
-
-  # CASE 1: CENTER and CENTERNAME columns exist
-  #   CENTERNAME is taken as the reference to correct CENTER
-  if (all(c("CENTER","CENTERNAME") %in% names(dataGeneral))){
-
-    # Load Valid Center List:
-    CenterList <- list_Center()
-
-    if (all(unique(dataGeneral$CENTERNAME) %in% names(CenterList))){
-      idx_Center <- match(dataGeneral$CENTERNAME,names(CenterList))
-
-      # Check if CENTER number are valid:
-      if (!all(dataGeneral$CENTER == unlist(CenterList)[idx_Center])){
-        # Update CENTER column:
-        dataGeneral$CENTER <- unlist(CenterList)[idx_Center]
-        warning(cat("The column CENTER was updated.",sep="\n\t"))
-      }
-    }else{
-      stop(cat(cat("One or more CENTERNAME are not valid. They should be defined as one of the following element:",
-                   names(CenterList),sep="\n\t"),
-               "If new CENTERNAME, please update the function 'list_Center()'",sep="\n"))
-    }
-
-    # CASE 2: Only CENTERNAME column exists
-  } else if (all(c("CENTERNAME") %in% names(dataGeneral))){
-
-    # Load Valid Center List:
-    CenterList <- list_Center()
-
-    if (all(unique(dataGeneral$CENTERNAME) %in% names(CenterList))){
-      idx_Center <- match(dataGeneral$CENTERNAME,names(CenterList))
-
-      # Create CENTER column:
-      dataGeneral$CENTER <- unlist(CenterList)[idx_Center]
-
-      # Check if CENTER number are valid:
-      if (!all(dataGeneral$CENTER == unlist(CenterList)[idx_Center])){
-        idx_WrongCenter = which(dataGeneral$CENTER != unlist(CenterList)[idx_Center])
-        stop(cat("At least one CENTERNAME has a wrong CENTER value. Check for CENTERNAME:",
-                 unique(dataGeneral$CENTERNAME[idx_WrongCenter]),sep="\n\t"))
-      }
-    }else{
-      stop(cat(cat("One or more CENTERNAME are not valid. They should be defined as one of the following element:",
-                   names(CenterList),sep="\n\t"),
-               "If new CENTERNAME, please update the function 'list_Center()'",sep="\n"))
-    }
-
-    # CASE 3: Only CENTER column exists
-  }else if (all(c("CENTER") %in% names(dataGeneral))){
-
-    # Load Valid Center List:
-    CenterList <- list_Center()
-
-    if (all(unique(dataGeneral$CENTER) %in% unlist(CenterList))){
-      idx_Center <- match(dataGeneral$CENTER,unlist(CenterList))
-
-      # Create CENTERNAME column
-      dataGeneral$CENTERNAME <- names(CenterList)[idx_Center]
-
-      # Check if CENTER number are valid:
-      if (!all(dataGeneral$CENTER == unlist(CenterList)[idx_Center])){
-        idx_WrongCenter = which(dataGeneral$CENTER != unlist(CenterList)[idx_Center])
-        stop(cat("At least one CENTER has a wrong CENTERNAME value. Check for CENTER:",
-                 unique(dataGeneral$CENTER[idx_WrongCenter]),sep="\n\t"))
-      }
-    }else{
-      stop(cat(cat("One or more CENTER code are not valid. They should be defined as one of the following element:",
-                   CenterList,sep="\n\t"),
-               "If new CENTER code, please update the function 'list_Center()'",sep="\n"))
-    }
-  }else{
-    stop("'CENTER' and/or 'CENTERNAME' are not defined in the dataset: Please add them.")
-  }
-
-  # Return Dataset:
-  return(dataGeneral)
 }
 
 #' Convert Gametocytes
@@ -383,32 +140,6 @@ convert_Gametocytes <- function(
 
 
 
-#' get_fileNameExtension
-#' Get the extension of 'filename'
-#'
-#' @md
-#'
-#' @param filename Path to a file
-#'
-#' @return TRUE/FALSE
-#' @export
-#' @family General Function
-#' @author Mohammed H. Cherkaoui (MMV), \email{cherkaouim@@mmv.org}
-get_fileNameExtension <- function(filename){
-
-  # Split the last part of the path:
-  ex <- strsplit(basename(filename), split="\\.")[[1]]
-
-  # Get Extension:
-  if (length(ex)>1){
-    out <- ex[length(ex)]
-  }else{
-    out <- ""
-  }
-
-  # Get extension:
-  return(out)
-}
 #' import_SCIDpkpdData
 #'
 #' @description
@@ -648,6 +379,7 @@ import_SCIDpkpdData <- function(dataFile,
 #' @author catalinbarcelo (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Data Preparation
 #' @importFrom plyr rename join ddply
+#' @importFrom MMVbase aux_createUSUBJID aux_removeEscapeChar
 import_SCIDpkpdData_GSK <- function(dataFile,
                                     compound            = NULL,
                                     PKsheet             = "BloodLevels",
@@ -3112,25 +2844,6 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   # Output:
   return(data)
 
-}
-
-#' is.fileMMV
-#' Checks if 'filename' is a file
-#'
-#' @md
-#'
-#' @param filename Path to a file
-#'
-#' @return TRUE/FALSE
-#' @export
-#' @seealso [base::file.exists], [base::dir.exists]
-#' @family General Function
-#' @author Mohammed H. Cherkaoui (MMV)
-
-is.fileMMV <- function(filename){
-  out <- (file.exists(filename) && !dir.exists(filename))
-
-  return(out)
 }
 
 #' summarizeReplicates

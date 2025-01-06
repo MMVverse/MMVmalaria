@@ -424,7 +424,7 @@ formula_SCIDrbp <- function(HuRbp,
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
-#' @importFrom MMVbaser logLinTrapzMMV 
+#' @importFrom MMVbase logLinTrapzMMV
 #' @family Key Parameters
 estimate_AUC <- function(Time,
                          Conc,
@@ -1563,6 +1563,7 @@ get_NumberOfPKcpt <- function(PKparameters,
 #' @param MethodMin Default: 'CubicSpline'
 #' @return
 #' @export
+#' @importFrom MMVbase find_MinMMV
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
 get_PRRtot <- function(dataSim,
@@ -2086,7 +2087,7 @@ getTimeAboveMPC90sim <- function(dataSim,
 #' @param timeCOL A string specifying the name of the time column in \code{dataSim}. Default is \code{"TIME"}.
 #' @param killCOL A string specifying the name of the kill rate column in \code{dataSim}. Default is \code{"KillBlood"}.
 #' @param GR A numeric value representing the growth rate threshold. Default is 0.07. Expects a single value, but if growth rate
-#' is a column in \code{dataSim}, arguments such as \code{dataSim$GR[1]} or \code{unique(dataSim$GR)} are suitable.  
+#' is a column in \code{dataSim}, arguments such as \code{dataSim$GR[1]} or \code{unique(dataSim$GR)} are suitable.
 #'
 #' @details
 #' The function computes the total time (\code{tKRGR}) during which the kill rate exceeds the growth rate in the provided simulation data.
@@ -2126,7 +2127,7 @@ getTimeKRaboveGR<- function(dataSim,
                             timeCOL = "TIME",
                             killCOL  = "KillBlood",
                             GR      = 0.07) {
-  
+
   # Get GR from dataset:
   if (is.null(GR)) {
     if (is.null(dataSim$GR)) {
@@ -2135,12 +2136,12 @@ getTimeKRaboveGR<- function(dataSim,
       GR <- unique(dataSim$GR)
     }
   }
-  
+
   # Check if Concentration is above Eff.MIC or not:
   dtKRGR <- ifelse(dataSim[[killCOL]]>GR, 1, 0)
   # Calculate Time Above MIC:
   tKRGR <- trapzMMV(dataSim[[timeCOL]],dtKRGR)
-  
+
   #------------------------------------------------#
   # When dtKRGR goes from 0 to 1 (or 1 to 0), the
   # integration will add 0.5*(t[k+1]-t[k]), which
@@ -2152,31 +2153,31 @@ getTimeKRaboveGR<- function(dataSim,
   # dramatically the value of tKRGR THEREFORE,
   # A correction is added.
   #------------------------------------------------#
-  
+
   # Estimate when Effect goes above and below dtKRGR:
   #   - BtoA stands for Below to Above
   #   - AtoB stands for Above to Below
   ddtKRGR  <- c(0,dtKRGR[2:(length(dtKRGR))]-dtKRGR[1:(length(dtKRGR)-1)])
   idxBtoA <- which(ddtKRGR==1)
   idxAtoB <- which(ddtKRGR==-1)
-  
+
   # Correction when it goes above:
   for (k in idxBtoA){
     dt_BtoA  <- dataSim[[timeCOL]][k] - approx(dataSim[[killCOL]][(k-1):k], dataSim[[timeCOL]][(k-1):k], GR)$y
     dt_trapz <- 0.5*(dataSim[[timeCOL]][k]-dataSim[[timeCOL]][k-1])
     tKRGR     <- tKRGR + dt_BtoA - dt_trapz
   }
-  
+
   # Correction when it goes below:
   for (k in idxAtoB){
     dt_AtoB  <- approx(dataSim[[killCOL]][(k-1):k], dataSim[[timeCOL]][(k-1):k], GR)$y - dataSim[[timeCOL]][k-1]
     dt_trapz <- 0.5*(dataSim[[timeCOL]][k]-dataSim[[timeCOL]][k-1])
     tKRGR     <- tKRGR + dt_AtoB - dt_trapz
   }
-  
+
   # Prepare Output:
   resultKRGR <- data.frame(tKRGR=tKRGR)
-  
+
   # Output:
   return(resultKRGR)
 }

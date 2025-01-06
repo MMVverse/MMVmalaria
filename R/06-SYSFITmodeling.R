@@ -157,6 +157,7 @@ generate_SYSalgorithmSettings <- function(# Solver Settings:
 #' @param footer Default: NULL
 #' @return
 #' @export
+#' @importFrom MMVbase aux_formatErrorName
 #' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family SYSFITmodeling
 #' @importFrom plyr ldply
