@@ -9,6 +9,7 @@
 #' @param FLAGreturnObject Default: FALSE
 #' @return
 #' @export
+#' @importFrom MMVbase swapName_MMVnameToName
 #' @author Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
 #' @importFrom MMVbase MMVcolors
@@ -2858,6 +2859,7 @@ scatterConcACPR <- function(data,
 #'
 #' @return
 #' @export
+#' @importFrom MMVbase transform_dataFrame_LongToWide
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
 plot_2DconcVsACPR <- function(data,

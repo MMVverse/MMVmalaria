@@ -9,10 +9,6 @@ get_MMVmalariaPath(subdir = NULL)
 \description{
 Retrieve Package Path
 }
-\seealso{
-Other General Functions: 
-\code{\link{saveActivityInfo}()}
-}
 \author{
 Mohammed H. Cherkaoui (MMV, \email{cherkaouim@mmv.org})
 }

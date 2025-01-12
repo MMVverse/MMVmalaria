@@ -83,15 +83,9 @@ Other Data Preparation:
 \code{\link{import_SCIDpkpdDataCombo_oldTAD}()},
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
-\code{\link{list_Center}()},
 \code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},
-\code{\link{load_PediatricParameters}()},
-\code{\link{summarizeReplicates}()},
-\code{\link{swapName_MMVnameToName}()},
-\code{\link{swapName_NameToMMVname}()},
-\code{\link{transform_dataFrame_LongToWide}()},
-\code{\link{transform_dataFrame_WideToLong}()}
+\code{\link{load_PediatricParameters}()}
 }
 \author{
 catalinbarcelo (MMV)
