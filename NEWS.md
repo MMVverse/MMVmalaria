@@ -1,17 +1,71 @@
-# MMVmalaria 1.1.0
+# MMVmalaria 1.2.0
 
-* Longitudinal chemoprevention modelling update.
+This MMVmalaria release is the final release before migration of MMVverse packages to R 4.4.1 (from R 3.6.3). This release is intended to capture changes made to MMVmalaria (and MMVbase) between the previous releases and the subsequent release post-migration. This version of MMVmalaria has not been extensively tested, and it is adviced to use the previous release (1.1.0) for conducting activities in R 3.6.3. 
 
-* New functions
--getTimeKRaboveGR : Function to calculate the time that a defined kill rate is above a defined growth rate.
--generate_bite_time_poisson : Function to generate a string of bite times based on a poisson distribution.
--add_bites_to_trial_files : Function to generate a series of trial files from some defined "baseline" (containing PKPD parameters) and add infectious bites events based on defined parameters such as amount of parasites innoculated and a user-defined function describing the distribution of bite times.
--summarizeTrial_ChemoSurvival_MonoPD : Summary function for Simulate_VirtualTrials. Performs the summary as defined by summarizeTrial_ChemoSurvival, and additionally calculates time above MIC and time above MPC90.
--summarizeTrial_ChemoSurvival_ComboPD : Summary function for Simulate_VirtualTrials. Performs the summary as defined by summarizeTrial_ChemoSurvival, and additionally calculates the time that kill rate is above growth rate. 
+# Removed functions 
+* adjust_Dose
+* get_IQRdistribution
+* convert_catCovToTxt
+* generate_ActivityContent
+* generate_ActivityResults
+* generate_DuplicatedActivityReport
+* generate_MissingActivityReport
+* get_ActivityInfo 
+* get_ActivityList
+* cbindMMV
+* rbindMMV
+* combMMV
+* libraryMMV
+* reverse_List
 
-* Fixes
--summarizeTrial_ChemoSurvival : Fixed a critical bug where outputNames were not being passed into the function correctly. 
+# Functions migrated to MMVbase 
+* MMVggplot
+* transform_IQRggplotToMMVggplot
+* get_ActivityPath
+* adjust_ggplotTheme
+* summarizeReplicates
+* swapName_MMVnameToName
+* swapName_NameToMMVname
+* transform_dataFrame_LongtoWide
+* transform_dataFrame_WidetoLong
+* Check_MissingDatabyNAME
+* IQRtableToDataFrame
+* aux_CommonSubPath
+* aux_createUSUBJID
+* aux_removeEscapeChar
+* check_dataGeneralMMV
+* check_dataGeneralMMV_Center
+* clopperPearsonMMV
+* collapseMMV
+* convert_Unit
+* create_PKPDsimtime
+* file.copyMMV
+* find_MinMMV
+* is.fileMMV
+* getDoselevel
+* get_IXGDFtoRemove
+* get_fileNameExtension
+* newtonRaphson.Function
+* newtonRaphson.Vector
+* summarize_PIandCIgeneric
+* summaryAcrossTrials
+* summaryByTrial
+* Load_Rdata
 
-* Updated remotes
--MMVverse/MMVbase added as remote in DESCRIPTION file to allow MMVbase to be imported. 
+# Functions migrated to MMVworkflows
+* check_ActivityInfo 
+* check_ActivityResults
+* create_RprofileMMV
+* generate_OverviewFile
+* list_ActivityType
+* list_Center
+* list_GenericType
+* saveActivityInfo
+* set_MMVsettings
+
+# DESCRIPTION tidying 
+* IQRtools moved to Imports (from Depends)
+* MMVbase Imports MMVbase (== 1.1.0) (previously no version) 
+
+
  

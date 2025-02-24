@@ -1,7 +1,7 @@
 Package: MMVmalaria
 Type: Package
 Title: Collection of Malaria Functions, Models, Data and Workflows
-Version: 1.1.0
+Version: 1.2.0
 Author: Mohammed H. Cherkaoui [aut,cre],
 		Anne Kuemmel [aut,cre],
 		Daniel Kaschek [aut],
@@ -22,8 +22,8 @@ License: file LICENSE
 Encoding: UTF-8
 Depends:
   R (>= 3.6.0),
-  IQRtools (>= 1.9.0)
 Imports:
+  IQRtools (>= 1.9.0)
   akima,
   cobs,
   cowplot,
@@ -51,7 +51,7 @@ Imports:
   stringr,
   tidyr,
   writexl,
-  MMVbase
+  MMVbase (== 1.1.0)
 Remotes:
   MMVverse/MMVbase
 LazyData: true
