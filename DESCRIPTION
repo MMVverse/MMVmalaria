@@ -23,7 +23,7 @@ Encoding: UTF-8
 Depends:
   R (>= 3.6.0),
 Imports:
-  IQRtools (>= 1.9.0)
+  IQRtools (>= 1.9.0),
   akima,
   cobs,
   cowplot,
