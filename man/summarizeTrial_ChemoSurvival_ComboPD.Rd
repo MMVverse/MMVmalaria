@@ -7,7 +7,7 @@
 summarizeTrial_ChemoSurvival_ComboPD(
   simPKPD,
   trialFileName,
-  varPKPD = c("Cc", "PLiver", "PBlood"),
+  varPKPD = c("Ccx1", "Ccx2", "PLiver", "PBlood"),
   percentiles = c(5, 50, 95),
   LLOQ.PD = log(10000),
   timeCOL = "TIME",
