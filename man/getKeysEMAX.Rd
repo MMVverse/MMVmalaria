@@ -7,7 +7,7 @@
 getKeysEMAX(x, convConc = 1)
 }
 \arguments{
-\item{x}{data.frame containing the columns `GR`, `EMAX`. `EC50` and `hill`}
+\item{x}{data.frame containing the columns \code{GR}, \code{EMAX}. \code{EC50} and \code{hill}}
 
 \item{convConc}{Default: 1}
 }

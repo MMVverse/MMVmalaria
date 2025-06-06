@@ -19,7 +19,7 @@ is a column in \code{dataSim}, arguments such as \code{dataSim$GR[1]} or \code{u
 \value{
 A data frame with one row and one column:
 \describe{
-  \item{\code{tKRGR}}{Numeric value representing the total time during which the kill rate exceeds the growth rate.}
+\item{\code{tKRGR}}{Numeric value representing the total time during which the kill rate exceeds the growth rate.}
 }
 }
 \description{

@@ -35,30 +35,30 @@ the number of populations (see \code{Npop}). Default:
 FLAG_SAMPLE       \tab Meaning \cr
 ===========       \tab =================================================== \cr
 0                 \tab Use point estimates of population parameters (do not consider uncertainty) and sample Nsample
-                       individual patients based on these. Covariates considered if defined by user and used in model.
-                       Please note: population parameters do not take covariates into account!\cr
+individual patients based on these. Covariates considered if defined by user and used in model.
+Please note: population parameters do not take covariates into account!\cr
 1                 \tab Sample single set of population parameters from uncertainty distribution and sample Nsample
-                       individual patient parameters based on these. Covariates considered if defined by user and
-                       used in model. Please note: population parameters do not take covariates into account!\cr
+individual patient parameters based on these. Covariates considered if defined by user and
+used in model. Please note: population parameters do not take covariates into account!\cr
 2                 \tab Sample Nsample sets of population parameters from uncertainty distribution.
-                       Do not sample from variability distribution and do not take into account covariates (even
-                       if user specified).\cr
+Do not sample from variability distribution and do not take into account covariates (even
+if user specified).\cr
 3                 \tab Use point estimates of population parameters (do not consider uncertainty)
-                       Return Nsamples sets of population parameters with covariates taken into account.\cr
+Return Nsamples sets of population parameters with covariates taken into account.\cr
 4                 \tab Sample single set of population parameters from uncertainty distribution
-                       Return Nsamples sets of population parameters with covariates taken into account.\cr
+Return Nsamples sets of population parameters with covariates taken into account.\cr
 5                 \tab Use point estimates of population parameters (do not consider uncertainty) and sample Nsample
-                       individual patients based on these. Covariates considered if defined by user and used in model.
-                       Population parameters, typical individual parameters (no IIV, but considering covariates),
-                       and individual parameters are returned.\cr
+individual patients based on these. Covariates considered if defined by user and used in model.
+Population parameters, typical individual parameters (no IIV, but considering covariates),
+and individual parameters are returned.\cr
 6                 \tab Sample single set of population parameters from uncertainty distribution and sample Nsample
-                       individual patient parameters based on these. Covariates considered if defined by user and used in model.
-                       Sampled population parameters, typical individual parameters (no IIV, but considering covariates),
-                       and individual parameters are returned.\cr
+individual patient parameters based on these. Covariates considered if defined by user and used in model.
+Sampled population parameters, typical individual parameters (no IIV, but considering covariates),
+and individual parameters are returned.\cr
 7                 \tab Same as FLAG_SAMPLE=0 but obtaining the empirical random effect covariance matrix from the post-hoc ETAs.
-                       Only used for IQRsysProject. If IQRnlmeProject then fallback to flag 0.\cr
+Only used for IQRsysProject. If IQRnlmeProject then fallback to flag 0.\cr
 8                 \tab Same as FLAG_SAMPLE=1 but obtaining the empirical random effect covariance matrix from the post-hoc ETAs.\cr
-                       Only used for IQRsysProject. If IQRnlmeProject then fallback to flag 1.\cr
+Only used for IQRsysProject. If IQRnlmeProject then fallback to flag 1.\cr
 }}
 }
 \description{

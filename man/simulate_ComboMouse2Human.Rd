@@ -32,12 +32,12 @@ simulate_ComboMouse2Human(
 }
 \arguments{
 \item{PbaseSample}{Default: function(x) {
-   sample_Distribution(Mean = 10^6.72, SD = 0.1, Dist = "L",
-       nSample = x)
+sample_Distribution(Mean = 10^6.72, SD = 0.1, Dist = "L",
+nSample = x)
 }}
 
 \item{GRsample}{Default: function(x) {
-   sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L", nSample = x)
+sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L", nSample = x)
 }}
 
 \item{doseCovariate}{Default: list(drug1 = NULL, drug2 = NULL)}

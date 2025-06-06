@@ -7,13 +7,13 @@
 #' interval as given by `CIlevel`.
 #'
 #' @param simPKPD     Data table output of `simulate_virtualtrials()` (or similar format).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param outputCOL   Vector containing names of desired columns for output (Default: \code{c("Cc", "PL")}).
-#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: \code{c(5,50,90)}).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param outputCOL   Vector containing names of desired columns for output (Default: `c("Cc", "PL")`).
+#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: `c(5,50,90)`).
 #' @param CIlevel Numeric containing the confidence interval in percent to be estimated (Default: 90)
-#' @param usubjidCOL Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).
-#' @param trialCOL Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).
-#' @param scenCOL Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})
+#' @param usubjidCOL Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: `c("IndivID","USUBJID")`).
+#' @param trialCOL Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: `c("TrialID")`).
+#' @param scenCOL Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: `c("ScenID","ExpID","DoseID","Dose","nbrDoses")`)
 #'
 #'
 #' @return
@@ -47,18 +47,18 @@ summarize_PKPDprofilesFromSimulations <- function(simPKPD,
 
 #' Summarize a selection of Key PK parameters from simulated data
 #'
-#' \code{"AUCinf"},\code{"Cmax"} and \code{"Tmax"} are estimated for each individual and summarized.
+#' `"AUCinf"`,`"Cmax"` and `"Tmax"` are estimated for each individual and summarized.
 #' The predictive interval (defined in with the variable 'percentiles') is returned with the confidence
 #' interval as given by `CIlevel`.
 #'
 #' @param simPKPD     Data-table output of `simulate_virtualtrials()` (or similar format).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param concCOL     Name of column containing values for drug concentration (Default: \code{"Cc"}).
-#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: \code{c(5,50,90)}).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param concCOL     Name of column containing values for drug concentration (Default: `"Cc"`).
+#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: `c(5,50,90)`).
 #' @param CIlevel     Numeric containing the confidence interval in percent to be estimated (Default: 90)
-#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).
-#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).
-#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})
+#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: `c("IndivID","USUBJID")`).
+#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: `c("TrialID")`).
+#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: `c("ScenID","ExpID","DoseID","Dose","nbrDoses")`)
 #'
 #' @return            Data-table containing values of population PK parameters from simulated trials at specified percentiles
 #'
@@ -119,21 +119,21 @@ summarize_KeyPKparametersFromSimulations <- function(simPKPD,
 
 #' Summarize a selection of Key PD parameters from simulated data
 #'
-#' \code{"MIC"},\code{"MPC90"}, \code{"PRR24"}, \code{"PRR48"}, \code{"PRR72"}, \code{"PRRtot"},
-#' \code{"tMIC"} and \code{"tMPC90"} are estimated for each individual and summarized.
+#' `"MIC"`,`"MPC90"`, `"PRR24"`, `"PRR48"`, `"PRR72"`, `"PRRtot"`,
+#' `"tMIC"` and `"tMPC90"` are estimated for each individual and summarized.
 #' The predictive interval (defined in with the variable 'percentiles') is returned with the confidence
 #' interval as given by `CIlevel`.
 #'
 #' @param simPKPD     Data-table output of `simulate_virtualtrials()` (or similar format).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param concCOL     Name of column containing values for drug concentration (Default: \code{"Cc"}).
-#' @param paraCOL     Name of column containing values for parasitaemia (Default:  \code{"PL"}).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param concCOL     Name of column containing values for drug concentration (Default: `"Cc"`).
+#' @param paraCOL     Name of column containing values for parasitaemia (Default:  `"PL"`).
 #' @param Plog        Is paraistaemia provided in Log scale?  (Default: `TRUE`).
-#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: \code{c(5,50,90)}).
+#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: `c(5,50,90)`).
 #' @param CIlevel     Numeric containing the confidence interval in percent to be estimated (Default: 90)
-#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).
-#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).
-#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})
+#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: `c("IndivID","USUBJID")`).
+#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: `c("TrialID")`).
+#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: `c("ScenID","ExpID","DoseID","Dose","nbrDoses")`)
 #'
 #' @return            Data-table containing values of population PK parameters from simulated trials at specified percentiles
 #'
@@ -216,14 +216,14 @@ summarize_KeyPDparametersFromSimulations <- function(simPKPD,
 #' Summarizes the total parasite reduction ratio
 #'
 #' @param simPKPD     Data-table output of `simulate_virtualtrials()` (or similar format).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param paraCOL     Name of column containing values for parasitaemia (Default:  \code{"PL"}).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param paraCOL     Name of column containing values for parasitaemia (Default:  `"PL"`).
 #' @param Plog        Is paraistaemia provided in Log scale?  (Default: `TRUE`).
-#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: \code{c(5,50,90)}).
+#' @param percentiles Percentiles of outcome variable(s) to be calculated if appropriate (Default: `c(5,50,90)`).
 #' @param CIlevel     Numeric containing the confidence interval in percent to be estimated (Default: 90)
-#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).
-#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).
-#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})
+#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: `c("IndivID","USUBJID")`).
+#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: `c("TrialID")`).
+#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: `c("ScenID","ExpID","DoseID","Dose","nbrDoses")`)
 #'
 #'
 #' @return
@@ -280,19 +280,19 @@ summarize_PRRtotFromSimulations <- function(simPKPD,
 
 #' Summarize PKPD simulation results for a virtual trial of one experimental setting and one dose
 #'
-#' This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+#' This function is called at runtime by [simulate_OneVirtualTrial()].
 #' @md
 #'
-#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by [IQRtools::sim_IQRmodel()], and
 #' individual and experimental covariates. This argument is set automatically by the calling function.
 #' @param trialFileName A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
 #' virtual subjects, such as individual and experimental covariates.
 #' @param varPKPD a character vector indicating time varying PKPD variables of the simulated PKPD model. All of these
-#' should be names of columns in \code{simPKPD}.
-#' @param percentiles a numeric vector indicating percentiles (default: \code{c(5, 50, 95)}) for summarizing
+#' should be names of columns in `simPKPD`.
+#' @param percentiles a numeric vector indicating percentiles (default: `c(5, 50, 95)`) for summarizing
 #' individual PKPD variables and clinical end-points.
-#' @details This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}. Currently, the function
-#' assumes that the \code{simPKPD} has a column PL denoting natural log parasitemia.
+#' @details This function is designed to be passed as argument of [simulate_VirtualTrials()]. Currently, the function
+#' assumes that the `simPKPD` has a column PL denoting natural log parasitemia.
 #'
 #' @return a named list with the following members:
 #'
@@ -348,26 +348,26 @@ summarizeTrial_Basic <- function(
 
 #' Summarize PKPD simulation results for a virtual trial of one experimental setting and one dose
 #'
-#' This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+#' This function is called at runtime by [simulate_OneVirtualTrial()].
 #' @md
 #'
-#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by [IQRtools::sim_IQRmodel()], and
 #' individual and experimental covariates. This argument is set automatically by the calling function.
 #' @param trialFileName A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
 #' virtual subjects, such as individual and experimental covariates.
 #' @param varPKPD a character vector indicating time varying PKPD variables of the simulated PKPD model. All of these
-#' should be names of columns in \code{simPKPD}.
-#' @param percentiles a numeric vector indicating percentiles (default: \code{c(5, 50, 95)}) for summarizing
+#' should be names of columns in `simPKPD`.
+#' @param percentiles a numeric vector indicating percentiles (default: `c(5, 50, 95)`) for summarizing
 #' individual PKPD variables and clinical end-points.
-#' @param samplePDtime a numeric vector (default \code{seq(0,28*24,24)}) of time-points at which PL is
+#' @param samplePDtime a numeric vector (default `seq(0,28*24,24)`) of time-points at which PL is
 #' needed for summarizing individual clinical endpoints. This should contain aprTime.
-#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).
+#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: `log(10000)`).
 #' @param aprTime a numeric indicating time after beginning of treatment in days at which APR should be evaluated. Default: 28.
-#' This argument is passed to function \code{\link{evaluate_APR}}.
-#' @param extrapTol,FLAGextrapolateTime These arguments are passed to function \code{\link{evaluate_APR}}
+#' This argument is passed to function [evaluate_APR()].
+#' @param extrapTol,FLAGextrapolateTime These arguments are passed to function [evaluate_APR()]
 #'
-#' @details This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}. Currently, the function
-#' assumes that the \code{simPKPD} has a column PL denoting natural log parasitemia.
+#' @details This function is designed to be passed as argument of [simulate_VirtualTrials()]. Currently, the function
+#' assumes that the `simPKPD` has a column PL denoting natural log parasitemia.
 #'
 #' @return a named list with the following members:
 #'
@@ -481,33 +481,33 @@ summarizeTrial_APRLongitudinal <- function(
 
 #' Summarize PKPD simulation results for a virtual trial of one experimental setting and one dose
 #'
-#' This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+#' This function is called at runtime by [simulate_OneVirtualTrial()].
 #' @md
 #'
-#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by [IQRtools::sim_IQRmodel()], and
 #' individual and experimental covariates. This argument is set automatically by the calling function.
 #' @param trialFileName A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
 #' virtual subjects, such as individual and experimental covariates.
 #' @param varPKPD a character vector indicating time varying PKPD variables of the simulated PKPD model. All of these
-#' should be names of columns in \code{simPKPD}.
-#' @param percentiles a numeric vector indicating percentiles (default: \code{c(5, 50, 95)}) for summarizing
+#' should be names of columns in `simPKPD`.
+#' @param percentiles a numeric vector indicating percentiles (default: `c(5, 50, 95)`) for summarizing
 #' individual PKPD variables and clinical end-points.
-#' @param samplePDtime a numeric vector (default \code{seq(0,28*24,24)}) of time-points at which PL is
+#' @param samplePDtime a numeric vector (default `seq(0,28*24,24)`) of time-points at which PL is
 #' needed for summarizing individual clinical endpoints. This should contain aprTime.
-#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).
+#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: `log(10000)`).
 #' @param aprTime a numeric indicating time after beginning of treatment in days at which APR should be evaluated. Default: 28.
-#' This argument is passed to function \code{\link{evaluate_APR}}.
-#' @param extrapTol,FLAGextrapolateTime These arguments are passed to function \code{\link{evaluate_APR}}
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param concCOL     Name of column containing values for drug concentration (Default: \code{"Cc"}).
+#' This argument is passed to function [evaluate_APR()].
+#' @param extrapTol,FLAGextrapolateTime These arguments are passed to function [evaluate_APR()]
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param concCOL     Name of column containing values for drug concentration (Default: `"Cc"`).
 #' @param CIlevel     Numeric containing the confidence interval in percent to be estimated (Default: 90)
-#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).
-#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).
-#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})
+#' @param usubjidCOL  Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: `c("IndivID","USUBJID")`).
+#' @param trialCOL    Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: `c("TrialID")`).
+#' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: `c("ScenID","ExpID","DoseID","Dose","nbrDoses")`)
 #'
 #'
-#' @details This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}. Currently, the function
-#' assumes that the \code{simPKPD} has a column PL denoting natural log parasitemia.
+#' @details This function is designed to be passed as argument of [simulate_VirtualTrials()]. Currently, the function
+#' assumes that the `simPKPD` has a column PL denoting natural log parasitemia.
 #' In addition to the primary parasitological clinical endpoints, this function also summarizes secondary endpoints for PK and PD.
 #'
 #' @return a named list with the following members:
@@ -712,25 +712,24 @@ summarizeTrial_APRLongitudinal_PK_secondary <- function(
 
 #' Summarize PKPD simulation results for a virtual trial of one experimental setting and one dose
 #'
-#' This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+#' This function is called at runtime by [simulate_OneVirtualTrial()].
 #' @md
 #'
-#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by [IQRtools::sim_IQRmodel()], and
 #' individual and experimental covariates. This argument is set automatically by the calling function.
 #' @param trialFileName A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
 #' virtual subjects, such as individual and experimental covariates.
 #' @param varPKPD a character vector indicating time varying PKPD variables of the simulated PKPD model. All of these
-#' should be names of columns in \code{simPKPD}.
-#' @param percentiles a numeric vector indicating percentiles (default: \code{c(5, 50, 95)}) for summarizing
+#' should be names of columns in `simPKPD`.
+#' @param percentiles a numeric vector indicating percentiles (default: `c(5, 50, 95)`) for summarizing
 #' individual PKPD variables and clinical end-points.
-#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: \code{"PBlood"}).
+#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: `log(10000)`).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: `"PBlood"`).
 #' @param Plog Indicate if parasitemia is in the log or linear scale (Default: `TRUE` which means it is logged).
 #' @param FLAGinterpolateTime A logical indicating if the PL measurements should be interpolated within the simulation period.
-#' @param outputNames
-#' @details This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}.It performs
-#' a summary of individual clinical endpoints using \code{\link{MMVmalaria:::evaluate_BreakthroughEvent}}. It does
+#' @details This function is designed to be passed as argument of [simulate_VirtualTrials()].It performs
+#' a summary of individual clinical endpoints using [evaluate_BreakthroughEvent()]. It does
 #' not perform summaries by trial, or across trials.
 
 #' @return a named list with the following members:
@@ -808,33 +807,33 @@ summarizeTrial_ChemoBreakthrough <- function(
 
 #' Summarize PKPD simulation results for a virtual trial of one experimental setting and one dose
 #'
-#' This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+#' This function is called at runtime by [simulate_OneVirtualTrial()].
 #' @md
 #'
-#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by [IQRtools::sim_IQRmodel()], and
 #' individual and experimental covariates. This argument is set automatically by the calling function.
 #' @param trialFileName A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
 #' virtual subjects, such as individual and experimental covariates.
 #' @param varPKPD a character vector indicating time varying PKPD variables of the simulated PKPD model. All of these
-#' should be names of columns in \code{simPKPD}.
-#' @param percentiles a numeric vector indicating percentiles (default: \code{c(5, 50, 95)}) for summarizing
+#' should be names of columns in `simPKPD`.
+#' @param percentiles a numeric vector indicating percentiles (default: `c(5, 50, 95)`) for summarizing
 #' individual PKPD variables and clinical end-points.
-#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: \code{"PBlood"}).
+#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: `log(10000)`).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: `"PBlood"`).
 #' @param outputNames String of output names being passed in, should correspond to available output names in structural model
 #' @param Plog Indicate if parasitemia is in the log or linear scale (Default: `TRUE` which means it is logged).
 #' @param FLAGinterpolateTime A logical indicating if the PL measurements should be interpolated within the simulation period.
 #' @param IRdenominator Character string corresponding to the parameter to be used as the denominator of calculating
-#' the incidence rate - corresponds to elements of survival objects generated by \code{\link{survival:::survfit}}.
-#' (Default: \code{"n.start"})
+#' the incidence rate - corresponds to elements of survival objects generated by [survival::survfit()].
+#' (Default: `"n.start"`)
 #' @param TimePreDose Numeric, used when first dose is not given at the first time-step (i.e., to seed pre-infections). Allows
 #' the summarize function to automatically disregard any events that occur before the first dose is given.
 
-#' @details This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}.It performs
-#' a summary of individual clinical endpoints using \code{\link{MMVmalaria:::evaluate_BreakthroughEvent}}. Survival
+#' @details This function is designed to be passed as argument of [simulate_VirtualTrials()].It performs
+#' a summary of individual clinical endpoints using [evaluate_BreakthroughEvent()]. Survival
 #' objects are created for each simulated trial, and culmulative incidence calculated for each trial using the Kaplan-Meier
-#' estimator from the \code{\link{survival:::survfit}}
+#' estimator from the [survival::survfit()]
 
 #' @return a named list with the following members:
 #' * summaryPKPD.ByTrial: a data.frame
@@ -947,49 +946,49 @@ summarizeTrial_ChemoSurvival <- function(
 
 #' Summarize PKPD simulation results for a virtual trial of one experimental setting and one dose
 #'
-#' This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+#' This function is called at runtime by [simulate_OneVirtualTrial()].
 #' @md
 #'
-#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by [IQRtools::sim_IQRmodel()], and
 #' individual and experimental covariates. This argument is set automatically by the calling function.
 #' @param trialFileName A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
 #' virtual subjects, such as individual and experimental covariates.
 #' @param varPKPD a character vector indicating time varying PKPD variables of the simulated PKPD model. All of these
-#' should be names of columns in \code{simPKPD}.
-#' @param percentiles a numeric vector indicating percentiles (default: \code{c(5, 50, 95)}) for summarizing
+#' should be names of columns in `simPKPD`.
+#' @param percentiles a numeric vector indicating percentiles (default: `c(5, 50, 95)`) for summarizing
 #' individual PKPD variables and clinical end-points.
-#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: \code{"PBlood"}).
-#' @param MICCOL A character string specifying the name of the column representing the minimum inhibitory concentration (MIC). Default is \code{"MIC"}.
-#' @param MPC90COL A character string specifying the name of the column representing the 90% minimum parasiticidal concentration (MPC90). Default is \code{"MPC90"}.
-#' @param concCOL A character string specifying the name of the concentration column in \code{simPKPD}. Default is \code{"Cc"}.
+#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: `log(10000)`).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: `"PBlood"`).
+#' @param MICCOL A character string specifying the name of the column representing the minimum inhibitory concentration (MIC). Default is `"MIC"`.
+#' @param MPC90COL A character string specifying the name of the column representing the 90% minimum parasiticidal concentration (MPC90). Default is `"MPC90"`.
+#' @param concCOL A character string specifying the name of the concentration column in `simPKPD`. Default is `"Cc"`.
 #' @param outputNames String of output names being passed in, should correspond to available output names in structural model
 #' @param Plog Indicate if parasitemia is in the log or linear scale (Default: `TRUE` which means it is logged).
 #' @param FLAGinterpolateTime A logical indicating if the PL measurements should be interpolated within the simulation period.
 #' @param IRdenominator Character string corresponding to the parameter to be used as the denominator of calculating
-#' the incidence rate - corresponds to elements of survival objects generated by \code{\link{survival:::survfit}}.
-#' (Default: \code{"n.start"})
+#' the incidence rate - corresponds to elements of survival objects generated by [survival::survfit()].
+#' (Default: `"n.start"`)
 #' @param TimePreDose Numeric, used when first dose is not given at the first time-step (i.e., to seed pre-infections). Allows
 #' the summarize function to automatically disregard any events that occur before the first dose is given.
 #'
-#' @details This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}.It performs
-#' a summary of individual clinical endpoints using \code{\link{MMVmalaria:::evaluate_BreakthroughEvent}}. Survival
+#' @details This function is designed to be passed as argument of [simulate_VirtualTrials()].It performs
+#' a summary of individual clinical endpoints using [evaluate_BreakthroughEvent()]. Survival
 #' objects are created for each simulated trial, and culmulative incidence calculated for each trial using the Kaplan-Meier
-#' estimator from the \code{\link{survival:::survfit}}. Additionally to \code{summarizeTrial_ChemoSurvival}, monotherapy key PD
+#' estimator from the [survival::survfit()]. Additionally to `summarizeTrial_ChemoSurvival`, monotherapy key PD
 #' parameters of time above MIC and time above MPC90 are calculated by individual and by trial
 #'
 #' @return
 #' A list containing:
 #' \describe{
-#'   \item{\code{summaryPKPD.ByTrial}}{A summary of PK/PD data at the trial level.}
-#'   \item{\code{summaryKeyPD.ByIndiv}}{Individual-level key PD parameters time above MIC and time above MPC90.}
-#'   \item{\code{summaryKeyPD.ByTrial}}{Trial-level summary of key PD parameters.}
-#'   \item{\code{summaryClinEnd.ByIndiv}}{Individual-level clinical endpoint summaries, including event times.}
-#'   \item{\code{summaryClinEnd.Surv}}{Adjusted survival data excluding individuals with pre-dose events.}
-#'   \item{\code{surv.ByTrial}}{A \code{survival::survfit} object summarizing trial-level survival.}
-#'   \item{\code{summarySurv.ByTrial}}{Trial-level survival summary, including cumulative incidence rates.}
-#'   \item{\code{removedIndv.Surv}}{A data frame of individuals removed from survival analysis due to pre-dose events.}
+#'   \item{`summaryPKPD.ByTrial`}{A summary of PK/PD data at the trial level.}
+#'   \item{`summaryKeyPD.ByIndiv`}{Individual-level key PD parameters time above MIC and time above MPC90.}
+#'   \item{`summaryKeyPD.ByTrial`}{Trial-level summary of key PD parameters.}
+#'   \item{`summaryClinEnd.ByIndiv`}{Individual-level clinical endpoint summaries, including event times.}
+#'   \item{`summaryClinEnd.Surv`}{Adjusted survival data excluding individuals with pre-dose events.}
+#'   \item{`surv.ByTrial`}{A `survival::survfit` object summarizing trial-level survival.}
+#'   \item{`summarySurv.ByTrial`}{Trial-level survival summary, including cumulative incidence rates.}
+#'   \item{`removedIndv.Surv`}{A data frame of individuals removed from survival analysis due to pre-dose events.}
 #' }
 #'
 #' @export
@@ -1142,48 +1141,48 @@ summarizeTrial_ChemoSurvival_MonoPD <- function(
 
 #' Summarize PKPD simulation results for a virtual trial of one experimental setting and one dose
 #'
-#' This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+#' This function is called at runtime by [simulate_OneVirtualTrial()].
 #' @md
 #'
-#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+#' @param simPKPD A data.frame representing the merge (join) for data.frame returned by [IQRtools::sim_IQRmodel()], and
 #' individual and experimental covariates. This argument is set automatically by the calling function.
 #' @param trialFileName A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
 #' virtual subjects, such as individual and experimental covariates.
 #' @param varPKPD a character vector indicating time varying PKPD variables of the simulated PKPD model. All of these
-#' should be names of columns in \code{simPKPD}.
-#' @param percentiles a numeric vector indicating percentiles (default: \code{c(5, 50, 95)}) for summarizing
+#' should be names of columns in `simPKPD`.
+#' @param percentiles a numeric vector indicating percentiles (default: `c(5, 50, 95)`) for summarizing
 #' individual PKPD variables and clinical end-points.
-#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).
-#' @param timeCOL     Name of column containing values for simulation time (Default: \code{"TIME"}).
-#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: \code{"PBlood"}).
-#' @param killCOL A character string specifying the name of the column representing the kill rate. Default is \code{"KillBlood"}.
-#' @param GRCOL A character string specifying the name of the column representing the parasite growth rate. Default is \code{"GR"}.
+#' @param LLOQ.PD a numeric indicating log parasitemia LLOQ (default: `log(10000)`).
+#' @param timeCOL     Name of column containing values for simulation time (Default: `"TIME"`).
+#' @param PbloodCOL Name of column containing values for blood stage parasitemia (Default: `"PBlood"`).
+#' @param killCOL A character string specifying the name of the column representing the kill rate. Default is `"KillBlood"`.
+#' @param GRCOL A character string specifying the name of the column representing the parasite growth rate. Default is `"GR"`.
 #' @param outputNames String of output names being passed in, should correspond to available output names in structural model
 #' @param Plog Indicate if parasitemia is in the log or linear scale (Default: `TRUE` which means it is logged).
 #' @param FLAGinterpolateTime A logical indicating if the PL measurements should be interpolated within the simulation period.
 #' @param IRdenominator Character string corresponding to the parameter to be used as the denominator of calculating
-#' the incidence rate - corresponds to elements of survival objects generated by \code{\link{survival:::survfit}}.
-#' (Default: \code{"n.start"})
+#' the incidence rate - corresponds to elements of survival objects generated by [survival::survfit()].
+#' (Default: `"n.start"`)
 #' @param TimePreDose Numeric, used when first dose is not given at the first time-step (i.e., to seed pre-infections). Allows
 #' the summarize function to automatically disregard any events that occur before the first dose is given.
 #'
-#' @details This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}.It performs
-#' a summary of individual clinical endpoints using \code{\link{MMVmalaria:::evaluate_BreakthroughEvent}}. Survival
+#' @details This function is designed to be passed as argument of [simulate_VirtualTrials()].It performs
+#' a summary of individual clinical endpoints using [evaluate_BreakthroughEvent()]. Survival
 #' objects are created for each simulated trial, and culmulative incidence calculated for each trial using the Kaplan-Meier
-#' estimator from the \code{\link{survival:::survfit}}. Additionally to \code{summarizeTrial_ChemoSurvival}, combo key PD
+#' estimator from the [survival::survfit()]. Additionally to `summarizeTrial_ChemoSurvival`, combo key PD
 #' parameter of time that kill rate is above parasite growth rate is calculated by individual and by trial.
 #'
 #' @return
 #' A list containing:
 #' \describe{
-#'   \item{\code{summaryPKPD.ByTrial}}{A summary of PK/PD data at the trial level.}
-#'   \item{\code{summaryKeyPD.ByIndiv}}{Individual-level key PD parameter time that kill rate is above parasite growth rate.}
-#'   \item{\code{summaryKeyPD.ByTrial}}{Trial-level summary of key PD parameters.}
-#'   \item{\code{summaryClinEnd.ByIndiv}}{Individual-level clinical endpoint summaries, including event times.}
-#'   \item{\code{summaryClinEnd.Surv}}{Adjusted survival data excluding individuals with pre-dose events.}
-#'   \item{\code{surv.ByTrial}}{A \code{survival::survfit} object summarizing trial-level survival.}
-#'   \item{\code{summarySurv.ByTrial}}{Trial-level survival summary, including cumulative incidence rates.}
-#'   \item{\code{removedIndv.Surv}}{A data frame of individuals removed from survival analysis due to pre-dose events.}
+#'   \item{`summaryPKPD.ByTrial`}{A summary of PK/PD data at the trial level.}
+#'   \item{`summaryKeyPD.ByIndiv`}{Individual-level key PD parameter time that kill rate is above parasite growth rate.}
+#'   \item{`summaryKeyPD.ByTrial`}{Trial-level summary of key PD parameters.}
+#'   \item{`summaryClinEnd.ByIndiv`}{Individual-level clinical endpoint summaries, including event times.}
+#'   \item{`summaryClinEnd.Surv`}{Adjusted survival data excluding individuals with pre-dose events.}
+#'   \item{`surv.ByTrial`}{A `survival::survfit` object summarizing trial-level survival.}
+#'   \item{`summarySurv.ByTrial`}{Trial-level survival summary, including cumulative incidence rates.}
+#'   \item{`removedIndv.Surv`}{A data frame of individuals removed from survival analysis due to pre-dose events.}
 #' }
 #'
 #' @export

@@ -11,7 +11,7 @@
 #' @param BloodGrowth List of GR (referring to the PD model, e.g. exponential growth), parameters and extraStates if applicable
 #' @param BloodActivity List of Kill (referring to the PD model, e.g. Emax equation), parameters and extraStates if applicable
 #' @param PKmodel "IQRmodel" or list of states, parameters and variables
-#' @param Output List of outputs to be included in the model script (Default: \code{"OUTPUT1 = "PBlood""})
+#' @param Output List of outputs to be included in the model script (Default: `"OUTPUT1 = "PBlood""`)
 #' @param outputFile Pathway where to save the resulting model file
 #'
 #' @return IQRmodel script to be used for estimation/simulation activities
@@ -499,7 +499,7 @@ generate_ChemoModel_UpwindFirstOrder <- function(nCpt,
 #' @param BloodGrowth List of GR (referring to the PD model, e.g. exponential growth), parameters and extraStates if applicable
 #' @param BloodActivity List of Kill (referring to the PD model, e.g. Emax equation), parameters and extraStates if applicable
 #' @param PKmodel "IQRmodel" or list of states, parameters and variables
-#' @param Output List of outputs to be included in the model script (Default: \code{"OUTPUT1 = "PBlood""})
+#' @param Output List of outputs to be included in the model script (Default: `"OUTPUT1 = "PBlood""`)
 #' @param outputFile Pathway where to save the resulting model file
 #'
 #' @return IQRmodel script to be used for estimation/simulation activities
@@ -1226,7 +1226,7 @@ generate_bite_time_poisson <- function(force_of_infection, Tend) {
 #'        
 #' @references
 #' Cherkaoui-Rbati MH, Andenmatten N, Burgert L, et al. (2023). A pharmacokinetic-pharmacodynamic model 
-#' for chemoprotective agents against malaria. \emph{CPT Pharmacometrics Syst Pharmacol}, \bold{12}, 50-61. \doi{10.1002/psp4.12875}
+#' for chemoprotective agents against malaria. *CPT Pharmacometrics Syst Pharmacol*, **12**, 50-61. \doi{10.1002/psp4.12875}
 #' 
 #' @details 
 #' The function operates in two main steps:

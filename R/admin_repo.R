@@ -56,8 +56,8 @@ loadversion_MMVmalaria <- function(version) {
 #' indicates the number of other functions where the actual function is used. The
 #' row "n(to)" indicates the number of other functions used within the actual function.
 #'
-#' The output carries several attributes which are needed in \code{\link{get_targets}} and
-#' \code{\link{get_sources}}.
+#' The output carries several attributes which are needed in [get_targets()] and
+#' [get_sources()].
 #'
 #' @export
 #'

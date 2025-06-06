@@ -13,7 +13,7 @@
 #' @param Indv Default: `FALSE`
 #' @param ActivityPath Default: `NULL`
 #' @param addArgs_sim_IQRmodel named list (default NULL) with additional arguments to be passed to sim_IQR_model. This
-#' argument is relevant only if \code{Apparent == TRUE}.
+#' argument is relevant only if `Apparent == TRUE`.
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV), Sam Jones (MMV)
@@ -1722,14 +1722,16 @@ getCure <- function(dataSim,
 #' @return
 #' @export
 #' @author Aline Fuchs (MMV)
+#' @importFrom MMVbase formula_EMAXmodelParsToMIC formula_EC50toMPC90 formula_EMAXtoPRR
+#' 
 #' @family Key Parameters
 getKeysEMAX <- function(x, convConc = 1) {
   within(x, {
-    MIC   <- formula_EMAXmodelParsToMIC(GR, EMAX, EC50, hill) * convConc
-    MPC90 <- formula_EC50toMPC90(EC50, hill) * convConc
-    PRR24 <- formula_EMAXtoPRR(GR, EMAX, timePRR = 24)
-    PRR48 <- formula_EMAXtoPRR(GR, EMAX, timePRR = 48)
-    PRR72 <- formula_EMAXtoPRR(GR, EMAX, timePRR = 72)
+    MIC   <- MMVbase::formula_EMAXmodelParsToMIC(GR, EMAX, EC50, hill) * convConc
+    MPC90 <- MMVbase::formula_EC50toMPC90(EC50, hill) * convConc
+    PRR24 <- MMVbase::formula_EMAXtoPRR(GR, EMAX, timePRR = 24)
+    PRR48 <- MMVbase::formula_EMAXtoPRR(GR, EMAX, timePRR = 48)
+    PRR72 <- MMVbase::formula_EMAXtoPRR(GR, EMAX, timePRR = 72)
   })
 }
 
@@ -1744,6 +1746,7 @@ getKeysEMAX <- function(x, convConc = 1) {
 #' @return
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
+#' @importFrom MMVbase rectintMMV
 #' @family Key Parameters
 getTimeAboveMIC <- function(dataSim,
                             MIC      = NULL,
@@ -1778,7 +1781,7 @@ getTimeAboveMIC <- function(dataSim,
     dtMIC <- ifelse(dataSim[[concCOL]]>MIC, 1, 0)
 
     # Calculate Time Above MIC:
-    tMIC <- rectintMMV(dataSim[[timeCOL]],dtMIC)
+    tMIC <- MMVbase::rectintMMV(dataSim[[timeCOL]],dtMIC)
 
     #------------------------------------------------#
     # When dtMIC goes from 0 to 1 (or 1 to 0), a piece
@@ -1861,7 +1864,7 @@ getTimeAboveMICsim <- function(dataSim,
   dtMIC <- ifelse(dataSim[[effCOL]]>Eff.MIC, 1, 0)
 
   # Calculate Time Above MIC:
-  tMIC <- trapzMMV(dataSim[[timeCOL]],dtMIC)
+  tMIC <- MMVbase::trapzMMV(dataSim[[timeCOL]],dtMIC)
 
   #------------------------------------------------#
   # When dtMIC goes from 0 to 1 (or 1 to 0), the
@@ -2084,20 +2087,20 @@ getTimeAboveMPC90sim <- function(dataSim,
 #' Calculates the total time during which the kill rate exceeds the growth rate in a simulation dataset.
 #'
 #' @param dataSim A data frame or data.table containing the simulation data.
-#' @param timeCOL A string specifying the name of the time column in \code{dataSim}. Default is \code{"TIME"}.
-#' @param killCOL A string specifying the name of the kill rate column in \code{dataSim}. Default is \code{"KillBlood"}.
+#' @param timeCOL A string specifying the name of the time column in `dataSim`. Default is `"TIME"`.
+#' @param killCOL A string specifying the name of the kill rate column in `dataSim`. Default is `"KillBlood"`.
 #' @param GR A numeric value representing the growth rate threshold. Default is 0.07. Expects a single value, but if growth rate
-#' is a column in \code{dataSim}, arguments such as \code{dataSim$GR[1]} or \code{unique(dataSim$GR)} are suitable.
+#' is a column in `dataSim`, arguments such as `dataSim$GR[1]` or `unique(dataSim$GR)` are suitable.
 #'
 #' @details
-#' The function computes the total time (\code{tKRGR}) during which the kill rate exceeds the growth rate in the provided simulation data.
+#' The function computes the total time (`tKRGR`) during which the kill rate exceeds the growth rate in the provided simulation data.
 #'
-#' It handles cases where the kill rate crosses the growth rate threshold between time points by applying corrections using linear interpolation. This ensures a more accurate estimation of \code{tKRGR}, especially when time steps are large.
+#' It handles cases where the kill rate crosses the growth rate threshold between time points by applying corrections using linear interpolation. This ensures a more accurate estimation of `tKRGR`, especially when time steps are large.
 #'
 #' @return
 #' A data frame with one row and one column:
 #' \describe{
-#'   \item{\code{tKRGR}}{Numeric value representing the total time during which the kill rate exceeds the growth rate.}
+#'   \item{`tKRGR`}{Numeric value representing the total time during which the kill rate exceeds the growth rate.}
 #' }
 #'
 #' @examples
@@ -2924,6 +2927,132 @@ evaluate_APR28 <- function(dataSim,
 
   # Output:
   res
+}
+
+#' Calcualte confusion matrix and derived statistics from a predicted and reference binary data
+#' @param data a data.frame with at least two columns of logical values named as the arguments colPred and colRef.
+#' @param colPred,colRef character strings denoting names of logical (TRUE/FALSE) columns in data.
+#' @param positiveClass character string denoting the human readable meaning of TRUE values in data[[colPred]] and data[[colRef]].
+#' @param negativeClass character string (default paste0("No ", positiveClass)), denoting the human readable meaning of FALSE
+#' values in data[[colPred]] and data[[colRef]].
+#' @return a named list as described in documentation of `[caret::confusionMatrix()]`.
+#' @note This function is using `[caret::confusionMatrix()]`
+#' @export
+ConfusionMatrix <- function(data, colPred, colRef, positiveClass, negativeClass = paste0('No ', positiveClass)) {
+
+  if(!is.logical(data[[colPred]]) || !is.logical(data[[colRef]])) {
+    stop("colPred and colRef should be logical columns in data.")
+  }
+
+  # map 'TRUE' or 'FALSE' values of colPred and colRef to negative and positive class respectively.
+  logicalToClass = c('TRUE' = positiveClass, 'FALSE' = negativeClass)
+
+  # predicted classes
+  predicted <- logicalToClass[as.character(as.logical(data[[colPred]]))]
+  # observed or other type of reference
+  reference <- logicalToClass[as.character(as.logical(data[[colRef]]))]
+
+  res <- caret::confusionMatrix(data      = factor(predicted, levels = unname(logicalToClass), labels = unname(logicalToClass)),
+                                reference = factor(reference, levels = unname(logicalToClass), labels = unname(logicalToClass)),
+                                positive  = positiveClass,
+                                mode = "everything")
+  res$negative <- negativeClass
+
+  res
+}
+
+
+#' Summarize a list of confusion matrices into a format suitable for the IQRoutputTable function
+#'
+#' If the list contains one confusion matrix, the matrix TP, FN, FP, TN values are returned in the form of a data.frame.
+#' If the list contains more than one confusion matrix a summary matrix is returned containing the median, Q05 and Q95 quantiles of
+#' TP, FN, FP, TN.
+#' @param cmList a list of one or more confusionMatrix objects created by calling the function ConfusionMatrix.
+#' @return a data.frame of 3 columns named according to colNames.
+#' @export
+SummarizeConfusionMatrices <- function(cmList) {
+  if(is.null(cmList) || length(cmList) == 0) {
+    NULL
+  } else if(!is.list(cmList)) {
+    stop("SummarizeConfusionMatrices: argument cmList should be a list of confusionMatrix objects created by calling ConfusionMatrix().")
+  } else {
+
+    # . Confusion matrix summary ----
+    dt <- data.table::rbindlist(lapply(cmList, function(x) {
+      if(!inherits(x, "confusionMatrix")) {
+        stop("SummarizeConfusionMatrices: Argument cmList is a list but not all of its elements are confusionMatrix objects.")
+      }
+      as.data.frame(x$table)
+    }))
+    positive <- cmList[[1]]$positive
+    negative <- cmList[[1]]$negative
+
+    # Add the commonly used names for the statistics in the confusion matrix
+    dtNames <- data.table(
+      Prediction = c(positive, negative, positive, negative),
+      Reference  = c(positive, positive, negative, negative),
+      Name       = c("TP",     "FN",     "FP",     "TN"    ))
+    dt <- dplyr::left_join(dtNames, dt, by = c("Prediction", "Reference"))
+
+    if(length(cmList) > 1) {
+      # more than one confusionMatrix object
+      matrixSummary <- dt[, list(Median = median(Freq), Q05 = quantile(Freq, probs = 0.05), Q95 = quantile(Freq, probs = 0.95)), by = list(Prediction, Reference, Name)]
+      matrixSummary[, SummaryType := " Median [Q05,Q95]"]
+
+      matrixSummary[, Freq := sapply(.I, function(i) sprintf("%.5g [%.5g, %.5g]", Median[i], Q05[i], Q95[i]))]
+    } else {
+      matrixSummary <- dt[, list(Prediction, Reference, Name, Freq)]
+      matrixSummary[, SummaryType := ""]
+    }
+
+    matrixSummary[, Text:=paste0(Name, SummaryType, ": ", Freq)]
+    matrixSummary <- matrixSummary %>% tidyr::pivot_wider(id_cols = c(Prediction), names_from = c("Reference"), values_from = "Text")
+    names(matrixSummary) <- c("Predicted", paste0("Observed ", positive), paste0("Observed ", negative))
+
+    # . Confusion matrix statistics summary ----
+
+    dtStats <- data.table::rbindlist(lapply(cmList, function(cm) {
+      dt <- data.table(
+        Statistic = c("Prevalence", "Sensitivity (Recall)", "Specificity", "Precision", "Accuracy", "Balanced Accuracy", "F1 Score"),
+        Value = c(cm$byClass['Prevalence'], cm$byClass['Sensitivity'], cm$byClass['Specificity'], cm$byClass['Precision'],
+                  cm$overall['Accuracy'], cm$byClass['Balanced Accuracy'], cm$byClass['F1']),
+        Interpretation = c(
+          "Fraction observed POSITIVECLASS of all the subjects",
+          "Fraction correctly predicted observed POSITIVECLASS",
+          "Fraction correctly predicted observed NEGATIVECLASS",
+          "Fraction observed POSITIVECLASS of the subjects predicted as POSITIVECLASS",
+          "Fraction true predictions",
+          "Mean of sensitivity and specificity",
+          "Harmonic mean between precision and recall"),
+        Formula = c(
+          "(TP+FN)/(TP+FN+FP+TN)",
+          "TP/(TP+FN)",
+          "TN/(FP+TN)",
+          "TP/TP+FP)",
+          "(TP+TN)/(TP+FN+FP+TN)",
+          "0.5*(Sensitivity+Specificity)",
+          "2*Precision*Recall/(Precision+Recall)"))
+      dt$Interpretation <- gsub("NEGATIVECLASS", cm$negative, dt$Interpretation, fixed = TRUE)
+      dt$Interpretation <- gsub("POSITIVECLASS", cm$positive, dt$Interpretation, fixed = TRUE)
+      dt
+    }))
+
+    if(length(cmList) > 1) {
+      # more than one confusionMatrix object
+      statsSummary <- dtStats[, list(Median = median(Value, na.rm = TRUE),
+                                     Q05 = quantile(Value, probs = 0.05, na.rm = TRUE),
+                                     Q95 = quantile(Value, probs = 0.95, na.rm = TRUE),
+                                     NnonNA = sum(!is.na(Value))),
+                              by = list(Statistic, Interpretation, Formula)]
+
+      statsSummary[, `Median [Q05,Q95] (# not NA)` := sapply(.I, function(i) sprintf("%.2f [%.2f, %.2f] (%d)", Median[i], Q05[i], Q95[i], NnonNA[i]))]
+      statsSummary <- statsSummary[, list(Statistic, `Median [Q05,Q95] (# not NA)`, Interpretation, Formula)]
+    } else {
+      statsSummary <- dtStats[, list(Statistic, Value = sprintf("%.2f", Value), Interpretation, Formula)]
+    }
+
+    list(matrixSummary = as.data.table(matrixSummary), statsSummary = statsSummary)
+  }
 }
 
 

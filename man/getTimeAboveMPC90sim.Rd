@@ -14,7 +14,7 @@ getTimeAboveMPC90sim(
 \arguments{
 \item{effCOL}{Default: 'Effect'}
 
-\item{returnLag}{Default: `FALSE`}
+\item{returnLag}{Default: \code{FALSE}}
 }
 \description{
 getTimeAboveMPC90sim

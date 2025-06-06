@@ -26,27 +26,27 @@ assess_MICMPC90PRR48(
 
 \item{outputFolder}{Folder where the plots of MIC, MPC90 and PRR48 will be saved}
 
-\item{yaxis}{Default: `NULL`}
+\item{yaxis}{Default: \code{NULL}}
 
 \item{yaxisunit}{Default: ''}
 
-\item{GRmodelFolder}{Default: `NULL`}
+\item{GRmodelFolder}{Default: \code{NULL}}
 
 \item{PKmodelFolder}{Default: '../04-Output/S131-01_PKmodel'}
 
-\item{Apparent}{Default: `TRUE`}
+\item{Apparent}{Default: \code{TRUE}}
 
 \item{Tk0}{Default: 'Tk0'}
 
-\item{Indv}{Default: `FALSE`}
+\item{Indv}{Default: \code{FALSE}}
 
-\item{ActivityPath}{Default: `NULL`}
+\item{ActivityPath}{Default: \code{NULL}}
 
 \item{addArgs_sim_IQRmodel}{named list (default NULL) with additional arguments to be passed to sim_IQR_model. This
 argument is relevant only if \code{Apparent == TRUE}.}
 }
 \description{
-Required: `Emax` `EC50`, `hill`. Emax, cleareance, delay, turnover and effect compartment models
+Required: \code{Emax} \code{EC50}, \code{hill}. Emax, cleareance, delay, turnover and effect compartment models
 }
 \seealso{
 Other Key Parameters: 

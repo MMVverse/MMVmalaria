@@ -9,7 +9,7 @@ generate_bite_time_poisson(force_of_infection, Tend)
 \arguments{
 \item{force_of_infection}{Numeric. Should represent an assumption about the number of infectious bites
 that occur over a given time period. This can derived, for example, from estimated annual entomological
-inoculation rates.This number should represent a yearly count : the provided parameter will be 
+inoculation rates.This number should represent a yearly count : the provided parameter will be
 in the form x / 365 /24 to provide a daily rate}
 
 \item{Tend}{Numeric. The observation period (in hours) during which bite events will be simulated.
@@ -17,20 +17,20 @@ If being used as part of a simulation, should likely reflect the simulation's ma
 }
 \value{
 A numeric vector of bite times (in hours) within the specified observation period.
-        Each element represents the cumulative time (in hours) at which a bite event occurs.
+Each element represents the cumulative time (in hours) at which a bite event occurs.
 }
 \description{
-This function generates bite event times over a specified observation period using 
+This function generates bite event times over a specified observation period using
 a Poisson process, based on a mean bite rate (events per day).
 }
 \details{
-The function calculates a rate parameter for a Poisson process that represents 
-the mean number of bite events per hour, derived from a yearly figure of infectious bites (`force_of_infection`). 
+The function calculates a rate parameter for a Poisson process that represents
+the mean number of bite events per hour, derived from a yearly figure of infectious bites (\code{force_of_infection}).
 Using this rate parameter, it generates a cumulative sum of exponentially-distributed
 inter-arrival times for bite events.
 
-If the generated sequence of bite events does not span the entire observation period (`Tend`), 
-additional events are appended to ensure sufficient coverage, stopping when the maximum 
+If the generated sequence of bite events does not span the entire observation period (\code{Tend}),
+additional events are appended to ensure sufficient coverage, stopping when the maximum
 bite event time exceeds the observation period.
 
 The function returns only those events that occur within the observation period.

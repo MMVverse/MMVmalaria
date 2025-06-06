@@ -14,7 +14,7 @@ A list with the population, IIV, Betas and residual parameters, each formatted i
 }
 \description{
 Load into a list the the population, IIV, Betas and residual parameters, each formatted into a data.frame from
-a CSV file. Used in [getModelParameters_MMVmalariaProject].
+a CSV file. Used in \link{getModelParameters_MMVmalariaProject}.
 }
 \seealso{
 Other Simulations: 

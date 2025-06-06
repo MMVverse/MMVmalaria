@@ -98,10 +98,10 @@ Import original SCID combination data from TAD and convert it to a single struct
 Import original SCID combination data from TAD and convert it to a single structured data format
 ready to be imported by IQRTool (IQRdataGENERAL) or pre-ready used for MONOLIX or NONMEM
 It includes positive controls data
-Uses function [readxl::read_excel]
+Uses function \link[readxl:read_excel]{readxl::read_excel}
 }
 \seealso{
-[readxl], [plyr], [dplyr], [reshape2]
+\link{readxl}, \link{plyr}, \link{dplyr}, \link{reshape2}
 
 Other Data Preparation: 
 \code{\link{censorGametocyte}()},

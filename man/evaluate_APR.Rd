@@ -21,32 +21,32 @@ evaluate_APR(
 )
 }
 \arguments{
-\item{dataSim}{data.table produced by `simulate_virtualtrials()`, specifically `$simPKPD`. `WT0` and `curethreshCOL` should also be included in this data.table if desired}
+\item{dataSim}{data.table produced by \code{simulate_virtualtrials()}, specifically \verb{$simPKPD}. \code{WT0} and \code{curethreshCOL} should also be included in this data.table if desired}
 
-\item{LLOQ}{LLOQ parasitemia in the same scale as in `paraCOL` (i.e. linear or ln - numeric).}
+\item{LLOQ}{LLOQ parasitemia in the same scale as in \code{paraCOL} (i.e. linear or ln - numeric).}
 
-\item{weightCOL}{optional column name of `dataSim` containing body weight (Default: `WT0`).}
+\item{weightCOL}{optional column name of \code{dataSim} containing body weight (Default: \code{WT0}).}
 
-\item{curethreshCOL}{optional column name of `dataSim` containing cure threshold (Default: "Cure_Thresh_col")}
+\item{curethreshCOL}{optional column name of \code{dataSim} containing cure threshold (Default: "Cure_Thresh_col")}
 
 \item{aprTime}{day that denotes final day of follow-up - metrics will be calculated based on this day}
 
 \item{defaultWT}{default weight (kg) to be assumed if neither cure threshold or patient weight are provided (Default: 55)}
 
 \item{extrapTol}{Numeric indicating the maximum allowed tolerance in hours for the interpolation/extrapolation in case
-of last measurement not exactly at `aprTime`*24hr (Default: 48hr).}
+of last measurement not exactly at \code{aprTime}*24hr (Default: 48hr).}
 
-\item{Plog}{Indicate if parasitemia is in the log or linear scale (Default: `TRUE` which means it is logged).}
+\item{Plog}{Indicate if parasitemia is in the log or linear scale (Default: \code{TRUE} which means it is logged).}
 
-\item{FLAGtruncateTime}{A logical indicating if the PL measurements should be truncated at `aprTime`*24hr,
-for subjects with measurements later than `aprTime`*24hr.
-If `TRUE`, all measurements after `aprTime`*24hr+`extrapTol` are removed (Default: `TRUE`).}
+\item{FLAGtruncateTime}{A logical indicating if the PL measurements should be truncated at \code{aprTime}*24hr,
+for subjects with measurements later than \code{aprTime}*24hr.
+If \code{TRUE}, all measurements after \code{aprTime}*24hr+\code{extrapTol} are removed (Default: \code{TRUE}).}
 
-\item{FLAGextrapolateTime}{A logical indicating if the PL measurements should be extrapolated up to `aprTime`*24hr,
-for subjects which measurements end before `aprTime`*24hr. If `TRUE` the last measured value is repeated up to
-`aprTime`*24hr (Default: `FALSE`).}
+\item{FLAGextrapolateTime}{A logical indicating if the PL measurements should be extrapolated up to \code{aprTime}*24hr,
+for subjects which measurements end before \code{aprTime}*24hr. If \code{TRUE} the last measured value is repeated up to
+\code{aprTime}*24hr (Default: \code{FALSE}).}
 
-\item{FLAGverbose}{Logical (Default: `FALSE`).}
+\item{FLAGverbose}{Logical (Default: \code{FALSE}).}
 }
 \value{
 A data.frame of a single row and columns USUBJID and binary (0 or 1) columns as follows:
@@ -57,10 +57,10 @@ A data.frame of a single row and columns USUBJID and binary (0 or 1) columns as 
 \item PCloq: Time to first drop below LLOQ
 \item Tcure: Time at which cure threshold is reached
 \item P2BL : Presence of parasitaemia higher than baseline at 48 hours
-\item P3BL : Presence of parasitaemia higher than 25% of baseline at 72 hours
+\item P3BL : Presence of parasitaemia higher than 25\% of baseline at 72 hours
 \item P3 :  Presence of parasitaemia higher than LLOQ at 72 hours
-\item ETF_CSon: Parasitaemia on 48h higher than baseline or parasitaemia > LLOQ on day 3 or parasitaemia > 25% baseline on day 3
-\item ETF_CSoff : Parasitaemia on 48h higher than baseline or parasitaemia >25% baseline on 48h
+\item ETF_CSon: Parasitaemia on 48h higher than baseline or parasitaemia > LLOQ on day 3 or parasitaemia > 25\% baseline on day 3
+\item ETF_CSoff : Parasitaemia on 48h higher than baseline or parasitaemia >25\% baseline on 48h
 \item simIPFabs : Absolute presence of parasites >LLOQ between day 4 and 7, irrespective of any other criteria being met
 \item simLPFabs : Absolute presence of parasites >LLOQ between day 7 and aprTime, irrespective of any other criteria being met
 \item LCFabs_CSon : Absolute presence of parasites >LLOQ between day 4 and aprTime, irrespective of any other criteria being met
@@ -74,7 +74,7 @@ A data.frame of a single row and columns USUBJID and binary (0 or 1) columns as 
 }
 }
 \description{
-Evaluate APR at Day `aprTime` given an individual time-course of parasitemia measurements,
+Evaluate APR at Day \code{aprTime} given an individual time-course of parasitemia measurements,
 baseline parasitemia, LLOQ parasitemia and weight at TIME 0. Two APRs are return, an optimistic one (CSoff - clinical symptoms off),
 which assumes that no patient has fever, and a pessimistic (CSon - clinical symptoms on) one, which assumes that all patients have fever.
 Note that times up to 7 days are hard-coded in and the function will crash (currently with no error message)

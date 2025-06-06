@@ -7,7 +7,7 @@
 evaluateDoseCriterion_TimeAboveMPC90(sim_results, parameters)
 }
 \arguments{
-\item{sim_results}{a data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}. It is assumed that
+\item{sim_results}{a data.frame returned by \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}. It is assumed that
 this data.frame has a column PL corresponding to log-transformed simulated parasitemia.}
 
 \item{parameters}{a named numeric vector.}
@@ -19,10 +19,10 @@ a numeric value.
 Calculate the time above the minimum parasiticidal concentration (MPC90) for an individual parasitemia profile
 }
 \details{
-This function can be passed as argument to \code{\link{predictDose_Generic}}.
+This function can be passed as argument to \code{\link[=predictDose_Generic]{predictDose_Generic()}}.
 }
 \seealso{
-\code{\link{getKeysEMAX}}
+\code{\link[=getKeysEMAX]{getKeysEMAX()}}
 }
 \author{
 Mohammed H. Cherkaoui, MMV

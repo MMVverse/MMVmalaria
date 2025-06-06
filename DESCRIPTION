@@ -1,7 +1,7 @@
 Package: MMVmalaria
 Type: Package
 Title: Collection of Malaria Functions, Models, Data and Workflows
-Version: 1.3.0
+Version: 1.4.1
 Author: Mohammed H. Cherkaoui [aut,cre],
 		Anne Kuemmel [aut,cre],
 		Daniel Kaschek [aut],
@@ -23,35 +23,42 @@ Encoding: UTF-8
 Depends:
   R (>= 4.4.1)
 Imports:
-  IQRtools (>= 2024.09),
-  akima,
-  cobs,
-  cowplot,
-  data.table,
-  devtools,
-  doParallel,
-  dplyr,
-  foreach,
-  fpc,
-  ggplot2,
-  git2r,
-  gridExtra,
-  Hmisc,
-  MASS,
-  methods,
-  mvtnorm,
-  parallel,
-  plyr,
-  pracma,
-  purrr,
-  reader,
-  readxl,
-  reshape2,
-  scales,
-  stringr,
-  tidyr,
-  writexl,
-  MMVbase (== 1.2.0)
+    IQRtools (>= 2025.05),
+    akima,
+    caret,
+    cobs,
+    cowplot,
+    data.table,
+    devtools,
+    doParallel,
+    dplyr,
+    foreach,
+    fpc,
+    ggplot2,
+    git2r,
+    gridExtra,
+    Hmisc,
+    MASS,
+    methods,
+    mvtnorm,
+    parallel,
+    plyr,
+    pracma,
+    purrr,
+    reader,
+    readxl,
+    reshape2,
+    scales,
+    stringr,
+    survival,
+    tidyr,
+    writexl,
+    MMVbase (>= 1.2.1),
+    rlang,
+    lifecycle,
+    cli,
+    glue,
+    withr
 Remotes:
   MMVverse/MMVbase
 LazyData: true
@@ -61,3 +68,7 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+Additional_repositories:
+    https://iqrtoolsabc321.intiquan.com/rrepo2024
+

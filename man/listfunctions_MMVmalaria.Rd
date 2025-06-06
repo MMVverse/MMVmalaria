@@ -14,8 +14,8 @@ Data frame of all functions found in the package. The row "n(from)"
 indicates the number of other functions where the actual function is used. The
 row "n(to)" indicates the number of other functions used within the actual function.
 
-The output carries several attributes which are needed in \code{\link{get_targets}} and
-\code{\link{get_sources}}.
+The output carries several attributes which are needed in \code{\link[=get_targets]{get_targets()}} and
+\code{\link[=get_sources]{get_sources()}}.
 }
 \description{
 Build a dependency tree of function sources and targets from a package

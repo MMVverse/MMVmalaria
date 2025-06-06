@@ -77,10 +77,10 @@ censorGametocyte <- function(
 #' oldStdCurve and oldNewStdFactor might be needed with old data from QIMR laboratory.
 #'
 #' @param data Data frame or IQRdataGENERAL object with gametocyte data.
-#' @param gamName Variable name to convert (Default: \code{"Parasitemia female gametocytes"}).
+#' @param gamName Variable name to convert (Default: `"Parasitemia female gametocytes"`).
 #' @param convUnit Conversion factor from copies/ul to copies/mL (Default: 1).
 #' @param GamFactor Conversion factor from copies/mL to p/mL (p being e.g. female gametocytes).
-#' @param oldStdCurve TRUE or FALSE indicating whether old standard curve was used (Default: \code{"FALSE"}).
+#' @param oldStdCurve TRUE or FALSE indicating whether old standard curve was used (Default: `"FALSE"`).
 #' @param oldNewStdFactor Conversion factor from old to new standard curve (Default: 62).
 #'
 #' @return
@@ -2895,7 +2895,7 @@ load_MalariaPopulation <- function(){
 
 #' Load Pediatric Parameters
 #'
-#' Load default pediatric parameters such as dose adjustement (\code{Fpediatric}) and
+#' Load default pediatric parameters such as dose adjustement (`Fpediatric`) and
 #' volume of blood per kg, per body weight band.
 #'
 #' @return

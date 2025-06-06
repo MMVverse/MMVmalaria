@@ -14,7 +14,7 @@ A list with the population, IIV, Betas and residual parameters, each formatted i
 }
 \description{
 Load into a list the the population, IIV, Betas and residual parameters, each formatted into a data.frame from
-a MMVmalaria Project. This is useful to prepare a ModelSpec object as in [modelSpec_MMVmalariaProject].
+a MMVmalaria Project. This is useful to prepare a ModelSpec object as in \link{modelSpec_MMVmalariaProject}.
 }
 \seealso{
 Other Simulations: 

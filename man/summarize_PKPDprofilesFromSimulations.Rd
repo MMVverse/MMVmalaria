@@ -16,7 +16,7 @@ summarize_PKPDprofilesFromSimulations(
 )
 }
 \arguments{
-\item{simPKPD}{Data table output of `simulate_virtualtrials()` (or similar format).}
+\item{simPKPD}{Data table output of \code{simulate_virtualtrials()} (or similar format).}
 
 \item{timeCOL}{Name of column containing values for simulation time (Default: \code{"TIME"}).}
 
@@ -26,16 +26,16 @@ summarize_PKPDprofilesFromSimulations(
 
 \item{CIlevel}{Numeric containing the confidence interval in percent to be estimated (Default: 90)}
 
-\item{usubjidCOL}{Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).}
+\item{usubjidCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).}
 
-\item{trialCOL}{Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).}
+\item{trialCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing trial (Default: \code{c("TrialID")}).}
 
-\item{scenCOL}{Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
+\item{scenCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
 }
 \description{
-Summarize PK and PD profiles entered in `outputCOL`, where the predictive interval
+Summarize PK and PD profiles entered in \code{outputCOL}, where the predictive interval
 (defined in with the variable 'percentiles') is returned with the confidence
-interval as given by `CIlevel`.
+interval as given by \code{CIlevel}.
 }
 \seealso{
 Other Summarize Functions: 

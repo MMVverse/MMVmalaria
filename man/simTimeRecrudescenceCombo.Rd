@@ -30,7 +30,7 @@ simTimeRecrudescenceCombo(
 
 \item{simlength}{Default: 24 * 32. maximum simtime}
 
-\item{setting}{Default: \code{NULL}. Named list of arguments going to \code{\link[IQRtools]{sim_IQRmodel}}}
+\item{setting}{Default: \code{NULL}. Named list of arguments going to \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}}
 }
 \value{
 data.frame with colums c("ID", "Time2Recrud", "n1", "n2", "Dose1", "Dose2")

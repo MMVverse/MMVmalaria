@@ -37,19 +37,19 @@ library(MMVmalaria)
 The examples are based on an antimalarial drug combination PK/PD model with anonymized compounds and dymmy parameter PK/PD parameter values. It is assumed that there is no PK interaction between the two compounds but there is a BLISS type PD interaction (a Gamma parameter). As a  complication, the dose-level of the second compound affects its PK with an effect on the compound's central volume (adult equivalent doses bigger than 400 mg result in smaller Vc). 
 ```{r}
 modelFile <- system.file("extdata/test-predictHumanDoses/MODEL01/model_PKPDcombo_Bliss.txt", package = "MMVmalaria")
-model <- IQRmodel(modelFile)
+model <- IQRtools::IQRmodel(modelFile)
 ```
 
 ## GPF file
 ```{r}
 gpfFile <- system.file("extdata/test-predictHumanDoses/MODEL01/GPF_PKPDcombo.xlsx", package = "MMVmalaria")
 # To speed up the processing we create a GPF object, which we can pass to the functions instead of gpfFile
-gpf <- GPF(gpfFile)
+gpf <- IQRtools::GPF(gpfFile)
 ```
 
 ## Covariate data
 ```{r}
-covariates <- MMVmalaria::load_AfricanPediatricMalariaPopulation2to5()
+covariates <- MalariaPopulation
 # Set PLbase to the natural logarithm parasitemia
 # Column PLbase is matching the model parameter PLbase
 covariates$PLbase <- log(covariates$PBASE_perml)
@@ -274,6 +274,7 @@ If the structural model has an `Fpediatric` parameter used to scale the bioavail
 
 ```{r}
 # Column Fpediatric is matching the model parameter Fpediatric
+covariates$WT0 <- covariates$WEIGHT_kg
 covariates$Fpediatric <- sapply(covariates$WT0, function(w) {
   if(w <= 10) {
     0.25

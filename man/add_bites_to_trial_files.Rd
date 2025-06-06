@@ -22,59 +22,59 @@ stored and will be updated. This should be the folder containing the baseline tr
 before adding bite events; these baseline files should contain PKPD parameters for all subjects}
 
 \item{outputFolder}{Character string. The directory path where the updated simulation output files
-with added bite events will be stored. The function will copy the contents of `baselineFolder`
+with added bite events will be stored. The function will copy the contents of \code{baselineFolder}
 to this location and then update the trial files with the new bite events.}
 
 \item{TimePreDose}{Numeric. The time before the first dose (in hours). If greater than zero,
-an initial zero dose event is added at time zero. Including `TimePreDose` permits infectious
+an initial zero dose event is added at time zero. Including \code{TimePreDose} permits infectious
 bites to occur before the therapy is given.}
 
 \item{bite_ADM}{Integer. The administration (ADM) code representing the bite input in the
 simulation structural model used in the trial files you are updating. Example: if your
 structural model has parasites being INPUT3, bite_ADM should = 3}
 
-\item{bite_AMT}{Numeric. The amount of malaria parasites introduced per bite event. Default: 640, 
+\item{bite_AMT}{Numeric. The amount of malaria parasites introduced per bite event. Default: 640,
 as estimated from sporozoite human challenge studies of DSM265}
 
 \item{nsubjs}{Integer. The number of subjects in each trial. This is used for indexing and
-adjusting subject IDs when updating trial files. This must be equal to nsubjs in `baselineFolder`}
+adjusting subject IDs when updating trial files. This must be equal to nsubjs in \code{baselineFolder}}
 
 \item{ntrials}{Integer. The number of trials. This is used for indexing and adjusting trial IDs
-when updating trial files. This must be equal to ntrials in `baselineFolder`}
+when updating trial files. This must be equal to ntrials in \code{baselineFolder}}
 
 \item{biteTimeGenerator}{Function. A function used to generate bite times. This function should
-accept arguments specified in `biteTimeGeneratorArgs`. The bite time generator function
+accept arguments specified in \code{biteTimeGeneratorArgs}. The bite time generator function
 should be designed to generate bite times according to your simulation requirements.}
 
-\item{biteTimeGeneratorArgs}{List. A named list of arguments to be passed to the `biteTimeGenerator`
+\item{biteTimeGeneratorArgs}{List. A named list of arguments to be passed to the \code{biteTimeGenerator}
 function. These arguments customize the bite time generation process and should match the
-parameters expected by your `biteTimeGenerator` function.}
+parameters expected by your \code{biteTimeGenerator} function.}
 }
 \description{
 This function adds simulated mosquito bite events to existing trial files using a specified
 bite time generator function. It copies a pre-defined set of trial files from a baseline folder
 to an output folder, and then updates the trial files with these bite events. The bite times
 are generated using the provided bite time generator function, which accepts arguments specified
-in `biteTimeGeneratorArgs`. This allows for flexible and customized bite time generation
+in \code{biteTimeGeneratorArgs}. This allows for flexible and customized bite time generation
 according to the requirements of your simulation.
 }
 \details{
 The function operates in two main steps:
 
-**Step 1:** It copies the baseline trial files from `baselineFolder` to `outputFolder`. This
+\strong{Step 1:} It copies the baseline trial files from \code{baselineFolder} to \code{outputFolder}. This
 ensures that PKPD parameters, regressors, and dosing events are retained.
 
-**Step 2:** It processes each trial file in `outputFolder` to add bite events. For each subject
-in each trial, it generates bite times using the provided `biteTimeGenerator` function and the
-arguments specified in `biteTimeGeneratorArgs`. The bite events are then added to the trial's
+\strong{Step 2:} It processes each trial file in \code{outputFolder} to add bite events. For each subject
+in each trial, it generates bite times using the provided \code{biteTimeGenerator} function and the
+arguments specified in \code{biteTimeGeneratorArgs}. The bite events are then added to the trial's
 event table.
 
-If `TimePreDose` is greater than zero, a zero dose event is added at time zero to ensure that
+If \code{TimePreDose} is greater than zero, a zero dose event is added at time zero to ensure that
 simulations start at time zero and to allow bites to occur before dosing.
 }
 \references{
-Cherkaoui-Rbati MH, Andenmatten N, Burgert L, et al. (2023). A pharmacokinetic-pharmacodynamic model 
-for chemoprotective agents against malaria. \emph{CPT Pharmacometrics Syst Pharmacol}, \bold{12}, 50-61. \doi{10.1002/psp4.12875}
+Cherkaoui-Rbati MH, Andenmatten N, Burgert L, et al. (2023). A pharmacokinetic-pharmacodynamic model
+for chemoprotective agents against malaria. \emph{CPT Pharmacometrics Syst Pharmacol}, \strong{12}, 50-61. \doi{10.1002/psp4.12875}
 }
 \seealso{
 Other Chemoprotection: 

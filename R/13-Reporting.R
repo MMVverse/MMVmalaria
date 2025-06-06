@@ -72,13 +72,13 @@ parameter_strToLaTeX <- function() {
 #'
 #' @description
 #' @param tableInputPath Path of the IQR table to adjust
-#' @param tableOutputPath Output path to save the updated table (Default: \code{NULL} which will save it to tableInputPath"_LaTeX").
+#' @param tableOutputPath Output path to save the updated table (Default: `NULL` which will save it to tableInputPath"_LaTeX").
 #' @param colToChange Column in which to apply the changes (Default: `PARAMETER`)
-#' @param ListStrToLatex list the character to change and their LaTeX expression; e.g. \code{list(Fabs0 = "F_{abs,0}", ka = "k_{a}", CL = "CL")} (Default: \code{MMVmalaria::parameter_strToLaTeX()})
-#' @param TitleRow To change adjust the title of each column (Default: \code{FALSE}).
-#' @param keepCol List of column of th etable to keep (Default: \code{NULL} which will keep all columns).
-#' @param report Logical to choose report mode or not (Default: \code{TRUE}).
-#' @param FLAGcompliance Logical to choose compliance mode or not (Default: \code{TRUE}).
+#' @param ListStrToLatex list the character to change and their LaTeX expression; e.g. \code{list(Fabs0 = "F_{abs,0}", ka = "k_{a}", CL = "CL")} (Default: `MMVmalaria::parameter_strToLaTeX()`)
+#' @param TitleRow To change adjust the title of each column (Default: `FALSE`).
+#' @param keepCol List of column of th etable to keep (Default: `NULL` which will keep all columns).
+#' @param report Logical to choose report mode or not (Default: `TRUE`).
+#' @param FLAGcompliance Logical to choose compliance mode or not (Default: `TRUE`).
 #'
 #' @return An IQR table with the specified changes
 #'
@@ -243,8 +243,8 @@ table_strToLaTeX <- function(tableInputPath,
 #'
 #' @param projectPath IQR pr GPF project path
 #' @param tableOutputPath
-#' @param FLAGLaTeX Flag to convert parameters name into LaTeX format (Default: \code{TRUE})
-#' @param setting Optional settings for \code{table_strToLaTeX}; \code{ListStrToLatex}, \code{TitleRow}, \code{report} and \code{FLAGcompliance}
+#' @param FLAGLaTeX Flag to convert parameters name into LaTeX format (Default: `TRUE`)
+#' @param setting Optional settings for `table_strToLaTeX`; `ListStrToLatex`, `TitleRow`, `report` and `FLAGcompliance`
 #'
 #' @return List containing the table as data.frame, title and footer
 #'
@@ -466,7 +466,7 @@ generate_EstimateTableForReport <- function(projectPath,
 #'
 #' @description
 #' @param tableInputPath
-#' @param tableOutputPath (Default: \code{NULL}).
+#' @param tableOutputPath (Default: `NULL`).
 #' @param report Default: TRUE
 #' @param FUNnameModel Default: function(x) {
 #'    gsub("MODEL_", "", x)
@@ -560,12 +560,12 @@ table_covariateSummaryResults <- function(tableInputPath,
 #' @description
 #' @param tableInputPath1
 #' @param tableInputPath2
-#' @param tableOutputPath (Default: \code{NULL}).
-#' @param renameMODEL (Default: \code{NULL}).
-#' @param addDescription (Default: \code{NULL}).
+#' @param tableOutputPath (Default: `NULL`).
+#' @param renameMODEL (Default: `NULL`).
+#' @param addDescription (Default: `NULL`).
 #' @param Metric Default: 'BIC'
-#' @param xTitle (Default: \code{NULL}).
-#' @param xFooter (Default: \code{NULL}).
+#' @param xTitle (Default: `NULL`).
+#' @param xFooter (Default: `NULL`).
 #' @param report Default: TRUE
 #' @return
 #' @export
@@ -645,12 +645,12 @@ table_PKsummaryCompare <- function(tableInputPath1,
 #'
 #' @description
 #' @param tableInputPath
-#' @param tableOutputPath (Default: \code{NULL}).
+#' @param tableOutputPath (Default: `NULL`).
 #' @param colToAdd Default: c("Nr. of Compartments", "Clearance", "Absorption", "Time Lag",
 #'    "Error Model")
 #' @param Metric Default: 'BIC'
-#' @param xTitle (Default: \code{NULL}).
-#' @param xFooter (Default: \code{NULL}).
+#' @param xTitle (Default: `NULL`).
+#' @param xFooter (Default: `NULL`).
 #' @param report Default: TRUE
 #' @return
 #' @export

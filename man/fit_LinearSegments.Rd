@@ -25,11 +25,11 @@ fit_LinearSegments(
 }
 \value{
 data frame with locations of the knots (Xknot and Yknot), number of knots (Nknots),
-        the sum of squares of the fit (SSresid) and fit information (fitinfo)
+the sum of squares of the fit (SSresid) and fit information (fitinfo)
 }
 \description{
 Fits linear segments to parasitemia data (TIME and VALUE columns)
-using `cobs` function from the cobs package.
+using \code{cobs} function from the cobs package.
 }
 \details{
 This function is used in the model-free assessment of PD data by describing the
@@ -47,7 +47,7 @@ Knots are given by Xknot (time scale) and Yknot (logtransformed PD scale).
 Uses only non-censored data.
 }
 \seealso{
-[cobs::cobs]
+\link[cobs:cobs]{cobs::cobs}
 
 Other Model-free PD assessment by linear segments: 
 \code{\link{define_tLLOQ}()},

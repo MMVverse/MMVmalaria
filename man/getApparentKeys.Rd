@@ -20,7 +20,7 @@ getApparentKeys(
 
 \item{convConc}{Default: 1}
 
-\item{Plog}{Default: `TRUE`}
+\item{Plog}{Default: \code{TRUE}}
 }
 \description{
 getApparentKeys

@@ -7,7 +7,7 @@
 plot_keyPDparametersMMV(object, outputFolder, ActivityPath = NULL)
 }
 \arguments{
-\item{ActivityPath}{Default: `NULL`}
+\item{ActivityPath}{Default: \code{NULL}}
 }
 \description{
 plot_keyPDparametersMMV

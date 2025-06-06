@@ -23,7 +23,7 @@ summarizeTrial_APRLongitudinal_PK_secondary(
 )
 }
 \arguments{
-\item{simPKPD}{A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+\item{simPKPD}{A data.frame representing the merge (join) for data.frame returned by \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}, and
 individual and experimental covariates. This argument is set automatically by the calling function.}
 
 \item{trialFileName}{A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
@@ -41,9 +41,9 @@ needed for summarizing individual clinical endpoints. This should contain aprTim
 \item{LLOQ.PD}{a numeric indicating log parasitemia LLOQ (default: \code{log(10000)}).}
 
 \item{aprTime}{a numeric indicating time after beginning of treatment in days at which APR should be evaluated. Default: 28.
-This argument is passed to function \code{\link{evaluate_APR}}.}
+This argument is passed to function \code{\link[=evaluate_APR]{evaluate_APR()}}.}
 
-\item{extrapTol, FLAGextrapolateTime}{These arguments are passed to function \code{\link{evaluate_APR}}}
+\item{extrapTol, FLAGextrapolateTime}{These arguments are passed to function \code{\link[=evaluate_APR]{evaluate_APR()}}}
 
 \item{timeCOL}{Name of column containing values for simulation time (Default: \code{"TIME"}).}
 
@@ -72,10 +72,10 @@ a named list with the following members:
 }
 }
 \description{
-This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+This function is called at runtime by \code{\link[=simulate_OneVirtualTrial]{simulate_OneVirtualTrial()}}.
 }
 \details{
-This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}. Currently, the function
+This function is designed to be passed as argument of \code{\link[=simulate_VirtualTrials]{simulate_VirtualTrials()}}. Currently, the function
 assumes that the \code{simPKPD} has a column PL denoting natural log parasitemia.
 In addition to the primary parasitological clinical endpoints, this function also summarizes secondary endpoints for PK and PD.
 }

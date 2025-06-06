@@ -134,10 +134,10 @@ dosing events.}
 of the repeated trials. Defaults to FALSE. Execution will stop anyways if all simulations fail.}
 }
 \value{
-List with data frames *sim* and *obs*. If not prediction correction preparation
-        is required, *sim* contains individual predictions and *obs* the observation data,
-        including dosing records. Otherwise *sim* and *obs* contains typical predictions
-        in addition.
+List with data frames \emph{sim} and \emph{obs}. If not prediction correction preparation
+is required, \emph{sim} contains individual predictions and \emph{obs} the observation data,
+including dosing records. Otherwise \emph{sim} and \emph{obs} contains typical predictions
+in addition.
 }
 \description{
 Simulates trial data for producing VPCs
@@ -148,7 +148,7 @@ or given dataset as dataVPC.
 It will also perform additional simulations to performed prediction correction for the VPCs if required.
 For the observations, a typical prediction will also be performed using the population
 parameter point estimates.
-The VPC can subsequently e plotted using [plotVPC_IQRdataVPC].
+The VPC can subsequently e plotted using \link{plotVPC_IQRdataVPC}.
 }
 \concept{IQRnlmeProject}
 \concept{VPC}

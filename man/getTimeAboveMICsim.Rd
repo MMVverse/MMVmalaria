@@ -16,7 +16,7 @@ getTimeAboveMICsim(
 \arguments{
 \item{effCOL}{Default: 'Effect'}
 
-\item{returnLag}{Default: `FALSE`}
+\item{returnLag}{Default: \code{FALSE}}
 }
 \description{
 getTimeAboveMICsim

@@ -68,20 +68,19 @@ be reused instead of rerunning each trial simulation.
 called on the simulation results for an experimental setting, a dose, and a virtual trial population. Default:
 \code{"MMVmalaria::summarizeTrial_Basic"}. This function should accept at least a data.frame
 and a character string argument, namely a data.frame containing the PKPD model simulation result and individual model parameters as
-returned from the function \code{\link{IQRtools::sim_IQRmodel}}) and a filename containing the path to the trial .rds file on the disk.
+returned from the function \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}) and a filename containing the path to the trial .rds file on the disk.
 The .rds file can be loaded into a list and used to get the individual covariate values for each subject in the trial. Example code:
-\code{trial <- readRDS(trialFileName); simPKPDcovs <- merge(simPKPD, trial$covariates, by = intersect(names(simPKPD), names(trial$covariates)))}.
+\verb{trial <- readRDS(trialFileName); simPKPDcovs <- merge(simPKPD, trial$covariates, by = intersect(names(simPKPD), names(trial$covariates)))}.
 Any additional arguments of the function can be specified in the list argument
 \code{args_SummarizeTrial}. Note that these arguments will have the same values over all trials. The function is expected to return
 a named list with at least three data.frame members: summaryPKPD.ByTrial, summaryClinEnd.ByIndiv, summaryClinEnd.ByTrial. In addition,
 the function can store result objects into .rds files for post-processing.
-See \code{\link{summarizeTrial_Basic}} for an example.
+See \code{\link[=summarizeTrial_Basic]{summarizeTrial_Basic()}} for an example.
 \item args_SummarizeTrial a named list or NULL (default) containing additional arguments
-to be passed to \code{fun_SummarizeTrial}. See documentation of \code{\link{summarizeTrial_Basic}}
+to be passed to \code{fun_SummarizeTrial}. See documentation of \code{\link[=summarizeTrial_Basic]{summarizeTrial_Basic()}}
 for possibilities.
-\item .paropts a named list specifying arguments passed to \code{\link{foreach::foreach}}. By default only this member is set to
-\code{.paropts = list(.inorder = TRUE,
-                      .packages = c ("IQRtools","MMVmalaria"))}.
+\item .paropts a named list specifying arguments passed to \code{\link[foreach:foreach]{foreach::foreach()}}. By default only this member is set to
+\code{.paropts = list(.inorder = TRUE, .packages = c ("IQRtools","MMVmalaria"))}.
 }}
 
 \item{Tk0}{a named character vector with names INPUT1, INPUT2, etc, containing the names of corresponding Tk0 parameters.

@@ -27,11 +27,11 @@ description for doCartesian argument below).}
 is bound to data, so that the returned data.frame contains
 nrow(referencePopParamValues)*nrow(data) rows. If FALSE
 (only allowed when \code{nrow(referencePopParamValues) == nrow(data)}), then
-the two tables are joined using \code{\link{cbind}}.}
+the two tables are joined using \code{\link[=cbind]{cbind()}}.}
 }
 \value{
 a data.frame with number of rows equal either to
-\code{nrow(referencePopParamValues)*nrow(data)} (when \code{doCartesian == TRUE) (default)}),
+\code{nrow(referencePopParamValues)*nrow(data)} (when \verb{doCartesian == TRUE) (default)}),
 or \code{nrow(referencePopParamValues)} (when
 \code{doCartesian == FALSE && nrow(referencePopParamValues) == nrow(data)}).
 The columns in this data.frame are ID.POP, ID and other columns matching

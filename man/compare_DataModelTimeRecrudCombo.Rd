@@ -52,10 +52,12 @@ Either nothing or a list of plots: list(facetted_plot, list_of_single_plots)
 }
 \description{
 Simulation of combinations with estimates parameter set to obtain
-  - predicted concentrations
-  - predicted time to recrudescence
+\itemize{
+\item predicted concentrations
+\item predicted time to recrudescence
 Visualization of predicted and observed time to recrudescance in 2D
 Calculation of sum of least squares for predicted-versus-observed time profiles and time to recrudescence
+}
 }
 \seealso{
 simTimeRecrudescenceCombo

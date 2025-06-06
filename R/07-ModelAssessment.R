@@ -67,7 +67,7 @@ add_CovariateToModelSpec <- function(modelSpec,
 #' @description
 #' @param modelSpec
 #' @param covariateModelToAdd
-#' @param COVcentering Default: \code{NULL}
+#' @param COVcentering Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -181,10 +181,10 @@ add_OneCovariateToModelSpec <- function(modelSpec,
 #' @param fileDataGeneral
 #' @param hiDoseGr
 #' @param LLOQ
-#' @param modelFile Default: \code{NULL}
+#' @param modelFile Default: `NULL`
 #' @param PDname Default: 'Parasitemia Total'
-#' @param abs0inputs Default: \code{NULL}
-#' @param abs0Tk0param Default: \code{NULL}
+#' @param abs0inputs Default: `NULL`
+#' @param abs0Tk0param Default: `NULL`
 #' @return
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
@@ -527,14 +527,14 @@ assess_PDcomboModel <- function(ModelToAssess,                      # IQRnlmePro
 #' @param data
 #' @param modelSpec
 #' @param covariateToTest
-#' @param COVcentering Default: \code{NULL}
+#' @param COVcentering Default: `NULL`
 #' @param projectPath Default: 'PKmodels'
 #' @param alpha Default: 0.05
 #' @param tool Default: 'MONOLIX'
-#' @param toolVersion Default: \code{NULL}
+#' @param toolVersion Default: `NULL`
 #' @param ncores Default: 1
 #' @param Nparallel Default: 1
-#' @param setting Default: \code{NULL}
+#' @param setting Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -1003,19 +1003,19 @@ backwardElimination <- function(model, dosing,
 #'
 #' @description
 #' @param modelFolder
-#' @param dataFile Default: \code{NULL}
+#' @param dataFile Default: `NULL`
 #' @param outputFolder Default: '.'
-#' @param ylabel Default: \code{NULL}
+#' @param ylabel Default: `NULL`
 #' @param stratify Default: 'TRTNAME'
-#' @param catToStratify Default: \code{NULL}
+#' @param catToStratify Default: `NULL`
 #' @param fileName Default: 'DataPredComparison'
-#' @param logY Default: \code{FALSE}
-#' @param figLimX Default: \code{NULL}
-#' @param figLimY Default: \code{NULL}
-#' @param predToPlot Default: \code{NULL}
+#' @param logY Default: `FALSE`
+#' @param figLimX Default: `NULL`
+#' @param figLimY Default: `NULL`
+#' @param predToPlot Default: `NULL`
 #' @param doseCOL Default: 'DOSELEVEL'
 #' @param doseMultCOL Default: 'DOSEMULT'
-#' @param ActivityPath Default: \code{NULL}
+#' @param ActivityPath Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -1210,12 +1210,12 @@ compare_DataModelMMV <- function(modelFolder,
 #' @param PKmodelFolder
 #' @param PDmodelFolder
 #' @param dataFile
-#' @param TRTsubset Default: \code{NULL}
-#' @param GRmodelFolder Default: \code{NULL}
-#' @param exclude Default: \code{NULL}
-#' @param yLim Default: \code{NULL}
-#' @param IndCovariates Default: \code{NULL}
-#' @param ActivityPath Default: \code{NULL}
+#' @param TRTsubset Default: `NULL`
+#' @param GRmodelFolder Default: `NULL`
+#' @param exclude Default: `NULL`
+#' @param yLim Default: `NULL`
+#' @param IndCovariates Default: `NULL`
+#' @param ActivityPath Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -1397,11 +1397,11 @@ compare_DataPopPred <- function(PKmodelFolder,
 #' @param fileDataGeneral  filepath to dataset to extract time-to-recrudescence from
 #' @param PDname           Default: 'Parasitemia Total'. Entry in NAME-column of fileDataGeneral to denote PD observations
 #' @param CONDcol          Default: 'TRTNAME'. Name of column to extract the CONDITION from
-#' @param filename         Default: \code{NULL}. filename for graphics output.
-#' @param FLAGreturnObject Default: \code{FALSE}. Return the plot objects (TRUE) or don't return anything (FALSE)
-#' @param logScale         Default: \code{FALSE}. Plot on log-scale? If yes, doses with AMT = 0 are set to min(doseX)/10 for plotting.
+#' @param filename         Default: `NULL`. filename for graphics output.
+#' @param FLAGreturnObject Default: `FALSE`. Return the plot objects (TRUE) or don't return anything (FALSE)
+#' @param logScale         Default: `FALSE`. Plot on log-scale? If yes, doses with AMT = 0 are set to min(doseX)/10 for plotting.
 #' @param Time2RecDef      Default: 'MMV'. Argument going to getTimeRecrudescence
-#' @param setting          Default: \code{NULL}. List of settings going to simTimeRecrudescenceCombo
+#' @param setting          Default: `NULL`. List of settings going to simTimeRecrudescenceCombo
 #'
 #' @return Either nothing or a list of plots: list(facetted_plot, list_of_single_plots)
 #'
@@ -1769,12 +1769,12 @@ compare_DataModelTimeRecrudCombo <- function(ModelCombo,
 #' @param outputFolder
 #' @param stratify Default: 'TRTNAME'
 #' @param fileName Default: 'DataPredComparison'
-#' @param logY Default: \code{FALSE}
-#' @param figLimX Default: \code{NULL}
-#' @param figLimY Default: \code{NULL}
-#' @param predToPlot Default: \code{NULL}
-#' @param withVehicle Default: \code{FALSE}
-#' @param ActivityPath Default: \code{NULL}
+#' @param logY Default: `FALSE`
+#' @param figLimX Default: `NULL`
+#' @param figLimY Default: `NULL`
+#' @param predToPlot Default: `NULL`
+#' @param withVehicle Default: `FALSE`
+#' @param ActivityPath Default: `NULL`
 #' @return
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
@@ -2381,11 +2381,11 @@ compare_ModelEstimateRobustness <- function(FitList,
 #' @description
 #' @param fit
 #' @param pathname Default: 'ComparePredObs'
-#' @param logY Default: \code{FALSE}
+#' @param logY Default: `FALSE`
 #' @param stratify Default: 'CONDITION'
-#' @param data Default: \code{NULL}
-#' @param modelFile Default: \code{NULL}
-#' @param FLAGrefit Default: \code{FALSE}
+#' @param data Default: `NULL`
+#' @param modelFile Default: `NULL`
+#' @param FLAGrefit Default: `FALSE`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -2569,14 +2569,14 @@ compare_PredFitsSYS <- function(fit,                             # sysfit model 
 #' @param data
 #' @param modelSpec
 #' @param covariateToTest
-#' @param COVcentering Default: \code{NULL}
+#' @param COVcentering Default: `NULL`
 #' @param projectPath Default: 'PKmodels'
 #' @param alpha Default: 0.01
 #' @param tool Default: 'MONOLIX'
-#' @param toolVersion Default: \code{NULL}
+#' @param toolVersion Default: `NULL`
 #' @param ncores Default: 1
 #' @param Nparallel Default: 1
-#' @param setting Default: \code{NULL}
+#' @param setting Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -3027,9 +3027,9 @@ forwardSelection <- function(model, dosing,
 #'
 #' @description
 #' @param ModelPaths
-#' @param ModelName Default: \code{NULL}
+#' @param ModelName Default: `NULL`
 #' @param outputFolder Default: '../04-Output/Sxxx-ModelComparison'
-#' @param parameterPNG Default: \code{NULL}
+#' @param parameterPNG Default: `NULL`
 #' @return
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
@@ -3481,7 +3481,7 @@ likelihoodRatioTestIQR <- function(ModelPaths, ModelName = NULL,
 #' @description
 #' @param modelSpec
 #' @param covariateModelToRemove
-#' @param COVcentering Default: \code{NULL}
+#' @param COVcentering Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -3571,10 +3571,10 @@ remove_OneCovariateToModelSpec <- function(modelSpec,
 #'
 #' @description
 #' @param x
-#' @param filename Default: \code{NULL}
-#' @param FLAGout Default: \code{FALSE}
-#' @param title Default: \code{NULL}
-#' @param footer Default: \code{NULL}
+#' @param filename Default: `NULL`
+#' @param FLAGout Default: `FALSE`
+#' @param title Default: `NULL`
+#' @param footer Default: `NULL`
 #' @return
 #' @export
 #' @importFrom MMVbase aux_CommonSubPath
@@ -4695,29 +4695,29 @@ getcovariateInfo_VPC <- function(modelsSample, modelSampleSimulate, dataVPC) {
 #' Upgrades the corresponding function in IQRtools. Check its documentation for a description of the arguments.
 #'
 #' @param dataVPC
-#' @param stratifyBy Default: \code{NULL}
-#' @param filename Default: \code{NULL}
-#' @param FLAGlogY Default: \code{FALSE}
-#' @param FLAGuseTAD Default: \code{FALSE}
-#' @param FLAGdataPlotOnly Default: \code{FALSE}
-#' @param FLAGnoDataPoints Default: \code{FALSE}
-#' @param FLAGpc Default: \code{FALSE}
-#' @param FLAGplotBins Default: \code{FALSE}
-#' @param FLAGplotN Default: \code{FALSE}
-#' @param title Default: \code{NULL}
-#' @param subtitle Default: \code{NULL}
-#' @param BIN.column Default: \code{NULL}
-#' @param BIN.breaks Default: \code{NULL}
-#' @param BIN.groupsize Default: \code{NULL}
-#' @param BIN.lambda Default: \code{NULL}
-#' @param BIN.resolution Default: \code{NULL}
-#' @param CIlevel Default: \code{NULL}
-#' @param percentiles Default: \code{NULL}
-#' @param alphaDataPoints Default: \code{NULL}
-#' @param alphaPredInter Default: \code{NULL}
-#' @param ActivityPath Default: \code{NULL}
-#' @param Caption Default: \code{NULL}
-#' @param setting Default: \code{NULL}
+#' @param stratifyBy Default: `NULL`
+#' @param filename Default: `NULL`
+#' @param FLAGlogY Default: `FALSE`
+#' @param FLAGuseTAD Default: `FALSE`
+#' @param FLAGdataPlotOnly Default: `FALSE`
+#' @param FLAGnoDataPoints Default: `FALSE`
+#' @param FLAGpc Default: `FALSE`
+#' @param FLAGplotBins Default: `FALSE`
+#' @param FLAGplotN Default: `FALSE`
+#' @param title Default: `NULL`
+#' @param subtitle Default: `NULL`
+#' @param BIN.column Default: `NULL`
+#' @param BIN.breaks Default: `NULL`
+#' @param BIN.groupsize Default: `NULL`
+#' @param BIN.lambda Default: `NULL`
+#' @param BIN.resolution Default: `NULL`
+#' @param CIlevel Default: `NULL`
+#' @param percentiles Default: `NULL`
+#' @param alphaDataPoints Default: `NULL`
+#' @param alphaPredInter Default: `NULL`
+#' @param ActivityPath Default: `NULL`
+#' @param Caption Default: `NULL`
+#' @param setting Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -5128,7 +5128,7 @@ plotVPC_MMVdataVPC <- function (dataVPC, stratifyBy = NULL, filename = NULL, FLA
 #' }
 #' 
 #' @seealso
-#' \code{\link{plotSummaryComparisonContinuous}}
+#' [plotSummaryComparisonContinuous()]
 #'
 #' @author Karsten Kuritz (IntiQuan)
 #' 
@@ -5249,7 +5249,7 @@ plotSummaryComparisonBinary <- function(plotData,
 #' }
 #'
 #' @seealso
-#' \code{\link{plotSummaryComparisonBinary}}
+#' [plotSummaryComparisonBinary()]
 #'
 #' @author Karsten Kuritz (IntiQuan)
 #' 

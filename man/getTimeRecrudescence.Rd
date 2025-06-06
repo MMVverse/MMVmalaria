@@ -16,7 +16,7 @@ getTimeRecrudescence(
 \arguments{
 \item{valCol}{Default: 'DV'}
 
-\item{log}{Default: `TRUE`}
+\item{log}{Default: \code{TRUE}}
 
 \item{Time2RecDef}{Default: 'MMV'}
 }

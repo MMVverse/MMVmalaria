@@ -238,32 +238,32 @@ predictDose_PRRtot <- function(
 #'
 #' @param fun_EvaluateCriterion a function object or a character string denoting the name of a function accessible
 #' from the calling (parent) environment. This function should have the following synopsis:
-#' \code{function(sim_results, parameters) { ... }}, where \code{sim_results} is a data.frame resulting from a
-#' previous call to \code{\link{IQRtools::sim_IQRmodel}} and \code{parameters} is a data.frame with a single row
+#' \code{function(sim_results, parameters) { ... }}, where `sim_results` is a data.frame resulting from a
+#' previous call to [IQRtools::sim_IQRmodel()] and `parameters` is a data.frame with a single row
 #' and numeric columns named as the model parameters; the function should return a numeric value. If
-#' \code{fun_EvaluateCriterion} is a character string, the function is searched for via
-#' \code{mget(fun_EvaluateCriterion, mode = "function", ifnotfound = list(NULL), inherits = TRUE)[[fun_EvaluateCriterion]]}.
+#' `fun_EvaluateCriterion` is a character string, the function is searched for via
+#' `mget(fun_EvaluateCriterion, mode = "function", ifnotfound = list(NULL), inherits = TRUE)[[fun_EvaluateCriterion]]`.
 #' An error will be thrown if no such function is found.
 #'
-#' @param targetCriterionValue a numeric value to compare the returned values from \code{fun_EvaluateCriterion} against.
+#' @param targetCriterionValue a numeric value to compare the returned values from `fun_EvaluateCriterion` against.
 #' @param doseInterval a numeric vector of length 2 denoting the dosing interval to search within.
 #' @param modelFile       Path to a PKPD model to be used for the simulations or a parsed IQRmodel object.
 #' @param projectPath     Path to a PK/PD `IQRprojectNLME` folder or a path to a GPF.xlsx file or a GPF object.
 #'
-#' @param simtime a sorted numeric vector denoting the simulation times (passed to \code{\link{IQRtools::sim_IQRmodel}}).
+#' @param simtime a sorted numeric vector denoting the simulation times (passed to [IQRtools::sim_IQRmodel()]).
 #' @param Tk0             A named character vector (default: NULL). Example : c(INPUT1 = "Tk0", INPUT2 = "Tk0_2"), meaning that
 #' the IQRdosing object for each simulation would be adjusted to have TINF = set to the model parameter Tk0 for ADM = 1.
 #' @param nbrDoses an integer (default 1), denoting the number of doses to simulate
 #' @param timeInterval a numeric (default 24), denoting the time interval between doses (in the model time units).
-#' @param args_IQRdosing a named list (default NULL) with arguments to be passed to \code{\link{IQRtools::IQRdosing}}. For flexibility, this
-#' can be used to overwrite some of the otherwise set by default arguments to IQRdosing, such as \code{TIME}, \code{ADM}, \code{ADDL}, \code{II}
-#' (advanced use only). Default: \code{list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses - 1, II = timeInterval)}.
+#' @param args_IQRdosing a named list (default NULL) with arguments to be passed to [IQRtools::IQRdosing()]. For flexibility, this
+#' can be used to overwrite some of the otherwise set by default arguments to IQRdosing, such as `TIME`, `ADM`, `ADDL`, `II`
+#' (advanced use only). Default: `list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses - 1, II = timeInterval)`.
 #'
 #' @param N_Trial         Number of trials to be simulated.
 #' @param N_SubjperTrial  Number of subjects per trial.
 #' @param covariates      A dataframe with covariate values, and optionally regressors (see also arugment regressorExtra).
-#' @param DOSEcovariate   Name of covariates describing dose. Example: \code{c("INPUT1"="DOSELEVEL")}. Default: NULL.
-#' @param Fpediatric      Name of covariate describing pediatric dose. Example: \code{"Fpediatric"}. Default: NULL.
+#' @param DOSEcovariate   Name of covariates describing dose. Example: `c("INPUT1"="DOSELEVEL")`. Default: NULL.
+#' @param Fpediatric      Name of covariate describing pediatric dose. Example: `"Fpediatric"`. Default: NULL.
 #' @param regressorExtra  A character vector indicating the names of regressors to take from the covariate data,
 #' instead of sampling them as model parameters. Extra regressors not present in `projectPath` but present in `modelFile`.
 #' @param FLAG_SAMPLE     An integer (by default 1) specifying how model parameters are sampled for each virtual trial population.
@@ -278,16 +278,16 @@ predictDose_PRRtot <- function(
 #' |4           |   Yes                                | Yes                                      |   No                          |                                              |
 #'
 #'
-#' @param addArgs_sim_IQRmodel a named list (default NULL) with additional arguments to be passed to \code{\link{IQRtools::sim_IQRmodel}}.
-#' @param addArgs_uniroot a named list (default \code{list(tol = .1)}) with additional arguments to be passed to \code{\link{stats::uniroot}}.
+#' @param addArgs_sim_IQRmodel a named list (default NULL) with additional arguments to be passed to [IQRtools::sim_IQRmodel()].
+#' @param addArgs_uniroot a named list (default `list(tol = .1)`) with additional arguments to be passed to [stats::uniroot()].
 #'
-#' @param percentiles     Percentiles to estimate in each trial (Default: \code{c(5,50,95)}).
+#' @param percentiles     Percentiles to estimate in each trial (Default: `c(5,50,95)`).
 #' @param CIlevel         Confidence interval to estimate for each percentile (Default: 90),
 #' based on the simulated trials
 #'
 #' @param seed An integer specifying a seed for the random generator (Default: 1234567).
 #' @param Nparallel Number of cores to use for parallel simulations (Default: 1).
-#' @param FLAG_BROWSER1 A logical (default: \code{FALSE}), indicating whether a browser should be launched for each individual simulation (debug purpose only).
+#' @param FLAG_BROWSER1 A logical (default: `FALSE`), indicating whether a browser should be launched for each individual simulation (debug purpose only).
 #'
 #' @return Data frame with columns Variable, Metric, CI Low, CI Median, CI High, CI Level. The Variable column equals e.g. tMIC and
 #' the Metric values correspond to the different values in the percentiles argument. The other columns correspond to the
@@ -464,47 +464,47 @@ predictDose_GenericTrial <- function(
 #'
 #' @param fun_EvaluateCriterion a function object or a character string denoting the name of a function accessible
 #' from the calling (parent) environment. This function should have the following synopsis:
-#' \code{function(sim_results, parameters) { ... }}, where \code{sim_results} is a data.frame resulting from a
-#' previous call to \code{\link{IQRtools::sim_IQRmodel}} and \code{parameters} is a data.frame with a single row
+#' \code{function(sim_results, parameters) { ... }}, where `sim_results` is a data.frame resulting from a
+#' previous call to [IQRtools::sim_IQRmodel()] and `parameters` is a data.frame with a single row
 #' and numeric columns named as the model parameters; the function should return a numeric value. If
-#' \code{fun_EvaluateCriterion} is a character string, the function is searched for via
-#' \code{mget(fun_EvaluateCriterion, mode = "function", ifnotfound = list(NULL), inherits = TRUE)[[fun_EvaluateCriterion]]}.
+#' `fun_EvaluateCriterion` is a character string, the function is searched for via
+#' `mget(fun_EvaluateCriterion, mode = "function", ifnotfound = list(NULL), inherits = TRUE)[[fun_EvaluateCriterion]]`.
 #' An error will be thrown if no such function is found.
 #'
-#' @param targetCriterionValue a numeric value to compare the returned values from \code{fun_EvaluateCriterion} against.
+#' @param targetCriterionValue a numeric value to compare the returned values from `fun_EvaluateCriterion` against.
 #' @param doseInterval a numeric vector of length 2 denoting the dosing interval to search within.
-#' @param model an IQRmodel object denoting the structural model to simulate, i.e. an object returned by a previous call to \code{\link{IQRtools::IQRmodel}}.
+#' @param model an IQRmodel object denoting the structural model to simulate, i.e. an object returned by a previous call to [IQRtools::IQRmodel()].
 #' @param parameters Either a named numeric vector denoting the model parameter values to simulate or, in the case of a dose covariate, a named list
 #' with elements as follows:
-#'   * popParamValues: a data.frame as the popParamValues member of the list returned by \code{\link{sampleIndParamValues_MMVmalariaXLS}} (only the 1st row will be used).
-#'   * sampledData: a data.frame as the sampledData member of the list returned by \code{\link{sampleIndParamValues_MMVmalariaXLS}}.
+#'   * popParamValues: a data.frame as the popParamValues member of the list returned by [sampleIndParamValues_MMVmalariaXLS()] (only the 1st row will be used).
+#'   * sampledData: a data.frame as the sampledData member of the list returned by [sampleIndParamValues_MMVmalariaXLS()].
 #'     This data.frame should have an integer column 'ID'. Only the 1st row of this data.frame is going to be used.
-#'   * randomEffects: a data.frame as the randomEffects member of the list returned by \code{\link{sampleIndParamValues_MMVmalariaXLS}} (only the 1st row will be used).
-#'   * DOSEcovariate: a named character vector (see documentation of \code{\link{predictDose_GenericTrial}}).
-#'   * Fpediatric: a character string (see documentation of \code{\link{predictDose_GenericTrial}}).
-#'   * regressorExtra: a character vector (see documentation of \code{\link{predictDose_GenericTrial}}).
+#'   * randomEffects: a data.frame as the randomEffects member of the list returned by [sampleIndParamValues_MMVmalariaXLS()] (only the 1st row will be used).
+#'   * DOSEcovariate: a named character vector (see documentation of [predictDose_GenericTrial()]).
+#'   * Fpediatric: a character string (see documentation of [predictDose_GenericTrial()]).
+#'   * regressorExtra: a character vector (see documentation of [predictDose_GenericTrial()]).
 #'   * gpf: a GFP object (used to calculate typical individual values based on the covariates in sampledData and to calculate individual values based on
 #'   randomEffects and transformation type).
 #'   * Fpediatric: (optional) a character string denoting a column in sampledData to scale adult equivalent doses, before applying covariate formulae.
-#'   * FLAG_SAMPLE: an integer (see documentation of \code{\link{predictDose_GenericTrial}} for possible values)
+#'   * FLAG_SAMPLE: an integer (see documentation of [predictDose_GenericTrial()] for possible values)
 #'
-#' @param simtime a sorted numeric vector denoting the simulation times (passed to \code{\link{IQRtools::sim_IQRmodel}}).
+#' @param simtime a sorted numeric vector denoting the simulation times (passed to [IQRtools::sim_IQRmodel()]).
 #' @param Tk0             A named character vector (default: NULL). Example : c(INPUT1 = "Tk0", INPUT2 = "Tk0_2"), meaning that
 #' the IQRdosing object for each simulation would be adjusted to have TINF = set to the model parameter Tk0 for ADM = 1.
 #' @param nbrDoses an integer (default 1), denoting the number of doses to simulate
 #' @param timeInterval a numeric (default 24), denoting the time interval between doses (in the model time units).
-#' @param args_IQRdosing a named list (default NULL) with arguments to be passed to \code{\link{IQRtools::IQRdosing}}. For flexibility, this
-#' can be used to overwrite some of the otherwise set by default arguments to IQRdosing, such as \code{TIME}, \code{ADM}, \code{ADDL}, \code{II}
+#' @param args_IQRdosing a named list (default NULL) with arguments to be passed to [IQRtools::IQRdosing()]. For flexibility, this
+#' can be used to overwrite some of the otherwise set by default arguments to IQRdosing, such as `TIME`, `ADM`, `ADDL`, `II`
 #' (advanced use only).
-#' @param addArgs_sim_IQRmodel a named list (default NULL) with additional arguments to be passed to \code{\link{IQRtools::sim_IQRmodel}}.
-#' @param addArgs_uniroot a named list (default \code{list(tol = .1)}) with additional arguments to be passed to \code{\link{stats::uniroot}}.
+#' @param addArgs_sim_IQRmodel a named list (default NULL) with additional arguments to be passed to [IQRtools::sim_IQRmodel()].
+#' @param addArgs_uniroot a named list (default `list(tol = .1)`) with additional arguments to be passed to [stats::uniroot()].
 #' @param FLAG_BROWSER logical (default FALSE) indicating if a browser should be started before each simulation (debugging purpose only).
-#' @return A (possibly infinite) numeric value. If the criterion value evaluated at \code{min(doseInteval) >= targetCriterionValue}, \code{min(doseInterval)} is returned;
-#' if the criterion value evaluated at \code{max(doseInteval) < targetCriterionValue}, \code{Inf} is returned; otherwise, a value within the interval
-#' \code{[min(doseInterval), max(doseInterval)]} is found using the function \code{\link{stats::uniroot}}. Note that the resulting value is undetermined if \code{criterion
-#' function - targetCriterionValue} has more than 1 root within the interval \code{[min(doseInterval), max(doseInterval)]}.
+#' @return A (possibly infinite) numeric value. If the criterion value evaluated at `min(doseInteval) >= targetCriterionValue`, `min(doseInterval)` is returned;
+#' if the criterion value evaluated at `max(doseInteval) < targetCriterionValue`, `Inf` is returned; otherwise, a value within the interval
+#' `[min(doseInterval), max(doseInterval)]` is found using the function [stats::uniroot()]. Note that the resulting value is undetermined if `criterion
+#' function - targetCriterionValue` has more than 1 root within the interval `[min(doseInterval), max(doseInterval)]`.
 #'
-#' @details In the current implementation, the search for a dose is done using the \code{\link{stats::uniroot}} and in the log10-transformed dose interval.
+#' @details In the current implementation, the search for a dose is done using the [stats::uniroot()] and in the log10-transformed dose interval.
 #' This implies that the convergence tolerance gets bigger for higher doses.
 #' @importFrom IQRtools sim_IQRmodel IQRdosing
 #'
@@ -829,9 +829,9 @@ simulateCriterion <- function(dose, envCache, model,
 
 
 #' Calculate PRRtot for an individual parasitemia profile
-#' @details This function can be passed as argument to \code{\link{predictDose_Generic}}.
+#' @details This function can be passed as argument to [predictDose_Generic()].
 #'
-#' @param sim_results a data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}. It is assumed that
+#' @param sim_results a data.frame returned by [IQRtools::sim_IQRmodel()]. It is assumed that
 #' this data.frame has a column PL corresponding to log-transformed simulated parasitemia.
 #' @param parameters currently not used.
 #' @return a numeric value.
@@ -845,14 +845,14 @@ evaluateDoseCriterion_PRRtot <- function(sim_results, parameters) {
 
 
 #' Calculate the time above the minimum inhibitory concentration (MIC) for an individual parasitemia profile
-#' @details This function can be passed as argument to \code{\link{predictDose_Generic}}.
+#' @details This function can be passed as argument to [predictDose_Generic()].
 #'
-#' @param sim_results a data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}. It is assumed that
+#' @param sim_results a data.frame returned by [IQRtools::sim_IQRmodel()]. It is assumed that
 #' this data.frame has a column PL corresponding to log-transformed simulated parasitemia.
 #' @param parameters a named numeric vector.
 #' @return a numeric value.
 #'
-#' @seealso \code{\link{getKeysEMAX}}
+#' @seealso [getKeysEMAX()]
 #'
 #' @author Venelin Mitov, IntiQuan
 #'
@@ -865,14 +865,14 @@ evaluateDoseCriterion_TimeAboveMIC <- function(sim_results, parameters) {
 
 
 #' Calculate the time above the minimum parasiticidal concentration (MPC90) for an individual parasitemia profile
-#' @details This function can be passed as argument to \code{\link{predictDose_Generic}}.
+#' @details This function can be passed as argument to [predictDose_Generic()].
 #'
-#' @param sim_results a data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}. It is assumed that
+#' @param sim_results a data.frame returned by [IQRtools::sim_IQRmodel()]. It is assumed that
 #' this data.frame has a column PL corresponding to log-transformed simulated parasitemia.
 #' @param parameters a named numeric vector.
 #' @return a numeric value.
 #'
-#' @seealso \code{\link{getKeysEMAX}}
+#' @seealso [getKeysEMAX()]
 #'
 #' @author Mohammed H. Cherkaoui, MMV
 #'

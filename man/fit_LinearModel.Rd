@@ -15,10 +15,10 @@ fit_LinearModel(x, FLAGlogtransY = TRUE)
 }
 \value{
 data frame with locations of the knots (Xknot and Yknot), number of knots (Nknots),
-        the sum of squares of the fit (SSresid) and fit information (fitinfo)
+the sum of squares of the fit (SSresid) and fit information (fitinfo)
 }
 \description{
-Fits a line using `lm` to parasitemia data (TIME and VALUE columns).
+Fits a line using \code{lm} to parasitemia data (TIME and VALUE columns).
 }
 \details{
 This function is used in the model-free assessment of PD data by describing the

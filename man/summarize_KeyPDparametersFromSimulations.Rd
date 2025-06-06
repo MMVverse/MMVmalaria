@@ -18,7 +18,7 @@ summarize_KeyPDparametersFromSimulations(
 )
 }
 \arguments{
-\item{simPKPD}{Data-table output of `simulate_virtualtrials()` (or similar format).}
+\item{simPKPD}{Data-table output of \code{simulate_virtualtrials()} (or similar format).}
 
 \item{timeCOL}{Name of column containing values for simulation time (Default: \code{"TIME"}).}
 
@@ -26,26 +26,27 @@ summarize_KeyPDparametersFromSimulations(
 
 \item{paraCOL}{Name of column containing values for parasitaemia (Default:  \code{"PL"}).}
 
-\item{Plog}{Is paraistaemia provided in Log scale?  (Default: `TRUE`).}
+\item{Plog}{Is paraistaemia provided in Log scale?  (Default: \code{TRUE}).}
 
 \item{percentiles}{Percentiles of outcome variable(s) to be calculated if appropriate (Default: \code{c(5,50,90)}).}
 
 \item{CIlevel}{Numeric containing the confidence interval in percent to be estimated (Default: 90)}
 
-\item{usubjidCOL}{Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).}
+\item{usubjidCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).}
 
-\item{trialCOL}{Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).}
+\item{trialCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing trial (Default: \code{c("TrialID")}).}
 
-\item{scenCOL}{Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
+\item{scenCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
 }
 \value{
-Data-table containing values of population PK parameters from simulated trials at specified percentiles
+\if{html}{\out{<div class="sourceCode">}}\preformatted{       Data-table containing values of population PK parameters from simulated trials at specified percentiles
+}\if{html}{\out{</div>}}
 }
 \description{
 \code{"MIC"},\code{"MPC90"}, \code{"PRR24"}, \code{"PRR48"}, \code{"PRR72"}, \code{"PRRtot"},
 \code{"tMIC"} and \code{"tMPC90"} are estimated for each individual and summarized.
 The predictive interval (defined in with the variable 'percentiles') is returned with the confidence
-interval as given by `CIlevel`.
+interval as given by \code{CIlevel}.
 }
 \seealso{
 Other Summarize Functions: 

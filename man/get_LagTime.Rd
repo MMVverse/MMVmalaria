@@ -15,13 +15,13 @@ get_LagTime(
 )
 }
 \arguments{
-\item{GR}{Default: `NULL`}
+\item{GR}{Default: \code{NULL}}
 
-\item{EMAX}{Default: `NULL`}
+\item{EMAX}{Default: \code{NULL}}
 
 \item{effCOL}{Default: 'Effect'}
 
-\item{Plog}{Default: `TRUE`}
+\item{Plog}{Default: \code{TRUE}}
 }
 \description{
 get_LagTime

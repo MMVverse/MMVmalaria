@@ -20,7 +20,7 @@ table_strToLaTeX(
 
 \item{tableOutputPath}{Output path to save the updated table (Default: \code{NULL} which will save it to tableInputPath"_LaTeX").}
 
-\item{colToChange}{Column in which to apply the changes (Default: `PARAMETER`)}
+\item{colToChange}{Column in which to apply the changes (Default: \code{PARAMETER})}
 
 \item{ListStrToLatex}{list the character to change and their LaTeX expression; e.g. \code{list(Fabs0 = "F_{abs,0}", ka = "k_{a}", CL = "CL")} (Default: \code{MMVmalaria::parameter_strToLaTeX()})}
 
@@ -40,8 +40,8 @@ Convert equations/parameters to LaTeX mode
 }
 \details{
 Parameters and/or equations within IQRtable can be automatically converted to a LaTeX equation
-for nicer reporting. `colToChange` specify to which column the changes should be made, while
-`ListStrToLatex` is a list providing the characters to detect and their respective LaTeX notation.
+for nicer reporting. \code{colToChange} specify to which column the changes should be made, while
+\code{ListStrToLatex} is a list providing the characters to detect and their respective LaTeX notation.
 }
 \seealso{
 Other Reporting: 

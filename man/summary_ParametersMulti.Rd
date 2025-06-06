@@ -21,7 +21,7 @@ Reads the parameter results from different project folders and
 creates an output table with separate columns for each model/folder.
 }
 \seealso{
-\code{\link{summary_ParametersDDI}}
+\code{\link[=summary_ParametersDDI]{summary_ParametersDDI()}}
 }
 \author{
 Daniel Kaschek (IntiQuan), Mohammed H. Cherkaoui (MMV)

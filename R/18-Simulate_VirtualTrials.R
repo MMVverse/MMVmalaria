@@ -18,7 +18,7 @@
 #' @param T_FirstDose Numeric defining time of first dose. Might be diferent than initial time of simulation (Default: 0).
 #' @param nbrDoses Numeric Vector. If length is 1, all doses in 'Doses' will have the same number of doses, otherwise should be of length 'Doses'.
 #' @param timeInterval Numeric defining the interval between doses (Note: Sssumed to be the same for all doses)
-#' @param DOSEcovariate a character vector containing the names of the covariates to be used as dose covariate. Default: \code{c("INPUT1"="DOSELEVEL")}.
+#' @param DOSEcovariate a character vector containing the names of the covariates to be used as dose covariate. Default: `c("INPUT1"="DOSELEVEL")`.
 #' @param N_Trial
 #' @param N_SubjPerTrial
 #' @param IndCovSample Dataframe or Function to generate individual covariate (e.g. WT0, BMI, SEX, etc). Default: NULL.
@@ -29,47 +29,47 @@
 #' * FLAGreturnSimPKPD A logical (default: FALSE) indicating if simPKPD should be included in the resulting list.
 #' Note that setting this argument to TRUE is memory intensive and can cause memory crashes.
 #' * FLAGsaveSimPKPDToFile a logical (default FALSE) indicating if the simPKPD argument should be saved in
-#' \code{outputFolder} in the result .rds file for the corresponding trial. Setting this to TRUE while outputFolder is NULL
+#' `outputFolder` in the result .rds file for the corresponding trial. Setting this to TRUE while outputFolder is NULL
 #' will raise in an error.
-#' * FLAGreuseStoredTrialSummaryFiles a logical (default FALSE) indicating if previously stored .rds trial summary files in \code{outputFolder} should
+#' * FLAGreuseStoredTrialSummaryFiles a logical (default FALSE) indicating if previously stored .rds trial summary files in `outputFolder` should
 #' be reused instead of rerunning each trial simulation.
 #' * fun_SummarizeTrial a character string denoting the name of a summarizing function to be
 #' called on the simulation results for an experimental setting, a dose, and a virtual trial population. Default:
-#' \code{"MMVmalaria::summarizeTrial_Basic"}. This function should accept at least a data.frame
+#' `"MMVmalaria::summarizeTrial_Basic"`. This function should accept at least a data.frame
 #' and a character string argument, namely a data.frame containing the PKPD model simulation result and individual model parameters as
-#' returned from the function \code{\link{IQRtools::sim_IQRmodel}}) and a filename containing the path to the trial .rds file on the disk.
+#' returned from the function [IQRtools::sim_IQRmodel()]) and a filename containing the path to the trial .rds file on the disk.
 #' The .rds file can be loaded into a list and used to get the individual covariate values for each subject in the trial. Example code:
-#' \code{trial <- readRDS(trialFileName); simPKPDcovs <- merge(simPKPD, trial$covariates, by = intersect(names(simPKPD), names(trial$covariates)))}.
+#' `trial <- readRDS(trialFileName); simPKPDcovs <- merge(simPKPD, trial$covariates, by = intersect(names(simPKPD), names(trial$covariates)))`.
 #' Any additional arguments of the function can be specified in the list argument
-#' \code{args_SummarizeTrial}. Note that these arguments will have the same values over all trials. The function is expected to return
+#' `args_SummarizeTrial`. Note that these arguments will have the same values over all trials. The function is expected to return
 #' a named list with at least three data.frame members: summaryPKPD.ByTrial, summaryClinEnd.ByIndiv, summaryClinEnd.ByTrial. In addition,
 #' the function can store result objects into .rds files for post-processing.
-#' See \code{\link{summarizeTrial_Basic}} for an example.
+#' See [summarizeTrial_Basic()] for an example.
 #' * args_SummarizeTrial a named list or NULL (default) containing additional arguments
-#' to be passed to \code{fun_SummarizeTrial}. See documentation of \code{\link{summarizeTrial_Basic}}
+#' to be passed to `fun_SummarizeTrial`. See documentation of [summarizeTrial_Basic()]
 #' for possibilities.
-#' * .paropts a named list specifying arguments passed to \code{\link{foreach::foreach}}. By default only this member is set to
-#' \code{.paropts = list(.inorder = TRUE,
-#'                       .packages = c ("IQRtools","MMVmalaria"))}.
+#' * .paropts a named list specifying arguments passed to [foreach::foreach()]. By default only this member is set to
+#' `.paropts = list(.inorder = TRUE,
+#'                       .packages = c ("IQRtools","MMVmalaria"))`.
 #' @param Tk0 a named character vector with names INPUT1, INPUT2, etc, containing the names of corresponding Tk0 parameters.
 #' Note that the value of the Tk0 parameter for an input will overwrite the value of TINF in the dosing object.
-#' Default \code{c("INPUT1"="Tk0")}. INPUTs in this argument are assumed to have 0-order absorption, i.e. Tk0 is
+#' Default `c("INPUT1"="Tk0")`. INPUTs in this argument are assumed to have 0-order absorption, i.e. Tk0 is
 #' the time for the dose to be fully absorbed at a constant rate. This is suitable to simulate infusion at constant rate.
 #' The Tk0 parameters should be either present in the GPF file or available as regressors in the regressorExtra argument.
 #' @param Fpediatric
 #' @param Nparallel
 #' @param simMode To chose which mode to use for simulations between "Clinical" (New set of individuals sampled for each scenario - Default) and
-#' "Compare" (Same set of individuals used between each scenario adjusted by \code{ExpCovSample} and Dose-regimen as defined in \code{Doses}.).
+#' "Compare" (Same set of individuals used between each scenario adjusted by `ExpCovSample` and Dose-regimen as defined in `Doses`.).
 #' @param FLAGrunSimulation Run simulations after PK and PD parameters sampling
 #'
 #' @return a named list with the following members:
 #'
 #' * summaryPKPD.ByTrial a data.frame resulting from rbinding all summaryPKPD.ByTrial data.frames returned by
-#' \code{setting$fun_SummarizeTrial}.
+#' `setting$fun_SummarizeTrial`.
 #' * summaryClinEnd.ByIndiv a data.frame resulting from rbinding all summaryPKPD.ByIndiv data.frames returned by
-#' \code{setting$fun_SummarizeTrial}.
+#' `setting$fun_SummarizeTrial`.
 #' * summaryClinEnd.ByTrial a data.frame resulting from rbinding all summaryClinEnd.ByTrial data.frames returned by
-#' \code{setting$fun_SummarizeTrial}.
+#' `setting$fun_SummarizeTrial`.
 #' * Covariates a data.frame
 #' * PKPDparameters a data.frame
 #' * eventTable a data.frame

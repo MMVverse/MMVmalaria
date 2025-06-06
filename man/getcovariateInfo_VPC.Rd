@@ -3,7 +3,7 @@
 \name{getcovariateInfo_VPC}
 \alias{getcovariateInfo_VPC}
 \title{Get covariate information from all models and the provided data - function to be called by
-`CreateDataVPC_IQRnlmeProject_MMV()`}
+\code{CreateDataVPC_IQRnlmeProject_MMV()}}
 \usage{
 getcovariateInfo_VPC(modelsSample, modelSampleSimulate, dataVPC)
 }
@@ -13,9 +13,9 @@ parameters might need to be sampled from additional IQRnlmeProjects. modelSample
 can be a vector with paths to these additional IQRnlmeProjects. It is not allowed that
 in these projects and modelSampleSimulate estimated parameter names overlap}
 
-\item{dataVPC}{: Dataset for VPC generation, or called from `getData_IQRnlmeProject( )`}
+\item{dataVPC}{: Dataset for VPC generation, or called from \code{getData_IQRnlmeProject( )}}
 }
 \description{
 Get covariate information from all models and the provided data - function to be called by
-`CreateDataVPC_IQRnlmeProject_MMV()`
+\code{CreateDataVPC_IQRnlmeProject_MMV()}
 }

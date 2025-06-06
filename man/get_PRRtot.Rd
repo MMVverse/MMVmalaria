@@ -7,7 +7,7 @@
 get_PRRtot(dataSim, paraCOL = "PL", Plog = TRUE, MethodMin = "CubicSpline")
 }
 \arguments{
-\item{Plog}{Default: `TRUE`}
+\item{Plog}{Default: \code{TRUE}}
 
 \item{MethodMin}{Default: 'CubicSpline'}
 }

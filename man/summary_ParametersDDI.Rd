@@ -23,7 +23,7 @@ the DDI parameters) and fit metrics (e.g. BIC). One column
 per parameter.
 }
 \seealso{
-\code{\link{summary_ParametersMulti}}
+\code{\link[=summary_ParametersMulti]{summary_ParametersMulti()}}
 }
 \author{
 Daniel Kaschek (IntiQuan), Mohammed H. Cherkaoui (MMV)

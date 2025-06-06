@@ -38,8 +38,8 @@ applyCureThreshold <- function(x, threshold, PDname = "Parasitemia") {
 #' As well, covariate reference might not be retrieve for the oldest project.
 #'
 #' @param projectPath IQR project path
-#' @param filename Name of the XLS file to save the GPF model is not \code{NULL} (Default: \code{NULL})
-#' @param referenceCovariate For the oldest IQR project the referenced covariate can be entered manually. It should be a vector or data frame with the name of the covariate and their reference value: e.g. \code{referenceCovariate = c("WT0"=70, "FORM"=1)} (Default: \code{NULL})
+#' @param filename Name of the XLS file to save the GPF model is not `NULL` (Default: `NULL`)
+#' @param referenceCovariate For the oldest IQR project the referenced covariate can be entered manually. It should be a vector or data frame with the name of the covariate and their reference value: e.g. `referenceCovariate = c("WT0"=70, "FORM"=1)` (Default: `NULL`)
 #'
 #' @return A GPF object
 #'
@@ -165,8 +165,8 @@ generate_GPFfromOldIQRproject <- function(projectPath,
 #' @description
 #' @param parametersTable IQR/IQM result table
 #' @param uncertaintyCorrelation IQR/IQM uncertainty correlation results table
-#' @param filename Name of the XLS file to save the GPF model is not \code{NULL} (Default: \code{NULL})
-#' @param referenceCovariate For the oldest IQR project the referenced covariate can be entered manually. It should be a vector or data frame with the name of the covariate and their reference value: e.g. \code{referenceCovariate = c("WT0"=70, "FORM"=1)} (Default: \code{NULL})
+#' @param filename Name of the XLS file to save the GPF model is not `NULL` (Default: `NULL`)
+#' @param referenceCovariate For the oldest IQR project the referenced covariate can be entered manually. It should be a vector or data frame with the name of the covariate and their reference value: e.g. `referenceCovariate = c("WT0"=70, "FORM"=1)` (Default: `NULL`)
 #' @param modelInfo Model information extracted from `project.est` or `project.IQRnlmeEst` of the IQRproject
 #'
 #' @return A GPF object
@@ -464,7 +464,7 @@ generate_GPFfromParametersTable <- function(parametersTable,
 #' @param modelFolder
 #' @param data
 #' @param NTRIALS
-#' @param covariateDose Default: \code{NULL}
+#' @param covariateDose Default: `NULL`
 #' @return
 #' @export
 #' @author Aline Fuchs (MMV)
@@ -1043,7 +1043,7 @@ getModelParameters_MMVmalariaProject <- function(projectPath){
 #'
 #' @description
 #' @param filename
-#' @param IndCovariates Default: \code{NULL}
+#' @param IndCovariates Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -1080,7 +1080,7 @@ getPopParameters_MMVmalariaCSV <- function(filename,                  # Path to 
 #'
 #' @description
 #' @param filename
-#' @param IndCovariates Default: \code{NULL}
+#' @param IndCovariates Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -1117,7 +1117,7 @@ getPopParameters_MMVmalariaXLS <- function(filename,                  # Path to 
 #'
 #' @description
 #' @param projectPath
-#' @param IndCovariates Default: \code{NULL}
+#' @param IndCovariates Default: `NULL`
 #' @param verbose Default: TRUE
 #' @return
 #' @export
@@ -1220,8 +1220,8 @@ getPopParameters_MMVmalariaProject <- function(projectPath,
 #' @param PKeventTable
 #' @param PDmodelFolder
 #' @param data
-#' @param GRhuman Default: \code{NULL}
-#' @param model Default: \code{NULL}
+#' @param GRhuman Default: `NULL`
+#' @param model Default: `NULL`
 #' @param CureThreshold Default: log(1/5000)
 #' @return
 #' @export
@@ -1435,7 +1435,7 @@ sample_CustomParameters <- function(parameters.POP,
 #' @param filename
 #' @param Nsamples
 #' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: \code{NULL}
+#' @param covariates Default: `NULL`
 #' @param FLAGid Default: FALSE
 #'
 #' @return
@@ -1503,7 +1503,7 @@ sample_MMVmalariaXLS <- function(filename,                  # Path to a XLS file
 #' @param filename
 #' @param Nsamples
 #' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: \code{NULL}
+#' @param covariates Default: `NULL`
 #' @param FLAGid Default: FALSE
 #'
 #' @return
@@ -1547,7 +1547,7 @@ sample_MMVmalariaCSV <- function(filename,                  # Path to a CSV file
 #' @param filename
 #' @param Nsamples
 #' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: \code{NULL}
+#' @param covariates Default: `NULL`
 #' @param FLAGid Default: FALSE
 #'
 #' @return
@@ -1572,9 +1572,9 @@ sample_MMVmalariaCSV_NEW <- function(filename,                  # Path to a XLS 
 #'
 #' @description
 #' @param projectPath
-#' @param Nsamples Default: \code{NULL}
+#' @param Nsamples Default: `NULL`
 #' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: \code{NULL}
+#' @param covariates Default: `NULL`
 #' @param FLAGid Default: FALSE
 #' @param verbose Default: TRUE
 #'
@@ -1691,7 +1691,7 @@ sample_MMVmalariaProject <- function(projectPath,
 #' @param n1,n2 Number doses per drug, administration is assumed to be every 24h.
 #' @param LLOQ LLOQ of model OUTPUT1
 #' @param simlength Default: 24 * 32. maximum simtime
-#' @param setting Default: \code{NULL}. Named list of arguments going to \code{\link[IQRtools]{sim_IQRmodel}}
+#' @param setting Default: `NULL`. Named list of arguments going to [IQRtools::sim_IQRmodel()]
 #' @return data.frame with colums c("ID", "Time2Recrud", "n1", "n2", "Dose1", "Dose2")
 #' @export
 #' @author Anne K?mmel (IntiQuan), Mohammed Cherkaoui (MMV)
@@ -1877,7 +1877,7 @@ simTimeRecrudescenceCombo <- function(model, parameters,
 #'    sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L", nSample = x)
 #'}
 #' @param doseCovariate Default: list(drug1 = NULL, drug2 = NULL)
-#' @param covariates Default: \code{NULL}
+#' @param covariates Default: `NULL`
 #' @param evalDay Default: 28
 #' @param simtime Default: create_PKPDsimtime(24 * evalDay)
 #' @param nTrial Default: 10
@@ -1885,7 +1885,7 @@ simTimeRecrudescenceCombo <- function(model, parameters,
 #' @param LLOQ.PD
 #' @param cureThreshold
 #' @param replace Default: TRUE
-#' @param setting Default: \code{NULL}
+#' @param setting Default: `NULL`
 #' @return
 #' @export
 #' @author Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
@@ -2438,20 +2438,20 @@ simulate_ComboMouse2Human <- function(TreatmentGroups,
 #' @param PKmodelFolder
 #' @param PDmodelFolder
 #' @param PKPDmodelFile
-#' @param filename Default: \code{NULL}
+#' @param filename Default: `NULL`
 #' @param EC50adj Default: 1
-#' @param DOSEcovariate Default: \code{NULL}
-#' @param covariates Default: \code{NULL}
+#' @param DOSEcovariate Default: `NULL`
+#' @param covariates Default: `NULL`
 #' @param simtime Default: 0:800
 #' @param Npop Default: 10
 #' @param Nind Default: 10
 #' @param FLAGsamplePK Default: 1
 #' @param FLAGreturnObject Default: FALSE
-#' @param LLOQ.PK Default: \code{NULL}
-#' @param LLOQ.PD Default: \code{NULL}
-#' @param cureThreshold Default: \code{NULL}
-#' @param PLbaseSample Default: \code{NULL}
-#' @param setting Default: \code{NULL}
+#' @param LLOQ.PK Default: `NULL`
+#' @param LLOQ.PD Default: `NULL`
+#' @param cureThreshold Default: `NULL`
+#' @param PLbaseSample Default: `NULL`
+#' @param setting Default: `NULL`
 #' @return
 #' @export
 #' @author Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)

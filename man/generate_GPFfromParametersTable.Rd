@@ -21,7 +21,7 @@ generate_GPFfromParametersTable(
 
 \item{referenceCovariate}{For the oldest IQR project the referenced covariate can be entered manually. It should be a vector or data frame with the name of the covariate and their reference value: e.g. \code{referenceCovariate = c("WT0"=70, "FORM"=1)} (Default: \code{NULL})}
 
-\item{modelInfo}{Model information extracted from `project.est` or `project.IQRnlmeEst` of the IQRproject}
+\item{modelInfo}{Model information extracted from \code{project.est} or \code{project.IQRnlmeEst} of the IQRproject}
 }
 \value{
 A GPF object
@@ -30,7 +30,7 @@ A GPF object
 Generate GPF Object from a parameter table
 }
 \details{
-Function to be used in `generate_GPFfromOldIQRproject` to geneate a GPF object.
+Function to be used in \code{generate_GPFfromOldIQRproject} to geneate a GPF object.
 }
 \seealso{
 Other Simulations: 

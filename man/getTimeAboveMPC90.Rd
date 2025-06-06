@@ -13,7 +13,7 @@ getTimeAboveMPC90(
 )
 }
 \arguments{
-\item{MPC90}{Default: `NULL`}
+\item{MPC90}{Default: \code{NULL}}
 
 \item{convConc}{Default: 1}
 }

@@ -17,23 +17,23 @@ summarize_PRRtotFromSimulations(
 )
 }
 \arguments{
-\item{simPKPD}{Data-table output of `simulate_virtualtrials()` (or similar format).}
+\item{simPKPD}{Data-table output of \code{simulate_virtualtrials()} (or similar format).}
 
 \item{timeCOL}{Name of column containing values for simulation time (Default: \code{"TIME"}).}
 
 \item{paraCOL}{Name of column containing values for parasitaemia (Default:  \code{"PL"}).}
 
-\item{Plog}{Is paraistaemia provided in Log scale?  (Default: `TRUE`).}
+\item{Plog}{Is paraistaemia provided in Log scale?  (Default: \code{TRUE}).}
 
 \item{percentiles}{Percentiles of outcome variable(s) to be calculated if appropriate (Default: \code{c(5,50,90)}).}
 
 \item{CIlevel}{Numeric containing the confidence interval in percent to be estimated (Default: 90)}
 
-\item{usubjidCOL}{Name(s) of column(s) of `simPKPD` uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).}
+\item{usubjidCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing individuals (Default: \code{c("IndivID","USUBJID")}).}
 
-\item{trialCOL}{Name(s) of column(s) of `simPKPD` uniquely describing trial (Default: \code{c("TrialID")}).}
+\item{trialCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing trial (Default: \code{c("TrialID")}).}
 
-\item{scenCOL}{Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
+\item{scenCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
 }
 \description{
 Summarizes the total parasite reduction ratio

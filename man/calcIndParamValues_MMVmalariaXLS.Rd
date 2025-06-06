@@ -17,13 +17,13 @@ parameter columns, this data.frame should have an \code{ID.POP} and an
 \code{ID} column corresponding to the columns \code{ID.POP} and \code{ID}
 in \code{randomEffects}. This data.frame
 should have the same number of rows as \code{randomEffects}. See
-\code{\link{calcTypicalIndParamValues}}.}
+\code{\link[=calcTypicalIndParamValues]{calcTypicalIndParamValues()}}.}
 
 \item{randomEffects}{a data.frame specifying random effect values on a
 normal (transformed) scale for the model parameters in \code{spec}.
 Apart from the parameter columns, this data.frame should have an \code{ID.POP}
 and an \code{ID} integer columns corresponding to population id and individual id
-within a population respectively. See \code{\link{sampleRandomEffects}}.}
+within a population respectively. See \code{\link[=sampleRandomEffects]{sampleRandomEffects()}}.}
 }
 \value{
 a data.frame with the same column names as the arguments \code{typicalIndParamValues}
@@ -38,7 +38,7 @@ to typical individual parameter values
 \dontrun{
 #See the examples for IQRtools::sampleIndParamValues
 }
-# See examples in \code{\link{sampleIndParamValues_MMVmalariaXLS}}.
+# See examples in [sampleIndParamValues_MMVmalariaXLS()].
 
 }
 \seealso{

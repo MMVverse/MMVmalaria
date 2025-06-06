@@ -21,7 +21,7 @@ estimate_AUC(
 \item{intMethod}{Default: logLinTrapzMMV}
 
 \item{LambdaZ}{Default: function(x, y) {
-   estimate_LambdaZ(x, y)$LambdaZ
+estimate_LambdaZ(x, y)$LambdaZ
 }}
 }
 \description{

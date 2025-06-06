@@ -15,15 +15,15 @@ evaluate_BreakthroughEvent(
 )
 }
 \arguments{
-\item{dataSim}{data.table produced by `simulate_virtualtrials()` or `sim_IQRmodel()`, specifically `$simPKPD`.}
+\item{dataSim}{data.table produced by \code{simulate_virtualtrials()} or \code{sim_IQRmodel()}, specifically \verb{$simPKPD}.}
 
-\item{LLOQ}{LLOQ parasitemia in the same scale as in `paraCOL` (i.e. linear or ln - numeric).}
+\item{LLOQ}{LLOQ parasitemia in the same scale as in \code{paraCOL} (i.e. linear or ln - numeric).}
 
-\item{timeCOL}{column name of `dataSim` containing time records (Default: `TIME`).}
+\item{timeCOL}{column name of \code{dataSim} containing time records (Default: \code{TIME}).}
 
-\item{paraCOL}{column name of `dataSim` containing parasitemia records (Default: `PL`).}
+\item{paraCOL}{column name of \code{dataSim} containing parasitemia records (Default: \code{PL}).}
 
-\item{Plog}{Indicate if parasitemia is in the log or linear scale (Default: `TRUE` which means it is logged).}
+\item{Plog}{Indicate if parasitemia is in the log or linear scale (Default: \code{TRUE} which means it is logged).}
 
 \item{FLAGinterpolateTime}{A logical indicating if the PL measurements should be interpolated within the simulation period.}
 }

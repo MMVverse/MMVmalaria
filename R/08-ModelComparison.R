@@ -12,7 +12,7 @@
 #'
 #' @return IQRtable object
 #'
-#' @seealso \code{\link{summary_ParametersMulti}}
+#' @seealso [summary_ParametersMulti()]
 #'
 #' @export
 #' @author Daniel Kaschek (IntiQuan), Mohammed H. Cherkaoui (MMV)
@@ -71,7 +71,7 @@ summary_ParametersDDI <- function(projfolders,
 #'
 #' @return IQRtable object
 #'
-#' @seealso \code{\link{summary_ParametersDDI}}
+#' @seealso [summary_ParametersDDI()]
 #'
 #' @export
 #' @author Daniel Kaschek (IntiQuan), Mohammed H. Cherkaoui (MMV)

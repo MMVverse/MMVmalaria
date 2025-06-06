@@ -7,7 +7,7 @@
 evaluateDoseCriterion_PRRtot(sim_results, parameters)
 }
 \arguments{
-\item{sim_results}{a data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}. It is assumed that
+\item{sim_results}{a data.frame returned by \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}. It is assumed that
 this data.frame has a column PL corresponding to log-transformed simulated parasitemia.}
 
 \item{parameters}{currently not used.}
@@ -19,7 +19,7 @@ a numeric value.
 Calculate PRRtot for an individual parasitemia profile
 }
 \details{
-This function can be passed as argument to \code{\link{predictDose_Generic}}.
+This function can be passed as argument to \code{\link[=predictDose_Generic]{predictDose_Generic()}}.
 }
 \author{
 Venelin Mitov, IntiQuan

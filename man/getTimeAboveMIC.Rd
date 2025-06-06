@@ -13,7 +13,7 @@ getTimeAboveMIC(
 )
 }
 \arguments{
-\item{MIC}{Default: `NULL`}
+\item{MIC}{Default: \code{NULL}}
 
 \item{convConc}{Default: 1}
 }

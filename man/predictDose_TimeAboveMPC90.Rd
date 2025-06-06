@@ -41,7 +41,7 @@ predictDose_TimeAboveMPC90(
 
 \item{projectPath}{Path to a PK/PD \code{IQRprojectNLME} folder or a path to a GPF.xlsx file or a GPF object.}
 
-\item{simtime}{a sorted numeric vector denoting the simulation times (passed to \code{\link{IQRtools::sim_IQRmodel}}).}
+\item{simtime}{a sorted numeric vector denoting the simulation times (passed to \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}).}
 
 \item{Tk0}{A named character vector (default: NULL). Example : c(INPUT1 = "Tk0", INPUT2 = "Tk0_2"), meaning that
 the IQRdosing object for each simulation would be adjusted to have TINF = set to the model parameter Tk0 for ADM = 1.}
@@ -50,7 +50,7 @@ the IQRdosing object for each simulation would be adjusted to have TINF = set to
 
 \item{timeInterval}{a numeric (default 24), denoting the time interval between doses (in the model time units).}
 
-\item{args_IQRdosing}{a named list (default NULL) with arguments to be passed to \code{\link{IQRtools::IQRdosing}}. For flexibility, this
+\item{args_IQRdosing}{a named list (default NULL) with arguments to be passed to \code{\link[IQRtools:IQRdosing]{IQRtools::IQRdosing()}}. For flexibility, this
 can be used to overwrite some of the otherwise set by default arguments to IQRdosing, such as \code{TIME}, \code{ADM}, \code{ADDL}, \code{II}
 (advanced use only). Default: \code{list(TIME = simtime[1], ADM = 1, AMT = NA_real_, ADDL = nbrDoses - 1, II = timeInterval)}.}
 
@@ -82,14 +82,14 @@ Possible values:\tabular{lcccl}{
 \item{CIlevel}{Confidence interval to estimate for each percentile (Default: 90),
 based on the simulated trials}
 
-\item{addArgs_sim_IQRmodel}{a named list (default NULL) with additional arguments to be passed to \code{\link{IQRtools::sim_IQRmodel}}.}
+\item{addArgs_sim_IQRmodel}{a named list (default NULL) with additional arguments to be passed to \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}.}
 
-\item{addArgs_uniroot}{a named list (default \code{list(tol = .1)}) with additional arguments to be passed to \code{\link{stats::uniroot}}.}
+\item{addArgs_uniroot}{a named list (default \code{list(tol = .1)}) with additional arguments to be passed to \code{\link[stats:uniroot]{stats::uniroot()}}.}
 
 \item{fun_EvaluateCriterion}{a function object or a character string denoting the name of a function accessible
 from the calling (parent) environment. This function should have the following synopsis:
 \code{function(sim_results, parameters) { ... }}, where \code{sim_results} is a data.frame resulting from a
-previous call to \code{\link{IQRtools::sim_IQRmodel}} and \code{parameters} is a data.frame with a single row
+previous call to \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}} and \code{parameters} is a data.frame with a single row
 and numeric columns named as the model parameters; the function should return a numeric value. If
 \code{fun_EvaluateCriterion} is a character string, the function is searched for via
 \code{mget(fun_EvaluateCriterion, mode = "function", ifnotfound = list(NULL), inherits = TRUE)[[fun_EvaluateCriterion]]}.

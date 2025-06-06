@@ -29,13 +29,13 @@ A list of ggplot objects comparing summarized continuous variables from simulati
 \description{
 Generates a list of ggplot objects where summarized simulations and
 observations are compared visually. Summarized input is obtained from
-applying `summaryByTrial` and `summarAcrossTrials` to data from VPCs.
-Comparison is done per `TRTNAME` by default. A list of ggplot objects is returned with one plot per unique variable.
+applying \code{summaryByTrial} and \code{summarAcrossTrials} to data from VPCs.
+Comparison is done per \code{TRTNAME} by default. A list of ggplot objects is returned with one plot per unique variable.
 }
 \details{
 This function creates a visual comparison of summarized data for continuous variables. It generates a ggplot object for each unique variable in the dataset.
-The summarized input for simulations is obtained using the `summaryByTrial` and `summarAcrossTrials` functions. The comparison is performed per `TRTNAME` by default, but this can be customized
-using the `compCategory` parameter.
+The summarized input for simulations is obtained using the \code{summaryByTrial} and \code{summarAcrossTrials} functions. The comparison is performed per \code{TRTNAME} by default, but this can be customized
+using the \code{compCategory} parameter.
 }
 \examples{
 \dontrun{
@@ -62,7 +62,7 @@ ggplots <- plotSummaryComparisonContinuous(dataSim, dataObs)
 
 }
 \seealso{
-\code{\link{plotSummaryComparisonBinary}}
+\code{\link[=plotSummaryComparisonBinary]{plotSummaryComparisonBinary()}}
 
 Other Model Assessment: 
 \code{\link{add_CovariateToModelSpec}()},

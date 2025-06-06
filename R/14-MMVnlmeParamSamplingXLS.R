@@ -2,7 +2,7 @@
 #'
 #' @inheritParams sampleIndParamValues_MMVmalariaXLS
 #'
-#' @return a data.frame of \code{Npop} rows with columns \code{ID.POP} and parameter
+#' @return a data.frame of `Npop` rows with columns `ID.POP` and parameter
 #' value columns as follows:
 #' \describe{
 #' \item{X,Y...: }{reference population values for model parameters X,Y...}
@@ -37,9 +37,9 @@ sampleParamFromUncertainty_MMVmalariaXLS <- function(spec,
 #' defines the number of populations for which random effects are to be
 #' sampled.
 #'
-#' @return a data.frame of \code{Nsamples*nrow(iivPopParamValues)} rows and
-#' columns \code{ID.POP}, \code{ID} and a column for each model parameter
-#' defined in \code{spec}.
+#' @return a data.frame of `Nsamples*nrow(iivPopParamValues)` rows and
+#' columns `ID.POP`, `ID` and a column for each model parameter
+#' defined in `spec`.
 #' @examples
 #' \dontrun{
 #' #See the examples for sampleIndParamValues_MMVmalariaXLS:
@@ -60,8 +60,8 @@ sampleRandomEffects_MMVmalariaXLS <- function(spec,
 
 #' Sample or subset records from a matrix or a data.frame
 #'
-#' @param data A data.frame describing patient or other subject covariate and regressor data. If \code{nrow(data)==Nsamples}, then all rows in data are returned (in their original order) in the resulting data.frame; if \code{nrow(data)>Nsamples}, sampling without replacement from the rows in data is done; if \code{nrow(data)<Nsamples} then sampling with replacement is done.
-#' @param Nsamples Integer denoting the number of individuals in a population. Note: in the case of \code{FLAG_SAMPLE=2}, this value is used to specify the number of populations (see \code{Npop}). Default: \code{if(is.IQRnlmeParamSpec(obj)) obj$Nsamples else 1L}.
+#' @param data A data.frame describing patient or other subject covariate and regressor data. If `nrow(data)==Nsamples`, then all rows in data are returned (in their original order) in the resulting data.frame; if `nrow(data)>Nsamples`, sampling without replacement from the rows in data is done; if `nrow(data)<Nsamples` then sampling with replacement is done.
+#' @param Nsamples Integer denoting the number of individuals in a population. Note: in the case of `FLAG_SAMPLE=2`, this value is used to specify the number of populations (see `Npop`). Default: `if(is.IQRnlmeParamSpec(obj)) obj$Nsamples else 1L`.
 #'
 #' @return a data.frame. If nrow(data)==Nsamples, then all rows in data
 #' are included (in their original order); if nrow(data)>Nsamples, sampling
@@ -98,12 +98,12 @@ sampleIDs_MMVmalariaXLS <- function(data, Nsamples) {
 #' @param doCartesian a logical. When TRUE (the DEFAULT), each row in referencePopParamValues
 #' is bound to data, so that the returned data.frame contains
 #' nrow(referencePopParamValues)*nrow(data) rows. If FALSE
-#' (only allowed when \code{nrow(referencePopParamValues) == nrow(data)}), then
-#' the two tables are joined using \code{\link{cbind}}.
+#' (only allowed when `nrow(referencePopParamValues) == nrow(data)`), then
+#' the two tables are joined using [cbind()].
 #' @return a data.frame with number of rows equal either to
-#' \code{nrow(referencePopParamValues)*nrow(data)} (when \code{doCartesian == TRUE) (default)}),
-#' or \code{nrow(referencePopParamValues)} (when
-#' \code{doCartesian == FALSE && nrow(referencePopParamValues) == nrow(data)}).
+#' `nrow(referencePopParamValues)*nrow(data)` (when `doCartesian == TRUE) (default)`),
+#' or `nrow(referencePopParamValues)` (when
+#' `doCartesian == FALSE && nrow(referencePopParamValues) == nrow(data)`).
 #' The columns in this data.frame are ID.POP, ID and other columns matching
 #' the model parameters according to spec.
 #' @examples
@@ -132,20 +132,20 @@ calcTypicalIndParamValues_MMVmalariaXLS <- function(spec,
 #' @param spec A filename (character string) denoting the path to a GPF excel file, or a GPF object, or an IQRnlmeParamSpec object.
 #' @param typicalIndParamValues a data.frame specifying typical individual
 #' parameter values on an original (not transformed to normal) scale for
-#' the model parameters in \code{spec}. Apart from the
-#' parameter columns, this data.frame should have an \code{ID.POP} and an
-#' \code{ID} column corresponding to the columns \code{ID.POP} and \code{ID}
-#' in \code{randomEffects}. This data.frame
-#' should have the same number of rows as \code{randomEffects}. See
-#' \code{\link{calcTypicalIndParamValues}}.
+#' the model parameters in `spec`. Apart from the
+#' parameter columns, this data.frame should have an `ID.POP` and an
+#' `ID` column corresponding to the columns `ID.POP` and `ID`
+#' in `randomEffects`. This data.frame
+#' should have the same number of rows as `randomEffects`. See
+#' [calcTypicalIndParamValues()].
 #' @param randomEffects a data.frame specifying random effect values on a
-#' normal (transformed) scale for the model parameters in \code{spec}.
-#' Apart from the parameter columns, this data.frame should have an \code{ID.POP}
-#' and an \code{ID} integer columns corresponding to population id and individual id
-#' within a population respectively. See \code{\link{sampleRandomEffects}}.
+#' normal (transformed) scale for the model parameters in `spec`.
+#' Apart from the parameter columns, this data.frame should have an `ID.POP`
+#' and an `ID` integer columns corresponding to population id and individual id
+#' within a population respectively. See [sampleRandomEffects()].
 #'
-#' @return a data.frame with the same column names as the arguments \code{typicalIndParamValues}
-#' and \code{randomEffects}. The individual parameter values in this data.frame are on
+#' @return a data.frame with the same column names as the arguments `typicalIndParamValues`
+#' and `randomEffects`. The individual parameter values in this data.frame are on
 #' the original scale (not transformed to a normal scale).
 #' @examples
 #' \dontrun{
@@ -155,7 +155,7 @@ calcTypicalIndParamValues_MMVmalariaXLS <- function(spec,
 #'
 #' @export
 #' @examples
-#' # See examples in \code{\link{sampleIndParamValues_MMVmalariaXLS}}.
+#' # See examples in [sampleIndParamValues_MMVmalariaXLS()].
 #'
 #' @author Venelin Mitov (IntiQuan)
 calcIndParamValues_MMVmalariaXLS <- function(spec,
@@ -176,11 +176,11 @@ calcIndParamValues_MMVmalariaXLS <- function(spec,
 #' nrow(data)>Nsamples, sampling without replacement from the rows in data
 #' is done; if nrow(data)<Nsamples then sampling with replacement is done.
 #' @param Nsamples integer denoting the number of individuals in a
-#' population. Note: in the case of \code{FLAG_SAMPLE=2}, this value is used to specify
-#' the number of populations (see \code{Npop}). Default:
-#' \code{if(is.IQRnlmeParamSpec(obj)) obj$Nsamples else 1L}.
+#' population. Note: in the case of `FLAG_SAMPLE=2`, this value is used to specify
+#' the number of populations (see `Npop`). Default:
+#' `if(is.IQRnlmeParamSpec(obj)) obj$Nsamples else 1L`.
 #' @param Npop integer denoting the number of populations to sample. Default:
-#'  \code{if(is.IQRnlmeParamSpec(obj)) obj$Npop else if(FLAG_SAMPLE==2) Nsamples else 1L}.
+#'  `if(is.IQRnlmeParamSpec(obj)) obj$Npop else if(FLAG_SAMPLE==2) Nsamples else 1L`.
 #' @param FLAG_SAMPLE  Flag indicating the type of sampling:
 #' \tabular{ll}{
 #' FLAG_SAMPLE       \tab Meaning \cr
@@ -212,9 +212,9 @@ calcIndParamValues_MMVmalariaXLS <- function(spec,
 #'                        Only used for IQRsysProject. If IQRnlmeProject then fallback to flag 1.\cr
 #' }
 #'
-#' @details If \code{spec} is an IQRnlmeParamSpec object and \code{Npop} is specified,
-#' the specified argument Npop overwrites the \code{spec$Npop}.
-#' Default: \code{if(is.IQRnlmeParamSpec(spec)) spec$Npop else 1L}.
+#' @details If `spec` is an IQRnlmeParamSpec object and `Npop` is specified,
+#' the specified argument Npop overwrites the `spec$Npop`.
+#' Default: `if(is.IQRnlmeParamSpec(spec)) spec$Npop else 1L`.
 #'
 #' @family functions in the NLME parameter sampling API
 #'

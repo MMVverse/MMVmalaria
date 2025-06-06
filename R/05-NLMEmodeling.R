@@ -2,7 +2,7 @@
 #'
 #' @description
 #' @param projectPath
-#' @param IIVvalues0 Default: \code{NULL}
+#' @param IIVvalues0 Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -66,35 +66,35 @@ generate_InitialParametersIQRnlme <- function(projectPath,
 #' @description
 #' @param multiTestN Default: 1
 #' @param multiTestSD Default: 0.5
-#' @param FLAGanalytic Default: \code{TRUE}
-#' @param keepProjectFolder Default: \code{FALSE}
+#' @param FLAGanalytic Default: `TRUE`
+#' @param keepProjectFolder Default: `FALSE`
 #' @param algOpt.SEED Default: 123456
 #' @param algOpt.K1 Default: 500
 #' @param algOpt.K2 Default: 200
 #' @param algOpt.NRCHAINS Default: 5
-#' @param algOpt.NONMEM.METHOD Default: \code{"SAEM"}
+#' @param algOpt.NONMEM.METHOD Default: `"SAEM"`
 #' @param algOpt.NONMEM.MAXEVAL Default: 9999
 #' @param algOpt.NONMEM.SIGDIGITS Default: 3
 #' @param algOpt.NONMEM.PRINT Default: 1
-#' @param algOpt.NONMEM.COVSTEP_MATRIX Default: \code{"S"}
-#' @param algOpt.NONMEM.ADVAN7 Default: \code{TRUE}
+#' @param algOpt.NONMEM.COVSTEP_MATRIX Default: `"S"`
+#' @param algOpt.NONMEM.ADVAN7 Default: `TRUE`
 #' @param algOpt.NONMEM.N1 Default: 1000
 #' @param algOpt.NONMEM.TOL Default: 6
-#' @param algOpt.NONMEM.SIGL Default: \code{NULL}
-#' @param algOpt.NONMEM.M4 Default: \code{FALSE}
-#' @param algOpt.NONMEM.FOCEIOFV Default: \code{FALSE}
-#' @param algOpt.NONMEM.IMPORTANCESAMPLING Default: \code{TRUE}
+#' @param algOpt.NONMEM.SIGL Default: `NULL`
+#' @param algOpt.NONMEM.M4 Default: `FALSE`
+#' @param algOpt.NONMEM.FOCEIOFV Default: `FALSE`
+#' @param algOpt.NONMEM.IMPORTANCESAMPLING Default: `TRUE`
 #' @param algOpt.NONMEM.IMP_ITERATIONS Default: 10
-#' @param algOpt.NONMEM.ITS Default: \code{TRUE}
+#' @param algOpt.NONMEM.ITS Default: `TRUE`
 #' @param algOpt.NONMEM.ITS_ITERATIONS Default: 10
-#' @param algOpt.MONOLIX.individualParameters Default: \code{"conditionalMode"}
-#' @param algOpt.MONOLIX.logLikelihood Default: \code{"Linearization"}
-#' @param algOpt.MONOLIX.fim Default: \code{"Linearization"}
-#' @param algOpt.MONOLIX.variability Default: \code{"Decreasing"}
-#' @param algOpt.MONOLIX.startTime Default: \code{NULL}
-#' @param algOpt.MONOLIX.STIFF Default: \code{TRUE}
-#' @param algOpt.NLMIXR.method Default: \code{"SAEM"}
-#' @param algOpt.NLMIXR.control Default: \code{NULL}
+#' @param algOpt.MONOLIX.individualParameters Default: `"conditionalMode"`
+#' @param algOpt.MONOLIX.logLikelihood Default: `"Linearization"`
+#' @param algOpt.MONOLIX.fim Default: `"Linearization"`
+#' @param algOpt.MONOLIX.variability Default: `"Decreasing"`
+#' @param algOpt.MONOLIX.startTime Default: `NULL`
+#' @param algOpt.MONOLIX.STIFF Default: `TRUE`
+#' @param algOpt.NLMIXR.method Default: `"SAEM"`
+#' @param algOpt.NLMIXR.control Default: `NULL`
 #' @return
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -210,14 +210,14 @@ generate_NLMEalgorithmSettings <- function(# General setting:
 #' @param data
 #' @param parOptions Default: list()
 #' @param projectPath Default: 'PKmodels'
-#' @param FLAGrun Default: \code{TRUE}
+#' @param FLAGrun Default: `TRUE`
 #' @param tool Default: 'MONOLIX'
-#' @param toolVersion Default: \code{NULL}
+#' @param toolVersion Default: `NULL`
 #' @param ncores Default: 1
 #' @param Nparallel Default: 1
 #' @param NPROCESSORS Default: 1
 #' @param NPROCESSORSpar Default: 1
-#' @param setting Default: \code{NULL}
+#' @param setting Default: `NULL`
 #' @return
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Daniel Kaschek (IntiQuan), Mohammed H. Cherkaoui (MMV)
@@ -734,9 +734,9 @@ testPKmodelsIQR <- function(testSetup, data, parOptions = list(),
 #' Get ModelSpec from a MMVmalaria Project
 #'
 #' Determines model specification based on parameter estimation results of a MMVmalaria
-#' project stored in \code{projectPath}. Estimated parameter are defined as initial guess.
+#' project stored in `projectPath`. Estimated parameter are defined as initial guess.
 #'
-#' @param projectPath A character string with the path to an \code{IQRsysProject} or \code{IQRnlmeProject} folder, or a GPF file.
+#' @param projectPath A character string with the path to an `IQRsysProject` or `IQRnlmeProject` folder, or a GPF file.
 #' @param fixParameters Flag whether to fix the estimated parameters
 #'
 #' @return Model specification list

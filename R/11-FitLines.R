@@ -416,7 +416,7 @@ get_Growth <- function(x) {
 }
 #' Slope and intercept of line
 #'
-#' \code{get_linepar} Calculates the slope and intercept of a line defined by two points
+#' `get_linepar` Calculates the slope and intercept of a line defined by two points
 #'
 #' Given the coordinates of two points, the slope and the intercept
 #' for the line through these points is determined.

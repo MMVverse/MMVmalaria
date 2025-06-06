@@ -12,7 +12,7 @@ summarizeTrial_Basic(
 )
 }
 \arguments{
-\item{simPKPD}{A data.frame representing the merge (join) for data.frame returned by \code{\link{IQRtools::sim_IQRmodel}}, and
+\item{simPKPD}{A data.frame representing the merge (join) for data.frame returned by \code{\link[IQRtools:sim_IQRmodel]{IQRtools::sim_IQRmodel()}}, and
 individual and experimental covariates. This argument is set automatically by the calling function.}
 
 \item{trialFileName}{A character string denoting the trial .rds file on the disk. This file can be loaded to get information about the
@@ -37,9 +37,9 @@ a named list with the following members:
 }
 }
 \description{
-This function is called at runtime by \code{\link{simulate_OneVirtualTrial}}.
+This function is called at runtime by \code{\link[=simulate_OneVirtualTrial]{simulate_OneVirtualTrial()}}.
 }
 \details{
-This function is designed to be passed as argument of \code{\link{simulate_VirtualTrials}}. Currently, the function
+This function is designed to be passed as argument of \code{\link[=simulate_VirtualTrials]{simulate_VirtualTrials()}}. Currently, the function
 assumes that the \code{simPKPD} has a column PL denoting natural log parasitemia.
 }

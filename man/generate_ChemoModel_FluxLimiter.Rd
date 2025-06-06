@@ -50,7 +50,7 @@ generate_ChemoModel_FluxLimiter(
 
 \item{PKmodel}{"IQRmodel" or list of states, parameters and variables}
 
-\item{Output}{List of outputs to be included in the model script (Default: \code{"OUTPUT1 = "PBlood""})}
+\item{Output}{List of outputs to be included in the model script (Default: \verb{"OUTPUT1 = "PBlood""})}
 
 \item{outputFile}{Pathway where to save the resulting model file}
 }

@@ -19,7 +19,7 @@ table_covariateSummaryResults(
 \item{report}{Default: TRUE}
 
 \item{FUNnameModel}{Default: function(x) {
-   gsub("MODEL_", "", x)
+gsub("MODEL_", "", x)
 }}
 }
 \description{
