@@ -247,7 +247,7 @@ table_BestFitEstimation <- function(fit, filename = NULL, FLAGout = FALSE, title
     y <- as.data.frame(t(y))
 
     # Nicer error parameter names
-    names(y) <- aux_formatErrorName(names(y))
+    names(y) <- MMVbase::aux_formatErrorName(names(y))
 
     y
   }, .id = "Model")

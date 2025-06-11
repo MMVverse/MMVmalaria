@@ -31,8 +31,8 @@ summarize_PKPDprofilesFromSimulations <- function(simPKPD,
                                                   trialCOL    = c("TrialID"),
                                                   scenCOL     = c("ScenID","ExpID","DoseID","Dose","nbrDoses")){
 
-  # Simply call summarize_PIandCIgeneric:
-  summaryPKPD <- summarize_PIandCIgeneric(dataInput   = simPKPD,
+  # Simply call MMVbase::summarize_PIandCIgeneric:
+  summaryPKPD <- MMVbase::summarize_PIandCIgeneric(dataInput   = simPKPD,
                                           varCOL      = outputCOL,
                                           percentiles = percentiles,
                                           CIlevel     = CIlevel,
@@ -103,8 +103,8 @@ summarize_KeyPKparametersFromSimulations <- function(simPKPD,
   # STEP 2: Summarize key PK parameters for each ScenID ----
   #---------------------------------------------------#
 
-  # Simply call summarize_PIandCIgeneric:
-  summaryKeyPK <- summarize_PIandCIgeneric(summaryKeyPK.byIndiv,
+  # Simply call MMVbase::summarize_PIandCIgeneric:
+  summaryKeyPK <- MMVbase::summarize_PIandCIgeneric(summaryKeyPK.byIndiv,
                                            varCOL = setdiff(names(summaryKeyPK.byIndiv),colKey),
                                            percentiles = percentiles,
                                            CIlevel     = CIlevel,
@@ -199,8 +199,8 @@ summarize_KeyPDparametersFromSimulations <- function(simPKPD,
   # STEP 2: Summarize key PD parameters for each ScenID ----
   #---------------------------------------------------#
 
-  # Simply call summarize_PIandCIgeneric:
-  summaryKeyPD <- summarize_PIandCIgeneric(summaryKeyPD.byIndiv,
+  # Simply call MMVbase::summarize_PIandCIgeneric:
+  summaryKeyPD <- MMVbase::summarize_PIandCIgeneric(summaryKeyPD.byIndiv,
                                            varCOL = setdiff(names(summaryKeyPD.byIndiv),colKey),
                                            percentiles = percentiles,
                                            CIlevel     = CIlevel,
@@ -265,8 +265,8 @@ summarize_PRRtotFromSimulations <- function(simPKPD,
   # STEP 2: Summarize PRRtot for each ScenID ----
   #---------------------------------------------------#
 
-  # Simply call summarize_PIandCIgeneric:
-  summaryPRRtot <- summarize_PIandCIgeneric(summaryPRRtot.byIndiv,
+  # Simply call MMVbase::summarize_PIandCIgeneric:
+  summaryPRRtot <- MMVbase::summarize_PIandCIgeneric(summaryPRRtot.byIndiv,
                                             varCOL = c("PRRtot"),
                                             percentiles = percentiles,
                                             CIlevel     = CIlevel,
@@ -327,7 +327,7 @@ summarizeTrial_Basic <- function(
 
   # Get PKPD summary:
   if(length(unique(simPKPD$ID))>1){
-    summaryPKPD.ByTrial <- summaryByTrial(dataInput   = simPKPD,
+    summaryPKPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = simPKPD,
                                           percentiles = percentiles,
                                           varCOL      = varPKPD,
                                           usubjidCOL  = c("ID","IndivID","USUBJID"),
@@ -407,7 +407,7 @@ summarizeTrial_APRLongitudinal <- function(
 
   # Get PKPD summary:
   if(length(unique(simPKPD$ID))>1){
-    summaryPKPD.ByTrial <- summaryByTrial(dataInput   = simPKPD,
+    summaryPKPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = simPKPD,
                                           percentiles = percentiles,
                                           varCOL      = varPKPD,
                                           usubjidCOL  = c("ID","IndivID","USUBJID"),
@@ -457,7 +457,7 @@ summarizeTrial_APRLongitudinal <- function(
 
   # Summarize 'dataInput' by Trial:
   if(length(unique(summaryClinEnd.ByIndiv$ID))>1){
-    summaryClinEnd.ByTrial <- summaryByTrial(dataInput   = summaryClinEnd.ByIndiv,
+    summaryClinEnd.ByTrial <- MMVbase::summaryByTrial(dataInput   = summaryClinEnd.ByIndiv,
                                              percentiles = percentiles,
                                              varCOL      = setdiff(names(summaryClinEnd.ByIndiv),
                                                                    c("ID","ScenID","ExpID","DoseID","TrialID","IndivID","USUBJID")),
@@ -557,7 +557,7 @@ summarizeTrial_APRLongitudinal_PK_secondary <- function(
 
   # Get PKPD summary:
   if(length(unique(simPKPD$ID))>1){
-    summaryPKPD.ByTrial <- summaryByTrial(dataInput   = simPKPD,
+    summaryPKPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = simPKPD,
                                           percentiles = percentiles,
                                           varCOL      = varPKPD,
                                           usubjidCOL  = c("ID","IndivID","USUBJID"),
@@ -607,7 +607,7 @@ summarizeTrial_APRLongitudinal_PK_secondary <- function(
 
   # Summarize 'dataInput' by Trial:
   if(length(unique(summaryClinEndPrimary.ByIndiv$ID))>1){
-    summaryClinEndPrimary.ByTrial <- summaryByTrial(dataInput   = summaryClinEndPrimary.ByIndiv,
+    summaryClinEndPrimary.ByTrial <- MMVbase::summaryByTrial(dataInput   = summaryClinEndPrimary.ByIndiv,
                                                     percentiles = percentiles,
                                                     varCOL      = setdiff(names(summaryClinEndPrimary.ByIndiv),
                                                                           c("ID","ScenID","ExpID","DoseID","TrialID","IndivID","USUBJID")),
@@ -651,7 +651,7 @@ summarizeTrial_APRLongitudinal_PK_secondary <- function(
 
   # Summarize 'dataInput' by Trial:
   if(length(unique(summaryClinEndSecondary.ByIndiv$ID))>1){
-    summaryClinEndSecondary.ByTrial <- summaryByTrial(dataInput   = summaryClinEndSecondary.ByIndiv,
+    summaryClinEndSecondary.ByTrial <- MMVbase::summaryByTrial(dataInput   = summaryClinEndSecondary.ByIndiv,
                                                       percentiles = percentiles,
                                                       varCOL      = setdiff(names(summaryClinEndSecondary.ByIndiv),
                                                                             c("ID","ScenID","ExpID","DoseID","TrialID","IndivID","USUBJID")),
@@ -688,7 +688,7 @@ summarizeTrial_APRLongitudinal_PK_secondary <- function(
 
   # Summarize 'dataInput' by Trial:
   if(length(unique(summaryKeyPK.byIndiv$ID))>1){
-    summaryKeyPK.ByTrial <- summaryByTrial(dataInput   = summaryKeyPK.byIndiv,
+    summaryKeyPK.ByTrial <- MMVbase::summaryByTrial(dataInput   = summaryKeyPK.byIndiv,
                                            percentiles = percentiles,
                                            varCOL      = setdiff(names(summaryKeyPK.byIndiv),
                                                                  c("ID","ScenID","ExpID","DoseID","TrialID","IndivID","USUBJID")),
@@ -766,7 +766,7 @@ summarizeTrial_ChemoBreakthrough <- function(
 
   #   Get PKPD summary:
   if(length(unique(simPKPD$ID))>1){
-    summaryPKPD.ByTrial <- summaryByTrial(dataInput   = simPKPD,
+    summaryPKPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = simPKPD,
                                           percentiles = percentiles,
                                           varCOL      = varPKPD,
                                           # These are hard coded for the purpose of summaryPKPD.ByTrial
@@ -886,7 +886,7 @@ summarizeTrial_ChemoSurvival <- function(
 
   # Get PKPD summary:
   if(length(unique(simPKPD$ID))>1){
-    summaryPKPD.ByTrial <- summaryByTrial(dataInput   = simPKPD,
+    summaryPKPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = simPKPD,
                                           percentiles = percentiles,
                                           varCOL      = varPKPD,
                                           usubjidCOL  = c("ID","IndivID","USUBJID"),
@@ -1039,7 +1039,7 @@ summarizeTrial_ChemoSurvival_MonoPD <- function(
 
   # Get PKPD summary:
   if(length(unique(simPKPD$ID))>1){
-    summaryPKPD.ByTrial <- summaryByTrial(dataInput   = simPKPD,
+    summaryPKPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = simPKPD,
                                           percentiles = percentiles,
                                           varCOL      = varPKPD,
                                           usubjidCOL  = c("ID","IndivID","USUBJID"),
@@ -1094,7 +1094,7 @@ summarizeTrial_ChemoSurvival_MonoPD <- function(
 
   # Summarize 'KeyPD' by Trial:
   if(length(unique(summaryKeyPD.ByIndiv$ID))>1){
-    summaryKeyPD.ByTrial <- summaryByTrial(dataInput   = summaryKeyPD.ByIndiv,
+    summaryKeyPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = summaryKeyPD.ByIndiv,
                                            percentiles = percentiles,
                                            varCOL      = setdiff(names(summaryKeyPD.ByIndiv),
                                                                  c("ID","ScenID","ExpID","DoseID","TrialID","IndivID","USUBJID")),
@@ -1231,7 +1231,7 @@ summarizeTrial_ChemoSurvival_ComboPD <- function(
 
   # Get PKPD summary:
   if(length(unique(simPKPD$ID))>1){
-    summaryPKPD.ByTrial <- summaryByTrial(dataInput   = simPKPD,
+    summaryPKPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = simPKPD,
                                           percentiles = percentiles,
                                           varCOL      = varPKPD,
                                           usubjidCOL  = c("ID","IndivID","USUBJID"),
@@ -1273,7 +1273,7 @@ summarizeTrial_ChemoSurvival_ComboPD <- function(
 
   # Summarize 'KeyPD' by Trial:
   if(length(unique(summaryKeyPD.ByIndiv$ID))>1){
-    summaryKeyPD.ByTrial <- summaryByTrial(dataInput   = summaryKeyPD.ByIndiv,
+    summaryKeyPD.ByTrial <- MMVbase::summaryByTrial(dataInput   = summaryKeyPD.ByIndiv,
                                            percentiles = percentiles,
                                            varCOL      = setdiff(names(summaryKeyPD.ByIndiv),
                                                                  c("ID","ScenID","ExpID","DoseID","TrialID","IndivID","USUBJID")),

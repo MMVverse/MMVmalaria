@@ -1260,7 +1260,7 @@ add_bites_to_trial_files <- function(baselineFolder,
   # STEP 1: Copy required trial files ----
   #--------------------------------------#
   # Copy baseline files to the new folder
-  file.copyMMV(
+  MMVbase::file.copyMMV(
     from = baselineFolder,
     to = outputFolder,
     recursive = TRUE,

@@ -98,7 +98,7 @@ table_strToLaTeX <- function(tableInputPath,
   if (is.null(tableOutputPath)){tableOutputPath = paste0(gsub(".txt", "", tableInputPath, fixed=TRUE),"_LaTeX.txt")}
 
   # Import table:
-  TableImport <- IQRtableToDataFrame(tableInputPath)
+  TableImport <- MMVbase::IQRtableToDataFrame(tableInputPath)
   dataFrame   <- TableImport$dataFrame
   xTitle      <- TableImport$xTitle
   xFooter     <- TableImport$xFooter
@@ -267,8 +267,8 @@ generate_EstimateTableForReport <- function(projectPath,
   if(is.null(tableOutputPath)){
     if(is_IQRnlmeProject(projectPath = projectPath) || is_IQRsysProject(projectPath = projectPath)){
       tableOutputPath <- file.path(projectPath, "project_parameters_table_Report.txt")
-    }else if(get_fileNameExtension(projectPath) %in% c("xlsx","xls","csv")){
-      tableOutputPath <- paste0(gsub(paste0(".",get_fileNameExtension(projectPath)),"",projectPath),"_Report.txt")
+    }else if(MMVbase::get_fileNameExtension(projectPath) %in% c("xlsx","xls","csv")){
+      tableOutputPath <- paste0(gsub(paste0(".",MMVbase::get_fileNameExtension(projectPath)),"",projectPath),"_Report.txt")
     }else{
       stop("Please define 'tableOutputPath'")
     }
@@ -287,7 +287,7 @@ generate_EstimateTableForReport <- function(projectPath,
   #---------------------------------------------------#
 
   # Load into parameters into GPF (ex-XLS format):
-  if(is_IQRnlmeProject(projectPath = projectPath) || is_IQRsysProject(projectPath = projectPath) || get_fileNameExtension(projectPath) %in% c("xlsx","xls","csv")){
+  if(is_IQRnlmeProject(projectPath = projectPath) || is_IQRsysProject(projectPath = projectPath) || MMVbase::get_fileNameExtension(projectPath) %in% c("xlsx","xls","csv")){
     estimates <- load_GPF(projectPath)$estimates
 
   }else if(is_GPF(projectPath)){
@@ -429,7 +429,7 @@ generate_EstimateTableForReport <- function(projectPath,
                      FLAGcompliance  = FLAGcompliance)
 
     # Load LaTeX table:
-    tableOut <- as.data.frame(as.matrix(IQRtableToDataFrame("temp_LaTeX.txt")$dataFrame),stringsAsFactors = FALSE)
+    tableOut <- as.data.frame(as.matrix(MMVbase::IQRtableToDataFrame("temp_LaTeX.txt")$dataFrame),stringsAsFactors = FALSE)
 
     # Remove temporary tables:
     if(file.exists("temp.txt")){
@@ -484,7 +484,7 @@ table_covariateSummaryResults <- function(tableInputPath,
   if (is.null(tableOutputPath)){tableOutputPath = paste0(gsub(".txt", "", tableInputPath),"_Summary.txt")}
 
   # Import table:
-  TableImport <- IQRtableToDataFrame(tableInputPath)
+  TableImport <- MMVbase::IQRtableToDataFrame(tableInputPath)
   xTitle      <- TableImport$xTitle
   xFooter     <- TableImport$xFooter
   TableImport <- TableImport$dataFrame
@@ -592,10 +592,10 @@ table_PKsummaryCompare <- function(tableInputPath1,
 
   # Import tables:
   #   Table 1
-  TableImport1 <- IQRtableToDataFrame(tableInputPath1)
+  TableImport1 <- MMVbase::IQRtableToDataFrame(tableInputPath1)
   TableImport1 <- TableImport1$dataFrame
   #   Table 2
-  TableImport2 <- IQRtableToDataFrame(tableInputPath2)
+  TableImport2 <- MMVbase::IQRtableToDataFrame(tableInputPath2)
   TableImport2 <- TableImport2$dataFrame
   #   Merge Table:
   TableImport <- rbind(TableImport1,TableImport2)
@@ -668,7 +668,7 @@ table_PKsummaryResults <- function(tableInputPath,
   if (is.null(tableOutputPath)){tableOutputPath = paste0(gsub("_metrics", "", gsub("txt", "", gsub(".txt", "", tableInputPath),fixed = TRUE)),"_PKsummaryResults.txt")}
 
   # Import table:
-  TableImport <- IQRtableToDataFrame(tableInputPath)
+  TableImport <- MMVbase::IQRtableToDataFrame(tableInputPath)
   TableImport <- TableImport$dataFrame
 
   # Get ID Code of the PK model:

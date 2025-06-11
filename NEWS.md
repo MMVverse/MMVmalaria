@@ -20,6 +20,7 @@ Updated to be more functional and in line with MMVbase, but allowing .Rdata file
 Confusion Matrix functions used to evaluate true/false positives/negatives added to MMVmalaria
 * ConfusionMatrix() added to 09-KeyParameters.R 
 * SummarizeConfusionMatrix() added to 09-KeyParameters.R
+MMVbase:: prefixed to all functions exported from MMVbase that were previously in MMVmalaria 
 
 # Vignettes
 PredictHumanDoses.Rmd

@@ -1165,10 +1165,10 @@ compare_DataModelMMV <- function(modelFolder,
   gr <- gr +
     geom_point(aes(y=DV)) +
     geom_line(aes(y=Value, linetype = Prediction)) +
-    scale_color_manual("Treatment", values=MMVcolors[2:40]) +
+    scale_color_manual("Treatment", values=MMVbase::MMVcolors[2:40]) +
     labs(x = "Time [hours]",
          y = ylabel,
-         caption = paste0("Activity: ", get_ActivityPath(ActivityPath),
+         caption = paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath),
                           "\nModel: ", modelFolder)) +
     theme(plot.caption = element_text(hjust=0))
 
@@ -1369,7 +1369,7 @@ compare_DataPopPred <- function(PKmodelFolder,
     facet_wrap(~TRTNAME, scales = "free_y") +
     labs(x = "Time [hours]",
          y = "Parasitemia [%]",
-         caption = paste0("Activity: ", get_ActivityPath(ActivityPath))) +
+         caption = paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath))) +
     theme(legend.position = "bottom",
           plot.caption = element_text(hjust=0))
 
@@ -1708,7 +1708,7 @@ compare_DataModelTimeRecrudCombo <- function(ModelCombo,
     )
 
     # Genereate plot:
-    gr_x <- MMVggplot(results.int, aes(Dose1, Dose2),
+    gr_x <- MMVbase::MMVggplot(results.int, aes(Dose1, Dose2),
                       ActivityPath = ActivityPath,
                       Caption      = caption) +
       geom_tile(aes(fill = Time2Recrud/24)) +
@@ -1820,7 +1820,7 @@ compare_IndPredFits <- function(modelFolder,
   # data     <- load_IQRdataGENERAL(file.path(modelFolder,modelRes[[1]]$projectHeader$DATA))
 
   # Define Activity Path for caption:
-  ActivityPath <- get_ActivityPath(ActivityPath)
+  ActivityPath <- MMVbase::get_ActivityPath(ActivityPath)
 
   # Caption:
   estModel <- readRDS(file.path(modelFolder,"project.est"))
@@ -1914,7 +1914,7 @@ compare_IndPredFits <- function(modelFolder,
     gr <- gr +
       geom_point(aes(y=DV)) +
       geom_line(aes(y=Value, linetype = Prediction)) +
-      scale_color_manual(legendName, values=MMVcolors[2:40], guide=FALSE) +
+      scale_color_manual(legendName, values=MMVbase::MMVcolors[2:40], guide=FALSE) +
       labs(x = "Time [hours]",
            y = ylabel,
            caption = caption)
@@ -1977,7 +1977,7 @@ compare_IndPredFits <- function(modelFolder,
     gr <- gr +
       geom_point(aes(y=DV)) +
       geom_line(aes(y=Value, linetype = Prediction)) +
-      scale_color_manual(legendName, values=MMVcolors[2:40], guide=FALSE) +
+      scale_color_manual(legendName, values=MMVbase::MMVcolors[2:40], guide=FALSE) +
       labs(x = "Time [hours]",
            y = ylabel,
            caption = caption)
@@ -2041,7 +2041,7 @@ compare_IndPredFits <- function(modelFolder,
       gr <- gr +
         geom_point(aes(y=DV), color="dodgerblue") +
         geom_line(aes(y=Value, linetype = Prediction), color="dodgerblue") +
-        #scale_color_manual(legendName, values=MMVcolors[2:40]) +
+        #scale_color_manual(legendName, values=MMVbase::MMVcolors[2:40]) +
         #labs(x="Time [hours]", y=ylabel)
         labs(x = "Time [hours]",
              y = ylabel,
@@ -2314,20 +2314,20 @@ compare_ModelEstimateRobustness <- function(FitList,
       geom_point(size=3) +
       geom_vline(aes(xintercept = Intercept), color="black", linetype="dashed", size=1.25) +
       facet_wrap(~Parameter) +
-      scale_color_manual(values = MMVcolors[2:20]) +
+      scale_color_manual(values = MMVbase::MMVcolors[2:20]) +
       theme(legend.position = "")
 
     gr2 <- IQRggplot(subset(EstimateTable, (Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))), aes(Value, Model, color = Model)) +
       geom_jitter(position=position_jitter(height=0.2, width=0), size=3) +
       facet_wrap(~Parameter, scales="free_x") +
-      scale_color_manual(values = MMVcolors[2:20]) +
+      scale_color_manual(values = MMVbase::MMVcolors[2:20]) +
       theme(legend.position = "")
 
     if (with(EstimateTable, any(!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))  & (Parameter!=".id")))) {
       gr3 <- IQRggplot(subset(EstimateTable, (!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter)) & (Parameter!=".id"))), aes(Value, Model, color = Model)) +
         geom_point(size=3) +
         facet_wrap(~Parameter, scales = "free_x") +
-        scale_color_manual(values = MMVcolors[2:23]) +
+        scale_color_manual(values = MMVbase::MMVcolors[2:23]) +
         theme(legend.position = "")
       gr <- gridExtra::arrangeGrob(gr1, gr2, gr3, heights = c(5,2,3))
     } else {
@@ -2341,13 +2341,13 @@ compare_ModelEstimateRobustness <- function(FitList,
       geom_point(size=3) +
       geom_hline(aes(yintercept = Intercept), color="black", linetype="dashed", size=1.25) +
       facet_wrap(~Parameter) +
-      scale_color_manual(values = MMVcolors[2:23]) +
+      scale_color_manual(values = MMVbase::MMVcolors[2:23]) +
       theme(legend.position = "", axis.text.x = element_text(angle = -20, vjust=0.8, hjust=0.2))
 
     gr2 <- IQRggplot(subset(EstimateTable, (Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter))), aes(Model, Value, color = Model)) +
       geom_jitter(position=position_jitter(height=0.2, width=0), size=3) +
       facet_wrap(~Parameter, scales="free_y") +
-      scale_color_manual(values=MMVcolors[2:23]) +
+      scale_color_manual(values=MMVbase::MMVcolors[2:23]) +
       theme(legend.position = "",
             axis.text.x     = element_text(angle=-20, vjust=0.8, hjust=0.2))
 
@@ -2355,7 +2355,7 @@ compare_ModelEstimateRobustness <- function(FitList,
       gr3 <- IQRggplot(subset(EstimateTable, (!(Parameter %in% PDddiPara) & !(Parameter==Criteria | grepl("^OUTPUT",Parameter) | grepl("^error",Parameter)) & (Parameter!=".id"))), aes(Model, Value, color = Model)) +
         geom_point(size=3) +
         facet_wrap(~Parameter, scales = "free_y") +
-        scale_color_manual(values = MMVcolors[2:23]) +
+        scale_color_manual(values = MMVbase::MMVcolors[2:23]) +
         theme(legend.position = "", axis.text.x = element_text(angle = -20, vjust=0.8, hjust=0.2))
       gr <- gridExtra::arrangeGrob(gr1, gr2, gr3, heights = c(5,2,3))
     } else {
@@ -3627,7 +3627,7 @@ table_EstimatesComboNLME <- function(x, filename = NULL, FLAGout = FALSE, title 
   }, .id = "Model")
 
   # Get rid of common root path for better readability
-  resTable$Model <- gsub(paste0(aux_CommonSubPath(as.character(resTable$Model)),"/"), "", resTable$Model)
+  resTable$Model <- gsub(paste0(MMVbase::aux_CommonSubPath(as.character(resTable$Model)),"/"), "", resTable$Model)
 
   # Order by BIC
   resTable <- resTable[order(resTable$BIC), ]
@@ -4982,7 +4982,7 @@ plotVPC_MMVdataVPC <- function (dataVPC, stratifyBy = NULL, filename = NULL, FLA
         else if (Caption == "") {
           Caption_ij <- NULL
         }
-        grList[[i]]$content[[j]] <- transform_IQRggplotToMMVggplot(grList[[i]]$content[[j]],
+        grList[[i]]$content[[j]] <- MMVbase::transform_IQRggplotToMMVggplot(grList[[i]]$content[[j]],
                                                                    style = style, ActivityPath = ActivityPath,
                                                                    Caption = Caption_ij)
         if (is.null(stratifyBy)) {
@@ -5019,7 +5019,7 @@ plotVPC_MMVdataVPC <- function (dataVPC, stratifyBy = NULL, filename = NULL, FLA
               labs(caption = NULL)
             if (is.null(ActivityPath) || ActivityPath !=
                 "") {
-              footer <- paste0("Activity: ", get_ActivityPath(ActivityPath))
+              footer <- paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath))
             }
             if (is.character(Caption_ij) & is.character(footer)) {
               footer <- paste0(footer, "\n", Caption_ij)
@@ -5081,8 +5081,8 @@ plotVPC_MMVdataVPC <- function (dataVPC, stratifyBy = NULL, filename = NULL, FLA
 #'
 #' Generates a list of ggplot objects where summarized simulations and
 #' observations are compared visually. Summarized input is obtained from
-#' applying `summaryByTrial` and `summarAcrossTrials` to data from VPCs for simulation data.
-#' Additionally, summarized input for observations using `summaryByTrial` is augmented with confidence intervals
+#' applying `MMVbase::summaryByTrial` and `summarAcrossTrials` to data from VPCs for simulation data.
+#' Additionally, summarized input for observations using `MMVbase::summaryByTrial` is augmented with confidence intervals
 #' using the Clopper-Pearson method.
 #' Comparison is done per `TRTNAME` by default. A list of ggplot objects is returned with one plot per unique variable.
 #'
@@ -5096,7 +5096,7 @@ plotVPC_MMVdataVPC <- function (dataVPC, stratifyBy = NULL, filename = NULL, FLA
 #'
 #' @details
 #' This function creates a visual comparison of summarized data for binary variables. It generates a ggplot object for each unique variable in the dataset.
-#' The summarized input for simulations is obtained using the `summaryByTrial` and `summarAcrossTrials` functions, while the summarized input for observations
+#' The summarized input for simulations is obtained using the `MMVbase::summaryByTrial` and `summarAcrossTrials` functions, while the summarized input for observations
 #' is augmented with confidence intervals using the Clopper-Pearson method. The comparison is performed per `TRTNAME` by default, but this can be customized
 #' using the `compCategory` parameter.
 #'
@@ -5168,7 +5168,7 @@ plotSummaryComparisonBinary <- function(plotData,
   sourceNames <- unique(plotData[[sourceCol]])
   
   # Create a named vector of colors for each source
-  color.bySource <- setNames(MMVcolors[2:(1+length(sourceNames))], sourceNames)
+  color.bySource <- setNames(MMVbase::MMVcolors[2:(1+length(sourceNames))], sourceNames)
   
   # Generate a list of ggplot objects, one for each unique variable
   gglist <- lapply(seq_along(variableNames), function(k) {
@@ -5180,7 +5180,7 @@ plotSummaryComparisonBinary <- function(plotData,
     thisD <- plotData[plotData[[variableCol]] == thisVariable,]
     
     # Create the ggplot object for the current variable
-    gg <- MMVggplot(thisD) + 
+    gg <- MMVbase::MMVggplot(thisD) + 
       geom_hline(yintercept = 100, size = .2) +  # Add a horizontal line at y = 100
       geom_point(aes(x=get(compCategory), y = `CI Median`, col = get(sourceCol)), position = position_dodge(width=-0.5)) +  # Add points with dodge position
       geom_errorbar(aes(x=get(compCategory), ymin = `CI Low`, ymax = `CI High`, col = get(sourceCol)), 
@@ -5209,7 +5209,7 @@ plotSummaryComparisonBinary <- function(plotData,
 #'
 #' Generates a list of ggplot objects where summarized simulations and
 #' observations are compared visually. Summarized input is obtained from
-#' applying `summaryByTrial` and `summarAcrossTrials` to data from VPCs.
+#' applying `MMVbase::summaryByTrial` and `summarAcrossTrials` to data from VPCs.
 #' Comparison is done per `TRTNAME` by default. A list of ggplot objects is returned with one plot per unique variable.
 #'
 #' @param dataSim Data.frame containing summarized simulation data.
@@ -5222,7 +5222,7 @@ plotSummaryComparisonBinary <- function(plotData,
 #'
 #' @details
 #' This function creates a visual comparison of summarized data for continuous variables. It generates a ggplot object for each unique variable in the dataset.
-#' The summarized input for simulations is obtained using the `summaryByTrial` and `summarAcrossTrials` functions. The comparison is performed per `TRTNAME` by default, but this can be customized
+#' The summarized input for simulations is obtained using the `MMVbase::summaryByTrial` and `summarAcrossTrials` functions. The comparison is performed per `TRTNAME` by default, but this can be customized
 #' using the `compCategory` parameter.
 #'
 #' @examples

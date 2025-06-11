@@ -446,7 +446,7 @@ import_SCIDpkpdData_GSK <- function(dataFile,
   dataPKraw <- readxl::read_excel(dataFile, PKsheet, range = PKrange)
 
   # Remove escape characters from column names
-  names(dataPKraw) <- aux_removeEscapeChar(names(dataPKraw))
+  names(dataPKraw) <- MMVbase::aux_removeEscapeChar(names(dataPKraw))
 
   # Apply mapping:
   dataPK <- plyr::rename(dataPKraw, replace = PKmapping)
@@ -517,7 +517,7 @@ import_SCIDpkpdData_GSK <- function(dataFile,
   dataPDraw <- readxl::read_excel(dataFile, PDsheet, range = PDrange)
 
   # Remove escape characters from column names
-  names(dataPDraw) <- aux_removeEscapeChar(names(dataPDraw))
+  names(dataPDraw) <- MMVbase::aux_removeEscapeChar(names(dataPDraw))
 
   # Apply mapping:
   dataPD <- plyr::rename(dataPDraw, replace = PDmapping)
@@ -629,9 +629,9 @@ import_SCIDpkpdData_GSK <- function(dataFile,
     dataHE <- plyr::join(dataHE, groupInfo)
 
   # Add UBSUBJID
-  dataPK$USUBJID <- aux_createUSUBJID(dataPK)
-  dataPD$USUBJID <- aux_createUSUBJID(dataPD)
-  dataHE$USUBJID <- aux_createUSUBJID(dataHE)
+  dataPK$USUBJID <- MMVbase::aux_createUSUBJID(dataPK)
+  dataPD$USUBJID <- MMVbase::aux_createUSUBJID(dataPD)
+  dataHE$USUBJID <- MMVbase::aux_createUSUBJID(dataHE)
 
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -832,7 +832,7 @@ import_SCIDpkpdData_oldTAD <- function(dataFile,
   dataPKraw <- readxl::read_excel(dataFile, PKsheet, range = PKrange)
 
   # Remove escape characters from column names
-  names(dataPKraw) <- aux_removeEscapeChar(names(dataPKraw))
+  names(dataPKraw) <- MMVbase::aux_removeEscapeChar(names(dataPKraw))
 
   # Apply mapping:
   dataPK <- plyr::rename(dataPKraw, replace = PKmapping)
@@ -895,7 +895,7 @@ import_SCIDpkpdData_oldTAD <- function(dataFile,
   dataPDraw <- readxl::read_excel(dataFile, PDsheet, range = PDrange)
 
   # Remove escape characters from column names
-  names(dataPDraw) <- aux_removeEscapeChar(names(dataPDraw))
+  names(dataPDraw) <- MMVbase::aux_removeEscapeChar(names(dataPDraw))
 
   # Apply mapping:
   dataPD <- plyr::rename(dataPDraw, replace = PDmapping)
@@ -998,9 +998,9 @@ import_SCIDpkpdData_oldTAD <- function(dataFile,
     dataHE <- plyr::join(dataHE, groupInfo)
 
   # Add UBSUBJID
-  dataPK$USUBJID <- aux_createUSUBJID(dataPK)
-  dataPD$USUBJID <- aux_createUSUBJID(dataPD)
-  dataHE$USUBJID <- aux_createUSUBJID(dataHE)
+  dataPK$USUBJID <- MMVbase::aux_createUSUBJID(dataPK)
+  dataPD$USUBJID <- MMVbase::aux_createUSUBJID(dataPD)
+  dataHE$USUBJID <- MMVbase::aux_createUSUBJID(dataHE)
 
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1213,7 +1213,7 @@ import_SCIDpkpdData_TAD <- function(dataFile,
   dataDoseTimeraw <- readxl::read_excel(dataFile, DoseTimeSheet, range = DoseTimeRange)
 
   # Remove escape characters from column names
-  names(dataDoseTimeraw) <- aux_removeEscapeChar(names(dataDoseTimeraw))
+  names(dataDoseTimeraw) <- MMVbase::aux_removeEscapeChar(names(dataDoseTimeraw))
 
   # Apply mapping:
   dataDoseTime <- plyr::rename(dataDoseTimeraw, replace = DoseTimeMapping)
@@ -1226,7 +1226,7 @@ import_SCIDpkpdData_TAD <- function(dataFile,
   dataDoseraw <- readxl::read_excel(dataFile, DoseSheet, range = DoseRange)
 
   # Remove escape characters from column names
-  names(dataDoseraw) <- aux_removeEscapeChar(names(dataDoseraw))
+  names(dataDoseraw) <- MMVbase::aux_removeEscapeChar(names(dataDoseraw))
 
   # Apply mapping:
   dataDose <- plyr::rename(dataDoseraw, replace = DoseMapping)
@@ -1271,7 +1271,7 @@ import_SCIDpkpdData_TAD <- function(dataFile,
   }
 
   # Add UBSUBJID
-  dataDos$USUBJID <- aux_createUSUBJID(dataDos)
+  dataDos$USUBJID <- MMVbase::aux_createUSUBJID(dataDos)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Define Dosing Records ----
@@ -1306,7 +1306,7 @@ import_SCIDpkpdData_TAD <- function(dataFile,
   dataPKraw <- readxl::read_excel(dataFile, PKsheet, range = PKrange)
 
   # Remove escape characters from column names
-  names(dataPKraw) <- aux_removeEscapeChar(names(dataPKraw))
+  names(dataPKraw) <- MMVbase::aux_removeEscapeChar(names(dataPKraw))
 
   # Apply mapping:
   dataPK <- plyr::rename(dataPKraw, replace = PKmapping)
@@ -1344,7 +1344,7 @@ import_SCIDpkpdData_TAD <- function(dataFile,
   dataPDraw <- readxl::read_excel(dataFile, PDsheet, range = PDrange)
 
   # Remove escape characters from column names
-  names(dataPDraw) <- aux_removeEscapeChar(names(dataPDraw))
+  names(dataPDraw) <- MMVbase::aux_removeEscapeChar(names(dataPDraw))
 
   # Apply mapping:
   dataPD <- plyr::rename(dataPDraw, replace = PDmapping)
@@ -1427,7 +1427,7 @@ import_SCIDpkpdData_TAD <- function(dataFile,
   data$VISIT       <- visitNumber
 
   # Create UBSUBJID
-  data$USUBJID <- aux_createUSUBJID(data)
+  data$USUBJID <- MMVbase::aux_createUSUBJID(data)
 
   # Order:
   data <- data[order(data$USUBJID, data$TIME),]
@@ -1750,8 +1750,8 @@ import_SCIDpkpdDataCombo_GSK <- function(dataFile,
   dataPKraw2 <- readxl::read_excel(dataFile, PKsheets[2], range = PKranges[2])
 
   # Remove escape characters from column names
-  names(dataPKraw1) <- aux_removeEscapeChar(names(dataPKraw1))
-  names(dataPKraw2) <- aux_removeEscapeChar(names(dataPKraw2))
+  names(dataPKraw1) <- MMVbase::aux_removeEscapeChar(names(dataPKraw1))
+  names(dataPKraw2) <- MMVbase::aux_removeEscapeChar(names(dataPKraw2))
 
   # Apply mapping
   dataPK1 <- plyr::rename(dataPKraw1, replace = PKmapping, warn_missing = FALSE)
@@ -1828,7 +1828,7 @@ import_SCIDpkpdDataCombo_GSK <- function(dataFile,
     ROUTE     <- NA
     IGNORE    <- NA
   })
-  dataPK$USUBJID   <- aux_createUSUBJID(dataPK)
+  dataPK$USUBJID   <- MMVbase::aux_createUSUBJID(dataPK)
 
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1841,7 +1841,7 @@ import_SCIDpkpdDataCombo_GSK <- function(dataFile,
   dataPDraw <- readxl::read_excel(dataFile, PDsheet, range = PDrange)
 
   # Remove escape characters from column names
-  names(dataPDraw) <- aux_removeEscapeChar(names(dataPDraw))
+  names(dataPDraw) <- MMVbase::aux_removeEscapeChar(names(dataPDraw))
 
   # Apply matich
   dataPD <- plyr::rename(dataPDraw, replace = PDmapping)
@@ -1889,7 +1889,7 @@ import_SCIDpkpdDataCombo_GSK <- function(dataFile,
     TRTNAME <- ifelse(DOSELEVEL1 > 0 & DOSELEVEL2 > 0, paste0(str1, "+", str2), TRTNAME)
     str1 <- str2 <- NULL
   })
-  dataPD$USUBJID   <- aux_createUSUBJID(dataPD)
+  dataPD$USUBJID   <- MMVbase::aux_createUSUBJID(dataPD)
 
   # Normalize parasitemia to human erythrocyte percent
   dataPD$VALUE <- ifelse(dataPD$VALUE == PDlloq/2,PDlloq/2, dataPD$VALUE /dataPD$huErythro * 100)
@@ -2088,8 +2088,8 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
   dataPKraw2 <- readxl::read_excel(dataFile, PKsheets[2], range = PKranges[2], na = c("NA", "", "."))
 
   # Remove escape characters from column names:
-  names(dataPKraw1) <- aux_removeEscapeChar(names(dataPKraw1))
-  names(dataPKraw2) <- aux_removeEscapeChar(names(dataPKraw2))
+  names(dataPKraw1) <- MMVbase::aux_removeEscapeChar(names(dataPKraw1))
+  names(dataPKraw2) <- MMVbase::aux_removeEscapeChar(names(dataPKraw2))
 
   # Apply mapping:
   dataPK1 <- plyr::rename(dataPKraw1, replace = PKmapping, warn_missing = FALSE)
@@ -2167,7 +2167,7 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
     ROUTE     <- NA
     IGNORE    <- NA
   })
-  dataPK$USUBJID <- aux_createUSUBJID(dataPK)
+  dataPK$USUBJID <- MMVbase::aux_createUSUBJID(dataPK)
 
   # Adjust DOSEMULT1 & DOSEMULT2 if DOSELEVEL=0:
   dataPK$DOSEMULT1 <- ifelse(dataPK$DOSELEVEL1==0, 0, dataPK$DOSEMULT1)
@@ -2182,7 +2182,7 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
   dataPDraw <- readxl::read_excel(dataFile, PDsheet, range = PDrange, na = c("NA", "", "."))
 
   # Remove escape characters from column names:
-  names(dataPDraw) <- aux_removeEscapeChar(names(dataPDraw))
+  names(dataPDraw) <- MMVbase::aux_removeEscapeChar(names(dataPDraw))
 
   # Apply matching:
   dataPD <- plyr::rename(dataPDraw, replace = PDmapping)
@@ -2241,7 +2241,7 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
     huErythro <- ifelse(huErythro %in% c("Dead"), NA, huErythro)
     huErythro <- as.numeric(huErythro)
   })
-  dataPD$USUBJID   <- aux_createUSUBJID(dataPD)
+  dataPD$USUBJID   <- MMVbase::aux_createUSUBJID(dataPD)
 
   # Normalize parasitemia to human erythrocyte percent:
   dataPD$VALUE <- ifelse(dataPD$VALUE == PDlloq/2,PDlloq/2, dataPD$VALUE /dataPD$huErythro * 100)
@@ -2490,7 +2490,7 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   dataDoseraw <- readxl::read_excel(dataFile, DoseSheet, range = DoseRange)
 
   # Remove escape characters from column names
-  names(dataDoseraw) <- aux_removeEscapeChar(names(dataDoseraw))
+  names(dataDoseraw) <- MMVbase::aux_removeEscapeChar(names(dataDoseraw))
 
   # Apply mapping:
   dataDose <- plyr::rename(dataDoseraw, replace = DoseMapping)
@@ -2600,7 +2600,7 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   }
 
   # Add UBSUBJID
-  dataDos$USUBJID <- aux_createUSUBJID(dataDos)
+  dataDos$USUBJID <- MMVbase::aux_createUSUBJID(dataDos)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Define Time Dosing Records ----
@@ -2610,7 +2610,7 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   dataDoseTimeraw <- readxl::read_excel(dataFile, DoseTimeSheet, range = DoseTimeRange)
 
   # Remove escape characters from column names
-  names(dataDoseTimeraw) <- aux_removeEscapeChar(names(dataDoseTimeraw))
+  names(dataDoseTimeraw) <- MMVbase::aux_removeEscapeChar(names(dataDoseTimeraw))
 
   # Apply mapping:
   dataDoseTime <- plyr::rename(dataDoseTimeraw, replace = DoseTimeMapping)
@@ -2670,7 +2670,7 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   dataPKraw <- readxl::read_excel(dataFile, PKsheets, range = PKranges, na = c("NA", "", "."))
 
   # Remove escape characters from column names:
-  names(dataPKraw) <- aux_removeEscapeChar(names(dataPKraw))
+  names(dataPKraw) <- MMVbase::aux_removeEscapeChar(names(dataPKraw))
 
   # Apply mapping:
   dataPK <- plyr::rename(dataPKraw, replace = PKmapping, warn_missing = FALSE)
@@ -2716,7 +2716,7 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   dataPDraw <- readxl::read_excel(dataFile, PDsheet, range = PDrange, na = c("NA", "", "."))
 
   # Remove escape characters from column names:
-  names(dataPDraw) <- aux_removeEscapeChar(names(dataPDraw))
+  names(dataPDraw) <- MMVbase::aux_removeEscapeChar(names(dataPDraw))
 
   # Apply matching:
   dataPD <- plyr::rename(dataPDraw, replace = PDmapping)

@@ -63,7 +63,7 @@ generate_GPFfromOldIQRproject <- function(projectPath,
   # Read parameters table:
   #   If IQR project
   if(file.exists(file.path(projectPath,"project_parameters_table.txt"))){
-    modelResult <- IQRtableToDataFrame(file.path(projectPath,"project_parameters_table.txt"))$dataFrame
+    modelResult <- MMVbase::IQRtableToDataFrame(file.path(projectPath,"project_parameters_table.txt"))$dataFrame
     names(modelResult) <- toupper(names(modelResult))
     if (!("COMMENT" %in% names(modelResult))){
       modelResult$COMMENT <- "."
@@ -71,7 +71,7 @@ generate_GPFfromOldIQRproject <- function(projectPath,
 
     #   If IQM project
   }else if(file.exists(file.path(projectPath,"parameter_table.txt"))){
-    modelResult <- IQRtableToDataFrame(file.path(projectPath,"parameter_table.txt"))$dataFrame
+    modelResult <- MMVbase::IQRtableToDataFrame(file.path(projectPath,"parameter_table.txt"))$dataFrame
     names(modelResult) <- c("PARAMETER", "VALUE", "RSE", "COMMENT", "SHRINKAGE")
 
     #   If nothing found
@@ -1019,10 +1019,10 @@ getModelParameters_MMVmalariaProject <- function(projectPath){
       # It should work as the IQRnlmeProject will be converted to a GPF object automatically:
       out <- getModelParameters_MMVmalariaXLS(filename = projectPath)
 
-    }else if((tolower(get_fileNameExtension(projectPath))=="csv") && is.fileMMV(projectPath)){
+    }else if((tolower(MMVbase::get_fileNameExtension(projectPath))=="csv") && MMVbase::is.fileMMV(projectPath)){
       out <- getModelParameters_MMVmalariaCSV(filename = projectPath)
 
-    }else if((tolower(get_fileNameExtension(projectPath)) %in% c("xls", "xlsx")) && is.fileMMV(projectPath)){
+    }else if((tolower(MMVbase::get_fileNameExtension(projectPath)) %in% c("xls", "xlsx")) && MMVbase::is.fileMMV(projectPath)){
       out <- getModelParameters_MMVmalariaXLS(filename = projectPath)
 
     }else{
@@ -1149,11 +1149,11 @@ getPopParameters_MMVmalariaProject <- function(projectPath,
         out <- as.data.frame(t(out))
       }
 
-    }else if((tolower(get_fileNameExtension(projectPath))=="csv") && is.fileMMV(projectPath)){
+    }else if((tolower(MMVbase::get_fileNameExtension(projectPath))=="csv") && MMVbase::is.fileMMV(projectPath)){
       out <- getPopParameters_MMVmalariaCSV(filename = projectPath,       # Path to a CSV file
                                             IndCovariates = IndCovariates)
 
-    }else if((tolower(get_fileNameExtension(projectPath)) %in% c("xls", "xlsx")) && is.fileMMV(projectPath)){
+    }else if((tolower(MMVbase::get_fileNameExtension(projectPath)) %in% c("xls", "xlsx")) && MMVbase::is.fileMMV(projectPath)){
       out <- getPopParameters_MMVmalariaXLS(filename = projectPath,       # Path to a XLS file
                                             IndCovariates = IndCovariates)
 
@@ -1611,14 +1611,14 @@ sample_MMVmalariaProject <- function(projectPath,
                                    FLAGid      = FLAGid,
                                    verbose     = verbose)
 
-    }else if ((tolower(get_fileNameExtension(projectPath)) %in% c("csv")) && is.fileMMV(projectPath)){
+    }else if ((tolower(MMVbase::get_fileNameExtension(projectPath)) %in% c("csv")) && MMVbase::is.fileMMV(projectPath)){
       out <- sample_MMVmalariaCSV(filename    = projectPath,
                                   Nsamples    = Nsamples,
                                   FLAG_SAMPLE = FLAG_SAMPLE,
                                   covariates  = covariates,
                                   FLAGid      = FLAGid)
 
-    }else if ((tolower(get_fileNameExtension(projectPath)) %in% c("xls","xlsx")) && is.fileMMV(projectPath)){
+    }else if ((tolower(MMVbase::get_fileNameExtension(projectPath)) %in% c("xls","xlsx")) && MMVbase::is.fileMMV(projectPath)){
       out <- sample_MMVmalariaXLS(filename    = projectPath,
                                   Nsamples    = Nsamples,
                                   FLAG_SAMPLE = FLAG_SAMPLE,
@@ -1879,7 +1879,7 @@ simTimeRecrudescenceCombo <- function(model, parameters,
 #' @param doseCovariate Default: list(drug1 = NULL, drug2 = NULL)
 #' @param covariates Default: `NULL`
 #' @param evalDay Default: 28
-#' @param simtime Default: create_PKPDsimtime(24 * evalDay)
+#' @param simtime Default: MMVbase::create_PKPDsimtime(24 * evalDay)
 #' @param nTrial Default: 10
 #' @param nSubj Default: 10
 #' @param LLOQ.PD
@@ -1910,7 +1910,7 @@ simulate_ComboMouse2Human <- function(TreatmentGroups,
                                       doseCovariate = list(drug1 = NULL, drug2 = NULL),  # indicate name for the dose covariate
                                       covariates    = NULL,     # Named list of covariate vectors to sample from
                                       evalDay       = 28,
-                                      simtime       = create_PKPDsimtime(24*evalDay),
+                                      simtime       = MMVbase::create_PKPDsimtime(24*evalDay),
                                       nTrial        = 10,
                                       nSubj         = 10,
                                       LLOQ.PD,                  # Parasitemia LLOQ (linear scale)

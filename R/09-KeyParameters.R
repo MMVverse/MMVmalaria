@@ -179,7 +179,7 @@ assess_MICMPC90PRR48 <- function(modelFolder,
       facet_wrap(~Parameter, scales = "free_y") +
       scale_x_continuous("DOSE (mg)") +
       labs(x       = "",
-           caption = paste0("Activity: ", get_ActivityPath(ActivityPath),
+           caption = paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath),
                             "\nModel: ", modelFolder)) +
       theme(strip.text   = element_text(size=12, face="bold"),
             plot.caption = element_text(hjust=0))
@@ -235,7 +235,7 @@ assess_MICMPC90PRR48 <- function(modelFolder,
         coord_cartesian(xlim = c(-0.5,0.5)) +
         scale_x_continuous(breaks = -1) +
         labs(x       = "",
-             caption = paste0("Activity: ", get_ActivityPath(ActivityPath),
+             caption = paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath),
                               "\nModel: ", modelFolder)) +
         theme(strip.text   = element_text(size=12, face="bold"),
               plot.caption = element_text(hjust=0))
@@ -253,7 +253,7 @@ assess_MICMPC90PRR48 <- function(modelFolder,
         coord_cartesian(xlim = c(yaxisMin-1,yaxisMax+1)) +
         labs(x       = paste0(yaxis," (", yaxisunit,")"),
              y       = "",
-             caption = paste0("Activity: ", get_ActivityPath(ActivityPath),
+             caption = paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath),
                               "\nModel: ", modelFolder)) +
         theme(strip.text   = element_text(size=12, face="bold"),
               plot.caption = element_text(hjust=0))
@@ -417,7 +417,7 @@ formula_SCIDrbp <- function(HuRbp,
 #' @param Time
 #' @param Conc
 #' @param AUCtype Default: 'last'
-#' @param intMethod Default: logLinTrapzMMV
+#' @param intMethod Default: MMVbase::logLinTrapzMMV
 #' @param LambdaZ Default: function(x, y) {
 #'    estimate_LambdaZ(x, y)$LambdaZ
 #'}
@@ -429,7 +429,7 @@ formula_SCIDrbp <- function(HuRbp,
 estimate_AUC <- function(Time,
                          Conc,
                          AUCtype   = "last",
-                         intMethod = logLinTrapzMMV,
+                         intMethod = MMVbase::logLinTrapzMMV,
                          LambdaZ   = function(x,y){estimate_LambdaZ(x,y)$LambdaZ},
                          atol      = 1e-9){
 
@@ -1575,7 +1575,7 @@ get_PRRtot <- function(dataSim,
   Pstart <- dataSim[[paraCOL]][1]
 
   # Get Minimum Parasitemia:
-  Pmin <- find_MinMMV(X  = dataSim$TIME,
+  Pmin <- MMVbase::find_MinMMV(X  = dataSim$TIME,
                       Y  = dataSim[[paraCOL]],
                       dx = 0.1,
                       Method = MethodMin)$Ymin
@@ -1625,7 +1625,7 @@ getApparentKeys <- function(dataSim,
 
       # FIRST ---
       # Get Time and Minimum Parasitemia happens:
-      dMin <- find_MinMMV(X  = dataSim$TIME,
+      dMin <- MMVbase::find_MinMMV(X  = dataSim$TIME,
                           Y  = dataSim[[paraCOL]],
                           dx = 0.1,
                           Method = "CubicSpline")
@@ -1966,7 +1966,7 @@ getTimeAboveMPC90 <- function(dataSim,
     dtMPC90 <- ifelse(dataSim[[concCOL]]>MPC90, 1, 0)
 
     # Calculate Time Above MPC90:
-    tMPC90 <- rectintMMV(dataSim[[timeCOL]],dtMPC90)
+    tMPC90 <- MMVbase::rectintMMV(dataSim[[timeCOL]],dtMPC90)
 
     #------------------------------------------------#
     # When dtMPC goes from 0 to 1 (or 1 to 0), a piece
@@ -2024,7 +2024,7 @@ getTimeAboveMPC90sim <- function(dataSim,
   dtMPC90 <- ifelse(dataSim[[effCOL]]>0.9, 1, 0)
 
   # Calculate Time Above MPC90:
-  tMPC90 <- trapzMMV(dataSim[[timeCOL]],dtMPC90)
+  tMPC90 <- MMVbase::trapzMMV(dataSim[[timeCOL]],dtMPC90)
 
   #------------------------------------------------#
   # When dtMPC90 goes from 0 to 1 (or 1 to 0), the
@@ -2143,7 +2143,7 @@ getTimeKRaboveGR<- function(dataSim,
   # Check if Concentration is above Eff.MIC or not:
   dtKRGR <- ifelse(dataSim[[killCOL]]>GR, 1, 0)
   # Calculate Time Above MIC:
-  tKRGR <- trapzMMV(dataSim[[timeCOL]],dtKRGR)
+  tKRGR <- MMVbase::trapzMMV(dataSim[[timeCOL]],dtKRGR)
 
   #------------------------------------------------#
   # When dtKRGR goes from 0 to 1 (or 1 to 0), the
@@ -2384,12 +2384,12 @@ plot_keyPDparametersMMV <- function(object,
   dodge <- position_dodge(width=0.5)
 
   # Plot:
-  gr <- MMVggplot(estimates, aes(Hill, Value, color=Run, shape = !is.na(SE)), ActivityPath = ActivityPath) +
+  gr <- MMVbase::MMVggplot(estimates, aes(Hill, Value, color=Run, shape = !is.na(SE)), ActivityPath = ActivityPath) +
     geom_point(position=dodge) +
     geom_linerange(aes(ymin=Value-SE,ymax=Value+SE), position=dodge) +
     facet_wrap(~Parameter, scales="free_y") +
     scale_x_continuous(breaks = unique(estimates$Hill)) +
-    # scale_color_manual(values=MMVcolors) +
+    # scale_color_manual(values=MMVbase::MMVcolors) +
     scale_shape_manual("SE Available", breaks=c(TRUE,FALSE), values=c(17,16))
 
   # Save Plot:

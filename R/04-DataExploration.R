@@ -37,7 +37,7 @@ display_ComboTreatments <- function(data,
 
   # Update Compound Name if wanted:
   if (!is.null(CompoundList)){
-    data <- swapName_MMVnameToName(data         = data,
+    data <- MMVbase::swapName_MMVnameToName(data         = data,
                                    CompoundList = CompoundList)
   }
 
@@ -129,9 +129,9 @@ display_ComboTreatments <- function(data,
           axis.ticks      = element_blank()) +
     coord_cartesian(xlim=c(0.5,nLevels1+0.5), ylim=c(0.5,nLevels2+0.5), expand = FALSE)
   if (is.null(stratify)) {
-    gr <- gr + scale_color_manual(values=MMVcolors, guide=FALSE)
+    gr <- gr + scale_color_manual(values=MMVbase::MMVcolors, guide=FALSE)
   } else {
-    gr <- gr + scale_color_manual(stratify, values=MMVcolors) +
+    gr <- gr + scale_color_manual(stratify, values=MMVbase::MMVcolors) +
       guides(color=guide_legend(override.aes = list(size = 5, label = "\u25FB")))
   }
 
@@ -514,7 +514,7 @@ plot_PKPDdataMMV <- function(dataGen,
   lloq <- unique(dataPlotPKPD[,c("Label","LLOQ","STUDY")])
 
   # Plot with PK and PD data:
-  gr <- MMVggplot(dataPlotPKPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+  gr <- MMVbase::MMVggplot(dataPlotPKPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
     geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
     geom_line(aes(group = USUBJID), color = "grey") +
     geom_point(aes(color = Treatment)) +
@@ -528,7 +528,7 @@ plot_PKPDdataMMV <- function(dataGen,
   IQRoutputPNG(gr, filename = file.path(filePath, "01-PKPDlinePlot.png"))
 
   # Plot with PK and PD data:
-  gr <- MMVggplot(dataPlotPKPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+  gr <- MMVbase::MMVggplot(dataPlotPKPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
     geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
     geom_line(aes(group = USUBJID), color = "grey") +
     geom_point(aes(color = Treatment, shape = STUDY)) +
@@ -560,7 +560,7 @@ plot_PKPDdataMMV <- function(dataGen,
 
       #~~~~~~~
       # Plot PK Data by STUDY:
-      gr <- MMVggplot(dataPlotPK, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotPK, aes(TIME, VALUE), ActivityPath = ActivityPath) +
         geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = Treatment)) +
@@ -576,7 +576,7 @@ plot_PKPDdataMMV <- function(dataGen,
 
       #~~~~~~~
       # Plot PK Data by TRT:
-      gr <- MMVggplot(dataPlotPK, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotPK, aes(TIME, VALUE), ActivityPath = ActivityPath) +
         geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = STUDY)) +
@@ -610,7 +610,7 @@ plot_PKPDdataMMV <- function(dataGen,
 
       #~~~~~~~
       # Plot PK Data Unstratified:
-      gr <- MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = Treatment, shape = STUDY)) +
         geom_point(data = dataPlotPK.LLOQ, shape = 4, color = "red") +
@@ -623,7 +623,7 @@ plot_PKPDdataMMV <- function(dataGen,
 
       #~~~~~~~
       # Plot PK Data by STUDY:
-      gr <- MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = Treatment)) +
         geom_point(data = dataPlotPK.LLOQ, shape = 4, color = "red") +
@@ -638,7 +638,7 @@ plot_PKPDdataMMV <- function(dataGen,
 
       #~~~~~~~
       # Plot PK Data by TRT:
-      gr <- MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = STUDY)) +
         geom_point(data = dataPlotPK.LLOQ, shape = 4, color = "red") +
@@ -675,7 +675,7 @@ plot_PKPDdataMMV <- function(dataGen,
 
       #~~~~~~~
       # Plot PD Data by STUDY:
-      gr <- MMVggplot(dataPlotPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
         geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = Treatment)) +
@@ -693,7 +693,7 @@ plot_PKPDdataMMV <- function(dataGen,
 
       #~~~~~~~
       # Plot PD Data by TRT:
-      gr <- MMVggplot(dataPlotPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
         geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = STUDY)) +
@@ -726,7 +726,7 @@ plot_PKPDdataMMV <- function(dataGen,
       lloq <- unique(dataPlotVehicle[,c("Label","LLOQ","STUDY")])
 
       # Plot with PK and PD data
-      gr <- MMVggplot(dataPlotVehicle, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+      gr <- MMVbase::MMVggplot(dataPlotVehicle, aes(TIME, VALUE), ActivityPath = ActivityPath) +
         geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
         geom_line(aes(group = USUBJID), color = "grey") +
         geom_point(aes(color = STUDY)) +
@@ -751,7 +751,7 @@ plot_PKPDdataMMV <- function(dataGen,
   if (!is.null(HuErys)) {
     dataPlotHuEry <- dataPlot[dataPlot$NAME %in% HuErys, ]
 
-    gr <- MMVggplot(dataPlotHuEry, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+    gr <- MMVbase::MMVggplot(dataPlotHuEry, aes(TIME, VALUE), ActivityPath = ActivityPath) +
       geom_line(aes(group = USUBJID), color = "grey") +
       geom_point(aes(color = Treatment, shape = STUDY)) +
       scale_color_IQRtools() +
@@ -901,7 +901,7 @@ plot_PKPDhuChCombo <- function(dataGen,
     Caption <- "Experimental drug and recue medication doses indicated by black and purple lines respectively."
 
     # Plot:
-    gr_k <- MMVggplot(xPK, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
+    gr_k <- MMVbase::MMVggplot(xPK, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
       geom_vline(data=xD, aes(xintercept = TIME), linetype = 2) +
       geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
       geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
@@ -915,7 +915,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr_k <- gr_k +
-                             scale_color_manual("Compound", values = MMVcolors[2:length(MMVcolors)]))
+                             scale_color_manual("Compound", values = MMVbase::MMVcolors[2:length(MMVbase::MMVcolors)]))
 
     # By Subject:
     if(ByUSUBJID){
@@ -977,12 +977,12 @@ plot_PKPDhuChCombo <- function(dataGen,
       Caption <- "Experimental drug and recue medication doses indicated by black and purple lines respectively."
 
       # Plot:
-      gr_i <- MMVggplot(xPK, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
+      gr_i <- MMVbase::MMVggplot(xPK, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
         geom_vline(data=xD, aes(xintercept = TIME), linetype = 2) +
         geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
         geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
         #geom_point(aes(color = NAME)) +
-        geom_point(color = MMVcolors[2]) +
+        geom_point(color = MMVbase::MMVcolors[2]) +
         geom_point(data=xPKc, shape = 4) +
         scale_y_log10() +
         scale_x_continuous(breaks = x_break) +
@@ -992,7 +992,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
       # Adjust Colors:
       base::suppressMessages(gr_i <- gr_i +
-                               scale_color_manual("Compound", values = MMVcolors[2:length(MMVcolors)]))
+                               scale_color_manual("Compound", values = MMVbase::MMVcolors[2:length(MMVbase::MMVcolors)]))
 
       # By Subject:
       if(ByUSUBJID){
@@ -1049,7 +1049,7 @@ plot_PKPDhuChCombo <- function(dataGen,
     Caption <- "Experimental drug and recue medication doses indicated by black and purple lines respectively."
 
     # Plot:
-    gr_k <- MMVggplot(xP, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
+    gr_k <- MMVbase::MMVggplot(xP, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
       geom_vline(data=xD, aes(xintercept = TIME), linetype = 2) +
       geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
       geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
@@ -1063,7 +1063,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr_k <- gr_k +
-                             scale_color_manual("Parasite Type", values = MMVcolors[2:length(MMVcolors)]))
+                             scale_color_manual("Parasite Type", values = MMVbase::MMVcolors[2:length(MMVbase::MMVcolors)]))
 
     # By Subject:
     if(ByUSUBJID){
@@ -1116,12 +1116,12 @@ plot_PKPDhuChCombo <- function(dataGen,
       Caption <- "Experimental drug and recue medication doses indicated by black and purple lines respectively."
 
       # Plot:
-      gr_i <- MMVggplot(xPD, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
+      gr_i <- MMVbase::MMVggplot(xPD, aes(TIME, VALUE), ActivityPath = ActivityPath, Caption = Caption) +
         geom_vline(data=xD, aes(xintercept = TIME), linetype = 2) +
         geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
         geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
         #geom_point(aes(color = NAME)) +
-        geom_point(color = MMVcolors[2]) +
+        geom_point(color = MMVbase::MMVcolors[2]) +
         geom_point(data=xPDc, shape = 4) +
         scale_y_log10() +
         scale_x_continuous(breaks = x_break) +
@@ -1131,7 +1131,7 @@ plot_PKPDhuChCombo <- function(dataGen,
 
       # Adjust Colors:
       base::suppressMessages(gr_i <- gr_i +
-                               scale_color_manual("Parasite Type", values = MMVcolors[2:length(MMVcolors)]))
+                               scale_color_manual("Parasite Type", values = MMVbase::MMVcolors[2:length(MMVbase::MMVcolors)]))
 
       # By Subject:
       if(ByUSUBJID){
@@ -1180,7 +1180,7 @@ plot_PKPDscidCombo <- function(dataGen,
 
   # Update Compound Name if wanted:
   if (!is.null(CompoundList)){
-    dataGen <- swapName_MMVnameToName(data         = dataGen,
+    dataGen <- MMVbase::swapName_MMVnameToName(data         = dataGen,
                                       CompoundList = CompoundList)
   }
 
@@ -1245,7 +1245,7 @@ plot_PKPDscidCombo <- function(dataGen,
   lloq <- unique(dataPlotPKPD[,c("Label","LLOQ","STUDY", "TYPENAME")])
 
   # Plot with PK and PD data:
-  gr <- MMVggplot(dataPlotPKPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+  gr <- MMVbase::MMVggplot(dataPlotPKPD, aes(TIME, VALUE), ActivityPath = ActivityPath) +
     geom_hline(data=lloq, aes(yintercept = LLOQ, color = Label), linetype = 2) +
     geom_line(aes(group = interaction(USUBJID, Label)), color = "grey") +
     geom_point(aes(color = Label, shape = STUDY)) +
@@ -1271,7 +1271,7 @@ plot_PKPDscidCombo <- function(dataGen,
     dataPlotPKPDk <- dataPlotPKPD[dataPlotPKPD$Treatment==TRT_k,]
 
     # Plot:
-    gr <- MMVggplot(dataPlotPKPDk, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+    gr <- MMVbase::MMVggplot(dataPlotPKPDk, aes(TIME, VALUE), ActivityPath = ActivityPath) +
       geom_hline(data=lloq, aes(yintercept = LLOQ, color = Label), linetype = 2) +
       geom_line(aes(group = interaction(USUBJID, Label)), color = "grey") +
       geom_point(aes(color = Label, shape = STUDY)) +
@@ -1321,7 +1321,7 @@ plot_PKPDscidCombo <- function(dataGen,
     dataPlotPK$TreatmentA <- factor(dataPlotPK$TreatmentA, levels = trtInfo$TreatmentA)
 
     # Plot with PK and PD data:
-    gr <- MMVggplot(dataPlotPK, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+    gr <- MMVbase::MMVggplot(dataPlotPK, aes(TIME, VALUE), ActivityPath = ActivityPath) +
       geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
       geom_line(aes(group = interaction(USUBJID, TreatmentB), color = TreatmentB)) +
       geom_point(aes(color = TreatmentB, shape = STUDY)) +
@@ -1335,7 +1335,7 @@ plot_PKPDscidCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr <- gr +
-                             scale_color_manual("", values = MMVcolors[2:length(MMVcolors)]))
+                             scale_color_manual("", values = MMVbase::MMVcolors[2:length(MMVbase::MMVcolors)]))
 
     # Save Plot:
     IQRoutputPNG(gr,
@@ -1358,7 +1358,7 @@ plot_PKPDscidCombo <- function(dataGen,
     dataPlotPK$VALUEnorm <- dataPlotPK$VALUE / dataPlotPK[[paste0("DOSELEVEL",k)]]
 
     # Plot:
-    gr <- MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
+    gr <- MMVbase::MMVggplot(dataPlotPK, aes(TIME, VALUEnorm), ActivityPath = ActivityPath) +
       geom_line(aes(group = interaction(USUBJID, TreatmentB), color = TreatmentB)) +
       geom_point(aes(color = TreatmentB, shape = STUDY)) +
       scale_y_log10(breaks = 10^seq(-3,4)) +
@@ -1372,7 +1372,7 @@ plot_PKPDscidCombo <- function(dataGen,
 
     # Adjust Colors:
     base::suppressMessages(gr <- gr +
-                             scale_color_manual("", values = MMVcolors[2:length(MMVcolors)]))
+                             scale_color_manual("", values = MMVbase::MMVcolors[2:length(MMVbase::MMVcolors)]))
 
     # Save Plot:
     IQRoutputPNG(gr,
@@ -1425,7 +1425,7 @@ plot_PKPDscidCombo <- function(dataGen,
   lloq <- unique(dataPlotPD[,c("Label","LLOQ","STUDY")])
 
   # Plot PD data: With Treatment as color
-  gr <- MMVggplot(dataPlotPD2, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+  gr <- MMVbase::MMVggplot(dataPlotPD2, aes(TIME, VALUE), ActivityPath = ActivityPath) +
     geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
     geom_line(aes(color = Treatment, group = interaction(USUBJID, Treatment, isCOMBO), linetype = isCOMBO)) +
     geom_point(aes(color = Treatment, shape = STUDY)) +
@@ -1444,7 +1444,7 @@ plot_PKPDscidCombo <- function(dataGen,
   IQRoutputPNG(gr, filename = file.path(filePath, "06-a-PDlinePlotCombo_TRT.png"), width = 12, height = 7)
 
   # Plot PD data: With Compound used as color:
-  gr <- MMVggplot(dataPlotPD2, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+  gr <- MMVbase::MMVggplot(dataPlotPD2, aes(TIME, VALUE), ActivityPath = ActivityPath) +
     geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
     geom_line(aes(color = TRTCPD, group = interaction(USUBJID, Treatment)), linetype = 1) +
     geom_point(aes(color = TRTCPD, shape = STUDY)) +
@@ -1478,7 +1478,7 @@ plot_PKPDscidCombo <- function(dataGen,
 
   # Do plot
   grList <- plyr::dlply(dataPlotPD3, ~CompoundLabel, function(x) {
-    gr <- MMVggplot(x, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+    gr <- MMVbase::MMVggplot(x, aes(TIME, VALUE), ActivityPath = ActivityPath) +
       geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
       geom_line(aes(color = Treatment, group = interaction(USUBJID, Treatment))) +
       geom_point(aes(color = Treatment, shape = STUDY)) +
@@ -1515,7 +1515,7 @@ plot_PKPDscidCombo <- function(dataGen,
     lloq <- unique(dataPlotVehicle[,c("Label","LLOQ","STUDY")])
 
     # Plot with PK and PD data
-    gr <- MMVggplot(dataPlotVehicle, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+    gr <- MMVbase::MMVggplot(dataPlotVehicle, aes(TIME, VALUE), ActivityPath = ActivityPath) +
       geom_hline(data=lloq, aes(yintercept = LLOQ), linetype = 2, color = "black") +
       geom_line(aes(group = USUBJID), color = "grey") +
       geom_point(aes(color = Treatment, shape = STUDY)) +
@@ -1538,7 +1538,7 @@ plot_PKPDscidCombo <- function(dataGen,
     dataPlotHuEry <- dataPlot[dataPlot$NAME %in% HuErys, ]
 
     # Plot:
-    gr <- MMVggplot(dataPlotHuEry, aes(TIME, VALUE), ActivityPath = ActivityPath) +
+    gr <- MMVbase::MMVggplot(dataPlotHuEry, aes(TIME, VALUE), ActivityPath = ActivityPath) +
       geom_line(aes(group = USUBJID), color = "grey") +
       geom_point(aes(color = Treatment, shape = STUDY)) +
       # scale_y_log10() +
@@ -1550,7 +1550,7 @@ plot_PKPDscidCombo <- function(dataGen,
     # Adjust Colors:
     base::suppressMessages(gr <- gr +
                              scale_color_manual(limits = as.character(TRTann$Treatment),
-                                                values = MMVcolors[2:length(MMVcolors)]))
+                                                values = MMVbase::MMVcolors[2:length(MMVbase::MMVcolors)]))
 
     # Adjust Shapes:
     if (length(unique(dataPlotHuEry$Treatment)) > 6)
@@ -2062,7 +2062,7 @@ summary_PKPDdataCombo <- function(dataGen,
 
   # Update Compound Name if wanted:
   if (!is.null(CompoundList)){
-    dataGen        <- swapName_MMVnameToName(dataGen,
+    dataGen        <- MMVbase::swapName_MMVnameToName(dataGen,
                                              CompoundList)
   }
 
@@ -2748,7 +2748,7 @@ barplotACPR <- function(data,
 
   # Bar plot
   myplot <- dataSummary %>%
-    MMVggplot(aes(STRAT, y = ACPR, ymin = ACPRlb, ymax = ACPRub)) +
+    MMVbase::MMVggplot(aes(STRAT, y = ACPR, ymin = ACPRlb, ymax = ACPRub)) +
     geom_bar(stat = "identity", width = 0.5) +
     geom_errorbar(width = 0.3) +
     geom_text(aes(y=0,label = paste0("N=",N)), vjust=1.2, size = 4) +
@@ -2835,7 +2835,7 @@ scatterConcACPR <- function(data,
 
   # Scatter plot:
   myplot <- dataPlot %>%
-    MMVggplot(aes(x = DV, y = ACPR)) +
+    MMVbase::MMVggplot(aes(x = DV, y = ACPR)) +
     geom_point(shape = 1) +
     geom_smooth(method = "loess") +
     labs(x=xtitle, y=ytitle) +
@@ -2911,7 +2911,7 @@ plot_2DconcVsACPR <- function(data,
     filter(!!varsym %in% selectedCat)
 
   # Long to Wide:
-  dataPlot <- transform_dataFrame_LongToWide(dataPlot,
+  dataPlot <- MMVbase::transform_dataFrame_LongToWide(dataPlot,
                                              key   = c("NAME"),
                                              value = c("VALUE", "LLOQ"),
                                              colMaster = c("USUBJID", "VISNAME", "NT", "TIME", "TYPENAME", as.character(varsym)))
@@ -2955,7 +2955,7 @@ plot_2DconcVsACPR <- function(data,
 
   # Scatter plot:
   myplot <- dataPlot %>%
-    MMVggplot(aes(x = VALUE1*1000, y = VALUE2*1000, color = ACPR)) +
+    MMVbase::MMVggplot(aes(x = VALUE1*1000, y = VALUE2*1000, color = ACPR)) +
     #   LLOQ lines
     geom_hline(yintercept=LLOQ2*1000, linetype=4, size=1) +
     geom_text(x = log10(max(dataPlot$VALUE1)*1000), y = log10(LLOQ2*1000), label=paste0("LLOQ=",LLOQ2*1000,"ng/mL"), color="black", hjust=1, vjust=1.2, size=3) +
@@ -2963,7 +2963,7 @@ plot_2DconcVsACPR <- function(data,
     geom_text(x = log10(LLOQ1*1000), y = log10(max(dataPlot$VALUE2)*1000), label=paste0("LLOQ=",LLOQ1*1000,"ng/mL"), color="black", hjust=0, vjust=1.2, size=3, angle = -90) +
     #   Data
     geom_point(shape = 16, size=2.5) +
-    scale_color_manual("ACPR", values = MMVcolors[3:2]) +
+    scale_color_manual("ACPR", values = MMVbase::MMVcolors[3:2]) +
     labs(title = title,
          x=paste0(conc1, " ", concDayName, " [ng/mL]"),
          y=paste0(conc2, " ", concDayName, " [ng/mL]")) +
@@ -3081,13 +3081,13 @@ plot_PKPDdataMMVhuCh <- function(dataGen,
     xR <- xR_temp
 
     # Create Plot:
-    MMVggplot(xPx, aes(TIME, VALUE)) +
+    MMVbase::MMVggplot(xPx, aes(TIME, VALUE)) +
       geom_vline(data=xD, aes(xintercept = TIME), linetype = 2) +
       geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
       geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
       geom_point(aes(color = NAME)) +
       geom_point(data=xPc, shape = 4) +
-      scale_color_manual("Parasite type",values=MMVcolors[2:10]) +
+      scale_color_manual("Parasite type",values=MMVbase::MMVcolors[2:10]) +
       scale_y_log10() +
       scale_x_continuous(breaks = seq(-120,1000,48)) +
       facet_wrap(~SUBJECT) +
@@ -3198,13 +3198,13 @@ plot_PKPDdataMMVhuCh_Ratio_Gam <- function(dataGen,
     xR <- xR_temp
 
     # Create Plot:
-    MMVggplot(xRatio, aes(TIME, VALUE)) +
+    MMVbase::MMVggplot(xRatio, aes(TIME, VALUE)) +
       geom_vline(data=xD, aes(xintercept = TIME), linetype = 2) +
       geom_vline(data=xR, aes(xintercept = TIME), linetype = 4, color = "purple") +
       geom_line(aes(group = interaction(USUBJID,NAME)), color = "grey") +
       geom_point(aes(color = NAME)) +
       geom_point(data=xPc, shape = 4) +
-      scale_color_manual("Parasite type",values=MMVcolors[2:10]) +
+      scale_color_manual("Parasite type",values=MMVbase::MMVcolors[2:10]) +
       scale_y_log10() +
       scale_x_continuous(breaks = seq(-120,1000,48)) +
       facet_wrap(~SUBJECT) +

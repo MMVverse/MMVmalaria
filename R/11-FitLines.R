@@ -725,7 +725,7 @@ plot_tMICextrapolation <- function(EXTRA, FIT, data,
     labs(x=xlabel,
          y=ylabel,
          title=title,
-         caption = paste0("Activity: ", get_ActivityPath(ActivityPath))) +
+         caption = paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath))) +
     theme(legend.position = "bottom",
           plot.caption    = element_text(hjust=0))
 
@@ -816,7 +816,7 @@ plot_tMICextrapolationRange <- function(EXTRA, FIT, data,
     labs(x=xlabel,
          y=ylabel,
          title=title,
-         caption = paste0("Activity: ", get_ActivityPath(ActivityPath))) +
+         caption = paste0("Activity: ", MMVbase::get_ActivityPath(ActivityPath))) +
     theme(legend.position = "bottom",
           plot.caption    = element_text(hjust=0))
 

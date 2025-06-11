@@ -266,7 +266,7 @@ getEstimateTable <- function(modelFolder) {
     }
 
     # Nicer error parameter names:
-    EstimatesTable$Parameter <- aux_formatErrorName(EstimatesTable$Parameter)
+    EstimatesTable$Parameter <- MMVbase::aux_formatErrorName(EstimatesTable$Parameter)
 
   }else if (modelType=="NLME"){
     # Load results:

@@ -331,13 +331,13 @@ simulate_VirtualTrials <- function(
   regressorName <- c(regressorNameGPF, regressorExtra)
   idx <- duplicated(regressorName)
   if (any(idx)){
-    message(collapseMMV(x = regressorName[idx]), " regressor are already present in the model(s) defined in 'projectPathList': Remove them from 'regressorExtra'.")
+    message(MMVbase::collapseMMV(x = regressorName[idx]), " regressor are already present in the model(s) defined in 'projectPathList': Remove them from 'regressorExtra'.")
     regressorName <- unique(regressorName)
   }
 
   # Keep only the parameters present in the model:
   if (!all(regressorName %in% names(modelIQR$parameters))){
-    message("The parameters ", collapseMMV(x = setdiff(regressorName, names(modelIQR$parameters))), " are present in the model(s) defined in 'projectPathList' but not present in 'modelFile': They were removed.")
+    message("The parameters ", MMVbase::collapseMMV(x = setdiff(regressorName, names(modelIQR$parameters))), " are present in the model(s) defined in 'projectPathList' but not present in 'modelFile': They were removed.")
     regressorName <- intersect(regressorName, names(modelIQR$parameters))
   }
 
@@ -383,11 +383,11 @@ simulate_VirtualTrials <- function(
 
     # Make sure that DOSEcovariate is not in IndCovSample or ExpCovSample:
     if (any(DOSEcovariate %in% names(IndCovSampleTest))){
-      stop(collapseMMV(DOSEcovariate[DOSEcovariate %in% names(IndCovSampleTest)]),
+      stop(MMVbase::collapseMMV(DOSEcovariate[DOSEcovariate %in% names(IndCovSampleTest)]),
            " in 'DOSEcovariate' should not be included in 'IndCovSample'.")
     }
     if (any(DOSEcovariate %in% names(ExpCovSample))){
-      stop(collapseMMV(DOSEcovariate[DOSEcovariate %in% names(ExpCovSample)]),
+      stop(MMVbase::collapseMMV(DOSEcovariate[DOSEcovariate %in% names(ExpCovSample)]),
            " in 'DOSEcovariate' should not be included in 'ExpCovSample'.")
     }
 

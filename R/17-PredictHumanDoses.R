@@ -453,8 +453,8 @@ predictDose_GenericTrial <- function(
   }
 
   # . Summarize predicted doses ----
-  smmByTrial <- summaryByTrial(predictedDosesTrials, "Dose", percentiles = percentiles, usubjidCOL = "IDSubj", trialCOL = "IDTrial")
-  smmAcrossTrials <- summaryAcrossTrials(smmByTrial, CIlevel = CIlevel)
+  smmByTrial <- MMVbase::summaryByTrial(predictedDosesTrials, "Dose", percentiles = percentiles, usubjidCOL = "IDSubj", trialCOL = "IDTrial")
+  smmAcrossTrials <- MMVbase::summaryAcrossTrials(smmByTrial, CIlevel = CIlevel)
 
   # . Output
   smmAcrossTrials
