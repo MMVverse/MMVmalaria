@@ -24,7 +24,7 @@ The package MMVmalaria implements PK/PD model simulation based dose prediction f
 * predictDose_Generic: given a PK/PD model, a parameter vector, a criterion evaluation function, a target criterion value, and a dose interval, this function performs a binary search within the interval for the minimal dose satisfying the criterion. 
 * predictDose_GenericTrial: samples N_Trial x N_subjperTrial individual parameter vectors, based on a GPF file and a covariate dataset and calls predictDose_Generic to search for the minimal dose satisfying the criterion for each individual parameter vector. 
 
-The following sections show how to use the predictDose* functions to find doses that satisfy a minimum time above minimal inhibitory concentration (MIC0 criterion and a minimum parasitemia reduction ratio (PRR) criterion.
+The following sections show how to use the predictDose* functions to find doses that satisfy a minimum time above minimal inhibitory concentration (MIC) criterion and a minimum parasitemia reduction ratio (PRR) criterion.
 
 ```{r setup, include=FALSE}
 library(MMVmalaria)

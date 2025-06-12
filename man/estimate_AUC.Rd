@@ -8,7 +8,7 @@ estimate_AUC(
   Time,
   Conc,
   AUCtype = "last",
-  intMethod = logLinTrapzMMV,
+  intMethod = MMVbase::logLinTrapzMMV,
   LambdaZ = function(x, y) {
      estimate_LambdaZ(x, y)$LambdaZ
  },
@@ -18,7 +18,7 @@ estimate_AUC(
 \arguments{
 \item{AUCtype}{Default: 'last'}
 
-\item{intMethod}{Default: logLinTrapzMMV}
+\item{intMethod}{Default: MMVbase::logLinTrapzMMV}
 
 \item{LambdaZ}{Default: function(x, y) {
 estimate_LambdaZ(x, y)$LambdaZ

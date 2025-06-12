@@ -38,9 +38,15 @@ import_SCIDpkpdData(
 )
 }
 \arguments{
+\item{dataFile}{Path to the Excel file containing the data.}
+
+\item{compound}{Name of compound administered in the study.}
+
 \item{PKsheet}{Default: NULL}
 
 \item{PKrange}{Default: NULL}
+
+\item{PKmapping}{}
 
 \item{PKlloq}{Default: 1}
 
@@ -87,7 +93,7 @@ import_SCIDpkpdData(
 \item{importVersion}{Default: centerName}
 }
 \description{
-import_SCIDpkpdData
+Imports SCID PK and PD data from an Excel file.
 }
 \seealso{
 Other Data Preparation: 

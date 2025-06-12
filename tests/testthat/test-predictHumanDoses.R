@@ -6,7 +6,7 @@ library(MMVmalaria)
 projectPath <- system.file("extdata", "test-predictHumanDoses", "MODEL01", "GPF_PKPDcombo.xlsx", package = "MMVmalaria")
 modelFile <- system.file("extdata", "test-predictHumanDoses", "MODEL01", "model_PKPDcombo_Bliss.txt", package = "MMVmalaria")
 
-covariates <- load_AfricanPediatricMalariaPopulation2to5()
+covariates <- MalariaPopulation
 # rename some of the columns to names used in models
 covariates$PLbase <- covariates$PLBASE_log10_perml
 covariates$WT0 <- covariates$WEIGHT_kg

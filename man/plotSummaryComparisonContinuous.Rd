@@ -29,12 +29,12 @@ A list of ggplot objects comparing summarized continuous variables from simulati
 \description{
 Generates a list of ggplot objects where summarized simulations and
 observations are compared visually. Summarized input is obtained from
-applying \code{summaryByTrial} and \code{summarAcrossTrials} to data from VPCs.
+applying \code{MMVbase::summaryByTrial} and \code{summarAcrossTrials} to data from VPCs.
 Comparison is done per \code{TRTNAME} by default. A list of ggplot objects is returned with one plot per unique variable.
 }
 \details{
 This function creates a visual comparison of summarized data for continuous variables. It generates a ggplot object for each unique variable in the dataset.
-The summarized input for simulations is obtained using the \code{summaryByTrial} and \code{summarAcrossTrials} functions. The comparison is performed per \code{TRTNAME} by default, but this can be customized
+The summarized input for simulations is obtained using the \code{MMVbase::summaryByTrial} and \code{summarAcrossTrials} functions. The comparison is performed per \code{TRTNAME} by default, but this can be customized
 using the \code{compCategory} parameter.
 }
 \examples{

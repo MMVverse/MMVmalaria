@@ -13,7 +13,6 @@
 #' \describe{
 #'   \item{ID}{Row ID}
 #'   \item{USUBJID}{Unique Subject ID}
-#'   \item{ID}{Numerical Subject ID}
 #'   \item{STUDY}{Study ID}
 #'   \item{PBASE_perml}{Baseline Parasitemia, counts//mL}
 #'   \item{PLBASE_log10_perml}{log10-transformed baseline parasitemia, log10(counts//mL)}

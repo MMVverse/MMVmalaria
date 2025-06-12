@@ -19,12 +19,12 @@
 #' @param nbrDoses Numeric Vector. If length is 1, all doses in 'Doses' will have the same number of doses, otherwise should be of length 'Doses'.
 #' @param timeInterval Numeric defining the interval between doses (Note: Sssumed to be the same for all doses)
 #' @param DOSEcovariate a character vector containing the names of the covariates to be used as dose covariate. Default: `c("INPUT1"="DOSELEVEL")`.
-#' @param N_Trial
-#' @param N_SubjPerTrial
+#' @param N_Trial  Number of trials to simulate. Default: 100.
+#' @param N_SubjPerTrial Number of subjects per trial. Default: 10.
 #' @param IndCovSample Dataframe or Function to generate individual covariate (e.g. WT0, BMI, SEX, etc). Default: NULL.
 #' @param ExpCovSample Dataframe of experimental covariates to account for (e.g. Formulation, Fasted/Fed, etc). Default: NULL.
-#' @param FLAG_SAMPLE
-#' @param replace
+#' @param FLAG_SAMPLE a numeric value indicating the type of sampling to be used for the individual covariates
+#' @param replace a logical indicating if the sampling should be done with replacement (default: TRUE).
 #' @param setting a named list with elements among the following:
 #' * FLAGreturnSimPKPD A logical (default: FALSE) indicating if simPKPD should be included in the resulting list.
 #' Note that setting this argument to TRUE is memory intensive and can cause memory crashes.
@@ -56,8 +56,8 @@
 #' Default `c("INPUT1"="Tk0")`. INPUTs in this argument are assumed to have 0-order absorption, i.e. Tk0 is
 #' the time for the dose to be fully absorbed at a constant rate. This is suitable to simulate infusion at constant rate.
 #' The Tk0 parameters should be either present in the GPF file or available as regressors in the regressorExtra argument.
-#' @param Fpediatric
-#' @param Nparallel
+#' @param Fpediatric a character string containing the name of a covariate in `IndCovSample` or `ExpCovSample` indicating pediatric dose adjustment 
+#' @param Nparallel Number of parallel processes to use for the simulations. Default: 1.
 #' @param simMode To chose which mode to use for simulations between "Clinical" (New set of individuals sampled for each scenario - Default) and
 #' "Compare" (Same set of individuals used between each scenario adjusted by `ExpCovSample` and Dose-regimen as defined in `Doses`.).
 #' @param FLAGrunSimulation Run simulations after PK and PD parameters sampling

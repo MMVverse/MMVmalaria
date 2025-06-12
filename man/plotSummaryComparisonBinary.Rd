@@ -29,14 +29,14 @@ A list of ggplot objects comparing summarized binary variables from simulation a
 \description{
 Generates a list of ggplot objects where summarized simulations and
 observations are compared visually. Summarized input is obtained from
-applying \code{summaryByTrial} and \code{summarAcrossTrials} to data from VPCs for simulation data.
-Additionally, summarized input for observations using \code{summaryByTrial} is augmented with confidence intervals
+applying \code{MMVbase::summaryByTrial} and \code{summarAcrossTrials} to data from VPCs for simulation data.
+Additionally, summarized input for observations using \code{MMVbase::summaryByTrial} is augmented with confidence intervals
 using the Clopper-Pearson method.
 Comparison is done per \code{TRTNAME} by default. A list of ggplot objects is returned with one plot per unique variable.
 }
 \details{
 This function creates a visual comparison of summarized data for binary variables. It generates a ggplot object for each unique variable in the dataset.
-The summarized input for simulations is obtained using the \code{summaryByTrial} and \code{summarAcrossTrials} functions, while the summarized input for observations
+The summarized input for simulations is obtained using the \code{MMVbase::summaryByTrial} and \code{summarAcrossTrials} functions, while the summarized input for observations
 is augmented with confidence intervals using the Clopper-Pearson method. The comparison is performed per \code{TRTNAME} by default, but this can be customized
 using the \code{compCategory} parameter.
 }

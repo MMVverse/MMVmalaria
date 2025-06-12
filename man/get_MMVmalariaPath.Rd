@@ -6,8 +6,14 @@
 \usage{
 get_MMVmalariaPath(subdir = NULL)
 }
+\arguments{
+\item{subdir}{A subdirectory within the MMVmalaria package directory. If NULL, the function returns the main package path.}
+}
+\value{
+A character string representing the path to the MMVmalaria package directory or a specified subdirectory.
+}
 \description{
-Retrieve Package Path
+This function retrieves the path to the MMVmalaria package directory
 }
 \author{
 Mohammed H. Cherkaoui (MMV, \email{cherkaouim@mmv.org})

@@ -295,6 +295,7 @@ predictDose_PRRtot <- function(
 #'
 #' @importFrom dplyr bind_rows select_if mutate_if
 #' @importFrom foreach foreach %do% %dopar%
+#' @importFrom IQRtools IQRmodel
 #'
 #' @author Venelin Mitov, IntiQuan
 #'
@@ -335,7 +336,7 @@ predictDose_GenericTrial <- function(
 
   # . Create IQRmodel object ----
   if(is.character(modelFile)) {
-    model <- IQRmodel(modelFile)
+    model <- IQRtools::IQRmodel(modelFile)
   }
 
   # . Check that all regressorExtra are parameters in model, present in covariates and non-na numeric values ----

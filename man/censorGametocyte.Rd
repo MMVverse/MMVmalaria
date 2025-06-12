@@ -13,14 +13,21 @@ censorGametocyte(
 )
 }
 \arguments{
+\item{data}{Data frame or IQRdataGENERAL object with gametocyte data.}
+
+\item{threshold}{Percentage of gametocytes of total. If this is exceeded total will be censored.}
+
 \item{nameAll}{Default: 'Parasitemia asexual + gametocyte'}
 
 \item{nameGam}{Default: 'Parasitemia female gametocyte'}
 
 \item{FLAGfollowing}{Default: TRUE}
 }
+\value{
+A vector of IXGDF indices where the total parasitemia values should be censored.
+}
 \description{
-censorGametocyte
+This function censors the total parasitemia values based on the percentage of gametocytes present in the total parasitemia.
 }
 \seealso{
 Other Data Preparation: 

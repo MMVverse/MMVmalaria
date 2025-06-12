@@ -16,7 +16,7 @@
 #' @param scenCOL Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: `c("ScenID","ExpID","DoseID","Dose","nbrDoses")`)
 #'
 #'
-#' @return
+#' @return Data table containing values of population PK and PD profiles from simulated trials at specified percentiles
 #'
 #' @export
 #' @importFrom MMVbase summarize_PIandCIgeneric
@@ -226,7 +226,7 @@ summarize_KeyPDparametersFromSimulations <- function(simPKPD,
 #' @param scenCOL     Name(s) of column(s) of `simPKPD` uniquely describing scenario (Default: `c("ScenID","ExpID","DoseID","Dose","nbrDoses")`)
 #'
 #'
-#' @return
+#' @return Data-table containing values of total parasite reduction ratio (PRRtot) from simulated trials at specified percentiles
 #'
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)

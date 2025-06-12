@@ -21,7 +21,7 @@ simulate_ComboMouse2Human(
   doseCovariate = list(drug1 = NULL, drug2 = NULL),
   covariates = NULL,
   evalDay = 28,
-  simtime = create_PKPDsimtime(24 * evalDay),
+  simtime = MMVbase::create_PKPDsimtime(24 * evalDay),
   nTrial = 10,
   nSubj = 10,
   LLOQ.PD,
@@ -46,7 +46,7 @@ sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L", nSample = x)
 
 \item{evalDay}{Default: 28}
 
-\item{simtime}{Default: create_PKPDsimtime(24 * evalDay)}
+\item{simtime}{Default: MMVbase::create_PKPDsimtime(24 * evalDay)}
 
 \item{nTrial}{Default: 10}
 

@@ -32,6 +32,9 @@ summarize_PKPDprofilesFromSimulations(
 
 \item{scenCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
 }
+\value{
+Data table containing values of population PK and PD profiles from simulated trials at specified percentiles
+}
 \description{
 Summarize PK and PD profiles entered in \code{outputCOL}, where the predictive interval
 (defined in with the variable 'percentiles') is returned with the confidence

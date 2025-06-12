@@ -1,13 +1,13 @@
 
 #' censorGametocyte
 #'
-#' @description
-#' @param data
-#' @param threshold
+#' @description This function censors the total parasitemia values based on the percentage of gametocytes present in the total parasitemia.
+#' @param data Data frame or IQRdataGENERAL object with gametocyte data.
+#' @param threshold Percentage of gametocytes of total. If this is exceeded total will be censored.
 #' @param nameAll Default: 'Parasitemia asexual + gametocyte'
 #' @param nameGam Default: 'Parasitemia female gametocyte'
 #' @param FLAGfollowing Default: TRUE
-#' @return
+#' @return A vector of IXGDF indices where the total parasitemia values should be censored.
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan)
 #' @family Data Preparation
@@ -142,12 +142,12 @@ convert_Gametocytes <- function(
 
 #' import_SCIDpkpdData
 #'
-#' @description
-#' @param dataFile
-#' @param compound
+#' @description Imports SCID PK and PD data from an Excel file.
+#' @param dataFile Path to the Excel file containing the data.
+#' @param compound Name of compound administered in the study. 
 #' @param PKsheet Default: NULL
 #' @param PKrange Default: NULL
-#' @param PKmapping
+#' @param PKmapping 
 #' @param PKlloq Default: 1
 #' @param PKlloqIdentifier Default: c("BLQ", "<LLOQ", "< LLOQ")
 #' @param PKfactor Default: 0.001

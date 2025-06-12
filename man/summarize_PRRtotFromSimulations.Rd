@@ -35,6 +35,9 @@ summarize_PRRtotFromSimulations(
 
 \item{scenCOL}{Name(s) of column(s) of \code{simPKPD} uniquely describing scenario (Default: \code{c("ScenID","ExpID","DoseID","Dose","nbrDoses")})}
 }
+\value{
+Data-table containing values of total parasite reduction ratio (PRRtot) from simulated trials at specified percentiles
+}
 \description{
 Summarizes the total parasite reduction ratio
 }

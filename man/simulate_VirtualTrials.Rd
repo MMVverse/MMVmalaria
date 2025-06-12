@@ -51,9 +51,17 @@ are supported unless, the dose is a covariate of the model. Note that the TINF c
 
 \item{DOSEcovariate}{a character vector containing the names of the covariates to be used as dose covariate. Default: \code{c("INPUT1"="DOSELEVEL")}.}
 
+\item{N_Trial}{Number of trials to simulate. Default: 100.}
+
+\item{N_SubjPerTrial}{Number of subjects per trial. Default: 10.}
+
 \item{IndCovSample}{Dataframe or Function to generate individual covariate (e.g. WT0, BMI, SEX, etc). Default: NULL.}
 
 \item{ExpCovSample}{Dataframe of experimental covariates to account for (e.g. Formulation, Fasted/Fed, etc). Default: NULL.}
+
+\item{FLAG_SAMPLE}{a numeric value indicating the type of sampling to be used for the individual covariates}
+
+\item{replace}{a logical indicating if the sampling should be done with replacement (default: TRUE).}
 
 \item{setting}{a named list with elements among the following:
 \itemize{
@@ -88,6 +96,10 @@ Note that the value of the Tk0 parameter for an input will overwrite the value o
 Default \code{c("INPUT1"="Tk0")}. INPUTs in this argument are assumed to have 0-order absorption, i.e. Tk0 is
 the time for the dose to be fully absorbed at a constant rate. This is suitable to simulate infusion at constant rate.
 The Tk0 parameters should be either present in the GPF file or available as regressors in the regressorExtra argument.}
+
+\item{Fpediatric}{a character string containing the name of a covariate in \code{IndCovSample} or \code{ExpCovSample} indicating pediatric dose adjustment}
+
+\item{Nparallel}{Number of parallel processes to use for the simulations. Default: 1.}
 
 \item{simMode}{To chose which mode to use for simulations between "Clinical" (New set of individuals sampled for each scenario - Default) and
 "Compare" (Same set of individuals used between each scenario adjusted by \code{ExpCovSample} and Dose-regimen as defined in \code{Doses}.).}

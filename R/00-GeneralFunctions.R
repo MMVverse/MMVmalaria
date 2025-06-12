@@ -1,8 +1,8 @@
 #' Retrieve Package Path
 #'
-#' @description
-#' @param subdir
-#' @return
+#' @description This function retrieves the path to the MMVmalaria package directory
+#' @param subdir A subdirectory within the MMVmalaria package directory. If NULL, the function returns the main package path.
+#' @return A character string representing the path to the MMVmalaria package directory or a specified subdirectory.
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV, \email{cherkaouim@@mmv.org})
 #' @family General Functions

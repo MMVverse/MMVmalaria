@@ -1,6 +1,6 @@
-# MMVmalaria 1.4.0
+# MMVmalaria 1.4.1
 
-MMVmalaria 1.4.0 updates to depend on IQRtools 2025.05
+MMVmalaria 1.4.1 updates to depend on IQRtools 2025.05
 
 # Documentation
 * Suggestion to use CRAN snapshot https://packagemanager.posit.co/cran/2025-04-22 added to README
@@ -21,7 +21,19 @@ Confusion Matrix functions used to evaluate true/false positives/negatives added
 * ConfusionMatrix() added to 09-KeyParameters.R 
 * SummarizeConfusionMatrix() added to 09-KeyParameters.R
 MMVbase:: prefixed to all functions exported from MMVbase that were previously in MMVmalaria 
+predictDose_Generic
+* Adjusted to import and declare IQRtools:: for IQRmodel() 
 
 # Vignettes
 PredictHumanDoses.Rmd
 * IQRtools::IQRmodel(modelFile) explicitly called in vignette (previously IQRmodel(modelFile))
+* Calls to MalariaPopulation.Rdata adjusted 
+* Definition of WT0 from WEIGHT_kg added 
+
+# Tests
+test-predictHumanDose.R
+* Calls to MalariaPopulation.Rdata adjusted 
+
+# Examples
+findMinMMV_ex
+* Adjusted findMinMMV to MMVbase::find_MinMMV to reflect function being moved to MMVbase and renamed 
