@@ -1,9 +1,9 @@
 #' generate_InitialParametersIQRsys
 #'
-#' @description
+#' @description Generate initial parameters for SYSFIT modeling
 #' @param projectPath Path of the project from which to retrieve modelSpec
 #' @param IIVvalues0 Default: NULL
-#' @return
+#' @return A list containing initial parameters in a format compatible with a SYSFIT modelSpec argument 
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family SYSFITmodeling
@@ -66,7 +66,7 @@ generate_InitialParametersIQRsys <- function(projectPath,
 }
 #' generate_SYSalgorithmSettings
 #'
-#' @description
+#' @description Generate a list of settings for SYSFIT algorithm
 #' @param SIMOPT.method Default: 'lsodes'
 #' @param SIMOPT.atol Default: 1e-06
 #' @param SIMOPT.rtol Default: 1e-06
@@ -86,7 +86,7 @@ generate_InitialParametersIQRsys <- function(projectPath,
 #' @param algOpt.SEED Default: 123456
 #' @param FLAGprofileLL Default: FALSE
 #' @param FLAGkeepFits Default: FALSE
-#' @return
+#' @return List containing SYSFIT algorithm settings
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family SYSFITmodeling
@@ -149,13 +149,13 @@ generate_SYSalgorithmSettings <- function(# Solver Settings:
 
 #' table_BestFitEstimation
 #'
-#' @description
-#' @param fit
+#' @description Generate a table of best fit estimation results from SYSFIT modeling
+#' @param fit  A list of SYSFIT fitting objects produced by run_SysFitEstimation
 #' @param filename Default: NULL
 #' @param FLAGout Default: FALSE
 #' @param title Default: NULL
 #' @param footer Default: NULL
-#' @return
+#' @return A data frame containing the best fit estimation results
 #' @export
 #' @importFrom MMVbase aux_formatErrorName
 #' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)

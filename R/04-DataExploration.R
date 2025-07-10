@@ -1,14 +1,14 @@
 #' display_ComboTreatments
 #'
-#' @description
-#' @param data
+#' @description Extract information on combo treatments from a dataGeneral object and return information in plot and/or tablular format
+#' @param data IQRdataGeneral object 
 #' @param stratify Default: 'STUDY'
 #' @param fileplot Default: NULL
 #' @param filetable Default: NULL
 #' @param CompoundList Default: NULL
 #' @param FLAGreturnObject Default: FALSE
-#' @return
-#' @export
+#' @return List of objects defined in fileplot and filetable 
+#' @export 
 #' @importFrom MMVbase swapName_MMVnameToName
 #' @author Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -180,13 +180,13 @@ display_ComboTreatments <- function(data,
 }
 #' plot_PKdataMMV
 #'
-#' @description
-#' @param dataGen
-#' @param filePath
+#' @description Plot PK data from an IQRdataGeneral object
+#' @param dataGen IQRdataGeneral object
+#' @param filePath Character string with path to folder for saving plot 
 #' @param PKname Default: NULL
 #' @param scale_y Default: 'log'
 #' @param facet_scales Default: 'fixed'
-#' @return
+#' @return None, but saves plots to filePath 
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -424,15 +424,15 @@ plot_PKdataMMV <- function(dataGen,
 }
 #' plot_PKPDdataMMV
 #'
-#' @description
-#' @param dataGen
-#' @param filePath
+#' @description Plot PK and PD data from an IQRdataGeneral object
+#' @param dataGen IQRdataGeneral object
+#' @param filePath Character string with path to folder for saving plot
 #' @param PDname Default: 'Parasitemia'
 #' @param PKname Default: NULL
 #' @param HuErys Default: NULL
 #' @param doseUnit Default: NULL
 #' @param ActivityPath Default: NULL
-#' @return
+#' @return None, but saves plots to filePath
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -773,16 +773,16 @@ plot_PKPDdataMMV <- function(dataGen,
 }
 #' plot_PKPDhuChCombo
 #'
-#' @description
-#' @param dataGen
-#' @param filePath
+#' @description Plot PK and PD data from an IQRdataGeneral object
+#' @param dataGen IQRdataGeneral object
+#' @param filePath Character string with path to folder for saving plot
 #' @param PDname Default: 'Parasitemia'
 #' @param Gametos Default: 'Parasitemia Gametocytes'
 #' @param PKname Default: NULL
 #' @param TRTNAME Column name of treatment group to use
 #' @param ByUSUBJID If the plot should be split by subject (Default: TRUE)
 #' @param ActivityPath Path of the current activity (Default: NULL)
-#' @return
+#' @return List of plots 
 #' @export
 #' @author Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -1153,15 +1153,15 @@ plot_PKPDhuChCombo <- function(dataGen,
 }
 #' plot_PKPDscidCombo
 #'
-#' @description
-#' @param dataGen
-#' @param filePath
+#' @description Plot PK and PD data from an IQRdataGeneral object
+#' @param dataGen IQRdataGeneral object
+#' @param filePath Character string with path to folder for saving plot
 #' @param PDname Default: 'Parasitemia'
 #' @param PKname Default: NULL
 #' @param HuErys Default: NULL
 #' @param CompoundList Default: NULL
 #' @param ActivityPath Path of the current activity (Default: NULL)
-#' @return
+#' @return List of plots 
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -1563,14 +1563,14 @@ plot_PKPDscidCombo <- function(dataGen,
 
 #' summary_PDdata_byStudyTRT
 #'
-#' @description
-#' @param dataGen
+#' @description Summarize PD data by study and treatment
+#' @param dataGen IQRdataGeneral object
 #' @param filename Default: NULL
 #' @param EfficacyNAME Default: 'Parasitemia Asexual + Gametocyte Mean'
 #' @param NewTRTNAME Default: NULL
 #' @param CovToTRTNAME Default: NULL
 #' @param CovNewTRTNAME Default: NULL
-#' @return
+#' @return Data frame with summary of PD data by study and treatment
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -1741,13 +1741,13 @@ summary_PDdata_byStudyTRT <- function(dataGen,
 
 #' summary_PKdata_byStudyTRT
 #'
-#' @description
-#' @param dataGen
+#' @description Summarize PK data by study and treatment
+#' @param dataGen IQRdataGeneral object
 #' @param filename Default: NULL
 #' @param NewTRTNAME Default: NULL
 #' @param CovToTRTNAME Default: NULL
 #' @param CovNewTRTNAME Default: NULL
-#' @return
+#' @return Data frame with summary of PK data by study and treatment
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -1924,11 +1924,11 @@ summary_PKdata_byStudyTRT <- function(dataGen,
 
 #' summary_PKdataMMV
 #'
-#' @description
-#' @param dataGen
-#' @param filePath Default: NULL
+#' @description Summarize PK data 
+#' @param dataGen IQRdataGeneral object
+#' @param filePath Character string with path to folder for saving plot
 #' @param NewTRTNAME Default: NULL
-#' @return
+#' @return Data frame with summary of PK data
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -2043,12 +2043,12 @@ summary_PKdataMMV <- function(dataGen,
 }
 #' summary_PKPDdataCombo
 #'
-#' @description
-#' @param dataGen
-#' @param filePath Default: NULL
+#' @description Summarize PK and PD data by study and treatment
+#' @param dataGen IQRdataGeneral object
+#' @param filePath Character string with path to folder for saving plot
 #' @param CompoundList Default: NULL
 #' @param positiveQC Default: NULL
-#' @return
+#' @return Data frame with summary of PK and PD data
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -2183,8 +2183,8 @@ summary_PKPDdataCombo <- function(dataGen,
 #'
 #' Summarizes pharmacokinetic data in 3 different tables: (1) number of subjects per study and treatment group, (2) nominal sampling times per observation type and (3) dosing/inoculation nominal time per treatment group and dosing/inoculation type.
 #'
-#' @param dataGen
-#' @param filePath
+#' @param dataGen IQRdataGeneral object  
+#' @param filePath Character string with path to folder for saving plot
 #' @param NewTRTNAME
 #' @param positiveQC
 #'
@@ -2315,17 +2315,17 @@ summary_PKPDdataMMV <- function(dataGen,
 
 #' summary_PKPDdataSimplified
 #'
-#' @description
-#' @param dataGen
+#' @description Summarize PK and PD data in a simplified format
+#' @param dataGen IQRdataGeneral object
 #' @param filename Default: NULL
 #' @param PKname Default: NULL
 #' @param PDname Default: NULL
-#' @param StudyTYPE
-#' @param Center
+#' @param StudyTYPE  Character string denoting type of study (e.g., "PK", "PD", "PKPD"), default: NULL
+#' @param Center Character string denoting center name 
 #' @param NewTRTNAME Default: NULL
 #' @param CovToTRTNAME Default: NULL
 #' @param CovNewTRTNAME Default: NULL
-#' @return
+#' @return Data frame with summary of PK and PD data
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -2507,8 +2507,8 @@ summary_PKPDdataSimplified <- function(dataGen,
 
 #' symmarybyGroup_MMVnca
 #'
-#' @description
-#' @param resultNCA
+#' @description Summarize NCA results by group
+#' @param resultNCA IQRnca object containing NCA results
 #' @param stratify Default: NULL
 #' @param stats Default: 'geomean'
 #' @param colSummary Default: NULL
@@ -2517,7 +2517,7 @@ summary_PKPDdataSimplified <- function(dataGen,
 #' 
 #' @importFrom MMVbase GeometricMean
 #' 
-#' @return
+#' @return Data frame with summary of NCA results
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family DataExploration
@@ -2675,7 +2675,7 @@ summarybyGroup_MMVnca <- function(resultNCA,
 #' @param acprDay ACPR assessment day, can only be 28, 42, or 63
 #' @param stratifyBy Column to stratify by
 #'
-#' @return
+#' @return A ggplot object with the barplot of ACPR
 #' @export
 #' @author Anne Kuemmel (IntiQuan)
 #' @family DataExploration
@@ -2780,8 +2780,8 @@ barplotACPR <- function(data,
 #' @param type 'Crude' or 'PCR-Adjusted'
 #' @param acprDay ACPR assessment day, can only be 28, 42, or 63
 #'
-#' @return
-#' @export
+#' @return A ggplot object with the scatterplot of concentration vs ACPR
+#' @export 
 #' @author Anne Kuemmel (IntiQuan)
 #' @family DataExploration
 scatterConcACPR <- function(data,
@@ -2857,7 +2857,7 @@ scatterConcACPR <- function(data,
 #' @param type 'Crude' or 'PCR-Adjusted'
 #' @param acprDay ACPR assessment day, can only be 28, 42, or 63
 #'
-#' @return
+#' @return A ggplot object with the scatterplot of 2 drug concentrations vs ACPR
 #' @export
 #' @importFrom MMVbase transform_dataFrame_LongToWide
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -2988,7 +2988,7 @@ plot_2DconcVsACPR <- function(data,
 #' Plot PKPD data available from a Human Challenge study in "standard" MMV format, suitable for exploration and reporting
 #'
 #' @param dataGen : Object containing data to plot in `IQRDataGeneral` format
-#' @param filePath : Filepath to which plots will be saved
+#' @param filePath : Character string with path to folder for saving plot
 #' @param PDname : Name of PD observations in the NAME column of IQRDataGeneral. Default: 'Parasitemia'
 #' @param Gametos : Name of Gametocyte observations in the NAME column of IQRDataGeneral. Default: 'Parasitemia Gametocytes'
 #' @param rescuename : Name of observations in the NAME column that correspond to Rescue medication doses.
@@ -3109,12 +3109,12 @@ plot_PKPDdataMMVhuCh <- function(dataGen,
 #' plots ratio of Individual parasite data over gametocyte counts, stratified by treatment.
 #'
 #' @param dataGen : Object containing data to plot in `IQRDataGeneral` format
-#' @param filePath : Filepath to which plots will be saved
+#' @param filePath Character string with path to folder for saving plot
 #' @param PDname : Name of PD observations in the NAME column of IQRDataGeneral. Default: 'Parasitemia'
 #' @param Gametos : Name of Gametocyte observations in the NAME column of IQRDataGeneral. Default: 'Parasitemia Gametocytes'
 #' @param rescuename : Name of observations in the NAME column that correspond to Rescue medication doses.
 #'
-#' @return
+#' @return No return; Figures saved as .png to destination specified in `filePath`
 #' @export
 #' @md
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV), Karsten Kuritz #' (IntiQuan)
