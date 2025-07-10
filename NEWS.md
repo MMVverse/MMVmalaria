@@ -24,6 +24,9 @@ MMVbase:: prefixed to all functions exported from MMVbase that were previously i
 predictDose_Generic
 * Adjusted to import and declare IQRtools:: for IQRmodel() 
 
+03-DataPreparation.R 
+* load_AfricanPediatricMalariaPopulation2to5 REMOVED 
+
 # Vignettes
 PredictHumanDoses.Rmd
 * IQRtools::IQRmodel(modelFile) explicitly called in vignette (previously IQRmodel(modelFile))

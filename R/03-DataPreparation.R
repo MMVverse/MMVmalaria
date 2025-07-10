@@ -83,7 +83,7 @@ censorGametocyte <- function(
 #' @param oldStdCurve TRUE or FALSE indicating whether old standard curve was used (Default: `"FALSE"`).
 #' @param oldNewStdFactor Conversion factor from old to new standard curve (Default: 62).
 #'
-#' @return
+#' @return Data frame or IQRdataGENERAL object with converted gametocyte data.
 #'
 #' @examples
 #' dat <- data.frame(NAME  = c( rep("Parasitemia female gametocytes", 4)),
@@ -147,13 +147,13 @@ convert_Gametocytes <- function(
 #' @param compound Name of compound administered in the study. 
 #' @param PKsheet Default: NULL
 #' @param PKrange Default: NULL
-#' @param PKmapping 
+#' @param PKmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PKlloq Default: 1
 #' @param PKlloqIdentifier Default: c("BLQ", "<LLOQ", "< LLOQ")
 #' @param PKfactor Default: 0.001
 #' @param PDsheet Default: NULL
 #' @param PDrange Default: NULL
-#' @param PDmapping
+#' @param PDmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PDlloq Default: 0.01
 #' @param PDlloqIdentifier Default: c("BLQ", "<0.01", "< 0,01", "< 0.01")
 #' @param PDname Default: 'Parasitemia Total'
@@ -171,9 +171,9 @@ convert_Gametocytes <- function(
 #' @param DoseSheet Default: 'IndividualMetadataDrug1'
 #' @param DoseRange Default: NULL
 #' @param DoseMapping Default: NULL
-#' @param positiveQC
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
 #' @param importVersion Default: centerName
-#' @return
+#' @return Imported SCID data 
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Catalina Barcelo (MMV), Mohammed H. Cherkaoui (MMV), \email{cherkaouim@@mmv.org}
 #' @family Data Preparation
@@ -351,18 +351,18 @@ import_SCIDpkpdData <- function(dataFile,
 
 #' import_SCIDpkpdData_GSK
 #'
-#' @description
-#' @param dataFile
+#' @description Imports SCID PK and PD data from an Excel file.
+#' @param dataFile Path to the Excel file containing the data.
 #' @param compound Default: NULL
 #' @param PKsheet Default: 'BloodLevels'
 #' @param PKrange Default: NULL
-#' @param PKmapping
+#' @param PKmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PKlloq Default: 1
 #' @param PKlloqIdentifier Default: c("BLQ", "<LLOQ", "< LLOQ")
 #' @param PKfactor Default: 0.001
 #' @param PDsheet Default: 'Parasitemia'
 #' @param PDrange Default: NULL
-#' @param PDmapping
+#' @param PDmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PDlloq Default: 0.01
 #' @param PDlloqIdentifier Default: c("BLQ", "<0.01", "< 0,01", "< 0.01")
 #' @param PDname Default: 'Parasitemia Total'
@@ -373,8 +373,8 @@ import_SCIDpkpdData <- function(dataFile,
 #' @param visitNumber Default: -1
 #' @param nrdoses Default: NULL
 #' @param intervaldose Default: 'qd'
-#' @param positiveQC Default: NULL
-#' @return
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
+#' @return Imported SCID data 
 #' @export
 #' @author catalinbarcelo (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Data Preparation
@@ -738,18 +738,18 @@ import_SCIDpkpdData_GSK <- function(dataFile,
 }
 #' import_SCIDpkpdData_oldTAD
 #'
-#' @description
-#' @param dataFile
-#' @param compound Default: NULL
+#' @description  Imports SCID PK and PD data from an Excel file.
+#' @param dataFile Path to the Excel file containing the data.
+#' @param compound Name of compound administered in the study. 
 #' @param PKsheet Default: 'BloodLevels'
 #' @param PKrange Default: NULL
-#' @param PKmapping
+#' @param PKmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PKlloq Default: 1
 #' @param PKlloqIdentifier Default: c("BLQ", "<LLOQ", "< LLOQ")
 #' @param PKfactor Default: 0.001
 #' @param PDsheet Default: 'Parasitemia'
 #' @param PDrange Default: NULL
-#' @param PDmapping
+#' @param PDmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PDlloq Default: 0.01
 #' @param PDlloqIdentifier Default: c("BLQ", "<0.01", "< 0,01", "< 0.01")
 #' @param PDname Default: 'Parasitemia Total'
@@ -760,8 +760,8 @@ import_SCIDpkpdData_GSK <- function(dataFile,
 #' @param visitNumber Default: -1
 #' @param nrdoses Default: NULL
 #' @param intervaldose Default: 'qd'
-#' @param positiveQC Default: NULL
-#' @return
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
+#' @return Imported SCID data 
 #' @export
 #' @author catalinbarcelo (MMV)
 #' @family Data Preparation
@@ -1104,18 +1104,18 @@ import_SCIDpkpdData_oldTAD <- function(dataFile,
 }
 #' Import TAD Data to MMV format
 #'
-#' @description
-#' @param dataFile
-#' @param compound
+#' @description Imports SCID PK and PD data from an Excel file.
+#' @param dataFile Path to the Excel file containing the data.
+#' @param compound Name of compound administered in the study. 
 #' @param PKsheet Default: 'DrugConcentrationData'
 #' @param PKrange Default: NULL
-#' @param PKmapping
+#' @param PKmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PKlloq Default: 1
 #' @param PKlloqIdentifier Default: c("BLQ", "<LLOQ", "< LLOQ")
 #' @param PKfactor Default: 0.001
 #' @param PDsheet Default: 'ParasitemiaData'
 #' @param PDrange Default: NULL
-#' @param PDmapping
+#' @param PDmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PDlloq Default: 0.01
 #' @param PDlloqIdentifier Default: c("BLQ", "<0.01", "< 0,01", "< 0.01")
 #' @param PDname Default: 'Parasitemia Total'
@@ -1132,8 +1132,8 @@ import_SCIDpkpdData_oldTAD <- function(dataFile,
 #' @param DoseSheet Default: 'DrugTreatmentTable'
 #' @param DoseRange Default: NULL
 #' @param DoseMapping Default: NULL
-#' @param positiveQC
-#' @return
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
+#' @return Imported SCID data 
 #' @export
 #' @author Aline Fuchs (MMV), Catalin Barcelo (MMV), Mohammed H. Cherkaoui (MMV), Nathalie Gobeau (MMV)
 #' @family Data Preparation
@@ -1471,19 +1471,19 @@ import_SCIDpkpdData_TAD <- function(dataFile,
 
 #' import_SCIDpkpdDataCombo
 #'
-#' @description
-#' @param dataFile
+#' @description Imports SCID PK and PD data from an Excel file.
+#' @param dataFile Path to the Excel file containing the data.
 #' @param Compound1 Default: NULL
 #' @param Compound2 Default: NULL
-#' @param PKsheets Default: NULL
+#' @param PKsheets Name of the single sheet recording PK data
 #' @param PKranges Default: NULL
-#' @param PKmapping
+#' @param PKmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PKlloq Default: c(0.001, 0.001)
 #' @param PKlloqIdentifier Default: c("BLQ", "<LLOQ", "< LLOQ", "BLOQ")
 #' @param PKfactor Default: c(0.001, 0.001)
 #' @param PDsheet Default: NULL
 #' @param PDrange Default: NULL
-#' @param PDmapping
+#' @param PDmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PDlloq Default: 0.01
 #' @param PDlloqIdentifier Default: c("BLQ", "<0.01")
 #' @param PDname Default: 'Parasitemia Total'
@@ -1500,10 +1500,10 @@ import_SCIDpkpdData_TAD <- function(dataFile,
 #' @param DoseSheet Default: 'DrugTreatmentTable'
 #' @param DoseRange Default: NULL
 #' @param DoseMapping Default: NULL
-#' @param positiveQC Default: NULL
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
 #' @param route Default: NULL
 #' @param importVersion Default: 'oldTAD'
-#' @return
+#' @return Imported SCID data 
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family Data Preparation
@@ -1679,20 +1679,20 @@ import_SCIDpkpdDataCombo <- function(dataFile,
 
 #' import_SCIDpkpdDataCombo_GSK
 #'
-#' @description
-#' @param dataFile
+#' @description Imports SCID PK and PD data from an Excel file.
+#' @param dataFile Path to the Excel file containing the data.
 #' @param Compound1 Default: NULL
 #' @param Compound2 Default: NULL
 #' @param PKsheets Default: c("Blood levels 1", "Blood levels 2")
 #' @param PKranges Default: NULL
-#' @param PKmapping
+#' @param PKmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PKlloq Default: c(1, 1)
 #' @param PKlloqIdentifier Default: '< LLOQ'
 #' @param PKfactor Default: c(0.001, 0.001)
 #' @param PKfact Default: PKfactor
 #' @param PDsheet Default: 'Parasitemia'
 #' @param PDrange Default: NULL
-#' @param PDmapping
+#' @param PDmapping Character vector mapping PDsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PDlloq Default: 0.01
 #' @param PDlloqIdentifier Default: c("BLQ", "<0.01")
 #' @param PDname Default: 'Parasitemia Total'
@@ -1702,7 +1702,7 @@ import_SCIDpkpdDataCombo <- function(dataFile,
 #' @param centerNumber Default: -1
 #' @param centerName Default: ''
 #' @param visitNumber Default: -1
-#' @return
+#' @return Imported SCID data 
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Data Preparation
@@ -2009,17 +2009,17 @@ import_SCIDpkpdDataCombo_GSK <- function(dataFile,
 
 #' import_SCIDpkpdDataCombo_oldTAD
 #'
-#' @description
-#' @param dataFile
+#' @description Imports SCID PK and PD data from an Excel file.
+#' @param dataFile Path to the Excel file containing the data. 
 #' @param PKsheets Default: c("Blood levels 1", "Blood levels 2")
 #' @param PKranges Default: NULL
-#' @param PKmapping
+#' @param PKmapping Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PKlloq Default: c(0.001, 0.001)
 #' @param PKlloqIdentifier Default: c("BLQ", "<LLOQ", "< LLOQ", "BLOQ")
 #' @param PKfactor Default: c(0.001, 0.001)
 #' @param PDsheet Default: 'Parasitemia'
 #' @param PDrange Default: NULL
-#' @param PDmapping
+#' @param PDmapping Character vector mapping PDsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))
 #' @param PDlloq Default: 0.01
 #' @param PDlloqIdentifier Default: c("BLQ", "<0.01")
 #' @param PDname Default: 'Parasitemia Total'
@@ -2029,7 +2029,7 @@ import_SCIDpkpdDataCombo_GSK <- function(dataFile,
 #' @param centerNumber Default: -1
 #' @param centerName Default: ''
 #' @param visitNumber Default: -1
-#' @return
+#' @return Imported SCID data 
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Data Preparation
@@ -2398,7 +2398,7 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
 #' @param DoseSheet Name of the sheet recording drugs dosing for both compounds
 #' @param DoseRange Cells range of the DoseSheet to read (eg A1:C20)
 #' @param DoseMapping Character vector mapping DoseSheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "Route" = "ROUTE"))
-#' @param positiveQC Character vector identifying the name of positive control (must matchupper or lower case as in original dataset)
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
 #'
 #' @importFram reshape2 dcast melt
 #' @export
@@ -2845,31 +2845,6 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   return(data)
 
 }
-
-#' load_AfricanPediatricMalariaPopulation2to5
-#'
-#' @description load Malaria population demographic data only for African children 2 to 5 yrs old
-#' @return
-#' @export
-#' @author Mohammed H. Cherkaoui (MMV)
-#' @family Data Preparation
-load_AfricanPediatricMalariaPopulation2to5 <- function(){
-
-  # If not installed as a package:
-  if(!("MMVmalaria" %in% .packages())){
-    load(file.path(get_MMVmalariaPath(), "data/MalariaPopulation.RData"))
-    data <- MalariaPopulation
-  }else{
-    data <- MMVmalaria::MalariaPopulation
-  }
-
-  # Subset of itnerest:
-  data <- subset(data, REGION=="Africa" & AGE_years<=5 & AGE_years>2)
-
-  # Output:
-  return(data)
-}
-
 
 #' load_MalariaPopulation
 #'
