@@ -13,14 +13,19 @@ summary_PKPDdataCombo(
 )
 }
 \arguments{
-\item{filePath}{Default: NULL}
+\item{dataGen}{IQRdataGeneral object}
+
+\item{filePath}{Character string with path to folder for saving plot}
 
 \item{CompoundList}{Default: NULL}
 
 \item{positiveQC}{Default: NULL}
 }
+\value{
+Data frame with summary of PK and PD data
+}
 \description{
-summary_PKPDdataCombo
+Summarize PK and PD data by study and treatment
 }
 \seealso{
 Other DataExploration: 

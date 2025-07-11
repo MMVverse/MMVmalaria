@@ -25,8 +25,11 @@ predictDose_Generic
 * Adjusted to import and declare IQRtools:: for IQRmodel() 
 
 03-DataPreparation.R 
+* import_SCIDpkpdDataCombo_TAD : Argument PDrangeDoseTimeRange removed as unused
 * load_AfricanPediatricMalariaPopulation2to5 REMOVED 
-
+* load_PediatricParameters : Documentation adjusted to reflect what function actually does  
+98-OldFunctions.R 
+* REMOVED
 # Vignettes
 PredictHumanDoses.Rmd
 * IQRtools::IQRmodel(modelFile) explicitly called in vignette (previously IQRmodel(modelFile))

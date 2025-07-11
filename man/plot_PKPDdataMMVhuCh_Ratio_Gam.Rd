@@ -16,13 +16,16 @@ plot_PKPDdataMMVhuCh_Ratio_Gam(
 \arguments{
 \item{dataGen}{: Object containing data to plot in \code{IQRDataGeneral} format}
 
-\item{filePath}{: Filepath to which plots will be saved}
+\item{filePath}{Character string with path to folder for saving plot}
 
 \item{PDname}{: Name of PD observations in the NAME column of IQRDataGeneral. Default: 'Parasitemia'}
 
 \item{Gametos}{: Name of Gametocyte observations in the NAME column of IQRDataGeneral. Default: 'Parasitemia Gametocytes'}
 
 \item{rescuename}{: Name of observations in the NAME column that correspond to Rescue medication doses.}
+}
+\value{
+No return; Figures saved as .png to destination specified in \code{filePath}
 }
 \description{
 Plot PKPD data available from a Human Challenge study in "standard" MMV format, suitable for exploration and reporting.

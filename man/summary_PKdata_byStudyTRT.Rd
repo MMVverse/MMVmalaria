@@ -13,6 +13,8 @@ summary_PKdata_byStudyTRT(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
 \item{filename}{Default: NULL}
 
 \item{NewTRTNAME}{Default: NULL}
@@ -21,8 +23,11 @@ summary_PKdata_byStudyTRT(
 
 \item{CovNewTRTNAME}{Default: NULL}
 }
+\value{
+Data frame with summary of PK data by study and treatment
+}
 \description{
-summary_PKdata_byStudyTRT
+Summarize PK data by study and treatment
 }
 \seealso{
 Other DataExploration: 

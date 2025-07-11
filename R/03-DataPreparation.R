@@ -167,7 +167,7 @@ convert_Gametocytes <- function(
 #' @param route Default: NULL
 #' @param DoseTimeSheet Default: 'DosingTimeTable'
 #' @param DoseTimeRange Default: NULL
-#' @param DoseTimeMapping
+#' @param DoseTimeMapping Character vector mapping DoseTimesheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "DosingTime"="NT"))
 #' @param DoseSheet Default: 'IndividualMetadataDrug1'
 #' @param DoseRange Default: NULL
 #' @param DoseMapping Default: NULL
@@ -1128,7 +1128,7 @@ import_SCIDpkpdData_oldTAD <- function(dataFile,
 #' @param route Default: NULL
 #' @param DoseTimeSheet Default: 'DosingTimeTable'
 #' @param DoseTimeRange Default: NULL
-#' @param DoseTimeMapping
+#' @param DoseTimeMapping Character vector mapping DoseTimesheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "DosingTime"="NT"))
 #' @param DoseSheet Default: 'DrugTreatmentTable'
 #' @param DoseRange Default: NULL
 #' @param DoseMapping Default: NULL
@@ -1496,7 +1496,7 @@ import_SCIDpkpdData_TAD <- function(dataFile,
 #' @param intervaldose Default: NULL
 #' @param DoseTimeSheet Default: 'DosingTimeTable'
 #' @param DoseTimeRange Default: NULL
-#' @param DoseTimeMapping
+#' @param DoseTimeMapping Character vector mapping DoseTimesheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "DosingTime"="NT"))
 #' @param DoseSheet Default: 'DrugTreatmentTable'
 #' @param DoseRange Default: NULL
 #' @param DoseMapping Default: NULL
@@ -2381,7 +2381,6 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
 #' @param PKlloqIdentifier Character vector for PKlloq identifier (eg c("BLQ", "<0.01"))
 #' @param PKfactor Numeric vector for compound 1 and compound 2 respectively, converting factor for PK data to get desired unit (eg c(1e-3,1e-3) from ng/mL to ug/mL for both compounds) )
 #' @param PDsheet Name of the sheet recording PD data
-#' @param PDrangeDoseTimeRange
 #' @param PDmapping Character vector mapping PDsheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"= "STUDY", "Parasitemia" = "VALUE"))
 #' @param PDlloq Numeric value of PD LLOQ
 #' @param PDlloqIdentifier Numeric value of PD LLOQ
@@ -2400,7 +2399,7 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
 #' @param DoseMapping Character vector mapping DoseSheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "Route" = "ROUTE"))
 #' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
 #'
-#' @importFram reshape2 dcast melt
+#' @importFrom reshape2 dcast melt
 #' @export
 #' @seealso [readxl], [plyr], [dplyr], [reshape2]
 #' @family Data Preparation
@@ -2849,7 +2848,7 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
 #' load_MalariaPopulation
 #'
 #' @description load Malaria population demographic data
-#' @return
+#' @return A data frame with example malaria population demographic data.
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Data Preparation
@@ -2870,10 +2869,9 @@ load_MalariaPopulation <- function(){
 
 #' Load Pediatric Parameters
 #'
-#' Load default pediatric parameters such as dose adjustement (`Fpediatric`) and
-#' volume of blood per kg, per body weight band.
+#' Load default pediatric dose adjustment parameters
 #'
-#' @return
+#' @return A data frame with pediatric dose adjustment parameters.
 #'
 #' @export
 #'

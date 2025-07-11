@@ -26,6 +26,9 @@ convert_Gametocytes(
 
 \item{oldNewStdFactor}{Conversion factor from old to new standard curve (Default: 62).}
 }
+\value{
+Data frame or IQRdataGENERAL object with converted gametocyte data.
+}
 \description{
 Converts gametocyte/parasitemia variable units from laboratory (generally copies/mL) to IQRdataset format units (p/mL).
 Examples of gametocyte/parasitemia variables that might need unit conversion are Parasitemia female gametocytes, Parasitemia male gametocytes and Parasitemia Trophozoite.
@@ -51,7 +54,6 @@ dat <- convert_Gametocytes(data            = dat,
 \seealso{
 Other Data Preparation: 
 \code{\link{censorGametocyte}()},
-\code{\link{convertGametocytes}()},
 \code{\link{import_SCIDpkpdData}()},
 \code{\link{import_SCIDpkpdDataCombo}()},
 \code{\link{import_SCIDpkpdDataCombo_GSK}()},
@@ -60,7 +62,6 @@ Other Data Preparation:
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},
-\code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},
 \code{\link{load_PediatricParameters}()}
 }

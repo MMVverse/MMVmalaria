@@ -15,6 +15,9 @@ barplotACPR(data, type = "Crude", acprDay = 28, stratifyBy = "BWB")
 
 \item{stratifyBy}{Column to stratify by}
 }
+\value{
+A ggplot object with the barplot of ACPR
+}
 \description{
 Create stratified barplot of ACPR
 }

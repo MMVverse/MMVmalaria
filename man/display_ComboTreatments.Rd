@@ -14,6 +14,8 @@ display_ComboTreatments(
 )
 }
 \arguments{
+\item{data}{IQRdataGeneral object}
+
 \item{stratify}{Default: 'STUDY'}
 
 \item{fileplot}{Default: NULL}
@@ -24,8 +26,11 @@ display_ComboTreatments(
 
 \item{FLAGreturnObject}{Default: FALSE}
 }
+\value{
+List of objects defined in fileplot and filetable
+}
 \description{
-display_ComboTreatments
+Extract information on combo treatments from a dataGeneral object and return information in plot and/or tablular format
 }
 \seealso{
 Other DataExploration: 

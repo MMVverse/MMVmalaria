@@ -27,9 +27,13 @@ import_SCIDpkpdDataCombo_oldTAD(
 )
 }
 \arguments{
+\item{dataFile}{Path to the Excel file containing the data.}
+
 \item{PKsheets}{Default: c("Blood levels 1", "Blood levels 2")}
 
 \item{PKranges}{Default: NULL}
+
+\item{PKmapping}{Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))}
 
 \item{PKlloq}{Default: c(0.001, 0.001)}
 
@@ -40,6 +44,8 @@ import_SCIDpkpdDataCombo_oldTAD(
 \item{PDsheet}{Default: 'Parasitemia'}
 
 \item{PDrange}{Default: NULL}
+
+\item{PDmapping}{Character vector mapping PDsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))}
 
 \item{PDlloq}{Default: 0.01}
 
@@ -59,13 +65,15 @@ import_SCIDpkpdDataCombo_oldTAD(
 
 \item{visitNumber}{Default: -1}
 }
+\value{
+Imported SCID data
+}
 \description{
-import_SCIDpkpdDataCombo_oldTAD
+Imports SCID PK and PD data from an Excel file.
 }
 \seealso{
 Other Data Preparation: 
 \code{\link{censorGametocyte}()},
-\code{\link{convertGametocytes}()},
 \code{\link{convert_Gametocytes}()},
 \code{\link{import_SCIDpkpdData}()},
 \code{\link{import_SCIDpkpdDataCombo}()},
@@ -74,7 +82,6 @@ Other Data Preparation:
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},
-\code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},
 \code{\link{load_PediatricParameters}()}
 }

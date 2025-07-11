@@ -13,6 +13,10 @@ summary_PKPDdataMMV(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
+\item{filePath}{Character string with path to folder for saving plot}
+
 \item{positiveQC}{}
 }
 \description{

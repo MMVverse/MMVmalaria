@@ -11,8 +11,11 @@ generate_InitialParametersIQRsys(projectPath, IIVvalues0 = NULL)
 
 \item{IIVvalues0}{Default: NULL}
 }
+\value{
+A list containing initial parameters in a format compatible with a SYSFIT modelSpec argument
+}
 \description{
-generate_InitialParametersIQRsys
+Generate initial parameters for SYSFIT modeling
 }
 \seealso{
 Other SYSFITmodeling: 

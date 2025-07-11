@@ -36,9 +36,15 @@ import_SCIDpkpdData_TAD(
 )
 }
 \arguments{
+\item{dataFile}{Path to the Excel file containing the data.}
+
+\item{compound}{Name of compound administered in the study.}
+
 \item{PKsheet}{Default: 'DrugConcentrationData'}
 
 \item{PKrange}{Default: NULL}
+
+\item{PKmapping}{Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))}
 
 \item{PKlloq}{Default: 1}
 
@@ -49,6 +55,8 @@ import_SCIDpkpdData_TAD(
 \item{PDsheet}{Default: 'ParasitemiaData'}
 
 \item{PDrange}{Default: NULL}
+
+\item{PDmapping}{Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))}
 
 \item{PDlloq}{Default: 0.01}
 
@@ -79,14 +87,18 @@ import_SCIDpkpdData_TAD(
 \item{DoseRange}{Default: NULL}
 
 \item{DoseMapping}{Default: NULL}
+
+\item{positiveQC}{Character vector identifying the name of positive control (must match upper or lower case as in original dataset)}
+}
+\value{
+Imported SCID data
 }
 \description{
-Import TAD Data to MMV format
+Imports SCID PK and PD data from an Excel file.
 }
 \seealso{
 Other Data Preparation: 
 \code{\link{censorGametocyte}()},
-\code{\link{convertGametocytes}()},
 \code{\link{convert_Gametocytes}()},
 \code{\link{import_SCIDpkpdData}()},
 \code{\link{import_SCIDpkpdDataCombo}()},
@@ -95,7 +107,6 @@ Other Data Preparation:
 \code{\link{import_SCIDpkpdDataCombo_oldTAD}()},
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},
-\code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},
 \code{\link{load_PediatricParameters}()}
 }

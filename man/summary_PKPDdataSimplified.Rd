@@ -17,11 +17,17 @@ summary_PKPDdataSimplified(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
 \item{filename}{Default: NULL}
 
 \item{PKname}{Default: NULL}
 
 \item{PDname}{Default: NULL}
+
+\item{StudyTYPE}{Character string denoting type of study (e.g., "PK", "PD", "PKPD"), default: NULL}
+
+\item{Center}{Character string denoting center name}
 
 \item{NewTRTNAME}{Default: NULL}
 
@@ -29,8 +35,11 @@ summary_PKPDdataSimplified(
 
 \item{CovNewTRTNAME}{Default: NULL}
 }
+\value{
+Data frame with summary of PK and PD data
+}
 \description{
-summary_PKPDdataSimplified
+Summarize PK and PD data in a simplified format
 }
 \seealso{
 Other DataExploration: 

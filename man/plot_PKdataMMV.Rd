@@ -13,14 +13,21 @@ plot_PKdataMMV(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
+\item{filePath}{Character string with path to folder for saving plot}
+
 \item{PKname}{Default: NULL}
 
 \item{scale_y}{Default: 'log'}
 
 \item{facet_scales}{Default: 'fixed'}
 }
+\value{
+None, but saves plots to filePath
+}
 \description{
-plot_PKdataMMV
+Plot PK data from an IQRdataGeneral object
 }
 \seealso{
 Other DataExploration: 

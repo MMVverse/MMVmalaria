@@ -13,6 +13,8 @@ table_BestFitEstimation(
 )
 }
 \arguments{
+\item{fit}{A list of SYSFIT fitting objects produced by run_SysFitEstimation}
+
 \item{filename}{Default: NULL}
 
 \item{FLAGout}{Default: FALSE}
@@ -21,8 +23,11 @@ table_BestFitEstimation(
 
 \item{footer}{Default: NULL}
 }
+\value{
+A data frame containing the best fit estimation results
+}
 \description{
-table_BestFitEstimation
+Generate a table of best fit estimation results from SYSFIT modeling
 }
 \seealso{
 Other SYSFITmodeling: 

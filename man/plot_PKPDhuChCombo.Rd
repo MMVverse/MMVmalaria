@@ -16,6 +16,10 @@ plot_PKPDhuChCombo(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
+\item{filePath}{Character string with path to folder for saving plot}
+
 \item{PDname}{Default: 'Parasitemia'}
 
 \item{Gametos}{Default: 'Parasitemia Gametocytes'}
@@ -28,8 +32,11 @@ plot_PKPDhuChCombo(
 
 \item{ActivityPath}{Path of the current activity (Default: NULL)}
 }
+\value{
+List of plots
+}
 \description{
-plot_PKPDhuChCombo
+Plot PK and PD data from an IQRdataGeneral object
 }
 \seealso{
 Other DataExploration: 

@@ -46,7 +46,7 @@ import_SCIDpkpdData(
 
 \item{PKrange}{Default: NULL}
 
-\item{PKmapping}{}
+\item{PKmapping}{Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))}
 
 \item{PKlloq}{Default: 1}
 
@@ -57,6 +57,8 @@ import_SCIDpkpdData(
 \item{PDsheet}{Default: NULL}
 
 \item{PDrange}{Default: NULL}
+
+\item{PDmapping}{Character vector mapping PKsheet headers (left) to desired name in converted data format (right) (eg c("StudyID"= "STUDY", "Concentration" = "VALUE"))}
 
 \item{PDlloq}{Default: 0.01}
 
@@ -90,7 +92,12 @@ import_SCIDpkpdData(
 
 \item{DoseMapping}{Default: NULL}
 
+\item{positiveQC}{Character vector identifying the name of positive control (must match upper or lower case as in original dataset)}
+
 \item{importVersion}{Default: centerName}
+}
+\value{
+Imported SCID data
 }
 \description{
 Imports SCID PK and PD data from an Excel file.
@@ -98,7 +105,6 @@ Imports SCID PK and PD data from an Excel file.
 \seealso{
 Other Data Preparation: 
 \code{\link{censorGametocyte}()},
-\code{\link{convertGametocytes}()},
 \code{\link{convert_Gametocytes}()},
 \code{\link{import_SCIDpkpdDataCombo}()},
 \code{\link{import_SCIDpkpdDataCombo_GSK}()},
@@ -107,7 +113,6 @@ Other Data Preparation:
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},
-\code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},
 \code{\link{load_PediatricParameters}()}
 }

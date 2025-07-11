@@ -26,6 +26,9 @@ plot_2DconcVsACPR(
 
 \item{acprDay}{ACPR assessment day, can only be 28, 42, or 63}
 }
+\value{
+A ggplot object with the scatterplot of 2 drug concentrations vs ACPR
+}
 \description{
 plot_2DconcVsACPR
 }

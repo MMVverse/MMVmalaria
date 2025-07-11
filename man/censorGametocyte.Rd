@@ -31,7 +31,6 @@ This function censors the total parasitemia values based on the percentage of ga
 }
 \seealso{
 Other Data Preparation: 
-\code{\link{convertGametocytes}()},
 \code{\link{convert_Gametocytes}()},
 \code{\link{import_SCIDpkpdData}()},
 \code{\link{import_SCIDpkpdDataCombo}()},
@@ -41,7 +40,6 @@ Other Data Preparation:
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},
-\code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},
 \code{\link{load_PediatricParameters}()}
 }

@@ -15,6 +15,10 @@ plot_PKPDdataMMV(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
+\item{filePath}{Character string with path to folder for saving plot}
+
 \item{PDname}{Default: 'Parasitemia'}
 
 \item{PKname}{Default: NULL}
@@ -25,8 +29,11 @@ plot_PKPDdataMMV(
 
 \item{ActivityPath}{Default: NULL}
 }
+\value{
+None, but saves plots to filePath
+}
 \description{
-plot_PKPDdataMMV
+Plot PK and PD data from an IQRdataGeneral object
 }
 \seealso{
 Other DataExploration: 

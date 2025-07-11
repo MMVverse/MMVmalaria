@@ -14,6 +14,8 @@ summary_PDdata_byStudyTRT(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
 \item{filename}{Default: NULL}
 
 \item{EfficacyNAME}{Default: 'Parasitemia Asexual + Gametocyte Mean'}
@@ -24,8 +26,11 @@ summary_PDdata_byStudyTRT(
 
 \item{CovNewTRTNAME}{Default: NULL}
 }
+\value{
+Data frame with summary of PD data by study and treatment
+}
 \description{
-summary_PDdata_byStudyTRT
+Summarize PD data by study and treatment
 }
 \seealso{
 Other DataExploration: 

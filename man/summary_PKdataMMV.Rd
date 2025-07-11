@@ -7,12 +7,17 @@
 summary_PKdataMMV(dataGen, filePath = NULL, NewTRTNAME = NULL)
 }
 \arguments{
-\item{filePath}{Default: NULL}
+\item{dataGen}{IQRdataGeneral object}
+
+\item{filePath}{Character string with path to folder for saving plot}
 
 \item{NewTRTNAME}{Default: NULL}
 }
+\value{
+Data frame with summary of PK data
+}
 \description{
-summary_PKdataMMV
+Summarize PK data
 }
 \seealso{
 Other DataExploration: 

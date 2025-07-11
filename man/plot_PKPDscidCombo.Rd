@@ -15,6 +15,10 @@ plot_PKPDscidCombo(
 )
 }
 \arguments{
+\item{dataGen}{IQRdataGeneral object}
+
+\item{filePath}{Character string with path to folder for saving plot}
+
 \item{PDname}{Default: 'Parasitemia'}
 
 \item{PKname}{Default: NULL}
@@ -25,8 +29,11 @@ plot_PKPDscidCombo(
 
 \item{ActivityPath}{Path of the current activity (Default: NULL)}
 }
+\value{
+List of plots
+}
 \description{
-plot_PKPDscidCombo
+Plot PK and PD data from an IQRdataGeneral object
 }
 \seealso{
 Other DataExploration: 

@@ -65,8 +65,11 @@ generate_SYSalgorithmSettings(
 
 \item{FLAGkeepFits}{Default: FALSE}
 }
+\value{
+List containing SYSFIT algorithm settings
+}
 \description{
-generate_SYSalgorithmSettings
+Generate a list of settings for SYSFIT algorithm
 }
 \seealso{
 Other SYSFITmodeling: 

@@ -1,9 +1,9 @@
 #' generate_InitialParametersIQRnlme
 #'
-#' @description
-#' @param projectPath
+#' @description Generate initial parameters for NLME modeling
+#' @param projectPath Path of the project from which to retrieve modelSpec
 #' @param IIVvalues0 Default: `NULL`
-#' @return
+#' @return A list containing initial parameters in a format compatible with a IQRnlme modelSpec argument 
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family NLME Modeling
@@ -63,7 +63,7 @@ generate_InitialParametersIQRnlme <- function(projectPath,
 }
 #' generate_NLMEalgorithmSettings
 #'
-#' @description
+#' @description Generate a list of settings for NLME algorithm
 #' @param multiTestN Default: 1
 #' @param multiTestSD Default: 0.5
 #' @param FLAGanalytic Default: `TRUE`
@@ -95,7 +95,7 @@ generate_InitialParametersIQRnlme <- function(projectPath,
 #' @param algOpt.MONOLIX.STIFF Default: `TRUE`
 #' @param algOpt.NLMIXR.method Default: `"SAEM"`
 #' @param algOpt.NLMIXR.control Default: `NULL`
-#' @return
+#' @return List containing NLME algorithm settings
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family NLME Modeling
@@ -205,9 +205,15 @@ generate_NLMEalgorithmSettings <- function(# General setting:
 }
 #' testPKmodelsIQR
 #'
-#' @description
-#' @param testSetup
-#' @param data
+#' @description Test PK models using IQRtools 
+#' @param testSetup A list containing the model assumptions to test, with fields
+#' 'Compartments' (numeric, 1, 2 or 3), 
+#' 'Absorption' (character vector, 'zero order' or 'first order') 
+#' 'Elimination' (character vector, 'linear' or 'saturable' or 'linear+saturable'), 
+#' 'LagTime' (logical, TRUE or FALSE), 
+#' and 'ErrorModels (character vector, 'abs', 'rel' or 'absrel')'. 
+#' multiple options can be tested for each field i.e. list(Compartments = c(1,2,3), Absorption =c('zero order', 'first order'),....)
+#' @param data A data frame containing the dataset to be used for testing the models.
 #' @param parOptions Default: list()
 #' @param projectPath Default: 'PKmodels'
 #' @param FLAGrun Default: `TRUE`
@@ -218,7 +224,7 @@ generate_NLMEalgorithmSettings <- function(# General setting:
 #' @param NPROCESSORS Default: 1
 #' @param NPROCESSORSpar Default: 1
 #' @param setting Default: `NULL`
-#' @return
+#' @return Nothing is returned directly by the function, tested PK models are written to `projectPath`
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Daniel Kaschek (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family NLME Modeling

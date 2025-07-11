@@ -14,6 +14,8 @@ summarybyGroup_MMVnca(
 )
 }
 \arguments{
+\item{resultNCA}{IQRnca object containing NCA results}
+
 \item{stratify}{Default: NULL}
 
 \item{stats}{Default: 'geomean'}
@@ -24,8 +26,11 @@ summarybyGroup_MMVnca(
 
 \item{report}{Default: TRUE}
 }
+\value{
+Data frame with summary of NCA results
+}
 \description{
-symmarybyGroup_MMVnca
+Summarize NCA results by group
 }
 \seealso{
 Other DataExploration: 

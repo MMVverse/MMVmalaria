@@ -1026,7 +1026,6 @@ generate_ChemoModel_FluxLimiter <- function(nCpt,
 #' \item TIME: Time to first exceed above LLOQ
 #' \item VALUE: TRUE or FALSE statement regarding breakthrough event
 #' }
-#' @examples
 #'
 #' @export
 #' @author Catalina Barcelo (MMV, \email{barceloc@@mmv.org})

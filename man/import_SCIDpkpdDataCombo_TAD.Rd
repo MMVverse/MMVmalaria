@@ -89,7 +89,7 @@ import_SCIDpkpdDataCombo_TAD(
 
 \item{DoseMapping}{Character vector mapping DoseSheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "Route" = "ROUTE"))}
 
-\item{positiveQC}{Character vector identifying the name of positive control (must matchupper or lower case as in original dataset)}
+\item{positiveQC}{Character vector identifying the name of positive control (must match upper or lower case as in original dataset)}
 }
 \description{
 Import original SCID combination data from TAD and convert it to a single structured data format
@@ -105,7 +105,6 @@ Uses function \link[readxl:read_excel]{readxl::read_excel}
 
 Other Data Preparation: 
 \code{\link{censorGametocyte}()},
-\code{\link{convertGametocytes}()},
 \code{\link{convert_Gametocytes}()},
 \code{\link{import_SCIDpkpdData}()},
 \code{\link{import_SCIDpkpdDataCombo}()},
@@ -114,7 +113,6 @@ Other Data Preparation:
 \code{\link{import_SCIDpkpdData_GSK}()},
 \code{\link{import_SCIDpkpdData_TAD}()},
 \code{\link{import_SCIDpkpdData_oldTAD}()},
-\code{\link{load_AfricanPediatricMalariaPopulation2to5}()},
 \code{\link{load_MalariaPopulation}()},
 \code{\link{load_PediatricParameters}()}
 }

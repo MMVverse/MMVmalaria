@@ -1744,7 +1744,7 @@ summary_PDdata_byStudyTRT <- function(dataGen,
 #' @description Summarize PK data by study and treatment
 #' @param dataGen IQRdataGeneral object
 #' @param filename Default: NULL
-#' @param NewTRTNAME Default: NULL
+#' @param NewTRTNAME Character vector denoting new treatment name. Default: NULL
 #' @param CovToTRTNAME Default: NULL
 #' @param CovNewTRTNAME Default: NULL
 #' @return Data frame with summary of PK data by study and treatment
@@ -1927,7 +1927,7 @@ summary_PKdata_byStudyTRT <- function(dataGen,
 #' @description Summarize PK data 
 #' @param dataGen IQRdataGeneral object
 #' @param filePath Character string with path to folder for saving plot
-#' @param NewTRTNAME Default: NULL
+#' @param NewTRTNAME Character vector denoting new treatment name. Default: NULL
 #' @return Data frame with summary of PK data
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
@@ -2047,7 +2047,7 @@ summary_PKdataMMV <- function(dataGen,
 #' @param dataGen IQRdataGeneral object
 #' @param filePath Character string with path to folder for saving plot
 #' @param CompoundList Default: NULL
-#' @param positiveQC Default: NULL
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset). Default: NULL
 #' @return Data frame with summary of PK and PD data
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
@@ -2185,13 +2185,12 @@ summary_PKPDdataCombo <- function(dataGen,
 #'
 #' @param dataGen IQRdataGeneral object  
 #' @param filePath Character string with path to folder for saving plot
-#' @param NewTRTNAME
-#' @param positiveQC
+#' @param NewTRTNAME Character vector denoting new treatment name. Default: NULL
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset). Default: NULL
 #'
-#' @return
+#' @return A data frame with summary of pharmacokinetic data.
 #' @export
 #'
-#' @examples
 #' @author Aline Fuchs (MMV), catalinbarcelo (MMV), Mohammed H. Cherkaoui (MMV)
 summary_PKPDdataMMV <- function(dataGen,
                                 filePath   = NULL,

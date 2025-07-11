@@ -17,6 +17,9 @@ scatterConcACPR(data, conc, concDay = "Day 7", type = "Crude", acprDay = 28)
 
 \item{acprDay}{ACPR assessment day, can only be 28, 42, or 63}
 }
+\value{
+A ggplot object with the scatterplot of concentration vs ACPR
+}
 \description{
 Scatterplot concentrationand ACPR
 }
