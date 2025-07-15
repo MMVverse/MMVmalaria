@@ -21,9 +21,19 @@ backwardElimination(
 )
 }
 \arguments{
-\item{COVcentering}{Default: \code{NULL}}
+\item{model}{IQRmodel object, see \code{IQRmodel()}}
 
-\item{projectPath}{Default: 'PKmodels'}
+\item{dosing}{IQRdosing object, see \code{IQRdosing()}}
+
+\item{data}{IQRdatageneral object, see \code{IQRdataGeneral()}}
+
+\item{modelSpec}{IQR modelSpec, see \code{modelSpec_IQRest}}
+
+\item{covariateToTest}{character vector of covariate names to test, e.g. \code{c("WT0", "AGE")}}
+
+\item{COVcentering}{Named vector defining centering value for covariates i.e. COVcentering = c(WT0=55)}
+
+\item{projectPath}{Path to the project folder, default: "PKmodels", covariate models will be written to disk here}
 
 \item{alpha}{Default: 0.05}
 
@@ -37,8 +47,12 @@ backwardElimination(
 
 \item{setting}{Default: \code{NULL}}
 }
+\value{
+list of paths to IQRnlmeProject folders selected by backwards elimination process
+}
 \description{
-backwardElimination
+Perform backward elimination of covariates on an IQRnlme model given a provided dataset. Models with covariates are simulated and selected based on
+comparison of models using one-tail chi sqaured test with provided \code{alpha} value
 }
 \seealso{
 Other Model Assessment: 

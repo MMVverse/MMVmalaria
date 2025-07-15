@@ -107,8 +107,11 @@ generate_NLMEalgorithmSettings(
 
 \item{algOpt.NLMIXR.control}{Default: \code{NULL}}
 }
+\value{
+List containing NLME algorithm settings
+}
 \description{
-generate_NLMEalgorithmSettings
+Generate a list of settings for NLME algorithm
 }
 \seealso{
 Other NLME Modeling: 

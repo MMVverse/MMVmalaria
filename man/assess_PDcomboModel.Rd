@@ -16,13 +16,33 @@ assess_PDcomboModel(
 )
 }
 \arguments{
-\item{modelFile}{Default: \code{NULL}}
+\item{ModelToAssess}{IQRnlmeProject path, IQRnlmeProjectMulti path, IQRsysFit object or IQRsysFitMulti object, in case of IQRnlmeProjectMulti or IQRsysFitMulti best model will be used}
+
+\item{hiDoseGr}{character vector with TRTNAME of highest dose group(s) for calculation of assessment criteria for these separately}
+
+\item{LLOQ}{Numeric, lower limit of quantification for PD measurement}
+
+\item{modelFile}{path to the PKPD combo model file}
 
 \item{PDname}{Default: 'Parasitemia Total'}
 
-\item{abs0inputs}{Default: \code{NULL}}
+\item{abs0inputs}{Numeric vector: Number or vector matching INPUT(S) in the MODEL file, default \code{NULL}}
 
-\item{abs0Tk0param}{Default: \code{NULL}}
+\item{abs0Tk0param}{Names of abs0param eg Tk0, default: \code{NULL}}
+
+\item{fileDataGeneralpath}{to general dataset for the observations (to make sure that BLQ values are included). Expects PD on linear scale.}
+}
+\value{
+data.frame with assessment criteria:
+\RMSEtime2REC Sum of squares for time to recrudescence
+\BIC Bayesian Information Criterion
+\RMSEtime2RecHI Sum of squares for time to recrudescence in highest dose group
+\RMSEparasitemiaHI Sum of squares for parasitemia data in highest dose group
+\RMSEparasitemiaCL Sum of squares for clearance phase
+\Robustness Robustness criterion: sqrt(sum((OBJvalues-minOBJ)^2)/nOBJ)
+\Ntime2recrud Number of recrudescence cases
+\Nind Number of individuals
+\Npar Number of parameters
 }
 \description{
 assess_PDcomboModel

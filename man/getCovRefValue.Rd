@@ -15,7 +15,7 @@ Reference covariate value (as character)
 }
 \description{
 Looks basically for numerical value in string. If none or more than one
-is found NA is return and a warung issued.
+is found NA is return and a warning issued.
 }
 \examples{
 getCovRefValue("X=X_Pop*(WT0/65)^Beta")

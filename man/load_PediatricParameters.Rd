@@ -6,9 +6,11 @@
 \usage{
 load_PediatricParameters()
 }
+\value{
+A data frame with pediatric dose adjustment parameters.
+}
 \description{
-Load default pediatric parameters such as dose adjustement (\code{Fpediatric}) and
-volume of blood per kg, per body weight band.
+Load default pediatric dose adjustment parameters
 }
 \seealso{
 Other Data Preparation: 

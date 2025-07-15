@@ -17,7 +17,7 @@ summary_PKdata_byStudyTRT(
 
 \item{filename}{Default: NULL}
 
-\item{NewTRTNAME}{Default: NULL}
+\item{NewTRTNAME}{Character vector denoting new treatment name. Default: NULL}
 
 \item{CovToTRTNAME}{Default: NULL}
 

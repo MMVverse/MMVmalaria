@@ -2513,10 +2513,13 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
 
   # Get Appropriate DoseLevel
   DL <- reshape2::dcast(dataDose,SUBJECT+STUDY+ROUTE~COMPOUND,value.var = "DOSELEVEL")
+
   # Doselevel 1
   DL1 <- reshape2::melt(DL,
-                        id.vars=c(names(DL)[!names(DL) %in% cpdAll]),
-                        measure.vars = c("NONE",positiveQC,cpd1))
+                         id.vars=c(names(DL)[!names(DL) %in% cpdAll]),
+                         measure.vars = c("NONE",positiveQC,cpd1))
+  
+
   names(DL1) <- c(names(DL1)[!names(DL1) %in% c("variable","value")],"COMPOUND","DOSELEVEL1")
   DL1<-DL1[complete.cases(DL1), ]
   # Doselevel 2

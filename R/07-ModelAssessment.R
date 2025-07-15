@@ -176,7 +176,7 @@ add_OneCovariateToModelSpec <- function(modelSpec,
 }
 #' assess_PDcomboModel
 #'
-#' @description
+#' @description Assess a PKPD combo model(s) and produce key summary statistics 
 #' @param ModelToAssess IQRnlmeProject path, IQRnlmeProjectMulti path, IQRsysFit object or IQRsysFitMulti object, in case of IQRnlmeProjectMulti or IQRsysFitMulti best model will be used
 #' @param fileDataGeneralpath to general dataset for the observations (to make sure that BLQ values are included). Expects PD on linear scale.
 #' @param hiDoseGr character vector with TRTNAME of highest dose group(s) for calculation of assessment criteria for these separately
@@ -536,7 +536,10 @@ assess_PDcomboModel <- function(ModelToAssess,                      # IQRnlmePro
 #' @param dosing IQRdosing object, see `IQRdosing()`
 #' @param data IQRdatageneral object, see `IQRdataGeneral()`
 #' @param modelSpec IQR modelSpec, see `modelSpec_IQRest`
-#' @param covariateToTest character vector of covariate names to test, e.g. `c("WT0", "AGE")`
+#' @param covariateToTest A list containing covariates to be tested in the forward 
+#' selection process, can be a named list with parameter = covariate. If the 
+#' element of the list has no name, it is assumed that each element will be 
+#' composed of c("Parameter","Covariate")
 #' @param COVcentering Named vector defining centering value for covariates i.e. COVcentering = c(WT0=55)
 #' @param projectPath Path to the project folder, default: "PKmodels", covariate models will be written to disk here
 #' @param alpha Default: 0.05
@@ -1011,22 +1014,32 @@ backwardElimination <- function(model, dosing,
 }
 #' compare_DataModelMMV
 #'
-#' @description
-#' @param modelFolder
-#' @param dataFile Default: `NULL`
-#' @param outputFolder Default: '.'
-#' @param ylabel Default: `NULL`
-#' @param stratify Default: 'TRTNAME'
-#' @param catToStratify Default: `NULL`
-#' @param fileName Default: 'DataPredComparison'
-#' @param logY Default: `FALSE`
-#' @param figLimX Default: `NULL`
-#' @param figLimY Default: `NULL`
-#' @param predToPlot Default: `NULL`
-#' @param doseCOL Default: 'DOSELEVEL'
-#' @param doseMultCOL Default: 'DOSEMULT'
+#' @description Compare and visualize model predictions against data, 
+#' stratified by chosen parameters
+#' @param modelFolder Path containing the IQRnlmeProject
+#' @param dataFile Character string with path to IQRdataGeneral object
+#' @param outputFolder  Character string with path where to save output 
+#' @param ylabel Character string defining y axis label. 
+#' @param stratify Character string defining column name on which to stratify
+#' the plots. Must be one of "USUBJID", "ID", "TRTNAME", "STUDY". Define catToStratify 
+#' for stratification of other categorical covariates. Default: 'TRTNAME'
+#' @param catToStratify Character string defining categorical covariate on 
+#' which to stratifyDefault: `NULL`
+#' @param fileName Character string defining name of figure output. Default: 'DataPredComparison'
+#' @param logY Logical: log 10 y axis on plot. Default: `FALSE`
+#' @param figLimX Numeric, xlim to add to plot with `ggplot2::coord_cartesian`. 
+#' Default: `NULL`
+#' @param figLimY Numeric, ylim to add to plot with `ggplot2::coord_cartesian`. 
+#' Default: `NULL`
+#' @param predToPlot Which prediction to plot (POP, XPRED, INDIV or IPRED); 
+#' default: `NULL` in which case the function will plot both population and 
+#' individual predictions.
+#' @param doseCOL Character string defining column name containing doselevel. 
+#' Default: 'DOSELEVEL'
+#' @param doseMultCOL Character string defining column name containing number 
+#' of doses Default: 'DOSEMULT'
 #' @param ActivityPath Default: `NULL`
-#' @return
+#' @return Figure showing the comparison of data and model predictions.
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Model Assessment
@@ -1034,7 +1047,7 @@ backwardElimination <- function(model, dosing,
 compare_DataModelMMV <- function(modelFolder,
                                  dataFile      = NULL,
                                  outputFolder  = ".",
-                                 ylabel        = NULL,
+                                 ylabel        = ,
                                  stratify      = "TRTNAME",
                                  catToStratify = NULL,
                                  fileName      = "DataPredComparison",
@@ -1048,7 +1061,7 @@ compare_DataModelMMV <- function(modelFolder,
 
   # check some inputs:
   if (is.null(ylabel))
-    stop("Please provide y-label")
+    stop("Please provide y axis label")
   if (!(stratify %in% c("USUBJID", "ID", "TRTNAME", "STUDY")))
     stop("Stratification only by USUBJID, ID, TRTNAME, or STUDY")
 
@@ -1216,18 +1229,19 @@ compare_DataModelMMV <- function(modelFolder,
 
 #' compare_DataPopPred
 #'
-#' @description
-#' @param PKmodelFolder
-#' @param PDmodelFolder
-#' @param dataFile
+#' @description Function to plot simulations from existing PK population 
+#' parameters and multiple candidate PD models against observed data
+#' @param PKmodelFolder Character string with path to IQRNLME project containing population PK parameters
+#' @param PDmodelFolder Character vector with paths to folders containing IQRmodels, which need to be named model.txt
+#' @param dataFile Character string with path to IQRdataGeneral object 
 #' @param TRTsubset Default: `NULL`
 #' @param GRmodelFolder Default: `NULL`
 #' @param exclude Default: `NULL`
 #' @param yLim Default: `NULL`
 #' @param IndCovariates Default: `NULL`
 #' @param ActivityPath Default: `NULL`
-#' @return
-#' @export
+#' @return Figure showing the comparison of data and model predictions.
+#' @export 
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Model Assessment
 #' @importFrom plyr ddply rbind.fill
@@ -1774,18 +1788,28 @@ compare_DataModelTimeRecrudCombo <- function(ModelCombo,
 }
 #' compare_IndPredFits
 #'
-#' @description
-#' @param modelFolder
-#' @param outputFolder
-#' @param stratify Default: 'TRTNAME'
-#' @param fileName Default: 'DataPredComparison'
-#' @param logY Default: `FALSE`
-#' @param figLimX Default: `NULL`
-#' @param figLimY Default: `NULL`
-#' @param predToPlot Default: `NULL`
-#' @param withVehicle Default: `FALSE`
+#' @description Compare model predictions with observations and save 
+#' visualizations to pdf
+#' @param modelFolder Path to IQRNLME project containing data and model 
+#' predictions
+#' @param outputFolder Character string denoting path to folder in which to save 
+#' output
+#' @param stratify Character string defining column name on which to stratify
+#' the plots. Must be one of "USUBJID", "ID", "TRTNAME", "STUDY".
+#' @param fileName Character string denoting name with which to save output. 
+#' Default: 'DataPredComparison'
+#' @param logY Logical: log 10 y axis on plot. Default: `FALSE`
+#' @param figLimX Numeric, xlim to add to plot with `ggplot2::coord_cartesian`. 
+#' Default: `NULL`
+#' @param figLimY Numeric, ylim to add to plot with `ggplot2::coord_cartesian`. 
+#' Default: `NULL`
+#' @param predToPlot Which prediction to plot (POP, XPRED, INDIV or IPRED); 
+#' default: `NULL` in which case the function will plot both population and 
+#' individual predictions.
+#' @param withVehicle Logical: Include Vehicle? Default: `FALSE`
 #' @param ActivityPath Default: `NULL`
-#' @return
+#' @return Nothing is returned directly by the function, visualizations of 
+#' model comparisons are saved as .pdf to the specific output folder
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family Model Assessment
@@ -2186,13 +2210,17 @@ compare_IndPredFits <- function(modelFolder,
 
 #' compare_ModelEstimateRobustness
 #'
-#' @description
-#' @param FitList
-#' @param filename
+#' @description Compare model estimates and robustness of provided DDI models
+#' @param FitList A path to a folder containing IQRNLME project folders or 
+#' an IQRnlmeProjectMulti object.
+#' @param filename Character string denoting the folder name where outputs will
+#' be saved. Note: the argument name is misleading, this is the folder name, 
+#' file names will be included by the function by default. 
 #' @param ModelAlignment Default: 'Vertical'
 #' @param PDddiPara Default: c("Alpha", "Beta", "Alpha12", "Alpha21", "Beta12", "Beta21",
 #'    "Gamma")
-#' @return
+#' @return Nothing is returned directly by the function, visualizations of 
+#' model comparisons are saved as .png to `filename`
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family Model Assessment
@@ -2388,15 +2416,17 @@ compare_ModelEstimateRobustness <- function(FitList,
 
 #' compare_PredFitsSYS
 #'
-#' @description
-#' @param fit
-#' @param pathname Default: 'ComparePredObs'
-#' @param logY Default: `FALSE`
-#' @param stratify Default: 'CONDITION'
-#' @param data Default: `NULL`
-#' @param modelFile Default: `NULL`
-#' @param FLAGrefit Default: `FALSE`
-#' @return
+#' @description Compare predictions from a sysfit model to observations.
+#' @param fit SysFit model to compare with data, expects object generated by "run_SysFitEstimation"
+#' @param pathname Character string denoting folder name for output graphs Default: 'ComparePredObs'
+#' @param logY Logical, flag whether to plot y on log-transformed scale. Default: `FALSE`
+#' @param stratify Character string defining column to stratify panels by. Default: 'CONDITION'
+#' @param data IQRdataGENERAL object or character string defining file path to IQRdataGENERAL.csv file, containing 
+#' data to compare simulations with. If NULL modeling data will be used.Default: `NULL`
+#' @param modelFile Character string defining filepath of IQRmodel. Default: `NULL`
+#' @param FLAGrefit Logical, FLAG whether to use pre-calculated simulations or to regenerate simulations. Default: `FALSE`
+#' @return Nothing is returned directly by the function, visualizations of 
+#' model comparisons are saved as .pdf to `pathname`
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Model Assessment
@@ -2573,21 +2603,25 @@ compare_PredFitsSYS <- function(fit,                             # sysfit model 
 
 #' forwardSelection
 #'
-#' @description
-#' @param model
-#' @param dosing
-#' @param data
-#' @param modelSpec
-#' @param covariateToTest
-#' @param COVcentering Default: `NULL`
-#' @param projectPath Default: 'PKmodels'
+#' @description Perform forward selection of covariates in a model.
+#' @param model An IQRmodel object containing the default model which covariates
+#'  will be added to in the forward selection process
+#' @param dosing IQRdosing object to be used for estimation, see` ?IQRnlmeEst` and `?IQRdosing`
+#' @param data data frame or character string defining file path to data, see `?IQRnlmeEst`
+#' @param modelSpec A list containing the IQR model spec, see `?IQRnlmeEst`
+#' @param covariateToTest A list containing covariates to be tested in the forward 
+#' selection process, can be a named list with parameter = covariate. If the 
+#' element of the list has no name, it is assumed that each element will be 
+#' composed of c("Parameter","Covariate")
+#' @param COVcentering Named vector defining centering value for covariates i.e. COVcentering = c(WT0=55)
+#' @param projectPath Path to the project folder, default: "PKmodels", covariate models will be written to disk here
 #' @param alpha Default: 0.01
 #' @param tool Default: 'MONOLIX'
 #' @param toolVersion Default: `NULL`
 #' @param ncores Default: 1
 #' @param Nparallel Default: 1
 #' @param setting Default: `NULL`
-#' @return
+#' @return list of paths to IQRnlmeProject folders selected by backwards elimination process
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Model Assessment

@@ -20,6 +20,16 @@ testPKmodelsIQR(
 )
 }
 \arguments{
+\item{testSetup}{A list containing the model assumptions to test, with fields
+'Compartments' (numeric, 1, 2 or 3),
+'Absorption' (character vector, 'zero order' or 'first order')
+'Elimination' (character vector, 'linear' or 'saturable' or 'linear+saturable'),
+'LagTime' (logical, TRUE or FALSE),
+and 'ErrorModels (character vector, 'abs', 'rel' or 'absrel')'.
+multiple options can be tested for each field i.e. list(Compartments = c(1,2,3), Absorption =c('zero order', 'first order'),....)}
+
+\item{data}{A data frame containing the dataset to be used for testing the models.}
+
 \item{parOptions}{Default: list()}
 
 \item{projectPath}{Default: 'PKmodels'}
@@ -40,8 +50,11 @@ testPKmodelsIQR(
 
 \item{setting}{Default: \code{NULL}}
 }
+\value{
+Nothing is returned directly by the function, tested PK models are written to \code{projectPath}
+}
 \description{
-testPKmodelsIQR
+Test PK models using IQRtools
 }
 \seealso{
 Other NLME Modeling: 

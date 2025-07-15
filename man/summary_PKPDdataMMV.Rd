@@ -17,7 +17,12 @@ summary_PKPDdataMMV(
 
 \item{filePath}{Character string with path to folder for saving plot}
 
-\item{positiveQC}{}
+\item{NewTRTNAME}{Character vector denoting new treatment name. Default: NULL}
+
+\item{positiveQC}{Character vector identifying the name of positive control (must match upper or lower case as in original dataset). Default: NULL}
+}
+\value{
+A data frame with summary of pharmacokinetic data.
 }
 \description{
 Summarizes pharmacokinetic data in 3 different tables: (1) number of subjects per study and treatment group, (2) nominal sampling times per observation type and (3) dosing/inoculation nominal time per treatment group and dosing/inoculation type.

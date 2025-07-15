@@ -87,6 +87,8 @@ import_SCIDpkpdDataCombo(
 
 \item{DoseTimeRange}{Default: NULL}
 
+\item{DoseTimeMapping}{Character vector mapping DoseTimesheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "DosingTime"="NT"))}
+
 \item{DoseSheet}{Default: 'DrugTreatmentTable'}
 
 \item{DoseRange}{Default: NULL}

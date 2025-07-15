@@ -19,7 +19,7 @@ summary_PKPDdataCombo(
 
 \item{CompoundList}{Default: NULL}
 
-\item{positiveQC}{Default: NULL}
+\item{positiveQC}{Character vector identifying the name of positive control (must match upper or lower case as in original dataset). Default: NULL}
 }
 \value{
 Data frame with summary of PK and PD data

@@ -11,7 +11,7 @@ summary_PKdataMMV(dataGen, filePath = NULL, NewTRTNAME = NULL)
 
 \item{filePath}{Character string with path to folder for saving plot}
 
-\item{NewTRTNAME}{Default: NULL}
+\item{NewTRTNAME}{Character vector denoting new treatment name. Default: NULL}
 }
 \value{
 Data frame with summary of PK data

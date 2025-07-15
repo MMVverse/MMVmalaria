@@ -842,7 +842,7 @@ modelSpec_MMVmalariaProject <- function(projectPath, fixParameters = FALSE) {
 #' from FORMULA entry of MMVmalariaCSV model estimate table
 #'
 #' Looks basically for numerical value in string. If none or more than one
-#' is found NA is return and a warung issued.
+#' is found NA is return and a warning issued.
 #'
 #' @param formula Character string of the covariate equation used
 #'

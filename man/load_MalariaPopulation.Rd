@@ -6,6 +6,9 @@
 \usage{
 load_MalariaPopulation()
 }
+\value{
+A data frame with example malaria population demographic data.
+}
 \description{
 load Malaria population demographic data
 }

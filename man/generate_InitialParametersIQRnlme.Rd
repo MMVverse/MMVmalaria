@@ -7,10 +7,15 @@
 generate_InitialParametersIQRnlme(projectPath, IIVvalues0 = NULL)
 }
 \arguments{
+\item{projectPath}{Path of the project from which to retrieve modelSpec}
+
 \item{IIVvalues0}{Default: \code{NULL}}
 }
+\value{
+A list containing initial parameters in a format compatible with a IQRnlme modelSpec argument
+}
 \description{
-generate_InitialParametersIQRnlme
+Generate initial parameters for NLME modeling
 }
 \seealso{
 Other NLME Modeling: 
