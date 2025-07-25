@@ -2,7 +2,7 @@
 % Please edit documentation in R/10-Simulations.R
 \name{getModelParameters_MMVmalariaXLS}
 \alias{getModelParameters_MMVmalariaXLS}
-\title{Get Model Parameters from a GPF/XLS file}
+\title{getModelParameters_MMVmalariaXLS}
 \usage{
 getModelParameters_MMVmalariaXLS(filename)
 }
@@ -13,6 +13,8 @@ getModelParameters_MMVmalariaXLS(filename)
 A list with the population, IIV, Betas and residual parameters, each formatted into a data.frame.
 }
 \description{
+Get Model Parameters from a GPF/XLS file
+
 Load into a list the the population, IIV, Betas and residual parameters, each formatted into a data.frame from
 a GPF/XLS file. Used in \link{getModelParameters_MMVmalariaProject}.
 }

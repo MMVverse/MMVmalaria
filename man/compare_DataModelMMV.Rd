@@ -22,34 +22,49 @@ compare_DataModelMMV(
 )
 }
 \arguments{
-\item{dataFile}{Default: \code{NULL}}
+\item{modelFolder}{Path containing the IQRnlmeProject}
 
-\item{outputFolder}{Default: '.'}
+\item{dataFile}{Character string with path to IQRdataGeneral object}
 
-\item{ylabel}{Default: \code{NULL}}
+\item{outputFolder}{Character string with path where to save output}
 
-\item{stratify}{Default: 'TRTNAME'}
+\item{ylabel}{Character string defining y axis label.}
 
-\item{catToStratify}{Default: \code{NULL}}
+\item{stratify}{Character string defining column name on which to stratify
+the plots. Must be one of "USUBJID", "ID", "TRTNAME", "STUDY". Define catToStratify
+for stratification of other categorical covariates. Default: 'TRTNAME'}
 
-\item{fileName}{Default: 'DataPredComparison'}
+\item{catToStratify}{Character string defining categorical covariate on
+which to stratifyDefault: \code{NULL}}
 
-\item{logY}{Default: \code{FALSE}}
+\item{fileName}{Character string defining name of figure output. Default: 'DataPredComparison'}
 
-\item{figLimX}{Default: \code{NULL}}
+\item{logY}{Logical: log 10 y axis on plot. Default: \code{FALSE}}
 
-\item{figLimY}{Default: \code{NULL}}
+\item{figLimX}{Numeric, xlim to add to plot with \code{ggplot2::coord_cartesian}.
+Default: \code{NULL}}
 
-\item{predToPlot}{Default: \code{NULL}}
+\item{figLimY}{Numeric, ylim to add to plot with \code{ggplot2::coord_cartesian}.
+Default: \code{NULL}}
 
-\item{doseCOL}{Default: 'DOSELEVEL'}
+\item{predToPlot}{Which prediction to plot (POP, XPRED, INDIV or IPRED);
+default: \code{NULL} in which case the function will plot both population and
+individual predictions.}
 
-\item{doseMultCOL}{Default: 'DOSEMULT'}
+\item{doseCOL}{Character string defining column name containing doselevel.
+Default: 'DOSELEVEL'}
+
+\item{doseMultCOL}{Character string defining column name containing number
+of doses Default: 'DOSEMULT'}
 
 \item{ActivityPath}{Default: \code{NULL}}
 }
+\value{
+Figure showing the comparison of data and model predictions.
+}
 \description{
-compare_DataModelMMV
+Compare and visualize model predictions against data,
+stratified by chosen parameters
 }
 \seealso{
 Other Model Assessment: 

@@ -1,10 +1,10 @@
 #' applyCureThreshold
 #'
-#' @description
-#' @param x
-#' @param threshold
-#' @param PDname Default: 'Parasitemia'
-#' @return
+#' @description Disable regrowth if parasite levels drop below threshold value by creating new column in data with modified parasite levels.
+#' @param x data.frame with parasite levels 
+#' @param threshold Numeric value of threshold level below which to prevent regrowth 
+#' @param PDname Character string denoting name of parasitaemia column. Default: 'Parasitemia'
+#' @return Modified data.frame with additional column of modified parasitaemia 
 #' @export
 #' @author Aline Fuchs (MMV)
 #' @family Simulations
@@ -25,7 +25,7 @@ applyCureThreshold <- function(x, threshold, PDname = "Parasitemia") {
     # Set all following time points to threshold
     x[[PDnameNew]][idxFirst:dim(x)[1]] <- threshold
   }
-  x
+  return(x)
 }
 
 
@@ -162,7 +162,7 @@ generate_GPFfromOldIQRproject <- function(projectPath,
 #'
 #' Function to be used in `generate_GPFfromOldIQRproject` to geneate a GPF object.
 #'
-#' @description
+#' @description Create a gpf object from provided parameter table 
 #' @param parametersTable IQR/IQM result table
 #' @param uncertaintyCorrelation IQR/IQM uncertainty correlation results table
 #' @param filename Name of the XLS file to save the GPF model is not `NULL` (Default: `NULL`)
@@ -458,14 +458,14 @@ generate_GPFfromParametersTable <- function(parametersTable,
 }
 
 
-#' generateTrialSim
+#' generateTrialSim 
 #'
-#' @description
-#' @param modelFolder
-#' @param data
-#' @param NTRIALS
+#' @description Simulate a number of clinical trials from provided IQRnlmeProject
+#' @param modelFolder String denoting path to IQRnlmeProject or IQRnlmeProjectMulti; if Multi the first element will be used
+#' @param data IQRdataGeneral object used to generate dosing info for VPC production 
+#' @param NTRIALS Number of trials to simulate 
 #' @param covariateDose Default: `NULL`
-#' @return
+#' @return data.frame containing simulated clinical trials
 #' @export
 #' @author Aline Fuchs (MMV)
 #' @family Simulations
@@ -645,8 +645,8 @@ generateTrialSim <- function(
   dataSim
 }
 
-
-#' Get Model Parameters from a GPF/XLS file
+#' getModelParameters_MMVmalariaCSV
+#' @description Get Model Parameters from a GPF/XLS file
 #'
 #' Load into a list the the population, IIV, Betas and residual parameters, each formatted into a data.frame from
 #' a CSV file. Used in [getModelParameters_MMVmalariaProject].
@@ -856,7 +856,8 @@ getModelParameters_MMVmalariaCSV <- function(filename){
   return(modelParameters)
 }
 
-#' Get Model Parameters from a GPF/XLS file
+#' getModelParameters_MMVmalariaXLS
+#' @description Get Model Parameters from a GPF/XLS file
 #'
 #' Load into a list the the population, IIV, Betas and residual parameters, each formatted into a data.frame from
 #' a GPF/XLS file. Used in [getModelParameters_MMVmalariaProject].
@@ -995,7 +996,8 @@ getModelParameters_MMVmalariaXLS <- function(filename){
   return(modelParameters)
 }
 
-#' Get Model Parameters from a MMVmalaria Project
+#' getModelParameters_MMVmalariaProject
+#' @description Get Model Parameters from a MMVmalaria Project
 #'
 #' Load into a list the the population, IIV, Betas and residual parameters, each formatted into a data.frame from
 #' a MMVmalaria Project. This is useful to prepare a ModelSpec object as in [modelSpec_MMVmalariaProject].
@@ -1041,10 +1043,10 @@ getModelParameters_MMVmalariaProject <- function(projectPath){
 
 #' getPopParameters_MMVmalariaCSV
 #'
-#' @description
-#' @param filename
-#' @param IndCovariates Default: `NULL`
-#' @return
+#' @description Get population parameters from a GPF/XLS file
+#' @param filename  A character string with the path to a CSV file with all parameters.
+#' @param IndCovariates data.frame describing patient or other subject covariate and regressor data, see `IQRtools::sampleIndParamValues`. Default: `NULL`
+#' @return List of parameter values, see `IQRtools::sampleIndParamValues`
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -1078,10 +1080,10 @@ getPopParameters_MMVmalariaCSV <- function(filename,                  # Path to 
 
 #' getPopParameters_MMVmalariaXLS
 #'
-#' @description
-#' @param filename
-#' @param IndCovariates Default: `NULL`
-#' @return
+#' @description Get population parameters from a GPF/XLS file
+#' @param filename  A character string with the path to a CSV file with all parameters.
+#' @param IndCovariates data.frame describing patient or other subject covariate and regressor data, see `IQRtools::sampleIndParamValues`. Default: `NULL`
+#' @return List of parameter values, see `IQRtools::sampleIndParamValues`
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -1115,11 +1117,11 @@ getPopParameters_MMVmalariaXLS <- function(filename,                  # Path to 
 
 #' getPopParameters_MMVmalariaProject
 #'
-#' @description
-#' @param projectPath
-#' @param IndCovariates Default: `NULL`
+#' @description Get population parameters from a MMVmalaria Project
+#' @param projectPath A character string with the path to an IQRsysProject or IQRnlmeProject folder, or a GPF file.
+#' @param IndCovariates data.frame describing patient or other subject covariate and regressor data, see `IQRtools::sampleIndParamValues`. Default: `NULL`
 #' @param verbose Default: TRUE
-#' @return
+#' @return List of parameter values, see `IQRtools::sampleIndParamValues`
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -1216,14 +1218,14 @@ getPopParameters_MMVmalariaProject <- function(projectPath,
 
 #' predict_HumanChallenge
 #'
-#' @description
-#' @param PKeventTable
-#' @param PDmodelFolder
-#' @param data
-#' @param GRhuman Default: `NULL`
-#' @param model Default: `NULL`
-#' @param CureThreshold Default: log(1/5000)
-#' @return
+#' @description Produce a simulated prediction of, and visual output for, a human challenge study 
+#' @param PKeventTable IQReventTable object specifying PK model, see `IQRtools::IQReventTable`
+#' @param PDmodelFolder Path to IQRnlme project containing structural model and pre-clinical PD parameters 
+#' @param data IQRdataGeneral of human challenge data
+#' @param GRhuman Numeric value of growth human: If NULL, will use "GR" from `PDmodelFolder`. Default: `NULL`
+#' @param model Path to IQRmodel.txt, if NULL, will use "model.txt" from `PDmodelFolder`. Default: `NULL`
+#' @param CureThreshold Numeric, value of parasitaemia to treat as cure threshold. Default: log(1/5000)
+#' @return List including simulation data and figure output 
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -1307,14 +1309,14 @@ predict_HumanChallenge <- function(
 
 #' sample_CustomParameters
 #'
-#' @description
-#' @param parameters.POP
-#' @param parameters.IIV
-#' @param parameters.IIVcor
-#' @param parameters.DIST
-#' @param Nsamples
+#' @description Sample individual parameter values from provided custom information 
+#' @param parameters.POP Named vector containing population parameter values 
+#' @param parameters.IIV Named vector containing IIV values
+#' @param parameters.IIVcor Named vector containing correlations between IIVs. Will be parsed by `getCorrParNames`. Default: NULL 
+#' @param parameters.DIST Vector containing 'N', 'L' or 'G', representing normal, log-normal and Logit distribution, respectively.
+#' @param Nsamples Numeric integer denoting number of individuals to sample 
 #'
-#' @return
+#' @return data.frame wth `Nsamples` rows and one column per parameter, providing sampled parameter values. 
 #'
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -1431,14 +1433,14 @@ sample_CustomParameters <- function(parameters.POP,
 
 #' sample_MMVmalariaXLS
 #'
-#' @description
-#' @param filename
-#' @param Nsamples
-#' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: `NULL`
+#' @description Sample individual parameter values from a GPF/XLS file
+#' @param filename 	a filename (character string) denoting the path to a GPF excel file, or a GPF object, or an IQRnlmeParamSpec object.
+#' @param Nsamples Numeric integer denoting number of individuals to sample 
+#' @param FLAG_SAMPLE Numeric, value for sample flag, see `?IQRtools::sampledIndParamValues`. Default: 0
+#' @param covariates data.frame describing patient or other subject covariate and regressor data, see `IQRtools::sampleIndParamValues`. Default: `NULL`
 #' @param FLAGid Default: FALSE
 #'
-#' @return
+#' @return Named list containing parameter values, see `?IQRtools::sampledIndParamValues`
 #'
 #' @author Venelin Mitov (IntiQuan)
 #' @family Simulations
@@ -1499,14 +1501,14 @@ sample_MMVmalariaXLS <- function(filename,                  # Path to a XLS file
 
 #' sample_MMVmalariaCSV
 #'
-#' @description
-#' @param filename
-#' @param Nsamples
-#' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: `NULL`
+#' @description Sample individual parameter values from a GPF/CSV file
+#' @param filename a filename (character string) denoting the path to a GPF excel file, or a GPF object, or an IQRnlmeParamSpec object.
+#' @param Nsamples Numeric integer denoting number of individuals to sample 
+#' @param FLAG_SAMPLE Numeric, value for sample flag, see `?IQRtools::sampledIndParamValues`. Default: 0
+#' @param covariates data.frame describing patient or other subject covariate and regressor data, see `IQRtools::sampleIndParamValues`. Default: `NULL`
 #' @param FLAGid Default: FALSE
 #'
-#' @return
+#' @return Named list containing parameter values, see `?IQRtools::sampledIndParamValues`
 #'
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -1543,14 +1545,14 @@ sample_MMVmalariaCSV <- function(filename,                  # Path to a CSV file
 
 #' sample_MMVmalariaCSV_NEW
 #'
-#' @description
-#' @param filename
-#' @param Nsamples
-#' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: `NULL`
+#' @description Sample individual parameter values from a GPF/CSV file
+#' @param filename a filename (character string) denoting the path to a GPF excel file, or a GPF object, or an IQRnlmeParamSpec object.
+#' @param Nsamples Numeric integer denoting number of individuals to sample 
+#' @param FLAG_SAMPLE Numeric, value for sample flag, see `?IQRtools::sampledIndParamValues`. Default: 0
+#' @param covariates data.frame describing patient or other subject covariate and regressor data, see `IQRtools::sampleIndParamValues`. Default: `NULL`
 #' @param FLAGid Default: FALSE
 #'
-#' @return
+#' @return Named list containing parameter values, see `?IQRtools::sampledIndParamValues`
 #'
 #' @author Venelin Mitov (IntiQuan)
 #' @family Simulations
@@ -1570,15 +1572,15 @@ sample_MMVmalariaCSV_NEW <- function(filename,                  # Path to a XLS 
 
 #' sample_MMVmalariaProject
 #'
-#' @description
-#' @param projectPath
-#' @param Nsamples Default: `NULL`
-#' @param FLAG_SAMPLE Default: 0
-#' @param covariates Default: `NULL`
+#' @description Sample individual parameter values from an MMVmalaria project
+#' @param projectPath A character string with the path to an IQRsysProject or IQRnlmeProject folder, or a GPF file.
+#' @param Nsamples Numeric integer denoting number of individuals to sample, default: NULL 
+#' @param FLAG_SAMPLE Numeric, value for sample flag, see `?IQRtools::sampledIndParamValues`. Default: 0
+#' @param covariates data.frame describing patient or other subject covariate and regressor data, see `IQRtools::sampleIndParamValues`. Default: `NULL`
 #' @param FLAGid Default: FALSE
 #' @param verbose Default: TRUE
 #'
-#' @return
+#' @return Named list containing parameter values, see `?IQRtools::sampledIndParamValues`
 #'
 #' @export
 #'
@@ -1694,7 +1696,7 @@ sample_MMVmalariaProject <- function(projectPath,
 #' @param setting Default: `NULL`. Named list of arguments going to [IQRtools::sim_IQRmodel()]
 #' @return data.frame with colums c("ID", "Time2Recrud", "n1", "n2", "Dose1", "Dose2")
 #' @export
-#' @author Anne K?mmel (IntiQuan), Mohammed Cherkaoui (MMV)
+#' @author Anne Kummel (IntiQuan), Mohammed Cherkaoui (MMV)
 #' @family Simulations
 #' @importFrom plyr ddply join
 simTimeRecrudescenceCombo <- function(model, parameters,
@@ -1863,30 +1865,42 @@ simTimeRecrudescenceCombo <- function(model, parameters,
 
 #' simulate_ComboMouse2Human
 #'
-#' @description
-#' @param TreatmentGroups
-#' @param PKmodelFolders
-#' @param PDmodelFolders
-#' @param InteractionModelFolder
-#' @param ComboModel
-#' @param PbaseSample Default: function(x) {
+#' @description Simulate combo PK/PD models using provided PK and PD models and an interaction model. 
+#' @param TreatmentGroups Named list of treatment groups - each element should 
+#' be length-2 list i.e. drug1, drug2, containing at least dose and time 
+#' (for example, drug1 = list(dose=1, time=c(0,1,2,3)))
+#' @param PKmodelFolders List of length 2, corresponding to each drug. Each 
+#' element must contain either a path to an IQRnlme project containing PK 
+#' parameters or a function to generate these parameters
+#' @param PDmodelFolders List of length 2, corresponding to each drug. Each 
+#' element must contain either a path to an IQRnlme project containing PD 
+#' parameters or a function to generate these parameters
+#' @param InteractionModelFolder String containing path to IQRnlme project with 
+#' DDI model or a function to generate DDI parameters from 
+#' @param ComboModel Either an IQRmodel object or a path to an IQRmodel.txt 
+#' @param PbaseSample Function from which to sample baseline parasitaemia. 
+#' Default: function(x) {
 #'    sample_Distribution(Mean = 10^6.72, SD = 0.1, Dist = "L",
 #'        nSample = x)
 #'}
-#' @param GRsample Default: function(x) {
+#' @param GRsample Function from which to sample growth rate
+#' Default: function(x) {
 #'    sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L", nSample = x)
 #'}
-#' @param doseCovariate Default: list(drug1 = NULL, drug2 = NULL)
-#' @param covariates Default: `NULL`
-#' @param evalDay Default: 28
-#' @param simtime Default: MMVbase::create_PKPDsimtime(24 * evalDay)
-#' @param nTrial Default: 10
-#' @param nSubj Default: 10
-#' @param LLOQ.PD
-#' @param cureThreshold
-#' @param replace Default: TRUE
-#' @param setting Default: `NULL`
-#' @return
+#' @param doseCovariate list with 2 elements with dose covariate for each drug, 
+#' assuming dose is a covariate, i.e. list(drug1="DOSELEVEL1", drug2="DOSELEVEL2") 
+#' Default: list(drug1 = NULL, drug2 = NULL)
+#' @param covariates Named list of covariate vectors or sampling functions
+#' @param evalDay Numeric, day at which to evaluate cure. Default: 28
+#' @param simtime Numeric vector of simulation time in hours. Default: MMVbase::create_PKPDsimtime(24 * evalDay)
+#' @param nTrial Integer, number of virtual trials to simulate. Default: 10
+#' @param nSubj Integer, number of individuals to simulate per trial. Default: 10
+#' @param LLOQ.PD Numeric, lower limit of quantification of parasitaemia 
+#' @param cureThreshold Numeric, value of parasitaemia to treat as cure threshold. Default: log(1/5000)
+#' @param replace Logical, sampling replacement flag. Default: TRUE
+#' @param setting Optional named list of settings for solver. Default: `NULL`
+#' @return Named list including simulation data, event table, covariate table, 
+#' time course summary, ACPR summary and PRR summary 
 #' @export
 #' @author Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -2432,27 +2446,31 @@ simulate_ComboMouse2Human <- function(TreatmentGroups,
 }
 #' simulate_PKPDseparate
 #'
-#' @description
-#' @param Doses
-#' @param Ndoses
-#' @param PKmodelFolder
-#' @param PDmodelFolder
-#' @param PKPDmodelFile
-#' @param filename Default: `NULL`
-#' @param EC50adj Default: 1
-#' @param DOSEcovariate Default: `NULL`
-#' @param covariates Default: `NULL`
-#' @param simtime Default: 0:800
-#' @param Npop Default: 10
-#' @param Nind Default: 10
-#' @param FLAGsamplePK Default: 1
-#' @param FLAGreturnObject Default: FALSE
-#' @param LLOQ.PK Default: `NULL`
-#' @param LLOQ.PD Default: `NULL`
-#' @param cureThreshold Default: `NULL`
-#' @param PLbaseSample Default: `NULL`
-#' @param setting Default: `NULL`
-#' @return
+#' @description Simulate PK/PD models using separate PK and PD NLME models. In other words,
+#' loads PK and PD parameters from separate IQRnlme projects, then simulates a provided 
+#' combined PKPD structural model with the provided PK and PD models 
+#' @param Doses Numeric vector of doses to simulate
+#' @param Ndoses Integer vector of same length as `Doses` giving the number of doses
+#' @param PKmodelFolder String denoting path to IQRnlme project with PK model
+#' @param PDmodelFolder String denoting path to IQRnlme project with PD model 
+#' @param PKPDmodelFile IQRmodel object or path to it, containing both PK and PD
+#' @param filename Optional string denoting filepath to write figures to. Default: `NULL`
+#' @param EC50adj Numeric scalar to adjust EC50 value. Default: 1
+#' @param DOSEcovariate Named string denoting the name of the dose covariate. 
+#' Default: `NULL`
+#' @param covariates Named list of covariate vectors or sampling functions. Default: `NULL`
+#' @param simtime Numeric vector of simulation time in hours. 
+#' Default: MMVbase::create_PKPDsimtime(24 * evalDay)
+#' @param Npop integer, number of virtual populations to simulate. Default: 10
+#' @param Nind Integer, number of individuals to simulate per population. Default: 10
+#' @param FLAGsamplePK Numeric, value for sample flag, see `?IQRtools::sample_IQRnlmeProject`. Default: 0
+#' @param FLAGreturnObject Logical, return the simulation data? Default: FALSE
+#' @param LLOQ.PK Numeric, lower limit of quantification of concentration. Default: `NULL`
+#' @param LLOQ.PD Numeric, lower limit of quantification of parasitaemia. Default: `NULL`
+#' @param cureThreshold  Numeric, value of parasitaemia to treat as cure threshold. Default: `NULL`
+#' @param PLbaseSample Function from which to sample baseline parasitaemia. Default: `NULL`
+#' @param setting Optional named list of settings for solver. Default: `NULL`
+#' @return if `FLAGreturnObject` = TRUE, data.frame with simulation output.
 #' @export
 #' @author Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family Simulations
@@ -2801,7 +2819,8 @@ simulate_PKPDseparate <- function(
 
 }
 
-#' Extract parameter names from IIV correlation name
+#' getCorrParNames
+#' @description Extract parameter names from IIV correlation name
 #' Convention of IIV correlation estimate name:
 #' 'corr_(par1,par2)'
 #'

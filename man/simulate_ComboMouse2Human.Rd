@@ -31,33 +31,62 @@ simulate_ComboMouse2Human(
 )
 }
 \arguments{
-\item{PbaseSample}{Default: function(x) {
+\item{TreatmentGroups}{Named list of treatment groups - each element should
+be length-2 list i.e. drug1, drug2, containing at least dose and time
+(for example, drug1 = list(dose=1, time=c(0,1,2,3)))}
+
+\item{PKmodelFolders}{List of length 2, corresponding to each drug. Each
+element must contain either a path to an IQRnlme project containing PK
+parameters or a function to generate these parameters}
+
+\item{PDmodelFolders}{List of length 2, corresponding to each drug. Each
+element must contain either a path to an IQRnlme project containing PD
+parameters or a function to generate these parameters}
+
+\item{InteractionModelFolder}{String containing path to IQRnlme project with
+DDI model or a function to generate DDI parameters from}
+
+\item{ComboModel}{Either an IQRmodel object or a path to an IQRmodel.txt}
+
+\item{PbaseSample}{Function from which to sample baseline parasitaemia.
+Default: function(x) {
 sample_Distribution(Mean = 10^6.72, SD = 0.1, Dist = "L",
 nSample = x)
 }}
 
-\item{GRsample}{Default: function(x) {
+\item{GRsample}{Function from which to sample growth rate
+Default: function(x) {
 sample_Distribution(Mean = 0.048, SD = 0.1, Dist = "L", nSample = x)
 }}
 
-\item{doseCovariate}{Default: list(drug1 = NULL, drug2 = NULL)}
+\item{doseCovariate}{list with 2 elements with dose covariate for each drug,
+assuming dose is a covariate, i.e. list(drug1="DOSELEVEL1", drug2="DOSELEVEL2")
+Default: list(drug1 = NULL, drug2 = NULL)}
 
-\item{covariates}{Default: \code{NULL}}
+\item{covariates}{Named list of covariate vectors or sampling functions}
 
-\item{evalDay}{Default: 28}
+\item{evalDay}{Numeric, day at which to evaluate cure. Default: 28}
 
-\item{simtime}{Default: MMVbase::create_PKPDsimtime(24 * evalDay)}
+\item{simtime}{Numeric vector of simulation time in hours. Default: MMVbase::create_PKPDsimtime(24 * evalDay)}
 
-\item{nTrial}{Default: 10}
+\item{nTrial}{Integer, number of virtual trials to simulate. Default: 10}
 
-\item{nSubj}{Default: 10}
+\item{nSubj}{Integer, number of individuals to simulate per trial. Default: 10}
 
-\item{replace}{Default: TRUE}
+\item{LLOQ.PD}{Numeric, lower limit of quantification of parasitaemia}
 
-\item{setting}{Default: \code{NULL}}
+\item{cureThreshold}{Numeric, value of parasitaemia to treat as cure threshold. Default: log(1/5000)}
+
+\item{replace}{Logical, sampling replacement flag. Default: TRUE}
+
+\item{setting}{Optional named list of settings for solver. Default: \code{NULL}}
+}
+\value{
+Named list including simulation data, event table, covariate table,
+time course summary, ACPR summary and PRR summary
 }
 \description{
-simulate_ComboMouse2Human
+Simulate combo PK/PD models using provided PK and PD models and an interaction model.
 }
 \seealso{
 Other Simulations: 

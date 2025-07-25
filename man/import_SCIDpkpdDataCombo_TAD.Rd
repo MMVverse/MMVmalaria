@@ -33,7 +33,7 @@ import_SCIDpkpdDataCombo_TAD(
   DoseSheet = "DrugTreatmentTable",
   DoseRange = NULL,
   DoseMapping,
-  positiveQC
+  positiveQC = "CHLOROQUINE"
 )
 }
 \arguments{
@@ -89,7 +89,7 @@ import_SCIDpkpdDataCombo_TAD(
 
 \item{DoseMapping}{Character vector mapping DoseSheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "Route" = "ROUTE"))}
 
-\item{positiveQC}{Character vector identifying the name of positive control (must match upper or lower case as in original dataset)}
+\item{positiveQC}{Character vector identifying the name of positive control (must match upper or lower case as in original dataset). Default: "CHLOROQUINE"}
 }
 \description{
 Import original SCID combination data from TAD and convert it to a single structured data format
@@ -101,7 +101,7 @@ It includes positive controls data
 Uses function \link[readxl:read_excel]{readxl::read_excel}
 }
 \seealso{
-\link{readxl}, \link{plyr}, \link{dplyr}, \link{reshape2}
+\link{readxl}, \link{dplyr}
 
 Other Data Preparation: 
 \code{\link{censorGametocyte}()},

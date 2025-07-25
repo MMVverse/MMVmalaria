@@ -14,18 +14,23 @@ sample_MMVmalariaProject(
 )
 }
 \arguments{
-\item{Nsamples}{Default: \code{NULL}}
+\item{projectPath}{A character string with the path to an IQRsysProject or IQRnlmeProject folder, or a GPF file.}
 
-\item{FLAG_SAMPLE}{Default: 0}
+\item{Nsamples}{Numeric integer denoting number of individuals to sample, default: NULL}
 
-\item{covariates}{Default: \code{NULL}}
+\item{FLAG_SAMPLE}{Numeric, value for sample flag, see \code{?IQRtools::sampledIndParamValues}. Default: 0}
+
+\item{covariates}{data.frame describing patient or other subject covariate and regressor data, see \code{IQRtools::sampleIndParamValues}. Default: \code{NULL}}
 
 \item{FLAGid}{Default: FALSE}
 
 \item{verbose}{Default: TRUE}
 }
+\value{
+Named list containing parameter values, see \code{?IQRtools::sampledIndParamValues}
+}
 \description{
-sample_MMVmalariaProject
+Sample individual parameter values from an MMVmalaria project
 }
 \seealso{
 Other Simulations: 

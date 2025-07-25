@@ -18,24 +18,41 @@ compare_IndPredFits(
 )
 }
 \arguments{
-\item{stratify}{Default: 'TRTNAME'}
+\item{modelFolder}{Path to IQRNLME project containing data and model
+predictions}
 
-\item{fileName}{Default: 'DataPredComparison'}
+\item{outputFolder}{Character string denoting path to folder in which to save
+output}
 
-\item{logY}{Default: \code{FALSE}}
+\item{stratify}{Character string defining column name on which to stratify
+the plots. Must be one of "USUBJID", "ID", "TRTNAME", "STUDY".}
 
-\item{figLimX}{Default: \code{NULL}}
+\item{fileName}{Character string denoting name with which to save output.
+Default: 'DataPredComparison'}
 
-\item{figLimY}{Default: \code{NULL}}
+\item{logY}{Logical: log 10 y axis on plot. Default: \code{FALSE}}
 
-\item{predToPlot}{Default: \code{NULL}}
+\item{figLimX}{Numeric, xlim to add to plot with \code{ggplot2::coord_cartesian}.
+Default: \code{NULL}}
 
-\item{withVehicle}{Default: \code{FALSE}}
+\item{figLimY}{Numeric, ylim to add to plot with \code{ggplot2::coord_cartesian}.
+Default: \code{NULL}}
+
+\item{predToPlot}{Which prediction to plot (POP, XPRED, INDIV or IPRED);
+default: \code{NULL} in which case the function will plot both population and
+individual predictions.}
+
+\item{withVehicle}{Logical: Include Vehicle? Default: \code{FALSE}}
 
 \item{ActivityPath}{Default: \code{NULL}}
 }
+\value{
+Nothing is returned directly by the function, visualizations of
+model comparisons are saved as .pdf to the specific output folder
+}
 \description{
-compare_IndPredFits
+Compare model predictions with observations and save
+visualizations to pdf
 }
 \seealso{
 Other Model Assessment: 

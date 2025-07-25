@@ -165,14 +165,14 @@ summary_ParametersMulti <- function(projfolders,
 
 #' table_ModelEstimates
 #'
-#' @description
-#' @param modelFolderList
+#' @description Calls `getEstimateTable` on multiple models 
+#' @param modelFolderList Character vector with paths to IQR projects
 #' @param filename Default: NULL
 #' @param xtitle Default: NULL
 #' @param xfooter Default: NULL
 #' @param FLAGreturnOBJECT Default: FALSE
 #' @param FLAGreport Default: TRUE
-#' @return
+#' @return Returns tables of model estimates through `getEstimateTable`
 #' @export
 #' @author Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family ModelComparison
@@ -208,9 +208,9 @@ table_ModelEstimates <- function(modelFolderList,
 
 #' getEstimateTable
 #'
-#' @description
-#' @param modelFolder
-#' @return
+#' @description Generates tables of fixed and random effects estimates and errors for provided model 
+#' @param modelFolder Character string denoting path to IQR project
+#' @return Table of estimates 
 #' @export
 #' @author Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family ModelComparison

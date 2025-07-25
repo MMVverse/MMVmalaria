@@ -7,10 +7,15 @@
 getPopParameters_MMVmalariaCSV(filename, IndCovariates = NULL)
 }
 \arguments{
-\item{IndCovariates}{Default: \code{NULL}}
+\item{filename}{A character string with the path to a CSV file with all parameters.}
+
+\item{IndCovariates}{data.frame describing patient or other subject covariate and regressor data, see \code{IQRtools::sampleIndParamValues}. Default: \code{NULL}}
+}
+\value{
+List of parameter values, see \code{IQRtools::sampleIndParamValues}
 }
 \description{
-getPopParameters_MMVmalariaCSV
+Get population parameters from a GPF/XLS file
 }
 \seealso{
 Other Simulations: 

@@ -12,13 +12,24 @@ compare_ModelEstimateRobustness(
 )
 }
 \arguments{
+\item{FitList}{A path to a folder containing IQRNLME project folders or
+an IQRnlmeProjectMulti object.}
+
+\item{filename}{Character string denoting the folder name where outputs will
+be saved. Note: the argument name is misleading, this is the folder name,
+file names will be included by the function by default.}
+
 \item{ModelAlignment}{Default: 'Vertical'}
 
 \item{PDddiPara}{Default: c("Alpha", "Beta", "Alpha12", "Alpha21", "Beta12", "Beta21",
 "Gamma")}
 }
+\value{
+Nothing is returned directly by the function, visualizations of
+model comparisons are saved as .png to \code{filename}
+}
 \description{
-compare_ModelEstimateRobustness
+Compare model estimates and robustness of provided DDI models
 }
 \seealso{
 Other Model Assessment: 

@@ -2397,11 +2397,10 @@ import_SCIDpkpdDataCombo_oldTAD <- function(dataFile,
 #' @param DoseSheet Name of the sheet recording drugs dosing for both compounds
 #' @param DoseRange Cells range of the DoseSheet to read (eg A1:C20)
 #' @param DoseMapping Character vector mapping DoseSheet headers (left) to desired name in converted final dataset (right) (eg c("StudyID"="STUDY", "Route" = "ROUTE"))
-#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset)
+#' @param positiveQC Character vector identifying the name of positive control (must match upper or lower case as in original dataset). Default: "CHLOROQUINE"
 #'
-#' @importFrom reshape2 dcast melt
 #' @export
-#' @seealso [readxl], [plyr], [dplyr], [reshape2]
+#' @seealso [readxl], [dplyr]
 #' @family Data Preparation
 #' @author Aline Fuchs MMV
 import_SCIDpkpdDataCombo_TAD <- function(dataFile,
@@ -2431,7 +2430,7 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
                                          DoseSheet           = "DrugTreatmentTable",
                                          DoseRange           = NULL,
                                          DoseMapping,
-                                         positiveQC
+                                         positiveQC          = "CHLOROQUINE"
 
 ) {
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2447,133 +2446,154 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Handle Input Variables ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+  
   # Check if the PK column have the appropriate information:
   reqColsPK <- c("SUBJECT", "STUDY", "COMPOUND", "NT", "VALUE")
   if (!all(reqColsPK %in% PKmapping))
     stop("Not all required PK columns supplied in mapping: see import_SCIDpkpdDataCombo.R")
-
+  
   # Check if the PD column have the appropriate information:
   reqColsPD <- c("SUBJECT", "STUDY", "NT", "VALUE", "huErythro")
   if (!all(reqColsPD %in% PDmapping))
     stop("Not all required PD columns supplied in mapping: see import_SCIDpkpdDataCombo.R")
-
+  
   # Check if the Dose Time column have the appropriate information:
   reqColsDoseTime <- c("SUBJECT", "STUDY", "COMPOUND", "NT")
   if (!all(reqColsDoseTime %in% DoseTimeMapping))
     stop("Not all required PD columns supplied in mapping: see import_SCIDpkpdDataCombo.R")
-
+  
   # Check if the Dose column have the appropriate information:
   reqColsDose <- c("SUBJECT", "STUDY", "COMPOUND", "DOSELEVEL")
   if (!all(reqColsDose %in% DoseMapping))
     stop("Not all required PD columns supplied in mapping: see import_SCIDpkpdDataCombo.R")
-
+  
   # Check is the number of dose is defined:
   if (!("DOSEMULT" %in% DoseMapping))
     stop("Number of doses not to be supplied in Dose data set.")
-
+  
   # Check is route of administration is defined:
   if (is.null(route) & !("ROUTE" %in% DoseMapping))
     stop("If route of administration is not supplied in Dose data set, needs to be defined by input argument.")
-
-
+  
+  
   # Check whether dosing interval is provided
   if (is.null(DoseTimeSheet))
     warning("Dosing time sheet not provided, once daily dosing is assumed.")
 
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Handle Dosing data ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+  
   # -- Load Dose dataset:
   dataDoseraw <- readxl::read_excel(dataFile, DoseSheet, range = DoseRange)
-
+  
   # Remove escape characters from column names
   names(dataDoseraw) <- MMVbase::aux_removeEscapeChar(names(dataDoseraw))
-
-  # Apply mapping:
-  dataDose <- plyr::rename(dataDoseraw, replace = DoseMapping)
+ 
+  mapping_dplyr <- setNames(names(DoseMapping), DoseMapping)
+  
+  dataDose <- dataDoseraw %>%
+    dplyr::rename(!!!mapping_dplyr)
+  
   dataDose <- as.data.frame(dataDose)
-
+  
   # Remove not matched columns:
   dataDose <- dataDose[, intersect(names(dataDose),DoseMapping)]
-
+  
   # Identify Treatment received by SUBJECT
   cpdAll <- unique(dataDose$COMPOUND)
-
+  
   # Get Compounds as names in the original data
   cpd1 <- cpdAll[cpdAll %in% c(Compound1$Name,Compound1$MMVname)]
   cpd2 <- cpdAll[cpdAll %in% c(Compound2$Name,Compound2$MMVname)]
-
+  
   # Identify Mice that receive compounds which we are  NOT interested
   idx_rm <-  dataDose$SUBJECT[!dataDose$COMPOUND %in% c("NONE",positiveQC,cpd1,cpd2)]
   # Identify Subjects which received only compound of interest and select them only
   idx_keep <-  setdiff(dataDose$SUBJECT,idx_rm)
   dataDose <- dataDose[dataDose$SUBJECT %in% idx_keep,]
-
-  # Get Appropriate DoseLevel
-  DL <- reshape2::dcast(dataDose,SUBJECT+STUDY+ROUTE~COMPOUND,value.var = "DOSELEVEL")
-
-  # Doselevel 1
-  DL1 <- reshape2::melt(DL,
-                         id.vars=c(names(DL)[!names(DL) %in% cpdAll]),
-                         measure.vars = c("NONE",positiveQC,cpd1))
   
-
-  names(DL1) <- c(names(DL1)[!names(DL1) %in% c("variable","value")],"COMPOUND","DOSELEVEL1")
-  DL1<-DL1[complete.cases(DL1), ]
-  # Doselevel 2
-  DL2 <- reshape2::melt(DL,
-                        id.vars=c(names(DL)[!names(DL) %in% cpdAll]),
-                        measure.vars = c(cpd2))
-  names(DL2) <- c(names(DL2)[!names(DL2) %in% c("variable","value")],"COMPOUND","DOSELEVEL2")
-  DL2 <- DL2[complete.cases(DL2), ]
-
+  # Get columns of DOSELEVEL using tidyr::pivot_wider 
+  DL <- dataDose %>% 
+    tidyr::pivot_wider(
+      id_cols    = c(SUBJECT, STUDY, ROUTE), 
+      names_from = COMPOUND,
+      values_from = DOSELEVEL,
+    )
+  
+  # Doselevel1
+  DL1 <- DL %>% 
+    tidyr::pivot_longer(
+      cols  = all_of(c("NONE",positiveQC,cpd1)),
+      names_to   = "COMPOUND",
+      values_to  = "DOSELEVEL1"
+    ) %>%
+    drop_na() 
+  
+  # Doselevel2
+  DL2 <- DL %>% 
+    tidyr::pivot_longer(
+      cols  = all_of(c("NONE",positiveQC,cpd2)),
+      names_to   = "COMPOUND",
+      values_to  = "DOSELEVEL2"
+    ) %>%
+    drop_na() 
+  
   # Get Appropriate DoseMulti:
-  DM <- reshape2::dcast(dataDose,SUBJECT+STUDY+ROUTE~COMPOUND,value.var = "DOSEMULT")
-  # DoseMulti 1
-  DM1 <- reshape2::melt(DM,
-                        id.vars=c(names(DM)[!names(DM) %in% cpdAll]),
-                        measure.vars = c("NONE",positiveQC,cpd1))
-  names(DM1) <- c(names(DM1)[!names(DM1) %in% c("variable","value")],"COMPOUND","DOSEMULT1")
-  DM1<-DM1[complete.cases(DM1), ]
-  # DoseMulti 2
-  DM2 <- reshape2::melt(DM,
-                        id.vars=c(names(DM)[!names(DM) %in% cpdAll]),
-                        measure.vars = c(cpd2))
-  names(DM2) <- c(names(DM2)[!names(DM2) %in% c("variable","value")],"COMPOUND","DOSEMULT2")
-  DM2<-DM2[complete.cases(DM2), ]
-
-  # Join Doselevel1 and DoseMult1
-  cpd1Dose <- full_join(DL1,DM1,by=c("SUBJECT","STUDY","ROUTE","COMPOUND"))
-  cpd2Dose <- full_join(DL2,DM2,by=c("SUBJECT","STUDY","ROUTE","COMPOUND"))
+  DM <- dataDose %>% 
+    tidyr::pivot_wider(
+      id_cols    = c(SUBJECT, STUDY, ROUTE), 
+      names_from = COMPOUND, 
+      values_from = DOSEMULT 
+    ) 
+  
+  # Dosemult1 
+  DM1 <- DM %>% 
+    tidyr::pivot_longer(
+      cols  = all_of(c("NONE",positiveQC,cpd1)),
+      names_to   = "COMPOUND",
+      values_to  = "DOSEMULT1"
+    ) %>%
+    drop_na()
+  
+  # Dosemult2 
+  DM2 <- DM %>% 
+    tidyr::pivot_longer(
+      cols  = all_of(c("NONE",positiveQC,cpd2)),
+      names_to   = "COMPOUND",
+      values_to  = "DOSEMULT2"
+    ) %>%
+    drop_na()
+  
+  # Join Doselevel and DoseMult 
+  cpd1Dose <- dplyr::full_join(DL1,DM1,by=c("SUBJECT","STUDY","ROUTE","COMPOUND"))
+  cpd2Dose <- dplyr::full_join(DL2,DM2,by=c("SUBJECT","STUDY","ROUTE","COMPOUND"))
 
   # -- Join dosing info:
-  dataDos <- dplyr::full_join(cpd1Dose, cpd2Dose,by=c("SUBJECT","STUDY","ROUTE"),suffix=c("1","2"))
-  dataDos$COMPOUND1 <- as.character(dataDos$COMPOUND1)
-  dataDos$COMPOUND2 <- as.character(dataDos$COMPOUND2)
-
-
+  dataDose <- dplyr::full_join(cpd1Dose, cpd2Dose,by=c("SUBJECT","STUDY","ROUTE"),suffix=c("1","2"))
+  dataDose$COMPOUND1 <- as.character(dataDose$COMPOUND1)
+  dataDose$COMPOUND2 <- as.character(dataDose$COMPOUND2)
+  
   # Check that numeric columns are numeric:
   numcols <- c("DOSELEVEL1", "DOSEMULT1","DOSELEVEL2", "DOSEMULT2","TIME", "NT")
-  dataDos <- cbind(dataDos[, setdiff(names(dataDos), numcols)], sapply(dataDos[, intersect(names(dataDos), numcols)], as.numeric))
-
+  dataDose <- cbind(dataDose[, setdiff(names(dataDose), numcols)], sapply(dataDose[, intersect(names(dataDose), numcols)], as.numeric))
+  
   # Remove potential NA entries in doselevel and number of doses: Set to 0
-  dataDos <- within(dataDos, {
+  dataDose <- within(dataDose, {
     DOSELEVEL1 <- ifelse(is.na(DOSELEVEL1), 0, DOSELEVEL1)
     DOSELEVEL2 <- ifelse(is.na(DOSELEVEL2), 0, DOSELEVEL2)
   })
-
+  
   # handle multiple dose
-  dataDos$DOSEMULT1 <- ifelse(dataDos$DOSELEVEL1==0, 0, dataDos$DOSEMULT1)
-  dataDos$DOSEMULT2 <- ifelse(dataDos$DOSELEVEL2==0, 0, dataDos$DOSEMULT2)
-
+  dataDose$DOSEMULT1 <- ifelse(dataDose$DOSELEVEL1==0, 0, dataDose$DOSEMULT1)
+  dataDose$DOSEMULT2 <- ifelse(dataDose$DOSELEVEL2==0, 0, dataDose$DOSEMULT2)
+  
   # (Re-)define compound (order as defined by 1 and 2 in this script) and treatment:
-  dataDos$COMPOUND <- paste0(cpd1,"+",cpd2)
-  dataDos$COMPOUND <- ifelse(dataDos$COMPOUND1 == positiveQC & !is.na(dataDos$COMPOUND1), positiveQC,dataDos$COMPOUND)
-
-
-  dataDos <- within(dataDos,{
+  dataDose$COMPOUND <- paste0(cpd1,"+",cpd2)
+  dataDose$COMPOUND <- ifelse(dataDose$COMPOUND1 == positiveQC & !is.na(dataDose$COMPOUND1), positiveQC,dataDose$COMPOUND)
+  
+  dataDose <- within(dataDose,{
     str1    <- ifelse(DOSEMULT1 == 1 & COMPOUND!=positiveQC , paste0(DOSELEVEL1, "mg/kg",cpd1), paste0(DOSEMULT1,"x",DOSELEVEL1, "mg/kg",cpd1))
     str2    <- ifelse(DOSEMULT2 == 1 & COMPOUND!=positiveQC , paste0(DOSELEVEL2, "mg/kg",cpd2), paste0(DOSEMULT2,"x",DOSELEVEL2, "mg/kg",cpd2))
     str3    <- ifelse(DOSEMULT1 == 1 & COMPOUND==positiveQC , paste0(DOSELEVEL1, "mg/kg",positiveQC), paste0(DOSEMULT1,"x",DOSELEVEL1, "mg/kg",positiveQC))
@@ -2585,10 +2605,10 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
     str1    <- str2 <- str3 <- NULL
   }
   )
-
+  
   # Define Group TRT: (include positive control; in the new format group should never be a column in any sheet actually)
-  if (!("GROUP" %in% names(dataDos))) {
-    groupInfo <- unique(dataDos[, c("COMPOUND","DOSELEVEL1", "DOSEMULT1","DOSELEVEL2", "DOSEMULT2")])
+  if (!("GROUP" %in% names(dataDose))) {
+    groupInfo <- unique(dataDose[, c("COMPOUND","DOSELEVEL1", "DOSEMULT1","DOSELEVEL2", "DOSEMULT2")])
     groupInfo <- rbind(
       groupInfo[groupInfo$DOSELEVEL1 == 0 & groupInfo$DOSELEVEL2 == 0,][with(groupInfo[groupInfo$DOSELEVEL1 == 0 & groupInfo$DOSELEVEL2 == 0,], order(DOSEMULT1,DOSEMULT2)),],
       groupInfo[groupInfo$DOSELEVEL1 == 0 & groupInfo$DOSELEVEL2 > 0,][with(groupInfo[groupInfo$DOSELEVEL1 == 0 & groupInfo$DOSELEVEL2 > 0,]  , order(DOSEMULT1,DOSELEVEL1,DOSEMULT2,DOSELEVEL2)),],
@@ -2596,103 +2616,107 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
       groupInfo[groupInfo$DOSELEVEL1 > 0 & groupInfo$DOSELEVEL2  > 0,][with(groupInfo[groupInfo$DOSELEVEL1 > 0 & groupInfo$DOSELEVEL2 > 0,] , order(DOSEMULT1,DOSELEVEL1,DOSEMULT2,DOSELEVEL2)),]
     )
     groupInfo$GROUP <- 1:dim(groupInfo)[1]
-    dataDos <- plyr::join(dataDos, groupInfo)
+    dataDose <- dplyr::left_join(dataDose, groupInfo)
   } else {
-    groupInfo <- unique(dataDos[, c("COMPOUND","DOSELEVEL1", "DOSEMULT1","DOSELEVEL2", "DOSEMULT2", "GROUP")])
+    groupInfo <- unique(dataDose[, c("COMPOUND","DOSELEVEL1", "DOSEMULT1","DOSELEVEL2", "DOSEMULT2", "GROUP")])
   }
-
+  
   # Add UBSUBJID
-  dataDos$USUBJID <- MMVbase::aux_createUSUBJID(dataDos)
-
+  dataDose$USUBJID <- MMVbase::aux_createUSUBJID(dataDose)
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Define Time Dosing Records ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+  
   # -- Load DoseTime dataset:
   dataDoseTimeraw <- readxl::read_excel(dataFile, DoseTimeSheet, range = DoseTimeRange)
-
+  
   # Remove escape characters from column names
   names(dataDoseTimeraw) <- MMVbase::aux_removeEscapeChar(names(dataDoseTimeraw))
-
+  
   # Apply mapping:
-  dataDoseTime <- plyr::rename(dataDoseTimeraw, replace = DoseTimeMapping)
-  dataDoseTime = as.data.frame(dataDoseTime)
-
+  # dplyr is opposite orientation of old/new compared to plyr
+  mapping_dplyr <- setNames(names(DoseTimeMapping), DoseTimeMapping)
+  
+  dataDoseTime <- dataDoseTimeraw %>%
+    dplyr::rename(!!!mapping_dplyr)
+  # dataDoseTime <- plyr::rename(dataDoseTimeraw, replace = DoseTimeMapping)
+  # dataDoseTime = as.data.frame(dataDoseTime)
+  
   # Remove not matched columns:
   dataDoseTime <- dataDoseTime[, intersect(names(dataDoseTime),DoseTimeMapping)]
-
+  
   # Keep only IDs of interest:
   dataDoseTime <- dataDoseTime[dataDoseTime$SUBJECT %in% idx_keep,]
-
+  
   # -- Join dosing info:
-  dataDosTime1 <- dplyr::left_join(dataDoseTime[dataDoseTime$COMPOUND %in% c("NONE",positiveQC,cpd1),], dataDos,
-                                   by = c("SUBJECT" = "SUBJECT", "STUDY" = "STUDY", "COMPOUND" = "COMPOUND1"))
-  dataDosTime1$NAME      <- with(dataDosTime1,ifelse(COMPOUND!="NONE"&COMPOUND!=positiveQC,paste0(cpd1, " Dose"),paste0(COMPOUND, " Dose")))
-  dataDosTime1$VALUE     <- as.numeric(as.character(dataDosTime1$DOSELEVEL1))
-
-  dataDosTime2 <- dplyr::left_join(dataDoseTime[dataDoseTime$COMPOUND %in% c(cpd2),], dataDos,
-                                   by = c("SUBJECT" = "SUBJECT", "STUDY" = "STUDY", "COMPOUND" = "COMPOUND2"))
-  dataDosTime2$NAME      <- with(dataDosTime2,ifelse(COMPOUND!="NONE"&COMPOUND!=positiveQC,paste0(cpd2, " Dose"),paste0(COMPOUND, " Dose")))
-  dataDosTime2$VALUE     <- as.numeric(as.character(dataDosTime2$DOSELEVEL2))
-
+  dataDoseTime1 <- dplyr::left_join(dataDoseTime[dataDoseTime$COMPOUND %in% c("NONE",positiveQC,cpd1),], dataDose,
+                                    by = c("SUBJECT" = "SUBJECT", "STUDY" = "STUDY", "COMPOUND" = "COMPOUND1"))
+  dataDoseTime1$NAME      <- with(dataDoseTime1,ifelse(COMPOUND!="NONE"&COMPOUND!=positiveQC,paste0(cpd1, " Dose"),paste0(COMPOUND, " Dose")))
+  dataDoseTime1$VALUE     <- as.numeric(as.character(dataDoseTime1$DOSELEVEL1))
+  
+  dataDoseTime2 <- dplyr::left_join(dataDoseTime[dataDoseTime$COMPOUND %in% c(cpd2),], dataDose,
+                                    by = c("SUBJECT" = "SUBJECT", "STUDY" = "STUDY", "COMPOUND" = "COMPOUND2"))
+  
+  dataDoseTime2$NAME      <- with(dataDoseTime2,ifelse(COMPOUND!="NONE"&COMPOUND!=positiveQC,paste0(cpd2, " Dose"),paste0(COMPOUND, " Dose")))
+  dataDoseTime2$VALUE     <- as.numeric(as.character(dataDoseTime2$DOSELEVEL2))
+  
   # Bind
-  dataDosTime <- rbind.fill(dataDosTime1,dataDosTime2)
-
+  dataDoseTime <- dplyr::bind_rows(dataDoseTime1,dataDoseTime2)
+  
   # Reduce and rename
   colToKeep             <- c("SUBJECT","STUDY","USUBJID","GROUP","NT","ROUTE","COMPOUND.y","TRTNAME","VALUE" ,"NAME","DOSELEVEL1","DOSEMULT1", "DOSELEVEL2", "DOSEMULT2")
-  dataDosTime           <- dataDosTime[,colToKeep]
-  colnames(dataDosTime) <- c("SUBJECT","STUDY","USUBJID","GROUP","NT","ROUTE","COMPOUND" ,"TRTNAME","VALUE" ,"NAME","DOSELEVEL1","DOSEMULT1", "DOSELEVEL2", "DOSEMULT2")
-
+  dataDoseTime           <- dataDoseTime[,colToKeep]
+  colnames(dataDoseTime) <- c("SUBJECT","STUDY","USUBJID","GROUP","NT","ROUTE","COMPOUND" ,"TRTNAME","VALUE" ,"NAME","DOSELEVEL1","DOSEMULT1", "DOSELEVEL2", "DOSEMULT2")
+  
   # Check that there is only one line per subject:
-  if (any(duplicated(dataDosTime[c("USUBJID","NT","TRTNAME","NAME")])))
+  if (any(duplicated(dataDoseTime[c("USUBJID","NT","TRTNAME","NAME")])))
     stop("Dosing information not unique for individuals: Check dataset")
 
-
-  # Add Dose columns:
-  dataDosTime <- plyr::ddply(dataDosTime, ~USUBJID, function(x) {
-    out <- within(x,{
-      TIMEUNIT  <- rep("hours", length(STUDY))
-      TIME      <- NT
-      TYPENAME  <- "Dose"
-      VALUETXT  <- NA
-      UNIT      <- "mg/kg"
-      LLOQ      <- NA
-      ROUTE     <- ifelse("ROUTE" %in% names(dataDos),  toupper(ROUTE), toupper(route))
-      IGNORE    <- NA
-    }
-    )
-  })
-
-
+  dataDoseTime <- dataDoseTime %>%     
+    dplyr::group_by(USUBJID) %>%              
+    dplyr::mutate(
+      TIMEUNIT = "hours",
+      TIME     = NT,                     
+      TYPENAME = "Dose",
+      VALUE = as.numeric(VALUE),
+      VALUETXT = NA_character_,           
+      UNIT     = "mg/kg",
+      LLOQ     = NA_real_,             
+      ROUTE    = toupper(ROUTE),
+      IGNORE   = NA
+    ) %>% 
+    dplyr::ungroup()
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Handle PK data ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+  
   # Load both PK datasets:
   dataPKraw <- readxl::read_excel(dataFile, PKsheets, range = PKranges, na = c("NA", "", "."))
-
+  
   # Remove escape characters from column names:
   names(dataPKraw) <- MMVbase::aux_removeEscapeChar(names(dataPKraw))
-
-  # Apply mapping:
-  dataPK <- plyr::rename(dataPKraw, replace = PKmapping, warn_missing = FALSE)
-
-  # Get only compound of interest
-  # dataPK <- dataPK[dataPK$COMPOUND %in% c(cpd1,cpd2),]
+  
+  mapping_dplyr <- setNames(names(PKmapping), PKmapping)
+  
+  dataPK <- dataPKraw %>%
+    dplyr::rename(!!!mapping_dplyr)
+  
   # Get only subject of interest
   dataPK <- dataPK[dataPK$SUBJECT %in% idx_keep,]
-
+  
   # Remove not matched columns:
   dataPK <- dataPK[, intersect(names(dataPK),PKmapping)]
-
+  
   # Remove NA rows: NOT SURE IT IS A GOOD IDEA????? as sometimes they forget to add "<LLOQ"
   dataPK <- dataPK[!is.na(dataPK$VALUE),]
-
+  
   # Get rid of concentration at TIME = 0; no measurement
   dataPK <- dataPK[dataPK$NT!=0,]
-
+  
   # Define extra columns for PK:
-  dataPK <- mutate(dataPK,
+  dataPK <- dplyr::mutate(dataPK,
                    LLOQ      = ifelse(COMPOUND==cpd1, PKlloq[1], PKlloq[2]),
                    PKFACTOR  = ifelse(COMPOUND==cpd1,PKfactor[1], PKfactor[2]),
                    TIMEUNIT  = rep("hours", length(STUDY)),
@@ -2700,152 +2724,122 @@ import_SCIDpkpdDataCombo_TAD <- function(dataFile,
                    TYPENAME  = "PK",
                    NAME      = paste0(COMPOUND, " Blood Concentration"),
                    VALUE     = as.numeric(as.character(ifelse(VALUE %in% PKlloqIdentifier, LLOQ/2/PKFACTOR, VALUE))) * PKFACTOR,
-                   VALUETXT  = NA,
+                   VALUETXT  = NA_character_,
                    UNIT      = "ug/mL",
-                   ROUTE     = NA,
+                   ROUTE     = NA_character_,
                    IGNORE    = NA
   )
-
+  
   # Check that numeric columns are numeric:
   numcols <- c("TIME", "NT", "LLOQ","VALUE")
   dataPK <- cbind(dataPK[, setdiff(names(dataPK), numcols)], sapply(dataPK[, intersect(names(dataPK), numcols)], as.numeric))
-
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Handle PD data ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+  
   # Load data:
   dataPDraw <- readxl::read_excel(dataFile, PDsheet, range = PDrange, na = c("NA", "", "."))
-
+  
   # Remove escape characters from column names:
   names(dataPDraw) <- MMVbase::aux_removeEscapeChar(names(dataPDraw))
-
+  
   # Apply matching:
-  dataPD <- plyr::rename(dataPDraw, replace = PDmapping)
-
+  mapping_dplyr <- setNames(names(PDmapping), PDmapping)
+  
+  dataPD <- dataPDraw %>%
+    dplyr::rename(!!!mapping_dplyr)
+  
   # Remove not matched columns:
   dataPD <- dataPD[, intersect(names(dataPD),PDmapping)]
-
+  
   # Get only subject of interest
   dataPD <- dataPD[dataPD$SUBJECT %in% idx_keep,]
-
+  
   # Remove records with no entry for value:
-  # Should remove also the gap between experiment parts
-  # NOT SURE IT IS A GOOD IDEA TO REMOVE THE NA?????
   dataPD <- dataPD[!is.na(dataPD$VALUE), ]
-
+  
   # Add Common column and treat data<LLOQ and dead mices:
-  dataPD <- within(dataPD, {
-    TIMEUNIT  <- rep("hours", length(STUDY))
-    NT        <- (NT-DayOfFirstDrugAdmin)*24
-    TIME      <- NT
-    TYPENAME  <- "Efficacy"
-    NAME      <- PDname
-    IGNORE    <- ifelse(VALUE %in% c("Dead"), "Dead", NA)
-    VALUE     <- ifelse(VALUE %in% c("Dead"), NA, VALUE)
-    VALUE     <- ifelse(VALUE %in% PDlloqIdentifier, 0, VALUE)
-    VALUE     <- as.numeric(as.character(VALUE))
-    VALUE     <- ifelse(VALUE <= PDlloq, PDlloq/2, VALUE)
-    VALUETXT  <- NA
-    UNIT      <- "percent"
-    ROUTE     <- NA
-    LLOQ      <- PDlloq
-    huErythro <- ifelse(huErythro %in% c("Dead"), NA, huErythro)
-    huErythro <- as.numeric(huErythro)
-  })
-
+  dataPD <- dplyr::mutate(dataPD,
+                   TIMEUNIT  = rep("hours", length(STUDY)),
+                   NT        = (NT-DayOfFirstDrugAdmin)*24,
+                   TIME      = NT,
+                   TYPENAME  = "Efficacy",
+                   NAME      = PDname,
+                   IGNORE    = ifelse(VALUE %in% c("Dead"), "Dead", NA),
+                   VALUE = dplyr::case_when(
+                     VALUE == "Dead"              ~ NA_real_,          
+                     VALUE %in% PDlloqIdentifier  ~ 0,                  
+                     as.numeric(VALUE) <= PDlloq  ~ PDlloq / 2,         
+                     TRUE                         ~ as.numeric(VALUE)   
+                   ),
+                   VALUETXT  = NA_character_,
+                   UNIT      = "percent",
+                   ROUTE     = NA_character_,
+                   LLOQ      = PDlloq,
+                   huErythro = ifelse(huErythro %in% c("Dead"), NA, huErythro),
+                   huErythro = as.numeric(huErythro)
+  )
+  
   # Check that numeric columns are numeric:
   numcols <- c("TIME", "NT", "LLOQ", "VALUE")
   dataPD <- cbind(dataPD[, setdiff(names(dataPD), numcols)], sapply(dataPD[, intersect(names(dataPD), numcols)], as.numeric))
-
+  
   # Normalize parasitemia to human erythrocyte percent:
   dataPD$VALUE <- ifelse(dataPD$VALUE == PDlloq/2,PDlloq/2, dataPD$VALUE /dataPD$huErythro * 100)
-
-
+  
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Define Erythrocyte Data ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  dataHE <- within(dataPD,{VALUE    <- huErythro
-  TYPENAME <- "Vital Signs"
-  NAME     <- "Human Erythrocytes"
-  }
-  )
-
-
+  
+  dataHE <- dataPD %>%
+    dplyr::mutate(VALUE = huErythro,
+                  TYPENAME = "Vital Signs",
+                  NAME = "Human Erythrocytes")
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Concatenate All Data ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  dataPK <- dataPK[,-which(names(dataPK)          %in% setdiff(names(dataPK),names(dataPD)))]
-  dataPD <- dataPD[,-which(names(dataPD)          %in% setdiff(names(dataPD),names(dataPK)))]
-  dataHE <- dataHE[,-which(names(dataHE)          %in% setdiff(names(dataHE),names(dataPK)))]
-  dataDO <- dataDosTime[,-which(names(dataDosTime)%in% setdiff(names(dataDosTime),names(dataPK)))]
-
+  
+  dataPK <- dataPK %>% 
+    dplyr::select(dplyr::any_of(names(dataPD)))
+  
+  dataPD <- dataPD %>% 
+    dplyr::select(dplyr::any_of(names(dataPK)))
+  
+  dataHE <- dataHE %>% 
+    dplyr::select(dplyr::any_of(names(dataPK)))
+  
+  dataDO<- dataDoseTime %>% 
+    dplyr::select(dplyr::any_of(names(dataPK)))
+  
   data <- rbind(dataPK,
                 dataPD,
                 dataHE,
                 dataDO)
-
-
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Concatenate All Data ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  data <- dplyr::left_join(data, unique(dataDosTime[,c("SUBJECT", "STUDY","USUBJID","GROUP","COMPOUND",
-                                                       "DOSELEVEL1",  "DOSEMULT1", "DOSELEVEL2",  "DOSEMULT2","TRTNAME")]))
-
+  
+  data <- dplyr::left_join(data, unique(dataDoseTime[,c("SUBJECT", "STUDY","USUBJID","GROUP","COMPOUND",
+                                                        "DOSELEVEL1",  "DOSEMULT1", "DOSELEVEL2",  "DOSEMULT2","TRTNAME")]))
+  
   # Adjust treatment name if dosing different of once a day
-  if (!is.null(intervaldose))
+  if (!is.null(intervaldose)){
     data$TRTNAME <- ifelse(data$TRTNAME=="Vehicle",data$TRTNAME,paste0(data$TRTNAME, " ",intervaldose))
-
-  # Add CENTER & VISIT column:
-  data$CENTER      <- centerNumber
-  data$CENTERNAME  <- centerName
-  data$VISIT       <- visitNumber
-
-  # Order:
-  data <- data[order(data$USUBJID, data$TIME),]
-
-  # Select columns
-  data <- data[,colNames]
-
-  # Remove Dose for vehicle
-  data<-data[!(data$TYPENAME=="Dose" & data$TRTNAME=="Vehicle"),]
-
-
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # get data only for compoun of interest ----
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  # Select only for compound of interest + vehicle + positive control
-  data <- rbind(data[data$COMPOUND==paste0(cpd1,"+",cpd2),],
-                data[data$COMPOUND==positiveQC,])
-  data<- data[complete.cases(data[ , "COMPOUND"]),]
-
-  # Replace positiveQC by appropriate compound NAme (positiveQC info is kept in TRTNAME)
-  data$COMPOUND <- paste0(cpd1,"+",cpd2)
-
-  # Rename to MMVName
-  data$TRTNAME <- gsub(Compound1$Name, Compound1$MMVname, data$TRTNAME)
-  data$NAME    <- gsub(Compound1$Name, Compound1$MMVname, data$NAME)
-  data$COMPOUND<- gsub(Compound1$Name, Compound1$MMVname, data$COMPOUND)
-  data$TRTNAME <- gsub(Compound2$Name, Compound2$MMVname, data$TRTNAME)
-  data$NAME    <- gsub(Compound2$Name, Compound2$MMVname, data$NAME)
-  data$COMPOUND<- gsub(Compound2$Name, Compound2$MMVname, data$COMPOUND)
-
-  # Get only Study on which the loop is performed
-  data <- data[data$STUDY==StudyName_k,]
-  # data <- data.frame(lapply(data, function(x) {
-  #                     gsub(Compound1$Name, Compound1$MMVname, x)
-  #                 }))
-  # data <- data.frame(lapply(data, function(x) {
-  #   gsub(Compound2$Name, Compound2$MMVname, x)
-  # }))
-
-
+  }
+  
+  data <- data %>%
+    dplyr::mutate(CENTER = centerNumber,
+                  CENTERNAME = centerName,
+                  VISIT = visitNumber) %>%
+    dplyr::arrange(USUBJID, TIME) %>%
+    dplyr::filter(!(TYPENAME == "Dose" & TRTNAME == "Vehicle"))
+  
   # Output:
   return(data)
-
 }
 
 #' load_MalariaPopulation

@@ -45,20 +45,20 @@ using the \code{compCategory} parameter.
 # Example usage:
 # prepare categories for dataSim and dataObs
 data <- dataSim <- expand.grid(
-  TRTNAME =  c("Treatment A", "Treatment B"), 
-  Variable =  c("Var1", "Var2"), 
+  TRTNAME = c("Treatment A", "Treatment B"),
+  Variable = c("Var1", "Var2"),
   Source = c("Sim", "Obs", "CSR")
 )
 
 # add N and k
-data$N <- rep(c(10,20), 6)
-data$k <- rep(c(5,8,2,12), 3) + sample.int(3, 12, replace=TRUE)
+data$N <- rep(c(10, 20), 6)
+data$k <- rep(c(5, 8, 2, 12), 3) + sample.int(3, 12, replace = TRUE)
 
-# add CI 
-CIs <- binom::binom.confint(data$k, data$N, conf.level = 0.90, methods = "exact" )
-data$`CI Median` <- CIs$mean*100
-data$`CI Low` <- CIs$lower*100
-data$`CI High` <- CIs$upper*100
+# add CI
+CIs <- binom::binom.confint(data$k, data$N, conf.level = 0.90, methods = "exact")
+data$`CI Median` <- CIs$mean * 100
+data$`CI Low` <- CIs$lower * 100
+data$`CI High` <- CIs$upper * 100
 
 # plot
 ggplots <- plotSummaryComparisonBinary(data)

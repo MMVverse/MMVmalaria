@@ -2,7 +2,7 @@
 % Please edit documentation in R/09-KeyParameters.R
 \name{ConfusionMatrix}
 \alias{ConfusionMatrix}
-\title{Calcualte confusion matrix and derived statistics from a predicted and reference binary data}
+\title{ConfusionMatrix}
 \usage{
 ConfusionMatrix(
   data,
@@ -26,7 +26,7 @@ values in data[\link{colPred}] and data[\link{colRef}].}
 a named list as described in documentation of \verb{[caret::confusionMatrix()]}.
 }
 \description{
-Calcualte confusion matrix and derived statistics from a predicted and reference binary data
+Calculate confusion matrix and derived statistics from a predicted and reference binary data
 }
 \note{
 This function is using \verb{[caret::confusionMatrix()]}

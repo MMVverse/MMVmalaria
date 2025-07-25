@@ -7,10 +7,14 @@
 plot_keyPDparametersMMV(object, outputFolder, ActivityPath = NULL)
 }
 \arguments{
+\item{object}{String denoting path to an IQRnlmeProjectMulti object}
+
+\item{outputFolder}{String denoting folder in which to write plots}
+
 \item{ActivityPath}{Default: \code{NULL}}
 }
 \description{
-plot_keyPDparametersMMV
+Plot key PD parameters from an IQRnlmeProjectMulti
 }
 \seealso{
 Other Key Parameters: 

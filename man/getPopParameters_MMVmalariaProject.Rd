@@ -11,12 +11,17 @@ getPopParameters_MMVmalariaProject(
 )
 }
 \arguments{
-\item{IndCovariates}{Default: \code{NULL}}
+\item{projectPath}{A character string with the path to an IQRsysProject or IQRnlmeProject folder, or a GPF file.}
+
+\item{IndCovariates}{data.frame describing patient or other subject covariate and regressor data, see \code{IQRtools::sampleIndParamValues}. Default: \code{NULL}}
 
 \item{verbose}{Default: TRUE}
 }
+\value{
+List of parameter values, see \code{IQRtools::sampleIndParamValues}
+}
 \description{
-getPopParameters_MMVmalariaProject
+Get population parameters from a MMVmalaria Project
 }
 \seealso{
 Other Simulations: 

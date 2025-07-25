@@ -16,6 +16,8 @@ get_NumberOfPKcpt(
 )
 }
 \arguments{
+\item{PKparameters}{Named vector of PK parameters and their values}
+
 \item{PKparaType}{Default: 'Primary'}
 
 \item{PKprimaryName}{Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
@@ -30,8 +32,11 @@ B = "B", C = "C")}
 K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 K2c = "K2c")}
 }
+\value{
+Number of compartments of the model
+}
 \description{
-get_NumberOfPKcpt
+From provided PK parameters, determine the number of compartments of a model.
 }
 \seealso{
 Other Key Parameters: 

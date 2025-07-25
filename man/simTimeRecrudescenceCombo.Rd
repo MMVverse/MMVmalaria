@@ -63,6 +63,6 @@ Other Simulations:
 \code{\link{simulate_VirtualTrials}()}
 }
 \author{
-Anne K?mmel (IntiQuan), Mohammed Cherkaoui (MMV)
+Anne Kummel (IntiQuan), Mohammed Cherkaoui (MMV)
 }
 \concept{Simulations}

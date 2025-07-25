@@ -14,12 +14,23 @@ getTimeAboveMICsim(
 )
 }
 \arguments{
-\item{effCOL}{Default: 'Effect'}
+\item{dataSim}{A data frame or data.table containing the simulation data.}
 
-\item{returnLag}{Default: \code{FALSE}}
+\item{timeCOL}{A string specifying the name of the time column in \code{dataSim}. Default is \code{"TIME"}.}
+
+\item{effCOL}{A string specifying the name of the eff column in \code{dataSim}. Default is \code{"Eff"}.}
+
+\item{GR}{Numeric, value of growth rate.}
+
+\item{EMAX}{Numeric, value of EMAX.}
+
+\item{returnLag}{Logical: Return Lag time? Default: \code{FALSE}}
+}
+\value{
+data.frame containing time above MIC, and lag time if flagged
 }
 \description{
-getTimeAboveMICsim
+Calculates the total time during which the concentration is above the MIC from simulation data
 }
 \seealso{
 Other Key Parameters: 

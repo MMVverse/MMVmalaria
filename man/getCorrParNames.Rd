@@ -2,9 +2,7 @@
 % Please edit documentation in R/10-Simulations.R
 \name{getCorrParNames}
 \alias{getCorrParNames}
-\title{Extract parameter names from IIV correlation name
-Convention of IIV correlation estimate name:
-'corr_(par1,par2)'}
+\title{getCorrParNames}
 \usage{
 getCorrParNames(corrString)
 }

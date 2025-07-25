@@ -18,18 +18,31 @@ convert_SCIDconcentration(
 )
 }
 \arguments{
-\item{HuH}{Default: 0.45}
+\item{ConcToConv}{Numeric vector containing concentration data to convert}
 
-\item{MouseH}{Default: 0.45}
+\item{HuRbp}{Numeric: value of human ratio blood:plasma}
 
-\item{huRBCinSCID}{Default: 0.6}
+\item{HuPPB}{Numeric: \% value of human plasma protein binding as a proportion}
 
-\item{scidH}{Default: 0.8}
+\item{MouseRbp}{Numeric: value of mice ratio blood:plasma}
 
-\item{ConvertTo}{Default: 'Human'}
+\item{MousePPB}{Numeric: \% value of mice plasma protein binding as a proportion}
+
+\item{HuH}{Numeric: Value of \% human hematocrit as a proportion. Default: 0.45}
+
+\item{MouseH}{Numeric: Value of \% mouse hematocrit as a proportion. Default: 0.45}
+
+\item{huRBCinSCID}{Numeric: value of \% human red blood cells in SCID as proportion. Default: 0.6}
+
+\item{scidH}{Numeric: Value of \% SCID  hematocrit as a proportion. Default: 0.8}
+
+\item{ConvertTo}{Character string defining matrix to convert to. One of 'Human Blood', 'Human Plasma', 'Mouse Blood', 'Mouse Plasma' or 'Free'. Default: Human Blood}
+}
+\value{
+Numeric vector containing converted concentration data
 }
 \description{
-convert_SCIDconcentration
+convert_SCIDconcentration to selected matrix
 }
 \seealso{
 Other Key Parameters: 

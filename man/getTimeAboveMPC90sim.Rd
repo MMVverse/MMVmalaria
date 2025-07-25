@@ -12,12 +12,19 @@ getTimeAboveMPC90sim(
 )
 }
 \arguments{
-\item{effCOL}{Default: 'Effect'}
+\item{dataSim}{A data frame or data.table containing the simulation data.}
 
-\item{returnLag}{Default: \code{FALSE}}
+\item{timeCOL}{A string specifying the name of the time column in \code{dataSim}. Default is \code{"TIME"}.}
+
+\item{effCOL}{A string specifying the name of the eff column in \code{dataSim}. Default is \code{"Eff"}.}
+
+\item{returnLag}{Logical: Return Lag time? Default: \code{FALSE}}
+}
+\value{
+data.frame containing time above MIC, and lag time if flagged
 }
 \description{
-getTimeAboveMPC90sim
+Calculates the total time during which the concentration is above the MPC90 from simulation data
 }
 \seealso{
 Other Key Parameters: 

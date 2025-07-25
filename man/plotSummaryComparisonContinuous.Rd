@@ -42,17 +42,18 @@ using the \code{compCategory} parameter.
 # Example usage:
 # prepare categories for dataSim and dataObs
 dataObs <- dataSim <- expand.grid(
-  TRTNAME =  c("Treatment A", "Treatment B"), 
-  Variable =  c("Var1", "Var2"), 
-  Metric = c("Metric1", "Metric2", "Metric3"))
+  TRTNAME = c("Treatment A", "Treatment B"),
+  Variable = c("Var1", "Var2"),
+  Metric = c("Metric1", "Metric2", "Metric3")
+)
 
 # add values for dataSim
-dataSim$`CI Median` <- rep(c(10,20,30), each = 4) + rnorm(12)
-dataSim$`CI Low` <- dataSim$`CI Median` -3  - runif(12)
-dataSim$`CI High` <- dataSim$`CI Median` +  3 + runif(12)
+dataSim$`CI Median` <- rep(c(10, 20, 30), each = 4) + rnorm(12)
+dataSim$`CI Low` <- dataSim$`CI Median` - 3 - runif(12)
+dataSim$`CI High` <- dataSim$`CI Median` + 3 + runif(12)
 
 # add values for dataObs
-dataObs$Value <- rep(c(10,20,30), each = 4) + rnorm(12)
+dataObs$Value <- rep(c(10, 20, 30), each = 4) + rnorm(12)
 
 # plot
 ggplots <- plotSummaryComparisonContinuous(dataSim, dataObs)

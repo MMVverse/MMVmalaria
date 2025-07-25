@@ -14,14 +14,23 @@ getTimeRecrudescence(
 )
 }
 \arguments{
-\item{valCol}{Default: 'DV'}
+\item{x}{data.frame containing \code{"TIME"} and \code{valCol} where \code{valCol} is a measurement of parasitaemia}
 
-\item{log}{Default: \code{TRUE}}
+\item{GR}{Numeric, value of growth rate.}
 
-\item{Time2RecDef}{Default: 'MMV'}
+\item{LLOQ}{Numeric: LLOQ of parasitaemia measurements.}
+
+\item{valCol}{A string specifying the name of the column containing parasitaemia measurements. Default is \code{"TIME"}. Default: 'DV'}
+
+\item{log}{Logical, is parasitaemia in log-scale? Default: \code{TRUE}}
+
+\item{Time2RecDef}{String cenoting methodology with which to determine recrudescence: One of \code{MMV} or \code{TAD} MMV = once min Para or LOQ is achieved. TAD = return to Para BL value: Default: 'MMV'}
+}
+\value{
+data.frame containing time of recrudesence
 }
 \description{
-getTimeRecrudescence
+Estimate time of recrudescence
 }
 \seealso{
 Other Key Parameters: 

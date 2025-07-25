@@ -27,7 +27,7 @@ generate_GPFfromParametersTable(
 A GPF object
 }
 \description{
-Generate GPF Object from a parameter table
+Create a gpf object from provided parameter table
 }
 \details{
 Function to be used in \code{generate_GPFfromOldIQRproject} to geneate a GPF object.

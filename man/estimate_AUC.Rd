@@ -16,6 +16,10 @@ estimate_AUC(
 )
 }
 \arguments{
+\item{Time}{Numeric vector containing time data}
+
+\item{Conc}{Numeric vector containing concentration data}
+
 \item{AUCtype}{Default: 'last'}
 
 \item{intMethod}{Default: MMVbase::logLinTrapzMMV}
@@ -24,8 +28,11 @@ estimate_AUC(
 estimate_LambdaZ(x, y)$LambdaZ
 }}
 }
+\value{
+Estimated AUC for the provided \code{AUCtype}
+}
 \description{
-estimate_AUC
+Estimate area under the curve (AUC) of provided time v concentration data
 }
 \seealso{
 Other Key Parameters: 

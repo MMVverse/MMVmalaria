@@ -12,14 +12,25 @@ getPopIndPred(
 )
 }
 \arguments{
+\item{modelFolder}{String denoting path to IQRnlmeProject. If
+IQRnlmeProjectMulti is provided, the first element will be used}
+
 \item{timeGrid}{Default: 'obsTimes'}
 
-\item{abs0inputs}{Default: NULL}
+\item{abs0inputs}{numeric vector with numbers of inputs (ADM) that are of type
+ABSORPTION0. If this argument is set also abs0Tk0param needs to be defined. Default: NULL}
 
-\item{abs0Tk0param}{Default: NULL}
+\item{abs0Tk0param}{character vector with names of regression parameters that
+should be used as 0-order infusion time (by updating TINF). The regression
+parameters for these values are kept in the event table. Ordering has to be as in abs0inputs. Default: NULL}
+}
+\value{
+data.frame containing simulation results
 }
 \description{
-getPopIndPred
+From an IQRnlme project folder, build event tables with either
+population (POP) or individual (IND) parameters, run simulations with  both and return
+POP predictions (\code{XPRED}) and IND predictions (\code{IPRED}) for every subject
 }
 \author{
 Anne Kümmel (IntiQuan), Mohammed H. Cherkaoui (MMV)

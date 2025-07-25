@@ -12,7 +12,7 @@ add_CovariateToModelSpec(modelSpec, covariateModelToAdd)
 \item{covariateModelToAdd}{covariateModel and values to add, see \code{modelSpec_IQRest}}
 }
 \value{
-modelSpec object
+A list containing the IQR model spec, see \code{modelSpec_IQRest}
 }
 \description{
 Add provided covariate model parameters to a modelSpec or replace existing covariate model in modelSpec

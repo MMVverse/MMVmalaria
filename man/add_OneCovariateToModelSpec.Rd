@@ -18,7 +18,7 @@ add_OneCovariateToModelSpec(
 \item{COVcentering}{Named vector defining centering value for covariates i.e. COVcentering = c(WT0=55)}
 }
 \value{
-modelSpec object
+A list containing the IQR model spec, see \code{?modelSpec_IQRest}
 }
 \description{
 Add a single covariate model to a modelSpec object.

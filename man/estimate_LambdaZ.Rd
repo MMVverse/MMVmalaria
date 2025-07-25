@@ -7,12 +7,19 @@
 estimate_LambdaZ(Time, Conc, R2.min = 0.95, atol = 1e-12)
 }
 \arguments{
+\item{Time}{Numeric vector containing time data}
+
+\item{Conc}{Numeric vector containing concentration data}
+
 \item{R2.min}{Default: 0.95}
 
 \item{atol}{Default: 1e-12}
 }
+\value{
+Estimated lambda-z
+}
 \description{
-estimate_LambdaZ
+Estimates the slope (lambda-z) of provided time v concentration data
 }
 \seealso{
 Other Key Parameters: 

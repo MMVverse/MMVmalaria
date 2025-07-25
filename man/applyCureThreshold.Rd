@@ -7,10 +7,17 @@
 applyCureThreshold(x, threshold, PDname = "Parasitemia")
 }
 \arguments{
-\item{PDname}{Default: 'Parasitemia'}
+\item{x}{data.frame with parasite levels}
+
+\item{threshold}{Numeric value of threshold level below which to prevent regrowth}
+
+\item{PDname}{Character string denoting name of parasitaemia column. Default: 'Parasitemia'}
+}
+\value{
+Modified data.frame with additional column of modified parasitaemia
 }
 \description{
-applyCureThreshold
+Disable regrowth if parasite levels drop below threshold value by creating new column in data with modified parasite levels.
 }
 \seealso{
 Other Simulations: 

@@ -11,8 +11,11 @@ getKeysEMAX(x, convConc = 1)
 
 \item{convConc}{Default: 1}
 }
+\value{
+Static MIC, MPC90, PRR24, PRR48 and PPR72
+}
 \description{
-getKeysEMAX
+Estimate MIC, MPC90, PRR24, PRR48 and PRR72 from EMAX model
 }
 \seealso{
 Other Key Parameters: 

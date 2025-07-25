@@ -14,14 +14,23 @@ predict_HumanChallenge(
 )
 }
 \arguments{
-\item{GRhuman}{Default: \code{NULL}}
+\item{PKeventTable}{IQReventTable object specifying PK model, see \code{IQRtools::IQReventTable}}
 
-\item{model}{Default: \code{NULL}}
+\item{PDmodelFolder}{Path to IQRnlme project containing structural model and pre-clinical PD parameters}
 
-\item{CureThreshold}{Default: log(1/5000)}
+\item{data}{IQRdataGeneral of human challenge data}
+
+\item{GRhuman}{Numeric value of growth human: If NULL, will use "GR" from \code{PDmodelFolder}. Default: \code{NULL}}
+
+\item{model}{Path to IQRmodel.txt, if NULL, will use "model.txt" from \code{PDmodelFolder}. Default: \code{NULL}}
+
+\item{CureThreshold}{Numeric, value of parasitaemia to treat as cure threshold. Default: log(1/5000)}
+}
+\value{
+List including simulation data and figure output
 }
 \description{
-predict_HumanChallenge
+Produce a simulated prediction of, and visual output for, a human challenge study
 }
 \seealso{
 Other Simulations: 

@@ -148,7 +148,7 @@ or given dataset as dataVPC.
 It will also perform additional simulations to performed prediction correction for the VPCs if required.
 For the observations, a typical prediction will also be performed using the population
 parameter point estimates.
-The VPC can subsequently e plotted using \link{plotVPC_IQRdataVPC}.
+The VPC can subsequently be plotted using \link{plotVPC_IQRdataVPC}.
 }
 \concept{IQRnlmeProject}
 \concept{VPC}

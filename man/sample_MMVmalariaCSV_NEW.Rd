@@ -13,14 +13,21 @@ sample_MMVmalariaCSV_NEW(
 )
 }
 \arguments{
-\item{FLAG_SAMPLE}{Default: 0}
+\item{filename}{a filename (character string) denoting the path to a GPF excel file, or a GPF object, or an IQRnlmeParamSpec object.}
 
-\item{covariates}{Default: \code{NULL}}
+\item{Nsamples}{Numeric integer denoting number of individuals to sample}
+
+\item{FLAG_SAMPLE}{Numeric, value for sample flag, see \code{?IQRtools::sampledIndParamValues}. Default: 0}
+
+\item{covariates}{data.frame describing patient or other subject covariate and regressor data, see \code{IQRtools::sampleIndParamValues}. Default: \code{NULL}}
 
 \item{FLAGid}{Default: FALSE}
 }
+\value{
+Named list containing parameter values, see \code{?IQRtools::sampledIndParamValues}
+}
 \description{
-sample_MMVmalariaCSV_NEW
+Sample individual parameter values from a GPF/CSV file
 }
 \seealso{
 Other Simulations: 

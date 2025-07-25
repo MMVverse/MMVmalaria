@@ -12,14 +12,19 @@ formulaPKpar_MicroToPrimary(
 )
 }
 \arguments{
+\item{PKparameters_Micro}{Named vector containing micro PK parameters and their values}
+
 \item{PKmicroName}{Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 K2c = "K2c")}
 
 \item{PKprimaryName}{Default: c(CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2", Vp2 = "Vp2")}
 }
+\value{
+Named vector containing primary PK parameters and their values
+}
 \description{
-formulaPKpar_MicroToPrimary
+Converts provided micro PK parameters to primary parameters
 }
 \seealso{
 Other Key Parameters: 

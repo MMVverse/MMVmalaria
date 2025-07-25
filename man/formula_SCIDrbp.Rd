@@ -2,7 +2,7 @@
 % Please edit documentation in R/09-KeyParameters.R
 \name{formula_SCIDrbp}
 \alias{formula_SCIDrbp}
-\title{Calculate ratio blood plasma in SCID}
+\title{formula_SCIDrbp}
 \usage{
 formula_SCIDrbp(
   HuRbp,

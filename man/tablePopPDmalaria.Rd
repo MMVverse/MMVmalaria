@@ -6,8 +6,14 @@
 \usage{
 tablePopPDmalaria(x)
 }
+\arguments{
+\item{x}{An IQRnlmeProjectMulti object containing models to compare}
+}
+\value{
+Table containing model parameters
+}
 \description{
-tablePopPDmalaria
+create a table with population estimates of PD parameters from an IQRnlmeProjectMulti object
 }
 \seealso{
 Other Model Assessment: 

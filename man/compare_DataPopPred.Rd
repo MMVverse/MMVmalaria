@@ -18,6 +18,12 @@ compare_DataPopPred(
 )
 }
 \arguments{
+\item{PKmodelFolder}{Character string with path to IQRNLME project containing population PK parameters}
+
+\item{PDmodelFolder}{Character vector with paths to folders containing IQRmodels, which need to be named model.txt}
+
+\item{dataFile}{Character string with path to IQRdataGeneral object}
+
 \item{TRTsubset}{Default: \code{NULL}}
 
 \item{GRmodelFolder}{Default: \code{NULL}}
@@ -30,8 +36,12 @@ compare_DataPopPred(
 
 \item{ActivityPath}{Default: \code{NULL}}
 }
+\value{
+Figure showing the comparison of data and model predictions.
+}
 \description{
-compare_DataPopPred
+Function to plot simulations from existing PK population
+parameters and multiple candidate PD models against observed data
 }
 \seealso{
 Other Model Assessment: 

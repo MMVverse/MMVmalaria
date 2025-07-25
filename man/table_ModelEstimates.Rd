@@ -14,6 +14,8 @@ table_ModelEstimates(
 )
 }
 \arguments{
+\item{modelFolderList}{Character vector with paths to IQR projects}
+
 \item{filename}{Default: NULL}
 
 \item{xtitle}{Default: NULL}
@@ -24,8 +26,11 @@ table_ModelEstimates(
 
 \item{FLAGreport}{Default: TRUE}
 }
+\value{
+Returns tables of model estimates through \code{getEstimateTable}
+}
 \description{
-table_ModelEstimates
+Calls \code{getEstimateTable} on multiple models
 }
 \seealso{
 Other ModelComparison: 

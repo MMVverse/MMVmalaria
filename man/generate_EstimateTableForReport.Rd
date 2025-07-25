@@ -2,7 +2,7 @@
 % Please edit documentation in R/13-Reporting.R
 \name{generate_EstimateTableForReport}
 \alias{generate_EstimateTableForReport}
-\title{Generate Estimate Table for Report}
+\title{generate_EstimateTableForReport}
 \usage{
 generate_EstimateTableForReport(
   projectPath,
@@ -13,6 +13,8 @@ generate_EstimateTableForReport(
 }
 \arguments{
 \item{projectPath}{IQR pr GPF project path}
+
+\item{tableOutputPath}{optional string denoting location to write table, will attempt to default to provided projectPath if NULL}
 
 \item{FLAGLaTeX}{Flag to convert parameters name into LaTeX format (Default: \code{TRUE})}
 

@@ -12,14 +12,19 @@ formulaPKpar_MacroToPrimary(
 )
 }
 \arguments{
+\item{PKparameters_Macro}{Named vector containing macro PK parameters and their values}
+
 \item{PKmacroName}{Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 Alpha = "Alpha", Beta = "Beta", Gamma = "Gamma", A = "A",
 B = "B", C = "C")}
 
 \item{PKprimaryName}{Default: c(CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2", Vp2 = "Vp2")}
 }
+\value{
+Named vector containing primary PK parameters and their values
+}
 \description{
-formulaPKpar_MacroToPrimary
+Converts provided macro PK parameters to primary parameters
 }
 \seealso{
 Other Key Parameters: 

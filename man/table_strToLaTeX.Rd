@@ -2,7 +2,7 @@
 % Please edit documentation in R/13-Reporting.R
 \name{table_strToLaTeX}
 \alias{table_strToLaTeX}
-\title{Convert equations/parameters to LaTeX mode}
+\title{table_strToLaTeX}
 \usage{
 table_strToLaTeX(
   tableInputPath,
@@ -37,8 +37,6 @@ An IQR table with the specified changes
 }
 \description{
 Convert equations/parameters to LaTeX mode
-}
-\details{
 Parameters and/or equations within IQRtable can be automatically converted to a LaTeX equation
 for nicer reporting. \code{colToChange} specify to which column the changes should be made, while
 \code{ListStrToLatex} is a list providing the characters to detect and their respective LaTeX notation.

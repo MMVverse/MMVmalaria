@@ -6,8 +6,14 @@
 \usage{
 getEstimateTable(modelFolder)
 }
+\arguments{
+\item{modelFolder}{Character string denoting path to IQR project}
+}
+\value{
+Table of estimates
+}
 \description{
-getEstimateTable
+Generates tables of fixed and random effects estimates and errors for provided model
 }
 \seealso{
 Other ModelComparison: 

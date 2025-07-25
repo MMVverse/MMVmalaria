@@ -2,7 +2,7 @@
 % Please edit documentation in R/10-Simulations.R
 \name{getModelParameters_MMVmalariaProject}
 \alias{getModelParameters_MMVmalariaProject}
-\title{Get Model Parameters from a MMVmalaria Project}
+\title{getModelParameters_MMVmalariaProject}
 \usage{
 getModelParameters_MMVmalariaProject(projectPath)
 }
@@ -13,6 +13,8 @@ getModelParameters_MMVmalariaProject(projectPath)
 A list with the population, IIV, Betas and residual parameters, each formatted into a data.frame.
 }
 \description{
+Get Model Parameters from a MMVmalaria Project
+
 Load into a list the the population, IIV, Betas and residual parameters, each formatted into a data.frame from
 a MMVmalaria Project. This is useful to prepare a ModelSpec object as in \link{modelSpec_MMVmalariaProject}.
 }

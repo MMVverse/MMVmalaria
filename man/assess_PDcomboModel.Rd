@@ -45,7 +45,7 @@ data.frame with assessment criteria:
 \Npar Number of parameters
 }
 \description{
-assess_PDcomboModel
+Assess a PKPD combo model(s) and produce key summary statistics
 }
 \seealso{
 Other Model Assessment: 

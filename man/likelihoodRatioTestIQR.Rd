@@ -12,14 +12,22 @@ likelihoodRatioTestIQR(
 )
 }
 \arguments{
-\item{ModelName}{Default: \code{NULL}}
+\item{ModelPaths}{Character string of path to folder containing multiple IQRnlme projects}
+
+\item{ModelName}{Character vector of desired names of models, in order.
+If set to NULL, model names from IQRnlme projects will be used as-is. Default: \code{NULL}}
 
 \item{outputFolder}{Default: '../04-Output/Sxxx-ModelComparison'}
 
-\item{parameterPNG}{Default: \code{NULL}}
+\item{parameterPNG}{Character vector of parameter names for which to additionally save output as .png. Default: \code{NULL}}
+}
+\value{
+Nothing is returned directly by the function, visualizations of
+model comparisons are saved as .pdf to \code{outputFolder}, and also saved as .png if parameters are defined in \code{parameterPNG}
 }
 \description{
-likelihoodRatioTestIQR
+Perform comparison of multiple models OBJ, AIC and BIC values
+using likelihood ratio test, implemented in R as \code{pchisq()}
 }
 \seealso{
 Other Model Assessment: 

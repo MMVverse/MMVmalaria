@@ -6,19 +6,28 @@
 \usage{
 getTimeAboveMPC90(
   dataSim,
-  MPC90 = NULL,
+  MPC90,
   timeCOL = "TIME",
   concCOL = "Cc",
   convConc = 1
 )
 }
 \arguments{
-\item{MPC90}{Default: \code{NULL}}
+\item{dataSim}{A data frame or data.table containing the simulation data.}
 
-\item{convConc}{Default: 1}
+\item{MPC90}{Numeric: Value of MPC90}
+
+\item{timeCOL}{A string specifying the name of the time column in \code{dataSim}. Default is \code{"TIME"}.}
+
+\item{concCOL}{A string specifying the name of the concentration column in \code{dataSim}. Default is \code{"Cc"}.}
+
+\item{convConc}{Numeric: scalar for concentration data. Default: 1}
+}
+\value{
+data.frame containing time above MPC90
 }
 \description{
-getTimeAboveMPC90
+Calculates the total time during which the concentration is above the MPC90
 }
 \seealso{
 Other Key Parameters: 

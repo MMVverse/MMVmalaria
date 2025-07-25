@@ -45,6 +45,9 @@ assess_MICMPC90PRR48(
 \item{addArgs_sim_IQRmodel}{named list (default NULL) with additional arguments to be passed to sim_IQR_model. This
 argument is relevant only if \code{Apparent == TRUE}.}
 }
+\value{
+Data frame or list of calculated parameters
+}
 \description{
 Required: \code{Emax} \code{EC50}, \code{hill}. Emax, cleareance, delay, turnover and effect compartment models
 }

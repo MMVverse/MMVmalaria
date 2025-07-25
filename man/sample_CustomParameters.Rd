@@ -13,10 +13,21 @@ sample_CustomParameters(
 )
 }
 \arguments{
-\item{Nsamples}{}
+\item{parameters.POP}{Named vector containing population parameter values}
+
+\item{parameters.IIV}{Named vector containing IIV values}
+
+\item{parameters.IIVcor}{Named vector containing correlations between IIVs. Will be parsed by \code{getCorrParNames}. Default: NULL}
+
+\item{parameters.DIST}{Vector containing 'N', 'L' or 'G', representing normal, log-normal and Logit distribution, respectively.}
+
+\item{Nsamples}{Numeric integer denoting number of individuals to sample}
+}
+\value{
+data.frame wth \code{Nsamples} rows and one column per parameter, providing sampled parameter values.
 }
 \description{
-sample_CustomParameters
+Sample individual parameter values from provided custom information
 }
 \seealso{
 Other Simulations: 

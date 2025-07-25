@@ -27,36 +27,53 @@ simulate_PKPDseparate(
 )
 }
 \arguments{
-\item{filename}{Default: \code{NULL}}
+\item{Doses}{Numeric vector of doses to simulate}
 
-\item{EC50adj}{Default: 1}
+\item{Ndoses}{Integer vector of same length as \code{Doses} giving the number of doses}
 
-\item{DOSEcovariate}{Default: \code{NULL}}
+\item{PKmodelFolder}{String denoting path to IQRnlme project with PK model}
 
-\item{covariates}{Default: \code{NULL}}
+\item{PDmodelFolder}{String denoting path to IQRnlme project with PD model}
 
-\item{simtime}{Default: 0:800}
+\item{PKPDmodelFile}{IQRmodel object or path to it, containing both PK and PD}
 
-\item{Npop}{Default: 10}
+\item{filename}{Optional string denoting filepath to write figures to. Default: \code{NULL}}
 
-\item{Nind}{Default: 10}
+\item{EC50adj}{Numeric scalar to adjust EC50 value. Default: 1}
 
-\item{FLAGsamplePK}{Default: 1}
+\item{DOSEcovariate}{Named string denoting the name of the dose covariate.
+Default: \code{NULL}}
 
-\item{FLAGreturnObject}{Default: FALSE}
+\item{covariates}{Named list of covariate vectors or sampling functions. Default: \code{NULL}}
 
-\item{LLOQ.PK}{Default: \code{NULL}}
+\item{simtime}{Numeric vector of simulation time in hours.
+Default: MMVbase::create_PKPDsimtime(24 * evalDay)}
 
-\item{LLOQ.PD}{Default: \code{NULL}}
+\item{Npop}{integer, number of virtual populations to simulate. Default: 10}
 
-\item{cureThreshold}{Default: \code{NULL}}
+\item{Nind}{Integer, number of individuals to simulate per population. Default: 10}
 
-\item{PLbaseSample}{Default: \code{NULL}}
+\item{FLAGsamplePK}{Numeric, value for sample flag, see \code{?IQRtools::sample_IQRnlmeProject}. Default: 0}
 
-\item{setting}{Default: \code{NULL}}
+\item{FLAGreturnObject}{Logical, return the simulation data? Default: FALSE}
+
+\item{LLOQ.PK}{Numeric, lower limit of quantification of concentration. Default: \code{NULL}}
+
+\item{LLOQ.PD}{Numeric, lower limit of quantification of parasitaemia. Default: \code{NULL}}
+
+\item{cureThreshold}{Numeric, value of parasitaemia to treat as cure threshold. Default: \code{NULL}}
+
+\item{PLbaseSample}{Function from which to sample baseline parasitaemia. Default: \code{NULL}}
+
+\item{setting}{Optional named list of settings for solver. Default: \code{NULL}}
+}
+\value{
+if \code{FLAGreturnObject} = TRUE, data.frame with simulation output.
 }
 \description{
-simulate_PKPDseparate
+Simulate PK/PD models using separate PK and PD NLME models. In other words,
+loads PK and PD parameters from separate IQRnlme projects, then simulates a provided
+combined PKPD structural model with the provided PK and PD models
 }
 \seealso{
 Other Simulations: 

@@ -29,7 +29,10 @@ backwardElimination(
 
 \item{modelSpec}{IQR modelSpec, see \code{modelSpec_IQRest}}
 
-\item{covariateToTest}{character vector of covariate names to test, e.g. \code{c("WT0", "AGE")}}
+\item{covariateToTest}{A list containing covariates to be tested in the forward
+selection process, can be a named list with parameter = covariate. If the
+element of the list has no name, it is assumed that each element will be
+composed of c("Parameter","Covariate")}
 
 \item{COVcentering}{Named vector defining centering value for covariates i.e. COVcentering = c(WT0=55)}
 

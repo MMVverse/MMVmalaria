@@ -12,6 +12,8 @@ formulaPKpar_MacroToMicro(
 )
 }
 \arguments{
+\item{PKparameters_Macro}{Named vector containing macro PK parameters and their values}
+
 \item{PKmacroName}{Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 Alpha = "Alpha", Beta = "Beta", Gamma = "Gamma", A = "A",
 B = "B", C = "C")}
@@ -19,8 +21,11 @@ B = "B", C = "C")}
 \item{PKmicroName}{Default: c(K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 K2c = "K2c")}
 }
+\value{
+Named vector containing micro PK parameters and their values
+}
 \description{
-formulaPKpar_MacroToMicro
+Converts provided macro PK parameters to micro parameters
 }
 \seealso{
 Other Key Parameters: 

@@ -7,10 +7,19 @@
 generateTrialSim(modelFolder, data, NTRIALS, covariateDose = NULL)
 }
 \arguments{
+\item{modelFolder}{String denoting path to IQRnlmeProject or IQRnlmeProjectMulti; if Multi the first element will be used}
+
+\item{data}{IQRdataGeneral object used to generate dosing info for VPC production}
+
+\item{NTRIALS}{Number of trials to simulate}
+
 \item{covariateDose}{Default: \code{NULL}}
 }
+\value{
+data.frame containing simulated clinical trials
+}
 \description{
-generateTrialSim
+Simulate a number of clinical trials from provided IQRnlmeProject
 }
 \seealso{
 Other Simulations: 

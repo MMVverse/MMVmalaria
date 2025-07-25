@@ -13,6 +13,8 @@ parameters might need to be sampled from additional IQRnlmeProjects. modelSample
 can be a vector with paths to these additional IQRnlmeProjects. It is not allowed that
 in these projects and modelSampleSimulate estimated parameter names overlap}
 
+\item{modelSampleSimulate}{Default: NULL (Seems to be defunct)}
+
 \item{dataVPC}{: Dataset for VPC generation, or called from \code{getData_IQRnlmeProject( )}}
 }
 \description{

@@ -4,21 +4,24 @@
 \alias{getTimeAboveMIC}
 \title{getTimeAboveMIC}
 \usage{
-getTimeAboveMIC(
-  dataSim,
-  MIC = NULL,
-  timeCOL = "TIME",
-  concCOL = "Cc",
-  convConc = 1
-)
+getTimeAboveMIC(dataSim, MIC, timeCOL = "TIME", concCOL = "Cc", convConc = 1)
 }
 \arguments{
-\item{MIC}{Default: \code{NULL}}
+\item{dataSim}{A data frame or data.table containing the simulation data.}
 
-\item{convConc}{Default: 1}
+\item{MIC}{Numeric: Value of MIC.}
+
+\item{timeCOL}{A string specifying the name of the time column in \code{dataSim}. Default is \code{"TIME"}.}
+
+\item{concCOL}{A string specifying the name of the concentration column in \code{dataSim}. Default is \code{"Cc"}.}
+
+\item{convConc}{Numeric: scalar for concentration data. Default: 1}
+}
+\value{
+data.frame containing Time above MIC
 }
 \description{
-getTimeAboveMIC
+Calculates the total time during which the concentration is above the MIC
 }
 \seealso{
 Other Key Parameters: 

@@ -14,7 +14,7 @@
 #' @param ActivityPath Default: `NULL`
 #' @param addArgs_sim_IQRmodel named list (default NULL) with additional arguments to be passed to sim_IQR_model. This
 #' argument is relevant only if `Apparent == TRUE`.
-#' @return
+#' @return Data frame or list of calculated parameters  
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV), Sam Jones (MMV)
 #' @family Key Parameters
@@ -305,18 +305,18 @@ assess_MICMPC90PRR48 <- function(modelFolder,
 
 #' convert_SCIDconcentration
 #'
-#' @description
-#' @param ConcToConv
-#' @param HuRbp
-#' @param HuPPB
-#' @param MouseRbp
-#' @param MousePPB
-#' @param HuH Default: 0.45
-#' @param MouseH Default: 0.45
-#' @param huRBCinSCID Default: 0.6
-#' @param scidH Default: 0.8
-#' @param ConvertTo Default: 'Human'
-#' @return
+#' @description convert_SCIDconcentration to selected matrix
+#' @param ConcToConv Numeric vector containing concentration data to convert
+#' @param HuRbp Numeric: value of human ratio blood:plasma
+#' @param HuPPB Numeric: % value of human plasma protein binding as a proportion
+#' @param MouseRbp Numeric: value of mice ratio blood:plasma
+#' @param MousePPB Numeric: % value of mice plasma protein binding as a proportion
+#' @param HuH Numeric: Value of % human hematocrit as a proportion. Default: 0.45 
+#' @param MouseH Numeric: Value of % mouse hematocrit as a proportion. Default: 0.45
+#' @param huRBCinSCID Numeric: value of % human red blood cells in SCID as proportion. Default: 0.6
+#' @param scidH Numeric: Value of % SCID  hematocrit as a proportion. Default: 0.8
+#' @param ConvertTo Character string defining matrix to convert to. One of 'Human Blood', 'Human Plasma', 'Mouse Blood', 'Mouse Plasma' or 'Free'. Default: Human Blood
+#' @return Numeric vector containing converted concentration data 
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -366,8 +366,8 @@ convert_SCIDconcentration <- function(ConcToConv, HuRbp, HuPPB, MouseRbp, MouseP
   return(ConvertedConc)
 }
 
-
-#' Calculate ratio blood plasma in SCID
+#' formula_SCIDrbp
+#' @description Calculate ratio blood plasma in SCID
 #'
 #' @param HuRbp Human ratio blood plasma
 #' @param HuPPB Human plasma protein binding
@@ -413,15 +413,15 @@ formula_SCIDrbp <- function(HuRbp,
 
 #' estimate_AUC
 #'
-#' @description
-#' @param Time
-#' @param Conc
+#' @description Estimate area under the curve (AUC) of provided time v concentration data
+#' @param Time Numeric vector containing time data 
+#' @param Conc Numeric vector containing concentration data
 #' @param AUCtype Default: 'last'
 #' @param intMethod Default: MMVbase::logLinTrapzMMV
 #' @param LambdaZ Default: function(x, y) {
 #'    estimate_LambdaZ(x, y)$LambdaZ
 #'}
-#' @return
+#' @return Estimated AUC for the provided `AUCtype`
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @importFrom MMVbase logLinTrapzMMV
@@ -539,12 +539,12 @@ estimate_AUC <- function(Time,
 
 #' estimate_LambdaZ
 #'
-#' @description
-#' @param Time
-#' @param Conc
+#' @description Estimates the slope (lambda-z) of provided time v concentration data
+#' @param Time Numeric vector containing time data 
+#' @param Conc Numeric vector containing concentration data 
 #' @param R2.min Default: 0.95
 #' @param atol Default: 1e-12
-#' @return
+#' @return Estimated lambda-z
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -607,14 +607,14 @@ estimate_LambdaZ <- function(Time,
 
 #' formulaPKpar_MacroToMicro
 #'
-#' @description
-#' @param PKparameters_Macro
+#' @description Converts provided macro PK parameters to micro parameters
+#' @param PKparameters_Macro Named vector containing macro PK parameters and their values
 #' @param PKmacroName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    Alpha = "Alpha", Beta = "Beta", Gamma = "Gamma", A = "A",
 #'    B = "B", C = "C")
 #' @param PKmicroName Default: c(K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 #'    K2c = "K2c")
-#' @return
+#' @return Named vector containing micro PK parameters and their values
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -740,13 +740,13 @@ formulaPKpar_MacroToMicro <- function(PKparameters_Macro,
 
 #' formulaPKpar_MacroToPrimary
 #'
-#' @description
-#' @param PKparameters_Macro
+#' @description Converts provided macro PK parameters to primary parameters
+#' @param PKparameters_Macro Named vector containing macro PK parameters and their values
 #' @param PKmacroName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    Alpha = "Alpha", Beta = "Beta", Gamma = "Gamma", A = "A",
 #'    B = "B", C = "C")
 #' @param PKprimaryName Default: c(CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2", Vp2 = "Vp2")
-#' @return
+#' @return Named vector containing primary PK parameters and their values
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -784,14 +784,14 @@ formulaPKpar_MacroToPrimary <- function(PKparameters_Macro,
 
 #' formulaPKpar_MicroToMacro
 #'
-#' @description
-#' @param PKparameters_Micro
+#' @description Converts provided micro PK parameters to macro parameters
+#' @param PKparameters_Micro Named vector containing micro PK parameters and their values
 #' @param PKmicroName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 #'    K2c = "K2c")
 #' @param PKmacroName Default: c(Alpha = "Alpha", Beta = "Beta", Gamma = "Gamma", A = "A", B = "B",
 #'    C = "C")
-#' @return
+#' @return Named vector containing macro PK parameters and their values
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -906,13 +906,13 @@ formulaPKpar_MicroToMacro <- function(PKparameters_Micro,
 
 #' formulaPKpar_MicroToPrimary
 #'
-#' @description
-#' @param PKparameters_Micro
+#' @description Converts provided micro PK parameters to primary parameters
+#' @param PKparameters_Micro Named vector containing micro PK parameters and their values
 #' @param PKmicroName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 #'    K2c = "K2c")
 #' @param PKprimaryName Default: c(CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2", Vp2 = "Vp2")
-#' @return
+#' @return Named vector containing primary PK parameters and their values
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -1013,14 +1013,14 @@ formulaPKpar_MicroToPrimary <- function(PKparameters_Micro,
 
 #' formulaPKpar_PrimaryToMacro
 #'
-#' @description
-#' @param PKparameters_Primary
+#' @description Converts provided primary PK parameters to macro parameters
+#' @param PKparameters_Primary Named vector containing primary PK parameters and their values
 #' @param PKprimaryName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2",
 #'    Vp2 = "Vp2")
 #' @param PKmacroName Default: c(Alpha = "Alpha", Beta = "Beta", Gamma = "Gamma", A = "A", B = "B",
 #'    C = "C")
-#' @return
+#' @return Named vector containing macro PK parameters and their values
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -1058,14 +1058,14 @@ formulaPKpar_PrimaryToMacro <- function(PKparameters_Primary,
 
 #' formulaPKpar_PrimaryToMicro
 #'
-#' @description
-#' @param PKparameters_Primary
+#' @description Converts provided primary PK parameters to micro parameters
+#' @param PKparameters_Primary Named vector containing primary PK parameters and their values
 #' @param PKprimaryName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2",
 #'    Vp2 = "Vp2")
 #' @param PKmicroName Default: c(K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 #'    K2c = "K2c")
-#' @return
+#' @return Named vector containing micro PK parameters and their values
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -1166,14 +1166,14 @@ formulaPKpar_PrimaryToMicro <- function(PKparameters_Primary,
 
 #' formulaPKpar_PrimaryToSecondary
 #'
-#' @description
-#' @param PKparameters_Primary
+#' @description Converts provided primary PK parameters to secondary parameters
+#' @param PKparameters_Primary Named vector containing primary PK parameters and their values
 #' @param PKPrimaryName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2",
 #'    Vp2 = "Vp2")
 #' @param PKsecondaryName Default: c(Vss = "Vss", Thalf0 = "Thalf0", Thalf1 = "Thalf1", Thalf2 = "Thalf2",
 #'    Thalf3 = "Thalf3", MRT = "MRT")
-#' @return
+#' @return Named vector containing secondary PK parameters and their values
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -1265,23 +1265,21 @@ formulaPKpar_PrimaryToSecondary <- function(PKparameters_Primary,
 }
 #' get_LagTime
 #'
-#' @description
-#' @param dataSim
-#' @param eventData
-#' @param EMAX Default: `NULL`
-#' @param GR Default: `NULL`
-#' @param effCOL Default: 'Effect'
-#' @param Parasitemia Default: \code{"PL")
-#' @param Plog Default: `TRUE`
-#' @param lagTimeTYPE Default: \code{"MIC")
-#' @return
+#' @description Estimates lag-time of drug effect from simulated time v parasitaemia data 
+#' @param dataSim Simulation data generated by `sim_IQRmodel()` or equivalent
+#' @param EMAX Numeric, value of EMAX. 
+#' @param GR Numeric, value of growth rate. 
+#' @param effCOL Character string denoting name of eff column in `dataSim`. Default: 'Eff'
+#' @param Parasitemia Character string denoting name of parasitaemia column in `dataSim`.Default: "PL"
+#' @param Plog Logical, is parasitaemia in `dataSim` in log-scale? Default: `TRUE`
+#' @param lagTimeTYPE Character string: Which threshold to assess lag time against? Must be One of `Baseline`, `MIC`, `MPC90` or `1Log`. Default: "MIC" 
+#' @return Estimate of lag time. 
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
 get_LagTime <- function(dataSim,
-                        # eventData,
-                        GR      = NULL,
-                        EMAX    = NULL,
+                        GR,
+                        EMAX,
                         effCOL      = "Eff",
                         Parasitemia = "PL",
                         Plog      = TRUE,
@@ -1361,8 +1359,8 @@ get_LagTime <- function(dataSim,
 
 #' get_NumberOfPKcpt
 #'
-#' @description
-#' @param PKparameters
+#' @description From provided PK parameters, determine the number of compartments of a model. 
+#' @param PKparameters Named vector of PK parameters and their values 
 #' @param PKparaType Default: 'Primary'
 #' @param PKprimaryName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    CL = "CL", Vc = "Vc", Q1 = "Q1", Vp1 = "Vp1", Q2 = "Q2",
@@ -1373,7 +1371,7 @@ get_LagTime <- function(dataSim,
 #' @param PKmicroName Default: c(Fabs0 = "Fabs0", Tk0 = "Tk0", Fabs1 = "Fabs1", ka = "ka", Tlag1 = "Tlag1",
 #'    K = "K", Vc = "Vc", Kc1 = "Kc1", K1c = "K1c", Kc2 = "Kc2",
 #'    K2c = "K2c")
-#' @return
+#' @return Number of compartments of the model 
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -1556,12 +1554,12 @@ get_NumberOfPKcpt <- function(PKparameters,
 
 #' get_PRRtot
 #'
-#' @description
-#' @param dataSim
-#' @param paraCOL Default: \code{"PL")
-#' @param Plog Default: `TRUE`
+#' @description Estimate total parasite reduction ratio from provided simulation data
+#' @param dataSim Simulation data generated by `sim_IQRmodel()` or equivalent, containing at least a column named TIME and a column defined by `paraCOL`
+#' @param paraCOL Character string denoting name of parasitaemia column in `dataSim`.Default: "PL"
+#' @param Plog Logical, is parasitaemia in `dataSim` in log-scale? Default: `TRUE`
 #' @param MethodMin Default: 'CubicSpline'
-#' @return
+#' @return Estimated log10 total PRR 
 #' @export
 #' @importFrom MMVbase find_MinMMV
 #' @author Mohammed H. Cherkaoui (MMV)
@@ -1594,14 +1592,14 @@ get_PRRtot <- function(dataSim,
 
 #' getApparentKeys
 #'
-#' @description
-#' @param dataSim
-#' @param concCOL Default: 'Cc'
-#' @param effCOL Default: 'Eff'
-#' @param paraCOL Default: \code{"PL")
-#' @param convConc Default: 1
-#' @param Plog Default: `TRUE`
-#' @return
+#' @description Estimate apparent MIC, MPC90, PRR24, PRR48 and PPR72 from provided simulation data
+#' @param dataSim Simulation data generated by `sim_IQRmodel()` or equivalent
+#' @param concCOL Character string denoting name of concentration column in `dataSim. `Default: 'Cc'
+#' @param effCOL Character string denoting name of eff column in `dataSim`Default: 'Eff'
+#' @param paraCOL Character string denoting name of parasitaemia column in `dataSim` Default: "PL" 
+#' @param convConc Numeric: scalar for concentration data. Default: 1
+#' @param Plog Logical, is parasitaemia in `dataSim` in log-scale? Default: `TRUE`
+#' @return Apparent MIC, MPC90, PRR24, PRR48 and PPR72 
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -1685,13 +1683,13 @@ getApparentKeys <- function(dataSim,
 
 #' getCure
 #'
-#' @description
-#' @param dataSim
-#' @param paraCOL Default: 'Parasitemia'
-#' @param LLOQ Default: 10
-#' @param CureThreshold Default: 1/5000
-#' @param Day Default: 28
-#' @return
+#' @description Evaluate simulation data to see if cure has occured. 
+#' @param dataSim Simulation data generated by `sim_IQRmodel()` or equivalent
+#' @param paraCOL Character string denoting name of parasitaemia column in `dataSim` Default: "PL" 
+#' @param LLOQ Numeric: LLOQ of parasitaemia measurements. Default: 10
+#' @param CureThreshold Numeric: Cure threshold Default: 1/5000
+#' @param Day Numeric: Which day to determine if cure has occured by. Default: 28
+#' @return Vector of cure events or time at which <LLOQ occurred or maximum time, if cure does not occur. 
 #' @export
 #' @author Aline Fuchs (MMV)
 #' @family Key Parameters
@@ -1716,10 +1714,10 @@ getCure <- function(dataSim,
 }
 #' getKeysEMAX
 #'
-#' @description
+#' @description Estimate MIC, MPC90, PRR24, PRR48 and PRR72 from EMAX model 
 #' @param x data.frame containing the columns `GR`, `EMAX`. `EC50` and `hill`
 #' @param convConc Default: 1
-#' @return
+#' @return Static MIC, MPC90, PRR24, PRR48 and PPR72 
 #' @export
 #' @author Aline Fuchs (MMV)
 #' @importFrom MMVbase formula_EMAXmodelParsToMIC formula_EC50toMPC90 formula_EMAXtoPRR
@@ -1737,19 +1735,19 @@ getKeysEMAX <- function(x, convConc = 1) {
 
 #' getTimeAboveMIC
 #'
-#' @description
-#' @param dataSim
-#' @param MIC Default: `NULL`
-#' @param timeCOL Default: \code{"TIME")
-#' @param concCOL Default: \code{"Cc")
-#' @param convConc Default: 1
-#' @return
+#' @description Calculates the total time during which the concentration is above the MIC 
+#' @param dataSim A data frame or data.table containing the simulation data.
+#' @param MIC Numeric: Value of MIC. 
+#' @param timeCOL A string specifying the name of the time column in `dataSim`. Default is `"TIME"`.
+#' @param concCOL A string specifying the name of the concentration column in `dataSim`. Default is `"Cc"`.
+#' @param convConc Numeric: scalar for concentration data. Default: 1
+#' @return data.frame containing Time above MIC
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @importFrom MMVbase rectintMMV
 #' @family Key Parameters
 getTimeAboveMIC <- function(dataSim,
-                            MIC      = NULL,
+                            MIC, 
                             timeCOL  = "TIME",
                             concCOL  = "Cc",
                             convConc = 1) {
@@ -1820,14 +1818,14 @@ getTimeAboveMIC <- function(dataSim,
 }
 #' getTimeAboveMICsim
 #'
-#' @description
-#' @param dataSim
-#' @param timeCOL Default: \code{"TIME")
-#' @param effCOL Default: 'Effect'
-#' @param GR
-#' @param EMAX
-#' @param returnLag Default: `FALSE`
-#' @return
+#' @description Calculates the total time during which the concentration is above the MIC from simulation data
+#' @param dataSim A data frame or data.table containing the simulation data.
+#' @param timeCOL A string specifying the name of the time column in `dataSim`. Default is `"TIME"`.
+#' @param effCOL A string specifying the name of the eff column in `dataSim`. Default is `"Eff"`.
+#' @param GR Numeric, value of growth rate. 
+#' @param EMAX Numeric, value of EMAX. 
+#' @param returnLag Logical: Return Lag time? Default: `FALSE`
+#' @return data.frame containing time above MIC, and lag time if flagged
 #' @export
 #' @importFrom MMVbase trapzMMV
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
@@ -1922,19 +1920,19 @@ getTimeAboveMICsim <- function(dataSim,
 
 #' getTimeAboveMPC90
 #'
-#' @description
-#' @param dataSim
-#' @param MPC90 Default: `NULL`
-#' @param timeCOL Default: \code{"TIME")
-#' @param concCOL Default: \code{"Cc")
-#' @param convConc Default: 1
-#' @return
+#' @description Calculates the total time during which the concentration is above the MPC90
+#' @param dataSim A data frame or data.table containing the simulation data.
+#' @param MPC90 Numeric: Value of MPC90
+#' @param timeCOL A string specifying the name of the time column in `dataSim`. Default is `"TIME"`.
+#' @param concCOL A string specifying the name of the concentration column in `dataSim`. Default is `"Cc"`.
+#' @param convConc Numeric: scalar for concentration data. Default: 1
+#' @return data.frame containing time above MPC90
 #' @export
 #' @importFrom MMVbase rectintMMV
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
 getTimeAboveMPC90 <- function(dataSim,
-                              MPC90    = NULL,
+                              MPC90,
                               timeCOL  = "TIME",
                               concCOL  = "Cc",
                               convConc = 1) {
@@ -2006,12 +2004,12 @@ getTimeAboveMPC90 <- function(dataSim,
 
 #' getTimeAboveMPC90sim
 #'
-#' @description
-#' @param dataSim
-#' @param timeCOL Default: \code{"TIME")
-#' @param effCOL Default: 'Effect'
-#' @param returnLag Default: `FALSE`
-#' @return
+#' @description Calculates the total time during which the concentration is above the MPC90 from simulation data
+#' @param dataSim A data frame or data.table containing the simulation data.
+#' @param timeCOL A string specifying the name of the time column in `dataSim`. Default is `"TIME"`.
+#' @param effCOL A string specifying the name of the eff column in `dataSim`. Default is `"Eff"`.
+#' @param returnLag Logical: Return Lag time? Default: `FALSE`
+#' @return data.frame containing time above MIC, and lag time if flagged
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -2187,14 +2185,14 @@ getTimeKRaboveGR<- function(dataSim,
 
 #' getTimeRecrudescence
 #'
-#' @description
-#' @param x
-#' @param GR
-#' @param LLOQ
-#' @param valCol Default: 'DV'
-#' @param log Default: `TRUE`
-#' @param Time2RecDef Default: 'MMV'
-#' @return
+#' @description Estimate time of recrudescence 
+#' @param x data.frame containing `"TIME"` and `valCol` where `valCol` is a measurement of parasitaemia
+#' @param GR Numeric, value of growth rate. 
+#' @param LLOQ Numeric: LLOQ of parasitaemia measurements. 
+#' @param valCol A string specifying the name of the column containing parasitaemia measurements. Default is `"TIME"`. Default: 'DV'
+#' @param log Logical, is parasitaemia in log-scale? Default: `TRUE`
+#' @param Time2RecDef String cenoting methodology with which to determine recrudescence: One of `MMV` or `TAD` MMV = once min Para or LOQ is achieved. TAD = return to Para BL value: Default: 'MMV'
+#' @return data.frame containing time of recrudesence 
 #' @export
 #' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -2328,11 +2326,11 @@ getTimeRecrudescence <- function(x,
 
 #' plot_keyPDparametersMMV
 #'
-#' @description
-#' @param object
-#' @param outputFolder
+#' @description Plot key PD parameters from an IQRnlmeProjectMulti
+#' @param object String denoting path to an IQRnlmeProjectMulti object
+#' @param outputFolder String denoting folder in which to write plots 
 #' @param ActivityPath Default: `NULL`
-#' @return
+#' 
 #' @export
 #' @author Mohammed H. Cherkaoui (MMV)
 #' @family Key Parameters
@@ -2399,7 +2397,7 @@ plot_keyPDparametersMMV <- function(object,
 
 #' Evaluate APR
 #'
-#' Evaluate APR at Day `aprTime` given an individual time-course of parasitemia measurements,
+#' @description Evaluate APR at Day `aprTime` given an individual time-course of parasitemia measurements,
 #' baseline parasitemia, LLOQ parasitemia and weight at TIME 0. Two APRs are return, an optimistic one (CSoff - clinical symptoms off),
 #' which assumes that no patient has fever, and a pessimistic (CSon - clinical symptoms on) one, which assumes that all patients have fever.
 #' Note that times up to 7 days are hard-coded in and the function will crash (currently with no error message)
@@ -2928,8 +2926,8 @@ evaluate_APR28 <- function(dataSim,
   # Output:
   res
 }
-
-#' Calcualte confusion matrix and derived statistics from a predicted and reference binary data
+#' ConfusionMatrix
+#' @description Calculate confusion matrix and derived statistics from a predicted and reference binary data
 #' @param data a data.frame with at least two columns of logical values named as the arguments colPred and colRef.
 #' @param colPred,colRef character strings denoting names of logical (TRUE/FALSE) columns in data.
 #' @param positiveClass character string denoting the human readable meaning of TRUE values in data[[colPred]] and data[[colRef]].
@@ -2961,9 +2959,8 @@ ConfusionMatrix <- function(data, colPred, colRef, positiveClass, negativeClass 
   res
 }
 
-
-#' Summarize a list of confusion matrices into a format suitable for the IQRoutputTable function
-#'
+#' SummarizeConfusionMatrices
+#' @description Summarize a list of confusion matrices into a format suitable for the IQRoutputTable function.
 #' If the list contains one confusion matrix, the matrix TP, FN, FP, TN values are returned in the form of a data.frame.
 #' If the list contains more than one confusion matrix a summary matrix is returned containing the median, Q05 and Q95 quantiles of
 #' TP, FN, FP, TN.

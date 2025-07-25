@@ -13,16 +13,24 @@ table_EstimatesComboNLME(
 )
 }
 \arguments{
-\item{filename}{Default: \code{NULL}}
+\item{x}{An IQRnlmeProjectMulti object containing models to compare}
 
-\item{FLAGout}{Default: \code{FALSE}}
+\item{filename}{Character string containing path to filename for writing results.
+Default: \code{NULL}}
 
-\item{title}{Default: \code{NULL}}
+\item{FLAGout}{Logical: Return generated table? Default: \code{FALSE}}
 
-\item{footer}{Default: \code{NULL}}
+\item{title}{Character string defining name of table. Default: \code{NULL}}
+
+\item{footer}{Character string defining footer for table. Default: \code{NULL}}
+}
+\value{
+Results table if \code{FLAGout} = TRUE, otherwise table is saved to path provided
+in \code{filename}
 }
 \description{
-table_EstimatesComboNLME
+Convert interaction parameters from an IQRnlmeProjectMulti containing
+PD interaction models into interpretable fold-change values.
 }
 \seealso{
 Other Model Assessment: 

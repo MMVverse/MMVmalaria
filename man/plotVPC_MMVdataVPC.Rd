@@ -32,43 +32,45 @@ plotVPC_MMVdataVPC(
 )
 }
 \arguments{
-\item{stratifyBy}{Default: \code{NULL}}
+\item{dataVPC}{Named list with simulated (sim) and potentially typical predictions for observed (obs) data}
 
-\item{filename}{Default: \code{NULL}}
+\item{stratifyBy}{Column name used to stratify VPC plots. Default: \code{NULL}}
 
-\item{FLAGlogY}{Default: \code{FALSE}}
+\item{filename}{Filename for export of the VPC to a PDF. If NULL object including plotting data is returned. Default: \code{NULL}}
 
-\item{FLAGuseTAD}{Default: \code{FALSE}}
+\item{FLAGlogY}{logical. If TRUE the Y axis will be shown in logscale. Default: \code{FALSE}}
 
-\item{FLAGdataPlotOnly}{Default: \code{FALSE}}
+\item{FLAGuseTAD}{logical. If TRUE then observed time after previous dose (TAD) is used for x-axis. If FALSE then actual TIME is used. Default: \code{FALSE}}
 
-\item{FLAGnoDataPoints}{Default: \code{FALSE}}
+\item{FLAGdataPlotOnly}{logical. If TRUE then no simulation is done and only the data and lines for the percentiles are plotted. This allows to find suitable settings for the binning parameters BIN.groupsize and BIN.lambda. Default: \code{FALSE}}
 
-\item{FLAGpc}{Default: \code{FALSE}}
+\item{FLAGnoDataPoints}{If TRUE then data points will be ommitted but percentiles for data will be shown. Default: \code{FALSE}}
 
-\item{FLAGplotBins}{Default: \code{FALSE}}
+\item{FLAGpc}{Flag whether to apply prediction correction. Can only be performed if typical prediction are present in dataVPC. Default: \code{FALSE}}
 
-\item{FLAGplotN}{Default: \code{FALSE}}
+\item{FLAGplotBins}{Flag whether to plot the bin boundaries as vertical lines. Default: \code{FALSE}}
 
-\item{title}{Default: \code{NULL}}
+\item{FLAGplotN}{Flag whether to display number of subjects in panel. Default: \code{FALSE}}
 
-\item{subtitle}{Default: \code{NULL}}
+\item{title}{Character string to be plotted as plot title (on each page). Default: \code{NULL}}
 
-\item{BIN.column}{Default: \code{NULL}}
+\item{subtitle}{Character string to be plotted as plot subtitle (on each page). Default: \code{NULL}}
 
-\item{BIN.breaks}{Default: \code{NULL}}
+\item{BIN.column}{Column name of integer column assigning the observations to time bins. Defaults to NULL such that bins are automatically generated or the user-provided BIN.breaks are used. Default: \code{NULL}}
 
-\item{BIN.groupsize}{Default: \code{NULL}}
+\item{BIN.breaks}{Numerical vector with bin borders that are used for the observation times. Defaults to NULL such that bins are automatically generated. This input is ignored if BIN.column is provided. Default: \code{NULL}}
 
-\item{BIN.lambda}{Default: \code{NULL}}
+\item{BIN.groupsize}{Smallest expected group size for the binning. By default the round(0.5 x number of subjects) in the dataset is used. Default: \code{NULL}}
 
-\item{BIN.resolution}{Default: \code{NULL}}
+\item{BIN.lambda}{Penalization of intra-group variance, set to 1 to have more groups and set to 0 to get less but larger groups. Default: \code{NULL}}
 
-\item{CIlevel}{Default: \code{NULL}}
+\item{BIN.resolution}{Gaps between groups of data points greater than resolution lead to separation of groupsDefault: \code{NULL}}
 
-\item{percentiles}{Default: \code{NULL}}
+\item{CIlevel}{Confidence interval level for percentiles (in percent). Default: \code{NULL}}
 
-\item{alphaDataPoints}{Default: \code{NULL}}
+\item{percentiles}{numeric vector with 1, 2 or 3 entries between 0 and 100 to be used as percentiles for data and simulation plots. 1 entry: only this percentile is plotted, e.g. for 50 the median is visualized. 2 entries: low, and high percentiles were provided and median should also be plotted. 3 entries: low, medium and high percentiles were provided in this order. Default: \code{NULL}}
+
+\item{alphaDataPoints}{Alpha transparency level for data points. Default: \code{NULL}}
 
 \item{alphaPredInter}{Default: \code{NULL}}
 
@@ -77,6 +79,9 @@ plotVPC_MMVdataVPC(
 \item{Caption}{Default: \code{NULL}}
 
 \item{setting}{Default: \code{NULL}}
+}
+\value{
+List of generated VPC figures
 }
 \description{
 Upgrades the corresponding function in IQRtools. Check its documentation for a description of the arguments.

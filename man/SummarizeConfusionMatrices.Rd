@@ -2,7 +2,7 @@
 % Please edit documentation in R/09-KeyParameters.R
 \name{SummarizeConfusionMatrices}
 \alias{SummarizeConfusionMatrices}
-\title{Summarize a list of confusion matrices into a format suitable for the IQRoutputTable function}
+\title{SummarizeConfusionMatrices}
 \usage{
 SummarizeConfusionMatrices(cmList)
 }
@@ -13,6 +13,7 @@ SummarizeConfusionMatrices(cmList)
 a data.frame of 3 columns named according to colNames.
 }
 \description{
+Summarize a list of confusion matrices into a format suitable for the IQRoutputTable function.
 If the list contains one confusion matrix, the matrix TP, FN, FP, TN values are returned in the form of a data.frame.
 If the list contains more than one confusion matrix a summary matrix is returned containing the median, Q05 and Q95 quantiles of
 TP, FN, FP, TN.

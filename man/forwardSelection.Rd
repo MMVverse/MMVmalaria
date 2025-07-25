@@ -21,9 +21,23 @@ forwardSelection(
 )
 }
 \arguments{
-\item{COVcentering}{Default: \code{NULL}}
+\item{model}{An IQRmodel object containing the default model which covariates
+will be added to in the forward selection process}
 
-\item{projectPath}{Default: 'PKmodels'}
+\item{dosing}{IQRdosing object to be used for estimation, see\code{ ?IQRnlmeEst} and \code{?IQRdosing}}
+
+\item{data}{data frame or character string defining file path to data, see \code{?IQRnlmeEst}}
+
+\item{modelSpec}{A list containing the IQR model spec, see \code{?IQRnlmeEst}}
+
+\item{covariateToTest}{A list containing covariates to be tested in the forward
+selection process, can be a named list with parameter = covariate. If the
+element of the list has no name, it is assumed that each element will be
+composed of c("Parameter","Covariate")}
+
+\item{COVcentering}{Named vector defining centering value for covariates i.e. COVcentering = c(WT0=55)}
+
+\item{projectPath}{Path to the project folder, default: "PKmodels", covariate models will be written to disk here}
 
 \item{alpha}{Default: 0.01}
 
@@ -37,8 +51,11 @@ forwardSelection(
 
 \item{setting}{Default: \code{NULL}}
 }
+\value{
+list of paths to IQRnlmeProject folders selected by backwards elimination process
+}
 \description{
-forwardSelection
+Perform forward selection of covariates in a model.
 }
 \seealso{
 Other Model Assessment: 
