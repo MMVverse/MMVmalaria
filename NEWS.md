@@ -1,6 +1,6 @@
-# MMVmalaria 1.3.0
+# MMVmalaria 1.4.0
 
-MMVmalaria 1.3.0 updates to depend on IQRtools 2025.05
+MMVmalaria 1.4.0 updates to depend on IQRtools 2025.05
 
 # Documentation
 * Suggestion to use CRAN snapshot https://packagemanager.posit.co/cran/2025-04-22 added to README
