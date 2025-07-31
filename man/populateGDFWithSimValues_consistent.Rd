@@ -36,11 +36,8 @@ library(ggplot2)
 library(IQRtools)
 
 # Step 1: Get model
-fileURL <- "http://192.168.1.12:7804/IQauxfn/inst/02-ExampleModels/ModelLibraryPK/model_2cpt_linsat_iv.txt"
-fl <- file.path(tempdir(), basename(fileURL))
-download.file(fileURL, fl)
-model <- IQRmodel(fl)
 
+model <-IQRtools::IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_2cpt_linsat_iv.txt"))
 # Step 2: Create empty dataGEN
 design <- list(
   time = list(
@@ -52,10 +49,10 @@ design <- list(
     )
   ),
   dosing = list(
-    group1 = IQRdosing(
+    group1 = IQRtools::IQRdosing(
       TIME = 0, ADM = 1, AMT = 40, TINF = 0
     ),
-    group2 = IQRdosing(
+    group2 = IQRtools::IQRdosing(
       TIME = 0, ADM = 1, AMT = 40, TINF = 0
     )),
   groupsize = list(
@@ -68,17 +65,17 @@ dataGEN <- create_GDF_fromDesignSpec(design)
 gpf <- IQRtools::generate_GPFfromIQRmodel(model)
 estimates <- gpf$estimates
 estimates[VALUE > 0,`:=`(IIV = 0.1)] # Update IIV Value
-gpf <- GPF(estimates = estimates)
+gpf <- IQRtools::GPF(estimates = estimates)
 indPars <- sample_GPF(gpf, Nsamples = length(unique(dataGEN$ID)), FLAGid = TRUE)
 indPars <- indPars$indParamValues
 dataGEN <- merge(dataGEN, indPars, by = "ID")
 dataGEN <- IQRdataGENERAL(dataGEN)
 
 # Step 3: Populate dataGEN
-dataGENsim <- populateGDFWithSimValues(dataGEN, model, regression = setdiff(names(indPars), "ID"), abs0inputs = NULL, abs0Tk0param = NULL)
+dataGENsim <- populateGDFWithSimValues_consistent(dataGEN, model, regression = setdiff(names(indPars), "ID"), abs0inputs = NULL, abs0Tk0param = NULL)
 
 # Visualize
-IQRggplot(dataGENsim, aes(TIME, DV, group = USUBJID)) +
+IQRtools::IQRggplot(dataGENsim, aes(TIME, DV, group = USUBJID)) +
   facet_wrap(~TRTNAME, scales = "free") +
   geom_line() +
   labs(title = "Simulated data (no residual error)")
@@ -88,10 +85,7 @@ Other IQRdataGENERAL:
 \code{\link{create_GDF_fromDesignSpec}()}
 
 Other Simulation: 
-\code{\link{createSimIQRmodelSpec}()},
-\code{\link{create_GDF_fromDesignSpec}()},
-\code{\link{getDefaultEventTable}()},
-\code{\link{sim_IQRmodelConsistent}()}
+\code{\link{create_GDF_fromDesignSpec}()}
 }
 \author{
 Daniel Lill (daniel.lill@intiquan.com)

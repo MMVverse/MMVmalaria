@@ -28,10 +28,10 @@ design <- list(
     )
   ),
   dosing = list(
-    group1 = IQRdosing(
+    group1 = IQRtools::IQRdosing(
       TIME = 0, ADM = 1, AMT = 40, TINF = 0
     ),
-    group2 = IQRdosing(
+    group2 = IQRtools::IQRdosing(
       TIME = 0, ADM = 1, AMT = 40, TINF = 0
     )),
   groupsize = list(
@@ -45,10 +45,7 @@ Other IQRdataGENERAL:
 \code{\link{populateGDFWithSimValues_consistent}()}
 
 Other Simulation: 
-\code{\link{createSimIQRmodelSpec}()},
-\code{\link{getDefaultEventTable}()},
-\code{\link{populateGDFWithSimValues_consistent}()},
-\code{\link{sim_IQRmodelConsistent}()}
+\code{\link{populateGDFWithSimValues_consistent}()}
 }
 \author{
 Daniel Lill (daniel.lill@intiquan.com)

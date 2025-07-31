@@ -20,6 +20,8 @@ getApparentKeys(
 
 \item{effCOL}{Character string denoting name of eff column in \code{dataSim}Default: 'Eff'}
 
+\item{paraCOL}{Character string denoting name of parasitaemia column in \code{dataSim} Default: "PL"}
+
 \item{convConc}{Numeric: scalar for concentration data. Default: 1}
 
 \item{Plog}{Logical, is parasitaemia in \code{dataSim} in log-scale? Default: \code{TRUE}}

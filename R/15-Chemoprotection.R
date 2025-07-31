@@ -40,7 +40,7 @@
 #'                                                                              hBlood    = list(value = 3, notes = "Hill coefficient in blood")),
 #'                                                            extraStates = NULL),
 #'
-#'                                       PKmodel = IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
+#'                                       PKmodel = IQRtools::IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
 #'                                       Output = list(OUTPUT1 = "PBlood"),
 #'                                       outputFile)
 #'
@@ -117,7 +117,7 @@ generate_ChemoModel_UpwindFirstOrder <- function(nCpt,
                                                                                         hBlood    = list(value = 3, notes = "Hill coefficient in blood")),
                                                                       extraStates = NULL),
 
-                                                 PKmodel = IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
+                                                 PKmodel = IQRtools::IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
 
                                                  Output = list(OUTPUT1 = "PBlood"),
                                                  outputFile){
@@ -127,7 +127,7 @@ generate_ChemoModel_UpwindFirstOrder <- function(nCpt,
   #---------------------------------------------------#
 
   if(is.character(PKmodel)){
-    PKmodel <- IQRmodel(PKmodel)
+    PKmodel <- IQRtools::IQRmodel(PKmodel)
   }
 
   # Initialize INPUT count:
@@ -528,7 +528,7 @@ generate_ChemoModel_UpwindFirstOrder <- function(nCpt,
 #'                                                                         hBlood    = list(value = 3, notes = "Hill coefficient in blood")),
 #'                                                       extraStates = NULL),
 #'
-#'                                  PKmodel = IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
+#'                                  PKmodel = IQRtools::IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
 #'                                  Output = list(OUTPUT1 = "PBlood"),
 #'                                  outputFile)
 #'
@@ -605,7 +605,7 @@ generate_ChemoModel_FluxLimiter <- function(nCpt,
                                                                                    hBlood    = list(value = 3, notes = "Hill coefficient in blood")),
                                                                  extraStates = NULL),
 
-                                            PKmodel = IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
+                                            PKmodel = IQRtools::IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
 
                                             Output = list(OUTPUT1 = "PBlood"),
                                             outputFile){
@@ -615,7 +615,7 @@ generate_ChemoModel_FluxLimiter <- function(nCpt,
   #---------------------------------------------------#
 
   if(is.character(PKmodel)){
-    PKmodel <- IQRmodel(PKmodel)
+    PKmodel <- IQRtools::IQRmodel(PKmodel)
   }
 
   # Initialize INPUT count:

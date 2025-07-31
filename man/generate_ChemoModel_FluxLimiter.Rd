@@ -25,7 +25,7 @@ generate_ChemoModel_FluxLimiter(
     EC50Blood = list(value = 1, notes =
     "Concentration achieving 50percent of maximum effect [ug/mL] in blood"), hBlood =
     list(value = 3, notes = "Hill coefficient in blood")), extraStates = NULL),
-  PKmodel = IQRmodel(file.path(get_MMVmalariaPath(subdir = "inst"),
+  PKmodel = IQRtools::IQRmodel(file.path(get_MMVmalariaPath(subdir = "inst"),
     "modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
   Output = list(OUTPUT1 = "PBlood"),
   outputFile
@@ -84,7 +84,7 @@ Generates a chemoprevention model script using a Flux Limiter scheme to characte
                                                                         hBlood    = list(value = 3, notes = "Hill coefficient in blood")),
                                                       extraStates = NULL),
 
-                                 PKmodel = IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
+                                 PKmodel = IQRtools::IQRmodel(file.path(get_MMVmalariaPath(subdir="inst"),"modelLibrary/PKmodels/model_3cpt_linear_abs1.txt")),
                                  Output = list(OUTPUT1 = "PBlood"),
                                  outputFile)
 
