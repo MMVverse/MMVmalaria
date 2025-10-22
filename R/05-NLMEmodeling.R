@@ -228,7 +228,7 @@ generate_NLMEalgorithmSettings <- function(# General setting:
 #' @export
 #' @author Aline Fuchs (MMV), Anne Kuemmel (IntiQuan), Daniel Kaschek (IntiQuan), Mohammed H. Cherkaoui (MMV)
 #' @family NLME Modeling
-testPKmodelsIQR_testing <- function(testSetup, data, parOptions = list(),
+testPKmodelsIQR <- function(testSetup, data, parOptions = list(),
                                     projectPath = "PKmodels", FLAGrun = TRUE,
                                     tool = "MONOLIX", toolVersion = NULL,
                                     ncores = 1, Nparallel = 1,
