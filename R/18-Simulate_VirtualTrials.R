@@ -14,7 +14,7 @@
 #' @param Doses Numeric vector of the doses to tes,t or a dosing table containing columns "DoseID", "TIME", "ADM",
 #' "AMT", "TINF", such that multiple dosing regimen correspond to different DoseID values. Regimens with time-varying dose
 #' are supported unless, the dose is a covariate of the model. Note that the TINF column is neglected and overriden by
-#' 1e-4. If there is a need to specify infusion time for a given INPUT, this can be done by specifying the Tk0 argument.
+#' max(minTINF, 1e-4). If there is a need to specify infusion time for a given INPUT, this can be done by specifying the Tk0 argument.
 #' @param T_FirstDose Numeric defining time of first dose. Might be diferent than initial time of simulation (Default: 0).
 #' @param nbrDoses Numeric Vector. If length is 1, all doses in 'Doses' will have the same number of doses, otherwise should be of length 'Doses'.
 #' @param timeInterval Numeric defining the interval between doses (Note: Sssumed to be the same for all doses)
@@ -57,6 +57,8 @@
 #' Default `c("INPUT1"="Tk0")`. INPUTs in this argument are assumed to have 0-order absorption, i.e. Tk0 is
 #' the time for the dose to be fully absorbed at a constant rate. This is suitable to simulate infusion at constant rate.
 #' The Tk0 parameters should be either present in the GPF file or available as regressors in the regressorExtra argument.
+#' @param minTINF Minimum value for TINF when Tk0 is used. Default: 1e-4. Note that TINF will be set to max(minTINF, 1e-4) if Tk0 is not used and
+#' to max(minTINF, Tk0) if Tk0 is used.
 #' @param Fpediatric a character string containing the name of a covariate in `IndCovSample` or `ExpCovSample` indicating pediatric dose adjustment
 #' @param Nparallel Number of parallel processes to use for the simulations. Default: 1.
 #' @param simMode To chose which mode to use for simulations between "Clinical" (New set of individuals sampled for each scenario - Default) and
@@ -104,6 +106,7 @@ simulate_VirtualTrials <- function(
     setting                                       = list(.paropts = list(.inorder = TRUE,
                                                                          .packages = c ("IQRtools","MMVmalaria"))),
     Tk0                                           = c("INPUT1"="Tk0"),
+    minTINF                                       = 1e-4,
     Fpediatric                                    = NULL,
     Nparallel                                     = 1,
     simMode                                       = c("Clinical","Compare")[1],
@@ -242,7 +245,7 @@ simulate_VirtualTrials <- function(
       # Check that TINF column is not specified to anything different than 1e-4, since such values are neglected. Tk0 argument
       # should be used instead.
       if(length(unique(Doses$TINF)) != 1 || unique(Doses$TINF) != 1e-4) {
-        warning("The TINF column in the Doses argument will be overriden by 1e-4. Consider specifying the Tk0 argument if you need to simulate infusion or 0-order absorption time for some of the INPUTs.")
+        warning("The TINF column in the Doses argument will be overriden by max(minTINF, 1e-4). Consider specifying the Tk0 argument if you need to simulate infusion or 0-order absorption time for some of the INPUTs.")
       }
       # number of dosing regimen
       nbrDoseRegimens <- length(unique(Doses$DoseID))
@@ -1094,13 +1097,13 @@ simulate_VirtualTrials <- function(
 
     # Infusion Information
     L2 <- list()
-    L2[["TINF"]] <- rep(1e-4,.N)
+    L2[["TINF"]] <- rep(max(minTINF, 1e-4),.N)
     if(!is.null(abs0inputs)){
       for(k in 1:length(abs0Tk0param)){
         Tk0_k   <- abs0Tk0param[k]
         input_k <- abs0inputs[k]
         L2[["TINF"]] <- ifelse(ADM==input_k,
-                               get(Tk0_k),
+                               max(minTINF, get(Tk0_k)),
                                L2[["TINF"]])
       }
     }

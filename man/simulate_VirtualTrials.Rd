@@ -24,6 +24,7 @@ simulate_VirtualTrials(
   setting = list(.paropts = list(.inorder = TRUE, .packages = c("IQRtools",
     "MMVmalaria"))),
   Tk0 = c(INPUT1 = "Tk0"),
+  minTINF = 1e-04,
   Fpediatric = NULL,
   Nparallel = 1,
   simMode = c("Clinical", "Compare")[1],
@@ -42,7 +43,7 @@ simulate_VirtualTrials(
 \item{Doses}{Numeric vector of the doses to tes,t or a dosing table containing columns "DoseID", "TIME", "ADM",
 "AMT", "TINF", such that multiple dosing regimen correspond to different DoseID values. Regimens with time-varying dose
 are supported unless, the dose is a covariate of the model. Note that the TINF column is neglected and overriden by
-1e-4. If there is a need to specify infusion time for a given INPUT, this can be done by specifying the Tk0 argument.}
+max(minTINF, 1e-4). If there is a need to specify infusion time for a given INPUT, this can be done by specifying the Tk0 argument.}
 
 \item{T_FirstDose}{Numeric defining time of first dose. Might be diferent than initial time of simulation (Default: 0).}
 
@@ -99,6 +100,9 @@ Note that the value of the Tk0 parameter for an input will overwrite the value o
 Default \code{c("INPUT1"="Tk0")}. INPUTs in this argument are assumed to have 0-order absorption, i.e. Tk0 is
 the time for the dose to be fully absorbed at a constant rate. This is suitable to simulate infusion at constant rate.
 The Tk0 parameters should be either present in the GPF file or available as regressors in the regressorExtra argument.}
+
+\item{minTINF}{Minimum value for TINF when Tk0 is used. Default: 1e-4. Note that TINF will be set to max(minTINF, 1e-4) if Tk0 is not used and
+to max(minTINF, Tk0) if Tk0 is used.}
 
 \item{Fpediatric}{a character string containing the name of a covariate in \code{IndCovSample} or \code{ExpCovSample} indicating pediatric dose adjustment}
 
