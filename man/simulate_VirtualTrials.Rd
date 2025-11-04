@@ -14,6 +14,7 @@ simulate_VirtualTrials(
   nbrDoses = 1,
   timeInterval = 24,
   DOSEcovariate = c(INPUT1 = "DOSELEVEL"),
+  DOSEcovariate_Replace0Dose = 1e-12,
   N_Trial = 100,
   N_SubjPerTrial = 10,
   IndCovSample = NULL,
@@ -50,6 +51,8 @@ are supported unless, the dose is a covariate of the model. Note that the TINF c
 \item{timeInterval}{Numeric defining the interval between doses (Note: Sssumed to be the same for all doses)}
 
 \item{DOSEcovariate}{a character vector containing the names of the covariates to be used as dose covariate. Default: \code{c("INPUT1"="DOSELEVEL")}.}
+
+\item{DOSEcovariate_Replace0Dose}{Numeric value to replace dose of 0 when dose is a covariate in the model. Default: 1e-12.}
 
 \item{N_Trial}{Number of trials to simulate. Default: 100.}
 

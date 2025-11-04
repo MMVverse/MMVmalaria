@@ -19,6 +19,7 @@
 #' @param nbrDoses Numeric Vector. If length is 1, all doses in 'Doses' will have the same number of doses, otherwise should be of length 'Doses'.
 #' @param timeInterval Numeric defining the interval between doses (Note: Sssumed to be the same for all doses)
 #' @param DOSEcovariate a character vector containing the names of the covariates to be used as dose covariate. Default: `c("INPUT1"="DOSELEVEL")`.
+#' @param DOSEcovariate_Replace0Dose Numeric value to replace dose of 0 when dose is a covariate in the model. Default: 1e-12.
 #' @param N_Trial  Number of trials to simulate. Default: 100.
 #' @param N_SubjPerTrial Number of subjects per trial. Default: 10.
 #' @param IndCovSample Dataframe or Function to generate individual covariate (e.g. WT0, BMI, SEX, etc). Default: NULL.
@@ -56,7 +57,7 @@
 #' Default `c("INPUT1"="Tk0")`. INPUTs in this argument are assumed to have 0-order absorption, i.e. Tk0 is
 #' the time for the dose to be fully absorbed at a constant rate. This is suitable to simulate infusion at constant rate.
 #' The Tk0 parameters should be either present in the GPF file or available as regressors in the regressorExtra argument.
-#' @param Fpediatric a character string containing the name of a covariate in `IndCovSample` or `ExpCovSample` indicating pediatric dose adjustment 
+#' @param Fpediatric a character string containing the name of a covariate in `IndCovSample` or `ExpCovSample` indicating pediatric dose adjustment
 #' @param Nparallel Number of parallel processes to use for the simulations. Default: 1.
 #' @param simMode To chose which mode to use for simulations between "Clinical" (New set of individuals sampled for each scenario - Default) and
 #' "Compare" (Same set of individuals used between each scenario adjusted by `ExpCovSample` and Dose-regimen as defined in `Doses`.).
@@ -93,6 +94,7 @@ simulate_VirtualTrials <- function(
     nbrDoses                                      = 1,
     timeInterval                                  = 24,
     DOSEcovariate                                 = c("INPUT1"="DOSELEVEL"),  # Indicate name for the dose covariate
+    DOSEcovariate_Replace0Dose                 = 1e-12,
     N_Trial                                       = 100,
     N_SubjPerTrial                                = 10,
     IndCovSample                                  = NULL,
@@ -400,19 +402,21 @@ simulate_VirtualTrials <- function(
   }
 
   # If dose is used as covariate check that dose=0 is not simulated,
-  # but set to 1e-12:
+  # but set to DOSEcovariate_Replace0Dose:
   if (FLAGcovDOSE) {
     if (is.numeric(Doses)){
       idx0 <- (Doses==0)
       if (any(idx0)) {
-        message("Dose is a covariate in the model. Dose of 0 cannot be simulated as continuous covariates are log-transfomred.\nSimulation with a dose of 1e-12 value instead.")
-        Doses[idx0] <- 1e-12
+        message(paste0("Dose is a covariate in the model. Dose of 0 cannot be simulated if continuous covariates are log-transfomred.",
+                       "\nSimulation with a dose of DOSEcovariate_Replace0Dose = ", DOSEcovariate_Replace0Dose,  " value instead."))
+        Doses[idx0] <- DOSEcovariate_Replace0Dose
       }
     }else if (is.data.frame(Doses)){
       idx0 <- (Doses$AMT==0)
       if (any(idx0)) {
-        message("Dose is a covariate in the model. Dose of 0 cannot be simulated as continuous covariates are log-transfomred.\nSimulation with a dose of 1e-12 value instead.")
-        Doses$AMT[idx0] <- 1e-12
+        message(paste0("Dose is a covariate in the model. Dose of 0 cannot be simulated if continuous covariates are log-transfomred.\n",
+                       "Simulation with a dose of DOSEcovariate_Replace0Dose = ", DOSEcovariate_Replace0Dose, " value instead."))
+        Doses$AMT[idx0] <- DOSEcovariate_Replace0Dose
       }
     }
   }
