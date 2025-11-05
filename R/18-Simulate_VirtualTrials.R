@@ -397,7 +397,7 @@ simulate_VirtualTrials <- function(
     }
 
     # Check if DOSEcovariate is a covariate of the model:
-    if (DOSEcovariate %in% covPKPDmodel){
+    if (any(DOSEcovariate %in% covPKPDmodel)) {
       FLAGcovDOSE <- TRUE
     } else{
       FLAGcovDOSE <- FALSE
