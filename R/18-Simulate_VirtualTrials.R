@@ -75,8 +75,7 @@
 #' `setting$fun_SummarizeTrial`.
 #' * Covariates a data.frame
 #' * PKPDparameters a data.frame
-#' * eventTable a data.frame
-#' * eventData a data.frame
+#' * eventTable a data.frame containing the dosing information and individual parameters for all trials
 #' * regression
 #' * abs0inputs
 #' * abs0Tk0param
@@ -1053,13 +1052,12 @@ simulate_VirtualTrials <- function(
 
 
   #---------------------------------------------------#
-  # STEP 5: Create event Data ----
+  # STEP 5: Create eventTable ----
   #---------------------------------------------------#
   # Message:
   start_time <- Sys.time()
-  cat("\tSTEP 5: Generate eventData table\n")
+  cat("\tSTEP 5: Generate eventTable\n")
 
-  # Generate Event Data:
   byCol <- intersect(names(dosing),names(PKPDparameters))
   byCol <- if (length(byCol)==0) NULL else byCol
   eventData <- merge(dosing,PKPDparameters, by=byCol, allow.cartesian=TRUE)
@@ -1121,6 +1119,10 @@ simulate_VirtualTrials <- function(
   # Set keys:
   setkey(eventTable, "ID", "TIME", "ADM")
 
+  # Remove eventData object as eventTable is created and will be used from now on.
+  rm(eventData)
+  invisible(gc(verbose=FALSE))
+
   # Split eventTable :
   eventTable_List <- split(eventTable, by= c("ScenID", "ExpID", "DoseID", "TrialID"), keep.by = TRUE)
   eventTable_List <- lapply(eventTable_List, function(eventTable_k){
@@ -1159,54 +1161,13 @@ simulate_VirtualTrials <- function(
     start_time <- Sys.time()
     cat("\tSTEP 6: Run Simulations\n")
 
-    # Re-estimate Nparallel:
-    maxCores     <- parallel::detectCores(logical = FALSE)
-    NparallelNew <- min(Nparallel,maxCores)
+    result <- simulate_VirtualTrialsInFolder(outputFolder, Nparallel, setting)
 
-    # Parallelisation:
-    if (NparallelNew>1 && maxIDrun>=4) {
-      # Flag:
-      parallelFLAG <- TRUE
-
-      # Start cluster:
-      cluster_Sim <- parallel::makeCluster(NparallelNew)
-      doParallel::registerDoParallel(cluster_Sim)
-
-      # Try this line below to provide libPaths to all nodes:
-      parallel::clusterCall(cl=cluster_Sim, ".libPaths", .libPaths())
-
-      # Export needed objects from the global environment of the master to the global environment of the worker porcesses.
-      if(!is.null(setting$.paropts$.export)) {
-        parallel::clusterExport(cl = cluster_Sim, varlist = setting$.paropts$.export)
-      }
-      # Message:
-      cat("\t\tParallelisation Activated:", NparallelNew, "cores are used in parallel.\n\n")
-
-    } else {
-      # Flag:
-      parallelFLAG <- FALSE
-      cat("\t\tNo Parallelisation.\n\n")
-    }
-
-    trialFilenames <- list.files(outputFolder, pattern = "trial.*.rds", full.names = TRUE)
-    # Simulations:
-    summary_simPKPD <- plyr::llply(
-      trialFilenames,
-      .parallel = parallelFLAG,
-      .paropts = setting$.paropts,
-      .fun = simulate_OneVirtualTrial)
-
-    # Close clusters:
-    if (parallelFLAG){
-      parallel::stopCluster(cl = cluster_Sim)
-    }
-    invisible(gc(verbose=FALSE))
-
-    # Collect summaries by trials into data.tables
-    summaryPKPD.ByTrial    <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$summary_simPKPD$summaryPKPD.ByTrial))
-    summaryClinEnd.ByIndiv <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$summary_simPKPD$summaryClinEnd.ByIndiv))
-    summaryClinEnd.ByTrial <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$summary_simPKPD$summaryClinEnd.ByTrial))
-    simPKPD                <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$simPKPD))
+    # Extract the results
+    summaryPKPD.ByTrial    <- result$summaryPKPD.ByTrial
+    summaryClinEnd.ByIndiv <- result$summaryClinEnd.ByIndiv
+    summaryClinEnd.ByTrial <- result$summaryClinEnd.ByTrial
+    simPKPD                <- result$simPKPD
 
     # Measure Elapsed Time:
     end_time  <- Sys.time()
@@ -1234,9 +1195,6 @@ simulate_VirtualTrials <- function(
 
   data.table::setDF(Covariates)
   data.table::setDF(PKPDparameters)
-  # data.table::setDF(eventTable)  -- Already done
-  data.table::setDF(eventData)
-
   # Create output:
   out <- list(summaryPKPD.ByTrial    = summaryPKPD.ByTrial,
               summaryClinEnd.ByIndiv = summaryClinEnd.ByIndiv,
@@ -1245,7 +1203,6 @@ simulate_VirtualTrials <- function(
               Covariates             = Covariates,
               PKPDparameters         = PKPDparameters,
               eventTable             = eventTable,
-              eventData              = eventData,
               regression             = regressorName,
               abs0inputs             = abs0inputs,
               abs0Tk0param           = abs0Tk0param,
@@ -1394,6 +1351,89 @@ saveToTrialFile <- function(outputFolder, data, listMemberName, FLAGreuseStoredT
       }
     }
   }
+}
+
+#' Run simulations for all virtual trial rds files stored in a directory
+#' @param simFolder A character string denoting a folder path where the virtual trial .rds files are stored.
+#' @param Nparallel An integer denoting the number of parallel processes to use for the simulations. Default is 
+#' the number of physical cores detected on the machine.
+#' @param setting A named list of settings as returned by validateSetting_SimulateVirtualTrials(). If NULL (default), 
+#  a setting.rds file is expected to be found in simFolder and will be loaded from there.
+#' @return a named list with elements:
+#' \itemize{
+#'   \item summaryPKPD.ByTrial: a data.table summarizing PKPD results by trial
+#'   \item summaryClinEnd.ByIndiv: a data.table summarizing clinical end-points by individual
+#'   \item summaryClinEnd.ByTrial: a data.table summarizing clinical end-points by trial
+#'   \item simPKPD: a data.table with simulated PKPD results for all individuals
+#' }
+#' @examples
+#' \dontrun{
+#' # Assuming that virtual trial .rds files are stored in the folder "simulations/"
+#' results <- simulate_VirtualTrialsInFolder(simFolder = "simulations/", Nparallel = 4)
+#' }
+#' @export
+simulate_VirtualTrialsInFolder <- function(simFolder, Nparallel = parallel::detectCores(logical = FALSE), setting = NULL) {
+  # Validate setting:
+  if(is.null(setting)) {
+    settingFile <- file.path(simFolder, "setting.rds")
+    setting <- validateSetting_SimulateVirtualTrials(setting = settingFile)
+  } else {
+    setting <- validateSetting_SimulateVirtualTrials(setting = setting)
+  }
+
+  # Re-estimate Nparallel:
+  maxCores     <- parallel::detectCores(logical = FALSE)
+  NparallelNew <- min(Nparallel,maxCores)
+
+  # Parallelisation:
+  if (NparallelNew>1) {
+    # Flag:
+    parallelFLAG <- TRUE
+
+    # Start cluster:
+    cluster_Sim <- parallel::makeCluster(NparallelNew)
+    doParallel::registerDoParallel(cluster_Sim)
+
+    # Try this line below to provide libPaths to all nodes:
+    parallel::clusterCall(cl=cluster_Sim, ".libPaths", .libPaths())
+
+    # Export needed objects from the global environment of the master to the global environment of the worker porcesses.
+    if(!is.null(setting$.paropts$.export)) {
+      parallel::clusterExport(cl = cluster_Sim, varlist = setting$.paropts$.export)
+    }
+    # Message:
+    cat("\t\tParallelisation Activated:", NparallelNew, "cores are used in parallel.\n\n")
+
+  } else {
+    # Flag:
+    parallelFLAG <- FALSE
+    cat("\t\tNo Parallelisation.\n\n")
+  }
+
+  trialFilenames <- list.files(simFolder, pattern = "trial.*.rds", full.names = TRUE)
+  # Simulations:
+  summary_simPKPD <- plyr::llply(
+    trialFilenames,
+    .parallel = parallelFLAG,
+    .paropts = setting$.paropts,
+    .fun = simulate_OneVirtualTrial)
+
+  # Close clusters:
+  if (parallelFLAG){
+    parallel::stopCluster(cl = cluster_Sim)
+  }
+  invisible(gc(verbose=FALSE))
+
+  # Collect summaries by trials into data.tables
+  summaryPKPD.ByTrial    <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$summary_simPKPD$summaryPKPD.ByTrial))
+  summaryClinEnd.ByIndiv <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$summary_simPKPD$summaryClinEnd.ByIndiv))
+  summaryClinEnd.ByTrial <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$summary_simPKPD$summaryClinEnd.ByTrial))
+  simPKPD                <- rbindlist(lapply(summary_simPKPD, function(sim_ScenIDTrialID) sim_ScenIDTrialID$simPKPD))
+
+  list(summaryPKPD.ByTrial    = summaryPKPD.ByTrial,
+       summaryClinEnd.ByIndiv = summaryClinEnd.ByIndiv,
+       summaryClinEnd.ByTrial = summaryClinEnd.ByTrial,
+       simPKPD                = simPKPD)
 }
 
 #' Simulate one virtual trial based on a input .rds file

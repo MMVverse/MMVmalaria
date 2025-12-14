@@ -124,8 +124,7 @@ a named list with the following members:
 \code{setting$fun_SummarizeTrial}.
 \item Covariates a data.frame
 \item PKPDparameters a data.frame
-\item eventTable a data.frame
-\item eventData a data.frame
+\item eventTable a data.frame containing the dosing information and individual parameters for all trials
 \item regression
 \item abs0inputs
 \item abs0Tk0param
