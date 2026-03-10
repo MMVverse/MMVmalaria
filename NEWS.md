@@ -1,7 +1,4 @@
-# MMVmalaria 1.4.1
-
-# testPKmodelsIQR
-* Patched to be compatible with more stinrgent checks in IQRnlmeEst() in IQRtools 2025.05; namely that this function will now remove Tlag1 from the dosing options and modelSpec if test lagtime is set to FALSE. 
+# MMVmalaria 1.5.1
 
 # Model library
-* 1, 3 and 10 step turnover clearance models (abs0 and abs1) added to model library. 
+* model_PKPD_3cpt_ClearanceModel_Tobs0 added to model library. This is the simple EMAX clearance model (for SCID modelling) with the Tobs0 specification. 
