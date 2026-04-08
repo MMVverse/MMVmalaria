@@ -9,13 +9,10 @@ PK  No of Compartments: 3 (Vc, Vp1, Q1, Vp2 & Q2)
     Elimination:        Linear (CL) & Non-Linear (VMAX & KM)
     Absorption:         1st order absorption (Fabs1 & ka)
 
-PD  Dynamic:            Once a drug had an effect on the parasite the parasite enter a "zombie" state
-                        before dying. A zombie state is a state where the parasite is in between death
-                        and life but is counted as being alive. This zombie stage is introduced to
-                        explain why the killing rate in vitro (in vitro PRR) is larger that the Emax
-                        estimated from SCID mouse experiments. In this model, the Emax is assumed to be
-                        the same than in the in Vitro PRR which allows to estimate the clearance rate of
-                        the parasite and have a higer EC50 than in the Emax-Model.
+PD  Dynamic:            After drug exposure, parasites transition from a living state (PLLiv) to 
+			a non-viable state before being removed. Although these parasites are dead, 
+			they still contribute to the total parasite load (PLtot) until they are 
+			cleared, since clearance is not instantaneous.
     Transformation:     ONLY FOR THE OUTPUT - Logarithmic (P=parasitemia -> PL=log(P)
                         where log is the natural logarithm)
     Growth:             Linear (GR)

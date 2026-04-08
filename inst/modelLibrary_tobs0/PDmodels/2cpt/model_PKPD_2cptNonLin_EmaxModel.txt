@@ -12,8 +12,9 @@ PK	No of Compartments:	2 (Vc, Vp1 & Q1)
 PD	Transformation:		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
 	Growth:				Linear (GR)
 	Drug Effect:		Hill Function depending on the concentration at the central compartment Cc (EMAX, EC50 & hill)
-	Baseline:			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and PLerr follows
-						a centered gaussian, i.e. N(0,sigma^2) to allow some flexibility
+	Baseline:		Taken as PLbase + GR*Tobs0 where PLbase is the baseline parasitemia at time of first dose. GR is the linear parasite 
+					growth rate and Tobs0 is the time of the first observation relative to the time of the first dose, i.e., Tobs0 = time 	
+					of first observation - time of first dose. 
 
 Important assumption: INPUT dose and PK model matched to lead to drug
                       concentration in µg/mL!
