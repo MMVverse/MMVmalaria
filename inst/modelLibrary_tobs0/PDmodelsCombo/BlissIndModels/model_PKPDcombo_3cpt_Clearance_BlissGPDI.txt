@@ -5,17 +5,17 @@ model_PKPDcombo_3cpt_Clearance_BlissGPDI
 ********** MODEL NOTES
 Library model for SCID mouse combo PKPD modeling.
 
-PK		3 compartmental distribution model
-		non-linear (linear+saturable)
-		1st order absorption
+PK                    3 compartmental distribution model non-linear (linear+saturable) 1st
+                      order absorption
 
-PK DDI	Mutual elimination inhibition in a competitive manner.
+PK DDI                Mutual elimination inhibition in a competitive manner.
 
-PD		Clearance model
+PD                    Clearance model
 
-PD DDI  Bliss independence model GPDI with assymetric inhibition.
-		Alpha: For potency                (i.e. effect on EC50x1 and EC50x2)
-		Beta:  For killing/clearance rate (i.e. effect on EMAXx1 and EMAXx2)
+PD DDI                Bliss independence model GPDI with assymetric inhibition.
+                      Alpha:                For potency (i.e. effect on EC50x1 and EC50x2)
+                      Beta:                 For killing/clearance rate (i.e. effect on
+                                            EMAXx1 and EMAXx2)
 
 Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug
                       concentration in ug/mL!

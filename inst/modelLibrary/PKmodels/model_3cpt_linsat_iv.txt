@@ -3,19 +3,20 @@ model_3cpt_linsat_iv
 
 ********** MODEL NOTES
 
-PK model for simulation of drug concentration in central compartment
-with following characteristics:
-Compartments:  3
-Elimination :  linear+saturable
-Absorption  :  none (infusion/iv)
+PK                    model for simulation of drug concentration in central compartment
+                      with following characteristics:
+                      Compartments:         3
+                      Elimination:          linear+saturable
+                      Absorption:           none (infusion/iv)
 
 Unit convention
-Dose: mg
-Concentration: ug/mL
-Time: hours
+Dose:                 mg
+Concentration:        ug/mL
+Time:                 hours
 
-The annotation of the parameter units is consistent with the given unit convention.
-Units of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation need to match the unit convention.
+The annotation of the parameter units is consistent with the given unit convention. Units
+of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation
+need to match the unit convention.
 
 ********** MODEL STATES
 

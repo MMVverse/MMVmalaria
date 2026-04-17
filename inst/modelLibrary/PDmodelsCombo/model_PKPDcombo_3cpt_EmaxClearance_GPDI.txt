@@ -4,22 +4,30 @@ model_PKPDcombo_3cpt_EmaxClearance_GPDI
 ********** MODEL NOTES
 Library model for SCID mouse combo PKPD modeling.
 
-PK		3 compartmental distribution model
-		non-linear (linear+saturable), 1st order absorption
+PK                    3 compartmental distribution model non-linear (linear+saturable),
+                      1st
+                      order
+                      absorption
 
-PK DDI	Mutual inhibition in a competitive manner.
+PK DDI                Mutual inhibition in a competitive manner.
 
-PD		Emax Model for Drug 1 and Clearance model for Drug 2.
-		To avoid excess number of parameters to estimate,
-		the dead populations from the two drugs are supposed to be the same and cleared at a constant rate.
-		This rate could be different than for the monotherapy and should be re-estimated.
+PD                    Emax Model for Drug 1 and Clearance model for Drug 2. To avoid
+                      excess
+                      number of
+                      parameters to estimate, the dead populations from the two drugs are
+                      supposed to be the
+                      same and cleared at a constant rate. This rate could be different
+                      than
+                      for the monotherapy
+                      and should be re-estimated.
 
-PD DDI	Alpha: For potency                (i.e. effect on EC50x1 and EC50x2)
-		Beta:  For killing/clearance rate (i.e. effect on EMAXx1 and EMAXx2)
+PD DDI                Alpha:                For potency (i.e. effect on EC50x1 and EC50x2)
+                      Beta:                 For killing/clearance rate (i.e. effect on
+                                            EMAXx1 and EMAXx2)
 
-Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug 
+Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug
                       concentration in ug/mL!
-                     
+
 
 ********** MODEL STATES
 

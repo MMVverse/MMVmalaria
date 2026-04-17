@@ -6,14 +6,14 @@ Library model for malaria PKPD modeling.
 
 Model to describe the growth a the parasite in blood.
 
-Growth              Exponential growth model with oscillation of the growth rate GR.
-Oscillation 		The  growth rate oscillate around it mean value GR, with an ampliture Amp,
-					a period Plen and a phase 2*PI*Dtime/Plen (when time=Dtime the growth rate is GR).
-Transformation 		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
-Output 				PL, i.e. the logarithm of the parasitemia.
-Baseline 			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and
-					PLerr follows a centered Gaussian, i.e. N(0,sigma^2) to allow some flexibility.
-Unit                As in the dataset, prior transformation; i.e. p/mL or percent
+Growth Exponential growth model with oscillation of the growth rate GR. Oscillation The
+growth rate oscillate around it mean value GR, with an ampliture Amp, a period Plen and a
+phase 2*PI*Dtime/Plen (when time=Dtime the growth rate is GR). Transformation Logarithmic
+(P=parasitemia -> PL=log(P) where log is the natural logarithm) Output PL, i.e. the
+logarithm of the parasitemia. Baseline Taken as PLbase + PLerr where PLbase is fixed at
+the initial measured value and PLerr follows a centered Gaussian, i.e. N(0,sigma^2) to
+allow some flexibility.
+Unit As in the dataset, prior transformation; i.e. p/mL or percent
 
 
 ********** MODEL STATES

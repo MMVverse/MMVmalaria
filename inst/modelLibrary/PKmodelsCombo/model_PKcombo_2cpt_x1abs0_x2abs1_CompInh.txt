@@ -4,18 +4,17 @@ model_PKcombo_2cpt_CompInh
 ********** MODEL NOTES
 Library model for SCID mouse combo PK modeling.
 
-PK Drug 1:
-2 compartmental distribution model, non-linear (linea+saturable), zero order absorption
+PK                    Drug 1:               2 compartmental distribution model, non-linear
+                                            (linea+saturable), zero order absorption
 
-PK Drug 2:
-2 compartmental distribution model, non-linear (linea+saturable), 1st order absorption
+PK                    Drug 2:               2 compartmental distribution model, non-linear
+                                            (linea+saturable), 1st order absorption
 
-PK DDI:
-Mutual inhibition in a competitive manner.
+PK                    DDI:                  Mutual inhibition in a competitive manner.
 
-Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug 
+Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug
                       concentration in ug/mL!
-                     
+
 
 ********** MODEL STATES
 

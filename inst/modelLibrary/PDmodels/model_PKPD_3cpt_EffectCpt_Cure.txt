@@ -5,18 +5,23 @@ model_PKPD_3cpt_EffectCpt_Cure
 ********** MODEL NOTES
 Library model for malaria PKPD modeling.
 
-PK	No of Compartments:	3 (Vc, Vp1, Q1, Vp2 & Q2)
-	Elimination:		Linear (CL) & Non-Linear (VMAX & KM)
-	Absorption:			1st order absorption (Fabs1 & ka)
+PK                    No of Compartments:   3 (Vc, Vp1, Q1, Vp2 & Q2)
+                      Elimination:          Linear (CL) & Non-Linear (VMAX & KM)
+                      Absorption:           1st order absorption (Fabs1 & ka)
 
-PD	Transformation:		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
-	Growth:				Linear (GR)
-	Drug Effect:		Hill Function depending on the concentration at the effect compartment Ce (EMAX, EC50 & hill)
-	Baseline:			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and PLerr follows
-						a centered gaussian, i.e. N(0,sigma^2) to allow some flexibility
+PD                    Transformation:       Logarithmic (P=parasitemia -> PL=log(P) where
+                                            log is the natural logarithm)
+                      Growth:               Linear (GR)
+                      Drug Effect:          Hill Function depending on the concentration
+                                            at the effect compartment Ce (EMAX, EC50 &
+                                            hill)
+                      Baseline:             Taken as PLbase + PLerr where PLbase is fixed
+                                            at the initial measured value and PLerr
+                                            follows a centered gaussian, i.e. N(0,sigma^2)
+                                            to allow some flexibility
 
-Important assumption: INPUT dose and PK model matched to lead to drug
-                      concentration in µg/mL!
+Important assumption: INPUT dose and PK model matched to lead to drug concentration in
+                      µg/mL!
 
 Units of parasitemia assumed in percent or 1/mL (both log-transformed: ln not log10).
 

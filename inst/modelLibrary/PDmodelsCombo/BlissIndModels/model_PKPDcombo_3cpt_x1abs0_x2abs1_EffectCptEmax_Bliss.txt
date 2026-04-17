@@ -4,27 +4,28 @@ model_PKPDcombo_3cpt_x1abs0_x2abs1_EffectCptEmax_Bliss
 ********** MODEL NOTES
 Library model for SCID mouse combo PKPD modeling.
 
-PK		3 compartmental distribution model
-		non-linear (linear+saturable)
-		0th order absorption for Drug 1
-		1st order absorption for Drug 2
+PK                    3 compartmental distribution model non-linear (linear+saturable) 0th
+                      order
+                      absorption for Drug 1 1st order absorption for Drug 2
 
-PK DDI	Bliss independence model.
+PK DDI                Bliss independence model.
 
-PD		Effect compartment model for drug 1
-      Emax               model for drug 2
+PD                    Effect compartment model for drug 1
+                      Emax model for drug 2
 
-PD DDI  Empirical Bliss independence model.
-    Gamma: interaction parameter with 1 for Bliss independence, <1 Bliss antagonism, >1 Bliss synergy
-    
-		Bliss independence model for combined effect assumed and larger Emax of the two drugs
-		used for scaling the interaction term.
-		
-		HERE, drug 2 assumed to have the higher Emax
+PD DDI                Empirical Bliss independence model.
+                      Gamma:                interaction parameter with 1 for Bliss
+                                            independence, <1 Bliss antagonism, >1 Bliss
+                                            synergy
 
-Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug 
+Bliss independence model for combined effect assumed and larger Emax of the two drugs used
+for scaling the interaction term.
+
+HERE, drug 2 assumed to have the higher Emax
+
+Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug
                       concentration in ug/mL!
-                     
+
 
 ********** MODEL STATES
 

@@ -2,8 +2,7 @@
 model_LinGrowth
 
 ********** MODEL NOTES
-Exponential growth model
-Parasites modeled in log scale and assumed in p/mL or percent.
+Exponential growth model Parasites modeled in log scale and assumed in p/mL or percent.
 
 ********** MODEL STATES
 

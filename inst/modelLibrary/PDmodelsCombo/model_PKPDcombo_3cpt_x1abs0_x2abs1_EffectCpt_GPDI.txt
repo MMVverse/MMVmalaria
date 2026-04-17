@@ -4,24 +4,24 @@ model_PKPDcombo_3cpt_x1abs0_x2abs1_EffectCpt_GPDI
 ********** MODEL NOTES
 Library model for SCID mouse combo PKPD modeling.
 
-PK		3 compartmental distribution model
-		non-linear (linear+saturable)
-		0th order absorption for Drug 1
-		1st order absorption for Drug 2
+PK                    3 compartmental distribution model non-linear (linear+saturable) 0th
+                      order
+                      absorption for Drug 1 1st order absorption for Drug 2
 
-PK DDI	Mutual inhibition in a competitive manner.
+PK DDI                Mutual inhibition in a competitive manner.
 
-PD		Effect compartment model for drug 1
-      Effect compartment model for drug 2
+PD                    Effect compartment model for drug 1 Effect compartment model for
+                      drug 2
 
-PD DDI	Alpha: For potency                (i.e. effect on EC50x1 and EC50x2)
-		Beta:  For killing/clearance rate (i.e. effect on EMAXx1 and EMAXx2)
+PD DDI                Alpha:                For potency (i.e. effect on EC50x1 and EC50x2)
+                      Beta:                 For killing/clearance rate (i.e. effect on
+                                            EMAXx1 and EMAXx2)
 
-		For the DDI, concentrations in central compartment are acting (immediate effect).
+For the DDI, concentrations in central compartment are acting (immediate effect).
 
-Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug 
+Important assumption: INPUT dose (mg or mg/kg) and PK model matched to lead to drug
                       concentration in ug/mL!
-                     
+
 
 ********** MODEL STATES
 

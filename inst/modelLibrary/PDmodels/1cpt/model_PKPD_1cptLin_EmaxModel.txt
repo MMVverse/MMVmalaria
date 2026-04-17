@@ -5,18 +5,23 @@ model_PKPD_1cptLin_EmaxModel
 ********** MODEL NOTES
 Library model for malaria PKPD modeling.
 
-PK	No of Compartments:	1 (Vc)
-	Elimination:		Linear (CL)
-	Absorption:			1st order absorption (Fabs1 & ka)
+PK                    No of Compartments:   1 (Vc)
+                      Elimination:          Linear (CL)
+                      Absorption:           1st order absorption (Fabs1 & ka)
 
-PD	Transformation:		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
-	Growth:				Linear (GR)
-	Drug Effect:		Hill Function depending on the concentration at the central compartment Cc (EMAX, EC50 & hill)
-	Baseline:			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and PLerr follows
-						a centered gaussian, i.e. N(0,sigma^2) to allow some flexibility
+PD                    Transformation:       Logarithmic (P=parasitemia -> PL=log(P) where
+                                            log is the natural logarithm)
+                      Growth:               Linear (GR)
+                      Drug Effect:          Hill Function depending on the concentration
+                                            at the central compartment Cc (EMAX, EC50 &
+                                            hill)
+                      Baseline:             Taken as PLbase + PLerr where PLbase is fixed
+                                            at the initial measured value and PLerr
+                                            follows a centered gaussian, i.e. N(0,sigma^2)
+                                            to allow some flexibility
 
-Important assumption: INPUT dose and PK model matched to lead to drug
-                      concentration in µg/mL!
+Important assumption: INPUT dose and PK model matched to lead to drug concentration in
+                      µg/mL!
 
 Units of parasitemia assumed in percent or 1/mL (both log-transformed: ln not log10).
 

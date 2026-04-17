@@ -7,16 +7,17 @@ Library model for malaria PKPD modeling.
 
 Model to describe the growth a the parasite in blood.
 
-Growth             Exponential growth model with oscillation of visible parasites.
-					Growth Rate: GR, Maximum Fraction of Hidden Parasite: Fmax,
-					Oscillation Period: Plen, Phase: Dtime=Phi*Plen (Like that Phi can be between 0 & 1).
-Oscillation		The visible parasites oscillate with a period Plen, a phase 2*PI*Dtime/Plen
-					(when time=Dtime All parasites are visible).
-Transformation 		Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
-Output 				PL, i.e. the logarithm of the parasitemia.
-Baseline 			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and
-					PLerr follows a centered Gaussian, i.e. N(0,sigma^2) to allow some flexibility.
-Unit                As in the dataset, prior transformation; i.e. p/mL or percent
+Growth Exponential growth model with oscillation of visible parasites.
+Growth Rate:          GR, Maximum Fraction of Hidden Parasite: Fmax,
+Oscillation Period:   Plen, Phase: Dtime=Phi*Plen (Like that Phi can be between 0 & 1).
+                      Oscillation The visible parasites oscillate with a period Plen, a
+                      phase 2*PI*Dtime/Plen (when time=Dtime All parasites are visible).
+                      Transformation Logarithmic (P=parasitemia -> PL=log(P) where log is
+                      the natural logarithm) Output PL, i.e. the logarithm of the
+                      parasitemia. Baseline Taken as PLbase + PLerr where PLbase is fixed
+                      at the initial measured value and PLerr follows a centered Gaussian,
+                      i.e. N(0,sigma^2) to allow some flexibility. Unit As in the dataset,
+                      prior transformation; i.e. p/mL or percent
 
 
 ********** MODEL STATES

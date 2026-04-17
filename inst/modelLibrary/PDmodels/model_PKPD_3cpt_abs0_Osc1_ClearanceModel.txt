@@ -5,25 +5,40 @@ model_PKPD_3cpt_abs0_Osc1_ClearanceModel
 ********** MODEL NOTES
 Library model for malaria PKPD modeling.
 
-PK	No of Compartments:	3 (Vc, Vp1, Q1, Vp2 & Q2)
-	Elimination:		Linear (CL) & Non-Linear (VMAX & KM)
-	Absorption:			Zero order absorption (Fabs0 & Tk0)
+PK                    No of Compartments:   3 (Vc, Vp1, Q1, Vp2 & Q2)
+                      Elimination:          Linear (CL) & Non-Linear (VMAX & KM)
+                      Absorption:           Zero order absorption (Fabs0 & Tk0)
 
-PD	Dynamic:            Once a drug had an effect on the parasite the parasite enter a "zombie" state before dying.
-                        A zombie state is a state where the parasite is in between death and life but is counted as being alive.
-						This zombie stage is introduced to explain why the killing rate in vitro (in vitro PRR) is larger that
-						the Emax estimated from SCID mouse experiments. In this model, the Emax is assumed to be the same than in
-						the in Vitro PRR which allows to estimate the clearance rate of the parasite and have a higer EC50 than in the Emax-Model.
-    Transformation:		ONLY FOR THE OUTPUT - Logarithmic (P=parasitemia -> PL=log(P) where log is the natural logarithm)
-	Growth:				Linear (GR)
-	Drug Effect:		Hill Function depending on the concentration at the central compartment Cc (EMAX, EC50 & hill)
-	Baseline:			Taken as PLbase + PLerr where PLbase is fixed at the initial measured value and PLerr follows
-						a centered gaussian, i.e. N(0,sigma^2) to allow some flexibility
-	Sequestration:		Visible parasites are a fraction of parasites. Visibility follows sine wave between 1 and (1-Fmax)
-						with period length Plen and a time Dtime of full visibility
+PD                    Dynamic:              Once a drug had an effect on the parasite the
+                                            parasite enter a "zombie" state before dying.
+                                            A zombie state is a state where the parasite
+                                            is in between death and life but is counted as
+                                            being alive. This zombie stage is introduced
+                                            to explain why the killing rate in vitro (in
+                                            vitro PRR) is larger that the Emax estimated
+                                            from SCID mouse experiments. In this model,
+                                            the Emax is assumed to be the same than in the
+                                            in Vitro PRR which allows to estimate the
+                                            clearance rate of the parasite and have a
+                                            higer EC50 than in the Emax-Model.
+                      Transformation:       ONLY FOR THE OUTPUT - Logarithmic
+                                            (P=parasitemia -> PL=log(P) where log is the
+                                            natural logarithm)
+                      Growth:               Linear (GR)
+                      Drug Effect:          Hill Function depending on the concentration
+                                            at the central compartment Cc (EMAX, EC50 &
+                                            hill)
+                      Baseline:             Taken as PLbase + PLerr where PLbase is fixed
+                                            at the initial measured value and PLerr
+                                            follows a centered gaussian, i.e. N(0,sigma^2)
+                                            to allow some flexibility
+                      Sequestration:        Visible parasites are a fraction of parasites.
+                                            Visibility follows sine wave between 1 and
+                                            (1-Fmax) with period length Plen and a time
+                                            Dtime of full visibility
 
-Important assumption: INPUT dose and PK model matched to lead to drug
-                      concentration in µg/mL!
+Important assumption: INPUT dose and PK model matched to lead to drug concentration in
+                      µg/mL!
 
 Units of parasitemia assumed in percent or 1/mL (both log-transformed: ln not log10).
 

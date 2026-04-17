@@ -3,19 +3,20 @@ model_2cpt_linsat_abs0
 
 ********** MODEL NOTES
 
-PK model for simulation of drug concentration in central compartment
-with following characteristics:
-Compartments:  2
-Elimination :  linear+saturable
-Absorption  :  zero order (with lag time)
+PK                    model for simulation of drug concentration in central compartment
+                      with following characteristics:
+                      Compartments:         2
+                      Elimination:          linear+saturable
+                      Absorption:           zero order (with lag time)
 
 Unit convention
-Dose: mg
-Concentration: ug/mL
-Time: hours
+Dose:                 mg
+Concentration:        ug/mL
+Time:                 hours
 
-The annotation of the parameter units is consistent with the given unit convention.
-Units of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation need to match the unit convention.
+The annotation of the parameter units is consistent with the given unit convention. Units
+of the inputs (dose) and outputs (concentration) in the dataset for parameter estimation
+need to match the unit convention.
 
 ********** MODEL STATES
 
