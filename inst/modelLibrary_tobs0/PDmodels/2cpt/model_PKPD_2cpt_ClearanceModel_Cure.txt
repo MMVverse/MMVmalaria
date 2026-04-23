@@ -10,7 +10,7 @@ PK                    No of Compartments:   2 (Vc, Vp1, Q1)
                       Absorption:           1st order absorption (Fabs1 & ka)
 
 PD                    Dynamic:              After drug exposure, parasites transition from
-                                            a living state (PLLiv) to a non-viable state
+                                            a living state (PLliv) to a non-viable state
                                             before being removed. Although these parasites
                                             are dead, they still contribute to the total
                                             parasite load (PLtot) until they are cleared,
