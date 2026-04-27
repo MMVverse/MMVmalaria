@@ -41,7 +41,7 @@ d/dt(Recx1) = kinx1*(RD11-Recx1)
 d/dt(Recx2) = kinx2*(RD22-Recx2)
 d/dt(PL)    = GR - Kkill
 
-PL(0)       = PLbase + PLerr
+PL(0)       = PLbase + GR*Tobs0
 
 
 ********** MODEL PARAMETERS

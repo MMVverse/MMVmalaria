@@ -46,8 +46,8 @@ d/dt(Ap1) =          Q1/Vc*Ac - Q1/Vp1*Ap1
 # Parasitemia PD model (log transformed parasitemia)
 d/dt(PLtot) = (GR*Fcure+CLPara)*exp(PLliv-PLtot) - CLPara
 d/dt(PLliv) = (GR - EMAX*Eff - Cure)*Fcure
-PLtot(0)    = PLbase + PLerr
-PLliv(0)    = PLbase + PLerr
+PLtot(0)    = PLbase + GR*Tobs0
+PLliv(0)    = PLbase + GR*Tobs0
 
 
 ********** MODEL PARAMETERS

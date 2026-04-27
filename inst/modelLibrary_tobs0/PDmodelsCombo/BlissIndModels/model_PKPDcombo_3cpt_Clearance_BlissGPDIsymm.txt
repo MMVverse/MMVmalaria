@@ -38,8 +38,8 @@ d/dt(Ap2x2) =                                                + Q2x2/Vcx2*Acx2 - 
 # Parasitemia PD model (ln transformed parasitemia)
 d/dt(PLtot) = (GR + CLPara)*exp(PLliv-PLtot) - CLPara
 d/dt(PLliv) = GR - Kkill
-PLtot(0)    = PLbase + PLerr
-PLliv(0)    = PLbase + PLerr
+PLtot(0)    = PLbase + GR*Tobs0
+PLliv(0)    = PLbase + GR*Tobs0
 
 
 ********** MODEL PARAMETERS
