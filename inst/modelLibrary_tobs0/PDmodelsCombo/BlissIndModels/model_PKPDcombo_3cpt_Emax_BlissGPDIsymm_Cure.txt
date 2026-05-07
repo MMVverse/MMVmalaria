@@ -96,7 +96,7 @@ EC50x2  = 0.10       # Concentration achieving 50percent of maximum effect Drug2
 hillx2  = 1          # Hill coefficient Drug2 (.)
 
 # --- PD DDI ---
-Alpha   = 0           # Maximum mutual impact on EC50 values (.)
+Alpha1   = 0           # Maximum mutual impact on EC50 values (.)
 Beta    = 0           # Maximum mutual impact on EMAX values (.)
 
 # Impact of drug 1 on EC50 of drug 2
@@ -148,8 +148,8 @@ Fcure = exp(Hcure*PL)/(exp(Hcure*(PLcure-dPLstop)) + exp(Hcure*PL))
 # Changes in EC50s:
 RIA11     = Ccx1YPS^hillx1/(IC50ax1^hillx1+Ccx1YPS^hillx1)
 RIA22     = Ccx2YPS^hillx2/(IC50ax2^hillx2+Ccx2YPS^hillx2)
-EC50Intx1 = EC50x1*(1+(exp(-Alpha)-1)*RIA22)
-EC50Intx2 = EC50x2*(1+(exp(-Alpha)-1)*RIA11)
+EC50Intx1 = EC50x1*(1+(exp(-Alpha1)-1)*RIA22)
+EC50Intx2 = EC50x2*(1+(exp(-Alpha1)-1)*RIA11)
 
 # Changes in Emaxs:
 RIB11     = Ccx1YPS^hillx1/(IC50bx1^hillx1+Ccx1YPS^hillx1)
