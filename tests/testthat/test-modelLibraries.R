@@ -52,18 +52,6 @@ test_that("all model library files simulate successfully", {
     )
   )
   
-  tmp_dir <- tempfile("IQRmodel_test_")
-  dir.create(tmp_dir, recursive = TRUE)
-  
-  old_wd <- getwd()
-  
-  on.exit({
-    setwd(old_wd)
-    unlink(tmp_dir, recursive = TRUE, force = TRUE)
-  }, add = TRUE)
-  
-  setwd(tmp_dir)
-  
   results <- lapply(seq_len(nrow(model_files_df)), function(i) {
     library_name <- model_files_df$library[i]
     file <- model_files_df$file[i]
