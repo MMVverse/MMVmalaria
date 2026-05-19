@@ -3,6 +3,8 @@ test_that("all model library files simulate successfully", {
   skip_if_not_installed("IQRtools")
   library(IQRtools)
   
+  # Define model libraries. Will need to be adjusted
+  # if libraries are added or removed 
   model_libraries <- c(
     "modelLibrary",
     "modelLibrary_tobs0"
@@ -16,15 +18,12 @@ test_that("all model library files simulate successfully", {
     character(1)
   )
   
-  missing_dirs <- names(model_dirs)[model_dirs == "" | !dir.exists(model_dirs)]
-  
-  expect_true(
-    length(missing_dirs) == 0,
-    label = paste(
-      "Missing model directories:",
-      paste(missing_dirs, collapse = ", ")
-    )
-  )
+  # get data frame of models including which library 
+  # ! NOTE - this will pick up any .txt file... 
+  # so will get an error (not IQRmodel file... ) if any non-iqrmodel.txt 
+  # file is in the model library (i.e., a README?) - but currently the model
+  # libraries have exclusively model files in them and it should be good to 
+  # keep them this way 
   
   model_files_df <- do.call(
     rbind,
@@ -44,29 +43,36 @@ test_that("all model library files simulate successfully", {
     })
   )
   
-  expect_true(
-    nrow(model_files_df) > 0,
-    label = paste(
-      "No .txt model files found in:",
-      paste(model_dirs, collapse = ", ")
-    )
-  )
+  # Get results (to be evaluated by testthat function later)
+  # error handler allows testing to continue if there is an 
+  # error + stores the error message 
   
   results <- lapply(seq_len(nrow(model_files_df)), function(i) {
+    
     library_name <- model_files_df$library[i]
     file <- model_files_df$file[i]
     
-    warning_messages <- character()
+    warnings <- new.env(parent = emptyenv())
+    warnings$messages <- character(0)
     
-    error_message <- tryCatch(
+    error <- tryCatch(
       {
+        
+        # withCallingHandlers should be used over trycatch as it's possible
+        # for model to warn (and trycatch would exit) but then have an error
+        # - trycatch would exit on the warning and not see the error
+        # https://adv-r.hadley.nz/conditions.html#:~:text=The%20handlers%20set%20up%20by,normally%20once%20the%20handler%20returns.
+        
         withCallingHandlers(
           {
             sim_IQRmodel(IQRmodel(file))
-            NULL
+            NA_character_
           },
           warning = function(w) {
-            warning_messages <<- c(warning_messages, conditionMessage(w))
+            warnings$messages <- c(
+              warnings$messages,
+              conditionMessage(w)
+            )
             invokeRestart("muffleWarning")
           }
         )
@@ -79,10 +85,10 @@ test_that("all model library files simulate successfully", {
     data.frame(
       library = library_name,
       file = file,
-      passed = is.null(error_message),
-      error = if (is.null(error_message)) NA_character_ else error_message,
-      warnings = if (length(warning_messages) > 0) {
-        paste(unique(warning_messages), collapse = " | ")
+      passed = is.na(error),
+      error = error,
+      warnings = if (length(warnings$messages) > 0) {
+        paste(unique(warnings$messages), collapse = " | ")
       } else {
         NA_character_
       },
@@ -91,6 +97,9 @@ test_that("all model library files simulate successfully", {
   })
   
   results_df <- do.call(rbind, results)
+  
+  # drop = FALSE to make sure failed is a df, even if only one failed 
+  # model. 
   
   failed <- results_df[!results_df$passed, , drop = FALSE]
   
@@ -116,6 +125,7 @@ test_that("all model library files simulate successfully", {
     )
   }
   
+  # test that handler 
   expect_true(
     all(results_df$passed),
     label = failure_message
