@@ -43,9 +43,16 @@ test_that("all model library files simulate successfully", {
     })
   )
   
-  # Get results (to be evaluated by testthat function later)
-  # error handler allows testing to continue if there is an 
-  # error + stores the error message 
+  # Lapply over all the models.
+  # withCallingHandlers will catch + store warnings (and muffle them) then
+  # allow the code to continue. 
+  # It is wrapped in tryCatch which ensures that the lapply will continue 
+  # even if there is an error in one of the models. Having withCallingHandlers 
+  # within the tryCatch means that we can catch + store all warnings whereas 
+  # tryCatch alone will exit on the first error but does not catch warnings 
+  # (and the warnings are useful for use as part of a test suite) 
+  #  https://adv-r.hadley.nz/conditions.html#:~:text=The%20handlers%20set%20up%20by,normally%20once%20the%20handler%20returns.
+
   
   results <- lapply(seq_len(nrow(model_files_df)), function(i) {
     
@@ -57,12 +64,6 @@ test_that("all model library files simulate successfully", {
     
     error <- tryCatch(
       {
-        
-        # withCallingHandlers should be used over trycatch as it's possible
-        # for model to warn (and trycatch would exit) but then have an error
-        # - trycatch would exit on the warning and not see the error
-        # https://adv-r.hadley.nz/conditions.html#:~:text=The%20handlers%20set%20up%20by,normally%20once%20the%20handler%20returns.
-        
         withCallingHandlers(
           {
             sim_IQRmodel(IQRmodel(file))
