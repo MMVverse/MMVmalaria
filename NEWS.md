@@ -1,4 +1,4 @@
-# MMVmalaria 1.5.1
+# MMVmalaria 1.5.0
 
 # Pull request template
 * Added
@@ -13,4 +13,4 @@
 * Clearance models description of "zombie state" updated to better reflect the underlying biology
 * Formatting adjustment made to all library models to improve readability and standardize model notes section
 * Alpha renamed to Alpha1 in all appropriate models (GDPI models) to avoid conflict with IQRtools reserving "alpha" string. 
-* _tobs0 removed from names of model file .txt in modelLibrary_tobs0 as the library name makes this clear without needing _tobs0 in the file name. 
+* _tobs0 removed from names of model file .txt in modelLibrary_tobs0 as the library name makes this clear without needing _tobs0 in the file name.

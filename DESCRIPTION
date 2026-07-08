@@ -1,7 +1,7 @@
 Package: MMVmalaria
 Type: Package
 Title: Collection of Malaria Functions, Models, Data and Workflows
-Version: 1.5.1
+Version: 1.5.0
 Author: Mohammed H. Cherkaoui [aut,cre],
 		Anne Kuemmel [aut,cre],
 		Daniel Kaschek [aut],
@@ -52,6 +52,7 @@ Imports:
     stringr,
     survival,
     tidyr,
+    tidyselect,
     writexl,
     MMVbase (>= 1.2.1),
     rlang,
@@ -71,4 +72,3 @@ VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 Additional_repositories:
     https://iqrtoolsabc321.intiquan.com/rrepo2024
-
