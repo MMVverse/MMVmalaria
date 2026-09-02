@@ -865,6 +865,33 @@ evaluateDoseCriterion_TimeAboveMIC <- function(sim_results, parameters) {
 }
 
 
+#' Calculate the length of the first uninterrupted excursion above the minimum inhibitory
+#' concentration (MIC) for an individual parasitemia profile
+#' @details This function can be passed as argument to [predictDose_Generic()], as an
+#'   alternative to [evaluateDoseCriterion_TimeAboveMIC()] for multi-dose regimens where
+#'   continuous coverage (no trough dropping back below MIC between doses) matters, not just
+#'   the summed total time above MIC. Root-finding a dose against this criterion pushes the
+#'   dose up whenever a trough would otherwise create a gap: the first excursion is cut short
+#'   at that gap, so the target is only reached once troughs no longer dip below MIC and the
+#'   excursions merge into one continuous run. Returns `0` if the concentration never exceeds
+#'   MIC.
+#'
+#' @inheritParams evaluateDoseCriterion_TimeAboveMIC
+#' @return a numeric value.
+#'
+#' @seealso [getKeysEMAX()], [getExcursionsAboveMIC()], [evaluateDoseCriterion_TimeAboveMIC()]
+#'
+#' @author Claude (Anthropic)
+#'
+#' @export
+evaluateDoseCriterion_ContinuousTimeAboveMIC <- function(sim_results, parameters) {
+  dfParam    <- as.data.frame(as.list(parameters))
+  MIC        <- getKeysEMAX(x = dfParam)[["MIC"]]
+  excursions <- getExcursionsAboveMIC(sim_results, MIC = MIC)
+  if (nrow(excursions) == 0) 0 else excursions[["tMIC"]][1]
+}
+
+
 #' Calculate the time above the minimum parasiticidal concentration (MPC90) for an individual parasitemia profile
 #' @details This function can be passed as argument to [predictDose_Generic()].
 #'

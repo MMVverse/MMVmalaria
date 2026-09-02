@@ -1816,6 +1816,89 @@ getTimeAboveMIC <- function(dataSim,
   # Output:
   out
 }
+#' getExcursionsAboveMIC
+#'
+#' @description Detects each contiguous excursion (time interval) during which the
+#'   concentration stays continuously above the MIC, applying the same linear (going up) /
+#'   exponential (going down) crossing-time correction as [getTimeAboveMIC()]. Unlike
+#'   [getTimeAboveMIC()], which sums the time above MIC across all excursions into a single
+#'   total, this returns one row per excursion with its own onset and end time - needed to
+#'   detect and visualize gaps (troughs dropping back below MIC between doses) for multi-dose
+#'   regimens, where the summed total can hide a real interruption in coverage.
+#' @inheritParams getTimeAboveMIC
+#' @return A data.frame with columns `tOnset`, `tEnd`, `tMIC` (= `tEnd - tOnset`), one row per
+#'   contiguous excursion above MIC, ordered by `tOnset`. Zero rows if the concentration never
+#'   exceeds MIC. `sum(getExcursionsAboveMIC(...)$tMIC)` equals
+#'   `getTimeAboveMIC(...)$tMIC` for the same inputs.
+#' @export
+#' @author Aline Fuchs (MMV), Mohammed H. Cherkaoui (MMV) (crossing-time correction reused from
+#'   [getTimeAboveMIC()])
+#' @family Key Parameters
+getExcursionsAboveMIC <- function(dataSim,
+                                   MIC,
+                                   timeCOL  = "TIME",
+                                   concCOL  = "Cc",
+                                   convConc = 1) {
+
+  dataSim[[concCOL]] <- dataSim[[concCOL]] * convConc
+
+  if (is.null(MIC)) {
+    if (is.null(dataSim$MIC)) {
+      stop("No MIC value given.")
+    } else {
+      MIC <- unique(dataSim$MIC)
+    }
+  }
+  if (length(MIC) != 1) {
+    stop("MIC not unique.")
+  }
+
+  empty <- data.frame(tOnset = numeric(0), tEnd = numeric(0), tMIC = numeric(0))
+
+  if (MIC == Inf) {
+    return(empty)
+  }
+
+  dtMIC <- ifelse(dataSim[[concCOL]] > MIC, 1, 0)
+
+  if (all(dtMIC == 1)) {
+    # Above MIC for the entire profile - one excursion spanning it, no crossings to correct.
+    return(data.frame(tOnset = dataSim[[timeCOL]][1],
+                      tEnd   = dataSim[[timeCOL]][length(dataSim[[timeCOL]])],
+                      tMIC   = dataSim[[timeCOL]][length(dataSim[[timeCOL]])] - dataSim[[timeCOL]][1]))
+  }
+
+  ddtMIC  <- c(0, dtMIC[2:length(dtMIC)] - dtMIC[1:(length(dtMIC) - 1)])
+  idxBtoA <- which(ddtMIC == 1)
+  idxAtoB <- which(ddtMIC == -1)
+
+  # Interpolated onset times (linear, same as getTimeAboveMIC's dt_BtoA correction):
+  tOnset <- dataSim[[timeCOL]][idxBtoA - 1] +
+    (dataSim[[timeCOL]][idxBtoA] - dataSim[[timeCOL]][idxBtoA - 1]) *
+    (MIC - dataSim[[concCOL]][idxBtoA - 1]) /
+    (dataSim[[concCOL]][idxBtoA] - dataSim[[concCOL]][idxBtoA - 1])
+
+  # Interpolated end times (exponential decay, same as getTimeAboveMIC's dt_AtoB correction):
+  tEnd <- dataSim[[timeCOL]][idxAtoB - 1] +
+    (dataSim[[timeCOL]][idxAtoB] - dataSim[[timeCOL]][idxAtoB - 1]) *
+    log(dataSim[[concCOL]][idxAtoB - 1] / MIC) /
+    log(dataSim[[concCOL]][idxAtoB - 1] / dataSim[[concCOL]][idxAtoB])
+
+  # The profile may already be above MIC at the first time point (no BtoA crossing observed -
+  # the true onset may lie before the start of the window) and/or still above MIC at the last
+  # time point (no AtoB crossing observed yet). In both cases there's one excursion whose
+  # boundary is clipped to the profile's own start/end rather than an interpolated crossing.
+  if (dtMIC[1] == 1)                        tOnset <- c(dataSim[[timeCOL]][1], tOnset)
+  if (dtMIC[length(dtMIC)] == 1)            tEnd   <- c(tEnd, dataSim[[timeCOL]][length(dataSim[[timeCOL]])])
+
+  if (length(tOnset) == 0) {
+    # Never above MIC.
+    return(empty)
+  }
+
+  data.frame(tOnset = tOnset, tEnd = tEnd, tMIC = tEnd - tOnset)
+}
+
 #' getTimeAboveMICsim
 #'
 #' @description Calculates the total time during which the concentration is above the MIC from simulation data
