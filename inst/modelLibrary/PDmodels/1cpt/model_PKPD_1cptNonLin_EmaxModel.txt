@@ -30,7 +30,7 @@ Units of parasitemia assumed in percent or 1/mL (both log-transformed: ln not lo
 
 # PK model (dosing: INPUT1)
 d/dt(Ad)  = -ka*Ad + factorUnits*Fabs1*INPUT1
-d/dt(Ac)  =  ka*Ad - VMAX*Cc/(KM+Cc)1
+d/dt(Ac)  =  ka*Ad - VMAX*Cc/(KM+Cc)
 
 # Parasitemia PD model (log transformed parasitemia)
 d/dt(PL) = GR - EMAX*Eff

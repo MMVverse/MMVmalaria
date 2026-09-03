@@ -62,7 +62,7 @@ Tlag1 = 0             # Absorption lag time (hours)
 # -------- PD parameters --------
 # --- General ---
 PLbase = 0            # Log-transformed baseline parasitemia (percent or 1/mL)
-PLerr  = 0            # Individual deviation from baseline parasitemia
+Tobs0 = 0 	      # The time of the first observation relative to the time of the first dose (hours)
 
 # --- Drug ---
 GR    = 0.05          # Net parasite growth rate (1/hour)

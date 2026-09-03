@@ -100,7 +100,7 @@ kex2    = 1           # Effect compartment rate constant Drug2 (1/hour)
 
 # --- PD DDI ---
 
-Alpha   = 0           # Maximum impact of drug on EC50 of other drug (.)
+Alpha1   = 0           # Maximum impact of drug on EC50 of other drug (.)
 Beta    = 0           # Maximum impact of drug on EMAX of other drug (.)
 
 
@@ -142,8 +142,8 @@ Inh21 = (1+Ccx2/Ki21)
 # Changes in EC50s:
 RIA11     = (Ccx1+yps)^hillx1/(IC50ax1^hillx1+(Ccx1+yps)^hillx1)
 RIA22     = (Ccx2+yps)^hillx2/(IC50ax2^hillx2+(Ccx2+yps)^hillx2)
-EC50Intx1 = EC50x1*(1+(exp(-Alpha)-1)*RIA22)
-EC50Intx2 = EC50x2*(1+(exp(-Alpha)-1)*RIA11)
+EC50Intx1 = EC50x1*(1+(exp(-Alpha1)-1)*RIA22)
+EC50Intx2 = EC50x2*(1+(exp(-Alpha1)-1)*RIA11)
 
 # Changes in Emaxs:
 RIB11     = (Ccx1+yps)^hillx1/(IC50bx1^hillx1+(Ccx1+yps)^hillx1)

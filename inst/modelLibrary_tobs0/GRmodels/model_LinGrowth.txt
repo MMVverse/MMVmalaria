@@ -13,7 +13,7 @@ PL(0) = PLbase + GR*Tobs0
 ********** MODEL PARAMETERS
 
 PLbase      = 10          # Observed log-transformed parasitemia at t=0 (or starting time used for the analysis). (p/mL or percent)
-PLerr       = 0   	      # Standard deviation of log-transformed baseline parasitemia
+Tobs0 	    = 0 	  # The time of the first observation relative to the time of the first dose (hours)
 
 GR          = 0.05        # Parasite growth rate constant (1/hr)
 

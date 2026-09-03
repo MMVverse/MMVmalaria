@@ -40,8 +40,8 @@ d/dt(Cex2)  = kex2 * (Ccx2-Cex2)
 d/dt(PLtot) = (GR+CLParax1-Kkillx2)*exp(PLliv-PLtot) - CLParax1
 d/dt(PLliv) = GR - Kkill
 
-PLtot(0)    = PLbase + PLerr
-PLliv(0)    = PLbase + PLerr
+PLtot(0)    = PLbase + GR*Tobs0
+PLliv(0)    = PLbase + GR*Tobs0
 
 
 ********** MODEL PARAMETERS

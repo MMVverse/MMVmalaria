@@ -40,7 +40,7 @@ d/dt(Ap2x2) =                                                + Q2x2/Vcx2*Acx2 - 
 d/dt(Recx1) = kinx1*(RD11-Recx1)
 d/dt(PL)    = GR - Kkill
 
-PL(0)       = PLbase + PLerr
+PL(0)       = PLbase + GR*Tobs0
 
 
 ********** MODEL PARAMETERS
