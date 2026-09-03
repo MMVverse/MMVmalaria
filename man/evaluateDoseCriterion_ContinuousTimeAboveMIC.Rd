@@ -2,7 +2,7 @@
 % Please edit documentation in R/17-PredictHumanDoses.R
 \name{evaluateDoseCriterion_ContinuousTimeAboveMIC}
 \alias{evaluateDoseCriterion_ContinuousTimeAboveMIC}
-\title{Calculate the length of the first uninterrupted excursion above the minimum inhibitory
+\title{Calculate the length of the last uninterrupted excursion above the minimum inhibitory
 concentration (MIC) for an individual parasitemia profile}
 \usage{
 evaluateDoseCriterion_ContinuousTimeAboveMIC(sim_results, parameters)
@@ -17,18 +17,24 @@ this data.frame has a column PL corresponding to log-transformed simulated paras
 a numeric value.
 }
 \description{
-Calculate the length of the first uninterrupted excursion above the minimum inhibitory
+Calculate the length of the last uninterrupted excursion above the minimum inhibitory
 concentration (MIC) for an individual parasitemia profile
 }
 \details{
 This function can be passed as argument to \code{\link[=predictDose_Generic]{predictDose_Generic()}}, as an
 alternative to \code{\link[=evaluateDoseCriterion_TimeAboveMIC]{evaluateDoseCriterion_TimeAboveMIC()}} for multi-dose regimens where
 continuous coverage (no trough dropping back below MIC between doses) matters, not just
-the summed total time above MIC. Root-finding a dose against this criterion pushes the
-dose up whenever a trough would otherwise create a gap: the first excursion is cut short
-at that gap, so the target is only reached once troughs no longer dip below MIC and the
-excursions merge into one continuous run. Returns \code{0} if the concentration never exceeds
-MIC.
+the summed total time above MIC. The \emph{last} excursion (not the first) is the one that
+determines whether the target sustained-coverage duration is actually met by the end of
+the regimen: it is the one anchored at the profile's global peak and its subsequent decline
+after the final dose (mirroring MMVFree's \code{findWindow()}, MMVFree#27, which likewise always
+resolves the coverage window against the last, tail segment). Root-finding a dose against
+the \emph{first} excursion instead pushes the dose up to close off any early gap even when that
+gap isn't the one being measured against the target - since early excursions are often
+artificially short before dose accumulation reaches steady state, this converges to a
+similar, inflated dose regardless of the requested target duration (e.g. 21-day and 28-day
+targets both landing on the dose needed to merge every excursion into one, rather than on
+two genuinely different doses). Returns \code{0} if the concentration never exceeds MIC.
 }
 \seealso{
 \code{\link[=getKeysEMAX]{getKeysEMAX()}}, \code{\link[=getExcursionsAboveMIC]{getExcursionsAboveMIC()}}, \code{\link[=evaluateDoseCriterion_TimeAboveMIC]{evaluateDoseCriterion_TimeAboveMIC()}}

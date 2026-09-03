@@ -68,7 +68,7 @@ test_that("getExcursionsAboveMIC returns a single excursion when always above MI
 # -> EC50 = 9).
 emax_params_for_MIC1 <- c(GR = 0.05, EMAX = 0.5, EC50 = 9, hill = 1)
 
-test_that("evaluateDoseCriterion_ContinuousTimeAboveMIC only counts the first excursion when there is a gap", {
+test_that("evaluateDoseCriterion_ContinuousTimeAboveMIC only counts the last excursion when there is a gap", {
   dfGap <- make_two_bump_profile(MIC = 1)
   dfGap$PL <- 0  # unused by these criteria but present on real sim_results
 
@@ -76,9 +76,26 @@ test_that("evaluateDoseCriterion_ContinuousTimeAboveMIC only counts the first ex
   summedCrit      <- evaluateDoseCriterion_TimeAboveMIC(dfGap, emax_params_for_MIC1)
 
   excursions <- getExcursionsAboveMIC(dfGap, MIC = 1)
-  expect_equal(continuousCrit, excursions$tMIC[1], tolerance = 1e-6)
-  # The gap means the first excursion alone is meaningfully shorter than the summed total.
+  expect_equal(continuousCrit, excursions$tMIC[nrow(excursions)], tolerance = 1e-6)
+  # The gap means the last excursion alone is meaningfully shorter than the summed total.
   expect_true(continuousCrit < summedCrit - 1)
+})
+
+test_that("evaluateDoseCriterion_ContinuousTimeAboveMIC targets the last, not the first, excursion when they differ in length", {
+  # Two bumps of very different length above MIC, separated by a real gap: a short early
+  # excursion and a long, sustained late one (mirroring an under-accumulated first dosing
+  # interval followed by a steady-state tail once doses have accumulated).
+  t <- seq(0, 150, by = 0.05)
+  bump <- function(t, peakTime, height, width) height * exp(-((t - peakTime)^2) / (2 * width^2))
+  dfAsym <- data.frame(TIME = t, Cc = bump(t, 15, 3, 3) + bump(t, 90, 4, 30) + 0.05, PL = 0)
+
+  excursions <- getExcursionsAboveMIC(dfAsym, MIC = 1)
+  expect_equal(nrow(excursions), 2)
+  expect_true(excursions$tMIC[1] < excursions$tMIC[2])  # first excursion is the short one
+
+  continuousCrit <- evaluateDoseCriterion_ContinuousTimeAboveMIC(dfAsym, emax_params_for_MIC1)
+  expect_equal(continuousCrit, excursions$tMIC[2], tolerance = 1e-6)
+  expect_true(continuousCrit > excursions$tMIC[1] + 1)
 })
 
 test_that("evaluateDoseCriterion_ContinuousTimeAboveMIC equals the summed criterion when there is no gap", {
