@@ -1,4 +1,13 @@
-# MMVmalaria 1.5.0
+# MMVmalaria 1.6.0
+
+# New functions
+* `getExcursionsAboveMIC()` added: detects each contiguous excursion (time interval) during which concentration stays continuously above the MIC, one row per excursion with its own onset/end time - needed to detect and visualize gaps (troughs dropping back below MIC between doses) for multi-dose regimens, where `getTimeAboveMIC()`'s summed total can hide a real interruption in coverage.
+* `evaluateDoseCriterion_ContinuousTimeAboveMIC()` added: an alternative to `evaluateDoseCriterion_TimeAboveMIC()` for `predictDose_Generic()`, for multi-dose regimens where continuous coverage (no gap) matters, not just the summed total time above MIC. Targets the length of the *last* uninterrupted excursion above MIC (the one anchored at the profile's global peak and its decline after the final dose) - not the first, which would converge every target duration onto the same "merge every early gap" dose regardless of how long a coverage window was actually requested.
+
+# Tests
+* `tests/testthat/test-keyParameters.R` added, covering `getExcursionsAboveMIC()` and `evaluateDoseCriterion_ContinuousTimeAboveMIC()`, including an asymmetric-excursion-length case that specifically distinguishes first-vs-last excursion targeting.
+
+
 
 # Pull request template
 * Added
